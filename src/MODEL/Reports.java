@@ -151,7 +151,7 @@ public class Reports {
         try {
             HashMap<String, Object> reportmap = new HashMap<>();
             reportmap.put("jobno", jobno);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Blank_A4_Landscape.jasper"), reportmap, MySQL.getConnection());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/NewPrescription.jasper"), reportmap, MySQL.getConnection());
 
 //            JasperPrint jasperPrint = JasperFillManager.fillReport("reports/EagleEyeOrders.jasper", reportmap, MySQL.getConnection());
 //            JasperPrint jasperPrint = JasperFillManager.fillReport("reports/EagleEyeOrders.jasper", reportmap,new JRTableModelDataSource(model));
