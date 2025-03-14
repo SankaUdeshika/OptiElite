@@ -18,7 +18,7 @@ import model.MySQL;
 
 public class Login extends javax.swing.JFrame {
 
-    public static Logger logger = Logger.getLogger("egaleEye");
+    public static Logger logger = Logger.getLogger("egaleEye"); 
 
     public Login() {
         initComponents();

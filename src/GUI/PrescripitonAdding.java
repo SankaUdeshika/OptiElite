@@ -571,7 +571,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jPanel5.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, -1, -1));
 
         jLabel52.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel52.setText("Destance");
+        jLabel52.setText("SPH");
         jPanel5.add(jLabel52, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, -1));
 
         jTextField37.addActionListener(new java.awt.event.ActionListener() {
@@ -906,7 +906,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 String L_Sub = jTextField11.getText();
 
 //        prescription Details
-                String R_Distance = jTextField37.getText();
+                String R_SPH = jTextField37.getText();
                 String R_Cyl = jTextField36.getText();
                 String R_Axis = jTextField35.getText();
                 String PR_Va = jTextField34.getText();
@@ -914,7 +914,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 String R_M_PD = jTextField32.getText();
                 String R_Addiiton = jTextField31.getText();
 
-                String L_Distance = jTextField21.getText();
+                String L_SPH = jTextField21.getText();
                 String L_Cyl = jTextField17.getText();
                 String L_Axis = jTextField19.getText();
                 String PL_Va = jTextField18.getText();
@@ -924,7 +924,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
 
                 MySQL.execute("INSERT INTO `prescription_details` (`L_distance`,`L_Addition`,`L_Va`,`L_N_PD`,`L_M_PD`,`customer_mobile`,`users_id`,"
                         + "`R_Va`,`R_N_PD`,`R_M_PD`,`R_distance`,`R_Addition`,`prescripiton_date`,`L_CYL`,`R_CYL`,`L_Axis`,`R_Axis`) "
-                        + "VALUES ('" + L_Distance + "','" + L_Addiiton + "','" + PL_Va + "','" + L_N_PD + "','" + L_M_PD + "','" + Customer_mobile + "','" + user_id + "','" + PR_Va + "','" + R_N_PD + "','" + R_M_PD + "','" + R_Distance + "','" + R_Addiiton + "','" + datechooser + "','" + L_Cyl + "','" + R_Cyl + "','" + L_Axis + "','" + R_Axis + "')  ");
+                        + "VALUES ('" + L_SPH + "','" + L_Addiiton + "','" + PL_Va + "','" + L_N_PD + "','" + L_M_PD + "','" + Customer_mobile + "','" + user_id + "','" + PR_Va + "','" + R_N_PD + "','" + R_M_PD + "','" + R_SPH + "','" + R_Addiiton + "','" + datechooser + "','" + L_Cyl + "','" + R_Cyl + "','" + L_Axis + "','" + R_Axis + "')  ");
 
                 JOptionPane.showMessageDialog(this, "Prescription Adding Success", "Insert Success", JOptionPane.WARNING_MESSAGE);
 
