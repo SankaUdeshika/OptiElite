@@ -1,5 +1,6 @@
-package gui;
+    package gui;
 
+import MODEL.Route;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import model.UserDetails;
@@ -24,21 +25,19 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         loadLocations();
+        Route.Route = false;
     }
 
     public void loadLocations() {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `location` ORDER BY `id` ASC");
             Vector v = new Vector();
-
             v.add("Select Locaiton");
             while (rs.next()) {
                 v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("location_name")));
             }
-
             DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
             locationComboBox.setModel(dfm);
-
         } catch (SQLException se) {
             se.printStackTrace();
             logger.log(Level.WARNING, "Please Check Your Internet Connection or Please Try again later", se);
@@ -46,9 +45,7 @@ public class Login extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
             logger.log(Level.WARNING, "Please Check Your Internet Connection or Please Try again later", e);
-
         }
-
     }
 
     /**
@@ -242,7 +239,6 @@ public class Login extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "Please Enter UserName", "Empty UserName", JOptionPane.ERROR_MESSAGE);
             }
-
         }
     }//GEN-LAST:event_signInBtnActionPerformed
 

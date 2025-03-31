@@ -1,5 +1,6 @@
 package gui;
 
+import GUI.adminAddNote;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -65,6 +66,7 @@ public class adminDashboard extends javax.swing.JFrame {
         jButton26 = new javax.swing.JButton();
         jButton28 = new javax.swing.JButton();
         jButton29 = new javax.swing.JButton();
+        jButton30 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jLabel26 = new javax.swing.JLabel();
@@ -147,6 +149,15 @@ public class adminDashboard extends javax.swing.JFrame {
             }
         });
         jPanel11.add(jButton29, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 230, 64));
+
+        jButton30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Orders.png"))); // NOI18N
+        jButton30.setText("Add Notes");
+        jButton30.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton30ActionPerformed(evt);
+            }
+        });
+        jPanel11.add(jButton30, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, 230, 64));
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -335,6 +346,13 @@ public class adminDashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton29ActionPerformed
 
+    private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton30ActionPerformed
+        // admin Add Notes 
+        adminAddNote adnAddNote = new adminAddNote();
+        adnAddNote.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton30ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -379,6 +397,7 @@ public class adminDashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton26;
     private javax.swing.JButton jButton28;
     private javax.swing.JButton jButton29;
+    private javax.swing.JButton jButton30;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel26;
