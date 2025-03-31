@@ -40,6 +40,14 @@ public class lensOrder extends javax.swing.JFrame {
         Refresh();
     }
 
+    public lensOrder(String mobile) {
+        initComponents();
+        setSize(screen.width, screen.height);
+        operater();
+        time();
+        Refresh(mobile);
+    }
+
     public double Total;
 
     public double RealTotalWithoutDiscount;
@@ -92,7 +100,19 @@ public class lensOrder extends javax.swing.JFrame {
         LoadLensTint();
         jTextField4.setText("");
         jTextField4.setEnabled(false);
+    }
 
+    public void Refresh(String mobile) {
+        LoadCustomer(mobile);
+        LoadLensesType();
+        LoadLensCortin();
+        LoadLensBrand();
+        LoadLensDesign();
+        LoadLensTint();
+        jTextField4.setText("");
+        jTextField4.setEnabled(false);
+        jTable2.setEnabled(false);
+        jTextField1.setEnabled(false);
     }
 
     public void LoadLensTint() {
@@ -241,6 +261,29 @@ public class lensOrder extends javax.swing.JFrame {
                 dtm.addRow(v);
             }
 
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void LoadCustomer(String mobile) {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + mobile + "' ");
+            DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+            dtm.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("mobile"));
+                v.add(rs.getString("name"));
+                v.add(rs.getString("nic"));
+                dtm.addRow(v);
+            }
+            loadCustomerPrescription(mobile);
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
@@ -1225,8 +1268,6 @@ public class lensOrder extends javax.swing.JFrame {
                                 }
 
                             } else {
-
-                              
 
                                 if (jTextField11.getText().isBlank()) {
                                     payment_status_id = 2;

@@ -6,6 +6,7 @@ package GUI;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import gui.OrderMaking;
+import gui.lensOrder;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import model.MySQL;
@@ -224,6 +225,11 @@ public class ChooseOrderTypes extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jButton1.setText("Lens Order");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel6.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 260, 410, 120));
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -326,6 +332,13 @@ public class ChooseOrderTypes extends javax.swing.JFrame {
         om.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        lensOrder lo = new lensOrder(jLabel9.getText().toString());
+        lo.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
