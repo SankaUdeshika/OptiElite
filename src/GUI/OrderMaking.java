@@ -39,13 +39,19 @@ public class OrderMaking extends javax.swing.JFrame {
     public OrderMaking() {
         initComponents();
         setSize(screen.width, screen.height);
-
         jTextField2.setEnabled(false);
         Refresh();
-
         operater();
         time();
+    }
 
+    public OrderMaking(String mobile) {
+        initComponents();
+        setSize(screen.width, screen.height);
+        jTextField2.setEnabled(false);
+        Refresh(mobile);
+        operater();
+        time();
     }
 
     private void operater() {
@@ -118,7 +124,21 @@ public class OrderMaking extends javax.swing.JFrame {
         LoadWarrenty();
         jTextField4.setText("");
         jTextField4.setEnabled(false);
+    }
 
+    public void Refresh(String mobile) {
+        LoadCustomer(mobile);
+        LoadLensesType();
+        LoadLensCortin();
+        LoadLensBrand();
+        LoadLensDesign();
+        LoadLensTint();
+        LoadStockProducts();
+        LoadWarrenty();
+        jTextField4.setText("");
+        jTextField4.setEnabled(false);
+        jTable2.setEnabled(false);
+        jTextField1.setEnabled(false);
     }
 
     public void LoadStockProducts() {
@@ -332,6 +352,34 @@ public class OrderMaking extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", e);
 
+        }
+    }
+
+    public void LoadCustomer(String mobile) {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + mobile + "'  ");
+            DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+            dtm.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("mobile"));
+                v.add(rs.getString("name"));
+                v.add(rs.getString("nic"));
+                dtm.addRow(v);
+            }
+            jTextField1.setText(mobile);
+            loadCustomerPrescription(mobile);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", se);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", e);
         }
     }
 
@@ -1630,7 +1678,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                             System.out.println("Warrenty id is :- " + WarrentyPeriod);
                                         }
                                         ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`)"
-                                                + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','"+WarrentyPeriod+"') ");
+                                                + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "') ");
 //
                                         int invoiceId = 0;
                                         if (Inser_rs.next()) {
