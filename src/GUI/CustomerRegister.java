@@ -1,5 +1,7 @@
 package gui;
 
+import GUI.medicalCondition;
+import MODEL.medicalTemporyData;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -33,7 +35,7 @@ public class CustomerRegister extends javax.swing.JFrame {
         operater();
         time();
     }
-    
+
     private void operater() {
         String name = UserDetails.UserName;
         userNameField.setText(name);
@@ -52,7 +54,7 @@ public class CustomerRegister extends javax.swing.JFrame {
         Timer timer = new Timer(1000, timerListener);
         timer.setInitialDelay(0);
         timer.start();
-    } 
+    }
 
     public void refresh() {
         jTextArea1.setText("");
@@ -74,7 +76,8 @@ public class CustomerRegister extends javax.swing.JFrame {
             v.add("Select Gender");
             while (rs.next()) {
                 v.add(rs.getString("gender"));
-            }v.add("Select Gender");
+            }
+            v.add("Select Gender");
 
             DefaultComboBoxModel dmc = new DefaultComboBoxModel(v);
             jComboBox2.setModel(dmc);
@@ -166,6 +169,7 @@ public class CustomerRegister extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel20 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -403,6 +407,13 @@ public class CustomerRegister extends javax.swing.JFrame {
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jButton1.setText("Add Medical Condition");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -441,31 +452,29 @@ public class CustomerRegister extends javax.swing.JFrame {
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel15)
                                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 66, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jSeparator6, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addComponent(jSeparator5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel8)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel20)
+                                    .addComponent(jLabel12)
+                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(42, 42, 42)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel9)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(38, 38, 38)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addComponent(jLabel10)
                                         .addGap(217, 217, 217))
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jSeparator5, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(44, 44, 44))))
         );
         jPanel6Layout.setVerticalGroup(
@@ -490,7 +499,9 @@ public class CustomerRegister extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -614,8 +625,6 @@ public class CustomerRegister extends javax.swing.JFrame {
 //            jLabel21.setText("Please Wait. . . . . . .");
 //            Thread.sleep(3000);
 //            jLabel21.setText("");
-
-
             if (rs.next()) {
                 JOptionPane.showMessageDialog(this, "Alread Registred this Usaer", "Already Registerd", JOptionPane.ERROR_MESSAGE);
             } else if (CustomerName.isEmpty()) {
@@ -643,6 +652,14 @@ public class CustomerRegister extends javax.swing.JFrame {
                     String id = String.valueOf(CustomerRegister.locationmap.get(jComboBox1.getSelectedItem()));
                     MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`Name`,`gender_gender_id`)"
                             + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + CustomerName + "','" + gender_id + "') ");
+
+//                   Insert Medical Conditon
+                    int medicalCount = medicalTemporyData.medicalArray.size();
+                    for (int i = 0; i < medicalCount; i++) {
+                        String medicalText = medicalTemporyData.medicalArray.get(i);
+                        MySQL.execute(" INSERT INTO `customer_medicals` (`medical_condition`,`customer_mobile`) VALUES ('" + medicalText + "','" + whatssapp + "') ");
+                    }
+
                     JOptionPane.showMessageDialog(this, "Registerd Successfully", "Success", JOptionPane.OK_OPTION);
                     refresh();
 
@@ -654,6 +671,14 @@ public class CustomerRegister extends javax.swing.JFrame {
                     String id = String.valueOf(CustomerRegister.locationmap.get(jComboBox1.getSelectedItem()));
                     MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`birthday`,`Name`,`gender_gender_id`)"
                             + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + BdayFormat + "','" + CustomerName + "','" + gender_id + "') ");
+
+                    //                   Insert Medical Conditon
+                    int medicalCount = medicalTemporyData.medicalArray.size();
+                    for (int i = 0; i < medicalCount; i++) {
+                        String medicalText = medicalTemporyData.medicalArray.get(i);
+                        MySQL.execute(" INSERT INTO `customer_medicals` (`medical_condition`,`customer_mobile`) VALUES ('" + medicalText + "','" + whatssapp + "') ");
+                    }
+
                     JOptionPane.showMessageDialog(this, "Registerd Successfully", "Success", JOptionPane.OK_OPTION);
                     refresh();
                 }
@@ -688,6 +713,12 @@ public class CustomerRegister extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_homeBtnActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        medicalCondition mc = new medicalCondition();
+        mc.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -706,6 +737,7 @@ public class CustomerRegister extends javax.swing.JFrame {
     private javax.swing.JLabel dateField;
     private javax.swing.JPanel header;
     private javax.swing.JButton homeBtn;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
