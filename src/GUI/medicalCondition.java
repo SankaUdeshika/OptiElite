@@ -24,6 +24,8 @@ public class medicalCondition extends javax.swing.JFrame {
      */
     public medicalCondition() {
         initComponents();
+        jButton5.setVisible(false);
+        jButton4.setVisible(false);
     }
     
     public medicalCondition(String mobile) {
