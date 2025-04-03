@@ -175,6 +175,7 @@ public class StockManagement extends javax.swing.JFrame {
                 v.add(rs.getString("brand_name"));
                 v.add(rs.getString("sub_category"));
                 v.add(rs.getInt("qty"));
+                v.add(rs.getString("frameSize"));
                 v.add(rs.getDouble("cost"));
                 v.add(rs.getDouble("saling_price"));
                 v.add(rs.getDate("stock_date"));
@@ -273,6 +274,8 @@ public class StockManagement extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel31 = new javax.swing.JLabel();
         jToggleButton1 = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
@@ -333,7 +336,7 @@ public class StockManagement extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(51, 51, 51));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 480, 390, 10));
+        jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 480, 600, 10));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel13.setText("Stock Infomations");
@@ -365,17 +368,17 @@ public class StockManagement extends javax.swing.JFrame {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "StockID", "Product ID", "Product Brand", "Sub Category", "Qty", "Unit Price", "Selling Price", "Date TIme", "Supplier", "Location", "Total Cost"
+                "StockID", "Product ID", "Product Brand", "Sub Category", "Qty", "Size", "Unit Price", "Selling Price", "Date TIme", "Supplier", "Location", "Total Cost"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -388,19 +391,6 @@ public class StockManagement extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(jTable3);
-        if (jTable3.getColumnModel().getColumnCount() > 0) {
-            jTable3.getColumnModel().getColumn(0).setResizable(false);
-            jTable3.getColumnModel().getColumn(1).setResizable(false);
-            jTable3.getColumnModel().getColumn(2).setResizable(false);
-            jTable3.getColumnModel().getColumn(3).setResizable(false);
-            jTable3.getColumnModel().getColumn(4).setResizable(false);
-            jTable3.getColumnModel().getColumn(5).setResizable(false);
-            jTable3.getColumnModel().getColumn(6).setResizable(false);
-            jTable3.getColumnModel().getColumn(7).setResizable(false);
-            jTable3.getColumnModel().getColumn(8).setResizable(false);
-            jTable3.getColumnModel().getColumn(9).setResizable(false);
-            jTable3.getColumnModel().getColumn(10).setResizable(false);
-        }
 
         jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 1040, 190));
 
@@ -508,8 +498,8 @@ public class StockManagement extends javax.swing.JFrame {
         jPanel6.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 440, 180, -1));
 
         jLabel28.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel28.setText("Location");
-        jPanel6.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 410, -1, -1));
+        jLabel28.setText("Size");
+        jPanel6.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 410, -1, -1));
 
         jLabel30.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel30.setText("Selling Price");
@@ -568,6 +558,11 @@ public class StockManagement extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(204, 0, 0));
         jPanel6.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 280, 30));
+        jPanel6.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 440, 190, -1));
+
+        jLabel31.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel31.setText("Location");
+        jPanel6.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 410, -1, -1));
 
         jToggleButton1.setText("Report");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -760,6 +755,7 @@ public class StockManagement extends javax.swing.JFrame {
         // Update Stock Process
 
         String StockID;
+
         try {
             StockID = String.valueOf(jTable3.getValueAt(jTable3.getSelectedRow(), 0));
 
@@ -784,6 +780,7 @@ public class StockManagement extends javax.swing.JFrame {
         String qty = jTextField4.getText();
         String cost = jTextField13.getText();
         String sellingPrice = jTextField15.getText();
+        String Size = jTextField1.getText();
 
         if (StockID.equals("null")) {
             JOptionPane.showMessageDialog(this, "Please Select a Stock From stock Table", "Empty Stock Id", JOptionPane.ERROR_MESSAGE);
@@ -800,7 +797,7 @@ public class StockManagement extends javax.swing.JFrame {
         } else if (jComboBox3.getSelectedIndex() == 0) {
             try {
 
-                MySQL.execute("UPDATE `stock` SET `product_id` = '" + product_id + "' , `stock_date` = '" + formatDate + "' , `qty` = '" + qty + "' , `cost` = '" + cost + "' , `saling_price` = '" + sellingPrice + "' WHERE `id` = '" + StockID + "' ");
+                MySQL.execute("UPDATE `stock` SET `product_id` = '" + product_id + "' , `stock_date` = '" + formatDate + "' , `qty` = '" + qty + "' , `cost` = '" + cost + "' , `saling_price` = '" + sellingPrice + "' , `frameSize` = '" + Size + "' WHERE `id` = '" + StockID + "' ");
                 JOptionPane.showMessageDialog(this, "Stock Adding Success ", "Insert Success", JOptionPane.ERROR_MESSAGE);
 
             } catch (Exception e) {
@@ -811,7 +808,7 @@ public class StockManagement extends javax.swing.JFrame {
         } else if (jComboBox3.getSelectedIndex() != 0) {
             try {
 
-                MySQL.execute("UPDATE `stock` SET `product_id` = '" + product_id + "' , `stock_date` = '" + formatDate + "' , `qty` = '" + qty + "' , `cost` = '" + cost + "' , `saling_price` = '" + sellingPrice + "' , `location_id` = '" + jComboBox3.getSelectedIndex() + "' WHERE `id` = '" + StockID + "' ");
+                MySQL.execute("UPDATE `stock` SET `product_id` = '" + product_id + "' , `stock_date` = '" + formatDate + "' , `qty` = '" + qty + "' , `cost` = '" + cost + "' , `saling_price` = '" + sellingPrice + "' , `location_id` = '" + jComboBox3.getSelectedIndex() + "' , `frameSize` = '" + Size + "' WHERE `id` = '" + StockID + "' ");
                 JOptionPane.showMessageDialog(this, "Stock Adding Success ", "Insert Success", JOptionPane.ERROR_MESSAGE);
 
             } catch (Exception e) {
@@ -979,8 +976,9 @@ public class StockManagement extends javax.swing.JFrame {
             jTextField6.setText(String.valueOf(jTable3.getValueAt(row, 2)));
             jTextField5.setText(String.valueOf(jTable3.getValueAt(row, 3)));
             jTextField4.setText(String.valueOf(jTable3.getValueAt(row, 4)));
-            jTextField13.setText(String.valueOf(jTable3.getValueAt(row, 5)));
-            jTextField15.setText(String.valueOf(jTable3.getValueAt(row, 6)));
+            jTextField1.setText(String.valueOf(jTable3.getValueAt(row, 5)));
+            jTextField13.setText(String.valueOf(jTable3.getValueAt(row, 6)));
+            jTextField15.setText(String.valueOf(jTable3.getValueAt(row, 7)));
 
             jDateChooser2.setDate((Date) jTable3.getValueAt(row, 7));
 
@@ -1091,14 +1089,13 @@ public class StockManagement extends javax.swing.JFrame {
 
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-     // print Stock Report
+        // print Stock Report
         System.out.println(JasperStockQuerry);
 //        System.out.println(JasperStockQuerry);
         DefaultTableModel defaultTableModel = (DefaultTableModel) jTable3.getModel();
 
         Reports.PrintStockReport(defaultTableModel);
     }//GEN-LAST:event_jToggleButton1ActionPerformed
-
 
     /**
      * @param args the command line arguments
@@ -1146,6 +1143,7 @@ public class StockManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1165,6 +1163,7 @@ public class StockManagement extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField15;

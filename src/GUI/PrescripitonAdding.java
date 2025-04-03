@@ -1,6 +1,7 @@
 package gui;
 
 import GUI.ChooseOrderTypes;
+import MODEL.Route;
 import model.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Dimension;
@@ -77,6 +78,15 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jTextField6.setEnabled(true);
         jLabel17.setText(UserDetails.UserId);
         jLabel19.setText(UserDetails.UserName);
+//        Go Route Verification
+        if (Route.Route) {
+            jButton1.setVisible(true);
+            jButton2.setVisible(true);
+        } else {
+            jButton1.setVisible(false);
+            jButton2.setVisible(false);
+
+        }
     }
 
     public void refresh(String CustomerMobile) {

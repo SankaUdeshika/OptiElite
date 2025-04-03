@@ -5,7 +5,9 @@
 package GUI;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import gui.Dashboard;
 import gui.OrderMaking;
+import gui.PrescripitonAdding;
 import gui.lensOrder;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -320,10 +322,16 @@ public class ChooseOrderTypes extends javax.swing.JFrame {
 
     private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
         // TODO add your handling code here:
+        Dashboard d = new Dashboard();
+        d.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_homeBtnActionPerformed
 
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
         // TODO add your handling code here:
+        PrescripitonAdding p = new PrescripitonAdding();
+        p.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_backBtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
