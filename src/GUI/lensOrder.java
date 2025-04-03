@@ -282,7 +282,10 @@ public class lensOrder extends javax.swing.JFrame {
                 v.add(rs.getString("name"));
                 v.add(rs.getString("nic"));
                 dtm.addRow(v);
+                jTextField1.setText(rs.getString("mobile"));
+                loadCustomerPrescription(mobile);
             }
+
             loadCustomerPrescription(mobile);
         } catch (SQLException se) {
             se.printStackTrace();
