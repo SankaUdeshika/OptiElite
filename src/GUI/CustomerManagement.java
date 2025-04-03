@@ -27,7 +27,7 @@ public class CustomerManagement extends javax.swing.JFrame {
      */
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
     public String CustomerID = "null";
-
+    
     public CustomerManagement() {
         initComponents();
         setSize(screen.width, screen.height);
@@ -42,12 +42,12 @@ public class CustomerManagement extends javax.swing.JFrame {
         previousBtn.setEnabled(false);
         enableUpdateField(false);
     }
-
+    
     private void operater() {
         String name = UserDetails.UserName;
         userNameField1.setText(name);
     }
-
+    
     private void time() {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
@@ -62,7 +62,7 @@ public class CustomerManagement extends javax.swing.JFrame {
         timer.setInitialDelay(0);
         timer.start();
     }
-
+    
     private void enableUpdateField(boolean x) {
         updateNameField.setEnabled(x);
         updateTelField.setEnabled(x);
@@ -70,13 +70,13 @@ public class CustomerManagement extends javax.swing.JFrame {
         updateAddressField.setEnabled(x);
         updateAddress2Field.setEditable(x);
     }
-
+    
     public void CustomerLoadingTable() {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` ");
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
-
+            
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("Name"));
@@ -87,16 +87,16 @@ public class CustomerManagement extends javax.swing.JFrame {
                 v.add(rs.getString("nic"));
                 v.add(rs.getString("location_name"));
                 v.add(rs.getString("register_date"));
-
+                
                 dtm.addRow(v);
-
+                
             }
-
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    
     public void Refresh() {
         updateAddressField.setText("");
         updateAddress2Field.setText("");
@@ -106,6 +106,7 @@ public class CustomerManagement extends javax.swing.JFrame {
         updateNameField.setText("");
         updateMobile2Field.setText("");
         updateTelField.setText("");
+        jTextArea1.setText("");
         CustomerLoadingTable();
         enableUpdateField(false);
     }
@@ -164,6 +165,8 @@ public class CustomerManagement extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         searchResetBtn = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jSeparator2 = new javax.swing.JSeparator();
         jButton7 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -236,7 +239,7 @@ public class CustomerManagement extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(172, 172, 172)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 317, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -365,7 +368,7 @@ public class CustomerManagement extends javax.swing.JFrame {
         jLabel14.setText("Name");
 
         jLabel16.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel16.setText("Tel :");
+        jLabel16.setText("Remarks :");
 
         jLabel17.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel17.setText("Address Line 01");
@@ -391,6 +394,10 @@ public class CustomerManagement extends javax.swing.JFrame {
             }
         });
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane4.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -408,9 +415,7 @@ public class CustomerManagement extends javax.swing.JFrame {
                             .addComponent(updateMobile2Field, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel19))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16)
-                            .addComponent(updateTelField)))
+                        .addComponent(updateTelField))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -419,7 +424,13 @@ public class CustomerManagement extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 85, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4))
+                .addContainerGap())
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -477,17 +488,20 @@ public class CustomerManagement extends javax.swing.JFrame {
                     .addComponent(jLabel19)
                     .addComponent(jLabel16))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(updateNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(updateMobile2Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(updateTelField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17)
-                    .addComponent(jLabel18))
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(updateNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(updateMobile2Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(updateTelField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(4, 4, 4)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabel18))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane4))
                 .addGap(31, 31, 31))
         );
 
@@ -523,21 +537,20 @@ public class CustomerManagement extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                            .addGap(8, 8, 8)
-                            .addComponent(jLabel7))
-                        .addComponent(updateBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                            .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(previousBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel6)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel7))
+                    .addComponent(updateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator3)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(previousBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSeparator4)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -623,15 +636,15 @@ public class CustomerManagement extends javax.swing.JFrame {
         // Key Relesed search BY REG_ID
 
         String mobile = jTextField1.getText();
-
+        
         jTextField3.setText("");
         jTextField2.setText("");
-
+        
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE `customer`.`mobile` LIKE '%" + mobile + "%' ");
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
-
+            
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("Name"));
@@ -642,14 +655,14 @@ public class CustomerManagement extends javax.swing.JFrame {
                 v.add(rs.getString("nic"));
                 v.add(rs.getString("location_name"));
                 v.add(rs.getString("register_date"));
-
+                
                 dtm.addRow(v);
-
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
 
     }//GEN-LAST:event_jTextField1KeyReleased
 
@@ -662,31 +675,32 @@ public class CustomerManagement extends javax.swing.JFrame {
             String mobile01 = String.valueOf(jTable1.getValueAt(SelectedRow, 2));
             String mobile02 = String.valueOf(jTable1.getValueAt(SelectedRow, 3));
             String tel = String.valueOf(jTable1.getValueAt(SelectedRow, 4));
-
+            
             ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + mobile01 + "' ");
-
+            
             try {
                 if (rs.next()) {
-
+                    
                     if (mobile02.equals("null")) {
                         updateMobile2Field.setText("");
                     }
-
+                    
                     if (tel.equals("null")) {
                         updateTelField.setText("");
                     }
-
+                    
                     updateNameField.setText(Name);
                     updateAddressField.setText(rs.getString("address_line1"));
                     updateAddress2Field.setText(rs.getString("address_line2"));
-
+                    jTextArea1.setText(rs.getString("remark"));
+                    
                     CustomerID = rs.getString("mobile");
                     enableUpdateField(true);
-
+                    
                 } else {
                     JOptionPane.showMessageDialog(this, "Something Wrong Please Contact Your Developer", "Error Message", JOptionPane.ERROR_MESSAGE);
                 }
-
+                
             } catch (SQLException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -711,15 +725,15 @@ public class CustomerManagement extends javax.swing.JFrame {
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         // Key Relesed Search by NIC
         String NIC = jTextField3.getText();
-
+        
         jTextField1.setText("");
         jTextField2.setText("");
-
+        
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE `customer`.`nic` LIKE '%" + NIC + "%' ");
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
-
+            
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("Name"));
@@ -730,9 +744,9 @@ public class CustomerManagement extends javax.swing.JFrame {
                 v.add(rs.getString("nic"));
                 v.add(rs.getString("location_name"));
                 v.add(rs.getString("register_date"));
-
+                
                 dtm.addRow(v);
-
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -742,15 +756,15 @@ public class CustomerManagement extends javax.swing.JFrame {
     private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
         // Key released Search by Name
         String Name = jTextField2.getText();
-
+        
         jTextField1.setText("");
         jTextField3.setText("");
-
+        
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE `customer`.`Name` LIKE '%" + Name + "%' ");
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
-
+            
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("Name"));
@@ -762,7 +776,7 @@ public class CustomerManagement extends javax.swing.JFrame {
                 v.add(rs.getString("location_name"));
                 v.add(rs.getString("register_date"));
                 dtm.addRow(v);
-
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -778,16 +792,17 @@ public class CustomerManagement extends javax.swing.JFrame {
         String address1 = updateAddressField.getText();
         String address2 = updateAddress2Field.getText();
         String mobile = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 2));
-
+        String remarks = jTextArea1.getText();
+        
         if (mobile2.equals("null")) {
             mobile2 = "";
         }
         if (tele.equals("null")) {
             tele = "";
         }
-
+        
         try {
-            MySQL.execute("UPDATE `customer` SET `Name` = '" + Name + "', `mobile2` = '" + mobile2 + "' , `telephone_land` = '" + tele + "', `address_line1` = '" + address1 + "', `address_line2` = '" + address2 + "' WHERE `mobile` = '" + mobile + "' ");
+            MySQL.execute("UPDATE `customer` SET `Name` = '" + Name + "', `mobile2` = '" + mobile2 + "' , `telephone_land` = '" + tele + "', `address_line1` = '" + address1 + "', `address_line2` = '" + address2 + "', `remark` = '" + remarks + "' WHERE `mobile` = '" + mobile + "' ");
             JOptionPane.showMessageDialog(this, "Update Success", "Succcess", JOptionPane.WARNING_MESSAGE);
             Refresh();
         } catch (Exception e) {
@@ -822,7 +837,7 @@ public class CustomerManagement extends javax.swing.JFrame {
             pa.setVisible(true);
             this.dispose();
         }
-
+        
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -837,7 +852,7 @@ public class CustomerManagement extends javax.swing.JFrame {
             medicalCondition mc = new medicalCondition(mobile);
             mc.setVisible(true);
         }
-
+        
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -886,12 +901,14 @@ public class CustomerManagement extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
