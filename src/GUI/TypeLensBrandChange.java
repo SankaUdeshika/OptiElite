@@ -15,38 +15,37 @@ import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
-import model.UserDetails;
 
 /**
  *
  * @author sanka
  */
-public class TypeLensChange extends javax.swing.JFrame {
+public class TypeLensBrandChange extends javax.swing.JFrame {
 
     /**
-     * Creates new form TypeLensChange
+     * Creates new form TypeLensBrandChange
      */
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    OrderMaking parentObject ;
+    OrderMaking parentObject;
 
-    public TypeLensChange(OrderMaking object) {
+    public TypeLensBrandChange(OrderMaking object) {
         initComponents();
-        LoadLens();
+        LoadLensBrand();
         this.parentObject = object;
     }
 
-    public void LoadLens() {
+    public void LoadLensBrand() {
         try {
 //            aniwaren Login wenna wenawa
-            ResultSet rs = MySQL.execute("SELECT * FROM `lens_type` ");
+            ResultSet rs = MySQL.execute("SELECT * FROM `lens_brand` ");
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
 
             while (rs.next()) {
 
                 Vector v = new Vector();
-                v.add(rs.getString("l_type_id"));
-                v.add(rs.getString("l_type"));
+                v.add(rs.getString("l_brand_id"));
+                v.add(rs.getString("l_brand"));
                 dtm.addRow(v);
             }
 
@@ -93,7 +92,7 @@ public class TypeLensChange extends javax.swing.JFrame {
                 {null, null}
             },
             new String [] {
-                "Lens Type ID", "Lens Type"
+                "Lens Brand ID", "Lens Brand"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -105,13 +104,9 @@ public class TypeLensChange extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-        }
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Emoji", 1, 36)); // NOI18N
-        jLabel2.setText("Lens Type");
+        jLabel2.setText("Lens Brand");
 
         jLabel3.setText("Lens Type");
 
@@ -141,17 +136,21 @@ public class TypeLensChange extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10))
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                            .addComponent(jSeparator1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -169,7 +168,7 @@ public class TypeLensChange extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
@@ -186,41 +185,40 @@ public class TypeLensChange extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Lens Type Add
-        String lensType = jTextField1.getText();
+        // Lens Brand Add
+        String LensBrand = jTextField1.getText();
 
-        if (lensType.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please Enter a lens Type", "Error", JOptionPane.ERROR_MESSAGE);
+        if (LensBrand.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Enter a lens Brand", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                ResultSet rs = MySQL.execute("SELECT * FROM `lens_type` WHERE `l_type` = '" + lensType + "' ");
+                ResultSet rs = MySQL.execute("SELECT * FROM `lens_brand` WHERE `l_brand` = '" + LensBrand + "' ");
                 if (!rs.next()) {
-                    MySQL.execute("INSERT INTO `lens_type` (`l_type`) VALUES ('" + lensType + "') ");
-                    JOptionPane.showMessageDialog(this, "Lens Added", "Success", JOptionPane.OK_OPTION);
-                    LoadLens();
+                    MySQL.execute("INSERT INTO `lens_brand` (`l_brand`) VALUES ('" + LensBrand + "') ");
+                    JOptionPane.showMessageDialog(this, "Lens Brand Added", "Success", JOptionPane.OK_OPTION);
+                    LoadLensBrand();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // Lens Delete
         int row = jTable1.getSelectedRow();
         if (row == -1) {
-            JOptionPane.showMessageDialog(this, "please Select a Lens ROw In Table", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "please Select a Lens Brand Row In Table", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             String lensID = String.valueOf(jTable1.getValueAt(row, 0));
             try {
-                ResultSet rs = MySQL.execute("SELECT * FROM `invoice_lens_type` WHERE `lens_type_l_type_id` = '" + lensID + "' ");
+                ResultSet rs = MySQL.execute("SELECT * FROM `invoice_lens_brand` WHERE `lens_brand_l_brand_id` = '" + lensID + "' ");
                 if (rs.next()) {
-                    JOptionPane.showMessageDialog(this, "Cant't Delete this Lens Type. Contact Developer", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Cant't Delete this Lens Brand. Contact Developer", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    MySQL.execute("DELETE FROM `lens_type` WHERE `l_type_id` = '" + lensID + "' ");
+                    MySQL.execute("DELETE FROM `lens_brand` WHERE `l_brand_id` = '" + lensID + "' ");
                     JOptionPane.showMessageDialog(this, "Delete Success", "Success", JOptionPane.OK_OPTION);
-                    LoadLens();
+                    LoadLensBrand();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -228,12 +226,11 @@ public class TypeLensChange extends javax.swing.JFrame {
             }
 
         }
-
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //Close
-        parentObject.LoadLensesType();
+        parentObject.LoadLensBrand();
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -254,19 +251,20 @@ public class TypeLensChange extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TypeLensChange.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TypeLensBrandChange.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TypeLensChange.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TypeLensBrandChange.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TypeLensChange.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TypeLensBrandChange.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TypeLensChange.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TypeLensBrandChange.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+               
             }
         });
     }
