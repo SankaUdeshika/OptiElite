@@ -506,7 +506,6 @@
                                                       <Component id="jComboBox5" pref="160" max="32767" attributes="0"/>
                                                       <Component id="jButton12" max="32767" attributes="0"/>
                                                   </Group>
-                                                  <EmptySpace max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>

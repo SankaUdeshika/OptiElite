@@ -3,6 +3,7 @@ package gui;
 import GUI.TypeLensBrandChange;
 import GUI.TypeLensChange;
 import GUI.TypeLensCortinChange;
+import GUI.TypeLensDesignChange;
 import model.Reports;
 import model.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
@@ -1970,6 +1971,8 @@ public class OrderMaking extends javax.swing.JFrame {
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
+        TypeLensDesignChange typeLensDesignChange = new TypeLensDesignChange(this);
+        typeLensDesignChange.setVisible(true);
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
