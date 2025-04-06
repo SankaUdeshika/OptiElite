@@ -4,6 +4,7 @@ import GUI.TypeLensBrandChange;
 import GUI.TypeLensChange;
 import GUI.TypeLensCortinChange;
 import GUI.TypeLensDesignChange;
+import GUI.TypeLensTintChange;
 import model.Reports;
 import model.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
@@ -1977,6 +1978,8 @@ public class OrderMaking extends javax.swing.JFrame {
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
+        TypeLensTintChange ltt = new TypeLensTintChange(this);
+        ltt.setVisible(true);
     }//GEN-LAST:event_jButton12ActionPerformed
     /**
      * @param args the command line arguments
