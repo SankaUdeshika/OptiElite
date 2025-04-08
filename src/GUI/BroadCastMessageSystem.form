@@ -535,7 +535,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="110" y="350" width="680" height="-1"/>
+                      <AbsoluteConstraints x="110" y="350" width="410" height="110"/>
                     </Constraint>
                   </Constraints>
 
@@ -549,6 +549,19 @@
                     </Component>
                   </SubComponents>
                 </Container>
+                <Component class="javax.swing.JToggleButton" name="jToggleButton1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Choose Image"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton1ActionPerformed"/>
+                  </Events>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                      <AbsoluteConstraints x="560" y="350" width="330" height="110"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
               </SubComponents>
             </Container>
           </SubComponents>

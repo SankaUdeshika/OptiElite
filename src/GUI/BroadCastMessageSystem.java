@@ -4,6 +4,7 @@ import model.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.AWTException;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -13,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,10 +23,14 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
+import java.awt.datatransfer.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 public class BroadCastMessageSystem extends javax.swing.JFrame {
 
@@ -40,6 +46,31 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         LoadBoradCastUserTabel("Everyone");
         operater();
         time();
+    }
+
+    // Helper class to make the image transferable
+    static class ImageSelection implements Transferable {
+
+        private final Image image;
+
+        public ImageSelection(Image image) {
+            this.image = image;
+        }
+
+        public DataFlavor[] getTransferDataFlavors() {
+            return new DataFlavor[]{DataFlavor.imageFlavor};
+        }
+
+        public boolean isDataFlavorSupported(DataFlavor flavor) {
+            return DataFlavor.imageFlavor.equals(flavor);
+        }
+
+        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
+            if (!DataFlavor.imageFlavor.equals(flavor)) {
+                throw new UnsupportedFlavorException(flavor);
+            }
+            return image;
+        }
     }
 
     private void operater() {
@@ -68,6 +99,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
 
 //        Coppy to text board
         StringSelection stringSelection = new StringSelection(applicationNAme);
+
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
 
@@ -192,6 +224,122 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             StringSelection stringSelectionMessage = new StringSelection(Message);
             Clipboard clipboardMessage = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboardMessage.setContents(stringSelectionMessage, null);
+//            past Message
+            r1.keyPress(KeyEvent.VK_CONTROL);
+            r1.keyPress(KeyEvent.VK_V);
+            r1.keyRelease(KeyEvent.VK_CONTROL);
+            r1.keyRelease(KeyEvent.VK_V);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //            enter
+            r1.keyPress(KeyEvent.VK_ENTER);
+            r1.keyRelease(KeyEvent.VK_ENTER);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } catch (AWTException ex) {
+            Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void SendImagesProcess(String PhoneNumber, BufferedImage image) {
+        try {
+            String SubsTringNumber = PhoneNumber.substring(1);
+            StringSelection stringSelection = new StringSelection(SubsTringNumber);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+
+            Robot r1 = new Robot();
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+//            Click New Chat
+            r1.keyPress(KeyEvent.VK_CONTROL);
+            r1.keyPress(KeyEvent.VK_N);
+
+            r1.keyRelease(KeyEvent.VK_CONTROL);
+            r1.keyRelease(KeyEvent.VK_N);
+
+//            Clear currunt text
+            r1.keyPress(KeyEvent.VK_CONTROL);
+            r1.keyPress(KeyEvent.VK_A);
+            r1.keyRelease(KeyEvent.VK_CONTROL);
+            r1.keyRelease(KeyEvent.VK_A);
+            r1.keyPress(KeyEvent.VK_BACK_SPACE);
+
+            Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+            int HalfWidthSize = screensize.width / 3;
+            int HalfHeightSize = screensize.height / 3;
+
+            r1.mouseMove(HalfWidthSize, HalfHeightSize);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+//            Past number
+            r1.keyPress(KeyEvent.VK_CONTROL);
+            r1.keyPress(KeyEvent.VK_V);
+            r1.keyRelease(KeyEvent.VK_CONTROL);
+            r1.keyRelease(KeyEvent.VK_V);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //            click Mouse Button
+            r1.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+            r1.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //            move the cursor into send button
+            Dimension screensize1 = Toolkit.getDefaultToolkit().getScreenSize();
+            int HalfWidthSize1 = screensize1.width / 3;
+            int HalfHeightSize2 = screensize1.height / 3 - 48; // move the Mouse Cursor into Chat list
+            r1.mouseMove(HalfWidthSize1, HalfHeightSize2);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+//            Cick the Selected Chat Box
+            r1.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
+            r1.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            ImageSelection imgSel = new ImageSelection(image);
+            Clipboard clipboardMessage = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboardMessage.setContents(imgSel, null);
+
 //            past Message
             r1.keyPress(KeyEvent.VK_CONTROL);
             r1.keyPress(KeyEvent.VK_V);
@@ -462,6 +610,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -653,7 +802,15 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         jTextArea3.setRows(5);
         jScrollPane4.setViewportView(jTextArea3);
 
-        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 350, 680, -1));
+        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 350, 410, 110));
+
+        jToggleButton1.setText("Choose Image");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 350, 330, 110));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -823,6 +980,42 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        // TODO add your handling code here:
+        JFileChooser filechooser = new JFileChooser();
+        int result = filechooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = filechooser.getSelectedFile();
+            String path = selectedFile.getAbsolutePath();
+
+            try {
+
+                // Load the image from a file
+                BufferedImage image = ImageIO.read(new File(path));
+
+                JOptionPane.showMessageDialog(this, "Please Dont Move the Mouse or Keyboard Activity", "WARNING", JOptionPane.WARNING_MESSAGE);
+
+                OpenWhatsapp();
+
+                int TableRows = jTable1.getRowCount();
+                ArrayList customerList = new ArrayList();
+
+                for (int i = 0; i < TableRows; i++) {
+                    customerList.add(jTable1.getValueAt(i, 3));
+                    String PhoneNumber = (String) jTable1.getValueAt(i, 0);
+                    SendImagesProcess(PhoneNumber, image);
+                }
+                closeWhatsapp();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            System.out.println("no");
+        }
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -870,6 +1063,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea3;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel userNameField;
     // End of variables declaration//GEN-END:variables
