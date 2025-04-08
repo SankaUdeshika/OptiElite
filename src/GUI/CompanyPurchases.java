@@ -49,6 +49,8 @@ public class CompanyPurchases extends javax.swing.JFrame {
         jTextField2.setText("");
         jDateChooser3.setDate(null);
         jComboBox2.setSelectedIndex(0);
+        jDateChooser1.setDate(null);
+        jDateChooser3.setDate(null);
     }
 
     public void loadLocations() {
@@ -153,10 +155,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         esProfitLable = new javax.swing.JLabel();
-        acLable = new javax.swing.JLabel();
-        acCountLable = new javax.swing.JLabel();
-        advanceCountLable = new javax.swing.JLabel();
-        advanceLable = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
@@ -300,18 +298,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
         esProfitLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         esProfitLable.setText("Estimate Expenses");
 
-        acLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        acLable.setText("Actual Profit");
-
-        acCountLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        acCountLable.setText("..................................");
-
-        advanceCountLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        advanceCountLable.setText("..................................");
-
-        advanceLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        advanceLable.setText("Advance Total");
-
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane2.setViewportView(jTextArea1);
@@ -342,14 +328,10 @@ public class CompanyPurchases extends javax.swing.JFrame {
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel11))
-                                .addGap(172, 172, 172)
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                        .addGap(40, 40, 40)
-                                        .addComponent(jLabel8)))
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8))
                                 .addGap(38, 38, 38)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -393,20 +375,10 @@ public class CompanyPurchases extends javax.swing.JFrame {
                                             .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                .addComponent(advanceLable)
-                                .addGap(18, 18, 18)
-                                .addComponent(advanceCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                .addComponent(esProfitLable)
-                                .addGap(18, 18, 18)
-                                .addComponent(esProfitCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                .addComponent(acLable)
-                                .addGap(18, 18, 18)
-                                .addComponent(acCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                        .addComponent(esProfitLable)
+                        .addGap(18, 18, 18)
+                        .addComponent(esProfitCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32))
                     .addComponent(jSeparator6)
                     .addComponent(jSeparator5)
@@ -421,10 +393,10 @@ public class CompanyPurchases extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
-                    .addComponent(jLabel8)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel14)
-                        .addComponent(jLabel9)))
+                        .addComponent(jLabel9)
+                        .addComponent(jLabel8)))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextField1)
@@ -447,15 +419,7 @@ public class CompanyPurchases extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(esProfitLable)
-                                    .addComponent(esProfitCountLable))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(advanceCountLable)
-                                    .addComponent(advanceLable))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(acCountLable)
-                                    .addComponent(acLable)))
+                                    .addComponent(esProfitCountLable)))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGap(3, 3, 3)
                                 .addComponent(jLabel24)
@@ -702,100 +666,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // View Bill
-//        if (evt.getClickCount() == 2) {
-//            billBtn.setEnabled(true);
-//
-//            String status = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 5));
-//
-//            if (!status.equals("complete")) {
-//                completeBtn.setEnabled(true);
-//                String id = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
-//                invoiceID = Integer.parseInt(id);
-//            } else {
-//                completeBtn.setEnabled(false);
-//            }
-//
-//        }
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-        // Advance Search
-        actualProfit = 0;
-        ReportTotal = 0;
-        estimateExpenses = 0;
-
-        SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
-
-        String ToDate;
-        String FromDate;
-
-        try {
-            ToDate = simpleDateformat.format(jDateChooser1.getDate());
-            jLabel22.setText(ToDate);
-        } catch (NullPointerException ne) {
-            ToDate = "null";
-        }
-        try {
-            FromDate = simpleDateformat.format(jDateChooser2.getDate());
-            jLabel21.setText(ToDate);
-        } catch (NullPointerException ne) {
-            FromDate = "null";
-        }
-//
-        try {
-            String Queary = "SELECT * FROM `cashbook` "
-                    + "INNER JOIN `location` ON `location`.`id` = `cashbook`.`location_id` ";
-
-            //        Enter Parameter
-            if (!jTextField1.getText().isEmpty()) {
-                Queary += " WHERE `cashbookId` LIKE '%" + jTextField1.getText() + "%' ";
-            } else if (jComboBox1.getSelectedIndex() != 0) {
-                Queary += " WHERE `location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
-
-                if (ToDate != "null" && FromDate != "null") {
-                    Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
-                } else if (ToDate != "null") {
-                    Queary += " AND `invoice`.`date` >= '" + ToDate + "' ";
-                } else if (FromDate != "null") {
-                    Queary += " AND `invoice`.`date` <= '" + FromDate + "' ";
-                }
-            } else if (ToDate != "null" && FromDate != "null") {
-                Queary += " WHERE `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
-            } else if (ToDate != "null") {
-                Queary += " WHERE `invoice`.`date` >= '" + ToDate + "' ";
-            } else if (FromDate != "null") {
-                Queary += " WHERE `invoice`.`date` <= '" + FromDate + "' ";
-            }
-//
-            ResultSet rs = MySQL.execute(Queary);
-            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-            dtm.setRowCount(0);
-
-            while (rs.next()) {
-                Vector v = new Vector();
-                v.add(rs.getString("cashbookId"));
-                v.add(rs.getString("reason"));
-                v.add(rs.getString("date"));
-                v.add(rs.getString("amount"));
-                v.add(rs.getString("location_name"));
-
-                estimateExpenses += rs.getDouble("amount");
-
-                dtm.addRow(v);
-            }
-            esProfitCountLable.setText(String.valueOf(estimateExpenses));
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_searchBtnActionPerformed
-
     private void completeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeBtnActionPerformed
         // Add Payment
         String reason = jTextArea1.getText();
@@ -828,6 +698,100 @@ public class CompanyPurchases extends javax.swing.JFrame {
             Refresh();
         }
     }//GEN-LAST:event_completeBtnActionPerformed
+
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+        // Advance Search
+        actualProfit = 0;
+        ReportTotal = 0;
+        estimateExpenses = 0;
+
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
+
+        String ToDate;
+        String FromDate;
+
+        try {
+            ToDate = simpleDateformat.format(jDateChooser1.getDate());
+            jLabel22.setText(ToDate);
+        } catch (NullPointerException ne) {
+            ToDate = "null";
+        }
+        try {
+            FromDate = simpleDateformat.format(jDateChooser2.getDate());
+            jLabel21.setText(ToDate);
+        } catch (NullPointerException ne) {
+            FromDate = "null";
+        }
+        //
+        try {
+            String Queary = "SELECT * FROM `cashbook` "
+                    + "INNER JOIN `location` ON `location`.`id` = `cashbook`.`location_id` ";
+
+            //        Enter Parameter
+            if (!jTextField1.getText().isEmpty()) {
+                Queary += " WHERE `cashbookId` LIKE '%" + jTextField1.getText() + "%' ";
+            } else if (jComboBox1.getSelectedIndex() != 0) {
+                Queary += " WHERE `location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
+
+                if (ToDate != "null" && FromDate != "null") {
+                    Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
+                } else if (ToDate != "null") {
+                    Queary += " AND `date` >= '" + ToDate + "' ";
+                } else if (FromDate != "null") {
+                    Queary += " AND `date` <= '" + FromDate + "' ";
+                }
+            } else if (ToDate != "null" && FromDate != "null") {
+                Queary += " WHERE `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
+            } else if (ToDate != "null") {
+                Queary += " WHERE `date` >= '" + ToDate + "' ";
+            } else if (FromDate != "null") {
+                Queary += " WHERE `date` <= '" + FromDate + "' ";
+            }
+            //
+            ResultSet rs = MySQL.execute(Queary);
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("cashbookId"));
+                v.add(rs.getString("reason"));
+                v.add(rs.getString("date"));
+                v.add(rs.getString("amount"));
+                v.add(rs.getString("location_name"));
+
+                estimateExpenses += rs.getDouble("amount");
+
+                dtm.addRow(v);
+            }
+            esProfitCountLable.setText(String.valueOf(estimateExpenses));
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_searchBtnActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // View Bill
+        //        if (evt.getClickCount() == 2) {
+        //            billBtn.setEnabled(true);
+        //
+        //            String status = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 5));
+        //
+        //            if (!status.equals("complete")) {
+        //                completeBtn.setEnabled(true);
+        //                String id = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
+        //                invoiceID = Integer.parseInt(id);
+        //            } else {
+        //                completeBtn.setEnabled(false);
+        //            }
+        //
+        //        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -865,10 +829,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel acCountLable;
-    private javax.swing.JLabel acLable;
-    private javax.swing.JLabel advanceCountLable;
-    private javax.swing.JLabel advanceLable;
     private javax.swing.JButton completeBtn;
     private javax.swing.JLabel dateField;
     private javax.swing.JLabel esProfitCountLable;
