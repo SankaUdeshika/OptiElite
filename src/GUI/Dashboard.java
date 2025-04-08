@@ -95,6 +95,7 @@ public class Dashboard extends javax.swing.JFrame {
         accessoriesBtn = new javax.swing.JButton();
         stockBtn = new javax.swing.JButton();
         lensOrderBtn = new javax.swing.JToggleButton();
+        jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -208,6 +209,14 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
         jPanel11.add(lensOrderBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 240, 210, 70));
+
+        jButton2.setText("Company Purchases");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel11.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 320, 210, 60));
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -474,6 +483,10 @@ public class Dashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -495,6 +508,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel dateField;
     private javax.swing.JButton exitBtn;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

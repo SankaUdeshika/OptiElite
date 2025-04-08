@@ -1,84 +1,54 @@
-package gui;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package GUI;
 
-//import GUI.DIALOG.CompletePayment;
-import GUI.CompletePayments;
-import model.Reports;
-import model.UserDetails;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import gui.Dashboard;
 import static gui.Login.logger;
+import gui.OrderMaking;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
-import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
 
-public class OrderManagement extends javax.swing.JFrame {
+/**
+ *
+ * @author sanka
+ */
+public class CompanyPurchases extends javax.swing.JFrame {
 
-    int actualProfit = 0;
-    int estimateProfit = 0;
-    int advanceTotal = 0;
-    double ReportTotal = 0;
+    /**
+     * Creates new form CompanyPurchases
+     */
+    double estimateExpenses;
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
-    public OrderManagement() {
+    double actualProfit;
+    double ReportTotal;
+
+    public CompanyPurchases() {
         initComponents();
         setSize(screen.width, screen.height);
-
-        operater();
-        time();
         Refresh();
-    }
 
-    private void operater() {
-        String name = UserDetails.UserName;
-        userNameField.setText(name);
-    }
-
-    private void time() {
-        final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
-        final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
-        ActionListener timerListener = (ActionEvent e) -> {
-            Date date = new Date();
-            String time = timeFormat.format(date);
-            String day = dateFormat.format(date);
-            timeField.setText(time);
-            dateField.setText(day);
-        };
-        Timer timer = new Timer(1000, timerListener);
-        timer.setInitialDelay(0);
-        timer.start();
     }
 
     public void Refresh() {
-        LoadOrderTable();
         loadLocations();
-        jTextField1.setText("");
-        jTextField3.setText("");
-        jComboBox1.setSelectedIndex(0);
-        jDateChooser1.setDate(null);
-        jDateChooser2.setDate(null);
-        completeBtn.setEnabled(false);
-        billBtn.setEnabled(false);
-
+        LoadExpenses();
+        jTextArea1.setText("");
+        jTextField2.setText("");
+        jDateChooser3.setDate(null);
+        jComboBox2.setSelectedIndex(0);
     }
 
     public void loadLocations() {
@@ -93,6 +63,7 @@ public class OrderManagement extends javax.swing.JFrame {
 
             DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
             jComboBox1.setModel(dfm);
+            jComboBox2.setModel(dfm);
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -102,50 +73,28 @@ public class OrderManagement extends javax.swing.JFrame {
         }
     }
 
-    public void LoadOrderTable() {
+    public void LoadExpenses() {
         try {
-            ResultSet rs = MySQL.execute("SELECT DISTINCT "
-                    + "`invoice`.`invoice_id`,`name`,`nic`,`date`,`location_name`,`advance_payment`,`discount`,`total_price`,`status_name`, `payment_status`.`status_name`, `payment_status_id` "
-                    + "FROM `invoice` "
-                    + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile` "
-                    + "INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` "
-                    + "INNER JOIN `payment_status` ON `invoice`.`payment_status_id` = `payment_status`.`id` "
-                    + "ORDER BY `date` DESC "
-            );
+            ResultSet rs = MySQL.execute("SELECT * FROM `cashbook` "
+                    + "INNER JOIN `location` ON `location`.`id` = `cashbook`.`location_id` "
+                    + "ORDER BY `date` DESC ");
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
 
             while (rs.next()) {
                 Vector v = new Vector();
-                v.add(rs.getString("invoice_id"));
-                v.add(rs.getString("name"));
-                v.add(rs.getString("nic"));
+                v.add(rs.getString("cashbookId"));
+                v.add(rs.getString("reason"));
                 v.add(rs.getString("date"));
+                v.add(rs.getString("amount"));
                 v.add(rs.getString("location_name"));
-                v.add(rs.getString("status_name"));
-                v.add(rs.getDouble("discount"));
-                v.add(rs.getDouble("advance_payment"));
-                v.add(rs.getDouble("total_price"));
 
-                estimateProfit += rs.getDouble("total_price");
-
-                if (rs.getString("payment_status_id").equals("2")) {
-                    actualProfit += rs.getDouble("total_price");
-                    ReportTotal++;
-                } else {
-                    actualProfit += rs.getDouble("advance_payment");
-                    advanceTotal += rs.getDouble("advance_payment");
-
-                    ReportTotal++;
-                }
+                estimateExpenses += rs.getDouble("amount");
 
                 dtm.addRow(v);
             }
 
-            esProfitCountLable.setText("Rs." + String.valueOf(estimateProfit));
-            acCountLable.setText("Rs." + String.valueOf(actualProfit));
-            advanceCountLable.setText("Rs." + String.valueOf(advanceTotal));
-            jLabel10.setText("Rs." + String.valueOf(ReportTotal));
+            esProfitCountLable.setText("Rs." + String.valueOf(estimateExpenses));
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -159,6 +108,11 @@ public class OrderManagement extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -180,7 +134,6 @@ public class OrderManagement extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jTextField3 = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         searchBtn = new javax.swing.JButton();
         jSeparator6 = new javax.swing.JSeparator();
@@ -191,11 +144,8 @@ public class OrderManagement extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
         jLabel14 = new javax.swing.JLabel();
-        billBtn = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
-        jLabel15 = new javax.swing.JLabel();
         esProfitCountLable = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
@@ -207,7 +157,15 @@ public class OrderManagement extends javax.swing.JFrame {
         acCountLable = new javax.swing.JLabel();
         advanceCountLable = new javax.swing.JLabel();
         advanceLable = new javax.swing.JLabel();
-        fullReportBtn = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jDateChooser3 = new com.toedter.calendar.JDateChooser();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
         completeBtn = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
@@ -268,17 +226,17 @@ public class OrderManagement extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Inovice id", "Customer Name", "Customer NIC", "Date", "Location", "Status", "Discount", "Advancement ", "Total Price"
+                "Id", "Reason", "Date", "Amount", "Locaiton"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -291,22 +249,6 @@ public class OrderManagement extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
-            jTable1.getColumnModel().getColumn(5).setResizable(false);
-            jTable1.getColumnModel().getColumn(6).setResizable(false);
-            jTable1.getColumnModel().getColumn(8).setResizable(false);
-        }
-
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel13.setText("Order Table");
@@ -327,28 +269,15 @@ public class OrderManagement extends javax.swing.JFrame {
         jLabel16.setText("Quick Search");
 
         jLabel11.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel11.setText("Invoice ID");
+        jLabel11.setText("Expenses ID");
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel14.setText("To Date");
 
-        billBtn.setText("View Bill");
-        billBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                billBtnActionPerformed(evt);
-            }
-        });
-
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-
-        jLabel15.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel15.setText("Order Control");
 
         esProfitCountLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         esProfitCountLable.setText("..................................");
-
-        jLabel18.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel18.setText("Customer Name/mobile");
 
         jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel19.setText("Order Count");
@@ -369,7 +298,7 @@ public class OrderManagement extends javax.swing.JFrame {
         jLabel24.setText("Report Details");
 
         esProfitLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        esProfitLable.setText("Estimate Profit");
+        esProfitLable.setText("Estimate Expenses");
 
         acLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         acLable.setText("Actual Profit");
@@ -383,60 +312,43 @@ public class OrderManagement extends javax.swing.JFrame {
         advanceLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         advanceLable.setText("Advance Total");
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
+
+        jLabel1.setText("Amount");
+
+        jLabel2.setText("Reason");
+
+        jLabel3.setText("Date");
+
+        jLabel4.setText("Location");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator6, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel15)
-                                    .addComponent(billBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(210, 210, 210)
-                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel24)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addComponent(jLabel19)
-                                                .addGap(12, 12, 12)
-                                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addComponent(jLabel23)
-                                                .addGap(42, 42, 42)
-                                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addComponent(jLabel16))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11))
+                                .addGap(172, 172, 172)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(20, 20, 20)
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addComponent(jLabel11)
-                                        .addGap(69, 69, 69)
-                                        .addComponent(jLabel18)
-                                        .addGap(24, 24, 24)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                        .addGap(40, 40, 40)
                                         .addComponent(jLabel8)))
                                 .addGap(38, 38, 38)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -450,11 +362,38 @@ public class OrderManagement extends javax.swing.JFrame {
                                         .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel14)))
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(420, 420, 420)
-                                .addComponent(jLabel20)
-                                .addGap(25, 25, 25)
-                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(21, 21, 21)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextField2)
+                                            .addComponent(jDateChooser3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel24)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel19)
+                                            .addComponent(jLabel23)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                                .addComponent(jLabel20)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                                 .addComponent(advanceLable)
@@ -468,7 +407,10 @@ public class OrderManagement extends javax.swing.JFrame {
                                 .addComponent(acLable)
                                 .addGap(18, 18, 18)
                                 .addComponent(acCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(32, 32, 32)))
+                        .addGap(32, 32, 32))
+                    .addComponent(jSeparator6)
+                    .addComponent(jSeparator5)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(40, 40, 40))
         );
         jPanel6Layout.setVerticalGroup(
@@ -479,7 +421,6 @@ public class OrderManagement extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
-                    .addComponent(jLabel18)
                     .addComponent(jLabel8)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel14)
@@ -487,11 +428,10 @@ public class OrderManagement extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextField1)
-                    .addComponent(jTextField3)
                     .addComponent(jComboBox1)
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(searchBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(14, 14, 14)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
@@ -504,47 +444,60 @@ public class OrderManagement extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addGap(25, 25, 25)
-                                .addComponent(billBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(esProfitLable)
+                                    .addComponent(esProfitCountLable))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(advanceCountLable)
+                                    .addComponent(advanceLable))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(acCountLable)
+                                    .addComponent(acLable)))
                             .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(3, 3, 3)
                                 .addComponent(jLabel24)
-                                .addGap(15, 15, 15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel19)
-                                    .addComponent(jLabel10))
-                                .addGap(10, 10, 10)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel23)
-                                    .addComponent(jLabel22))))
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel20)
-                            .addComponent(jLabel21)))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jLabel22))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(jLabel19)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jLabel23))))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(100, 100, 100)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel21)
+                                    .addComponent(jLabel20))))
+                        .addContainerGap())
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(esProfitLable)
-                            .addComponent(esProfitCountLable))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(advanceCountLable)
-                            .addComponent(advanceLable))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(acCountLable)
-                            .addComponent(acLable))))
-                .addContainerGap(33, Short.MAX_VALUE))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jComboBox2))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jDateChooser3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane2)))))))
         );
 
-        fullReportBtn.setText("Finance Report");
-        fullReportBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fullReportBtnActionPerformed(evt);
-            }
-        });
-
-        completeBtn.setText("Complete Payment");
+        completeBtn.setText("Add Expenses");
         completeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 completeBtnActionPerformed(evt);
@@ -557,13 +510,6 @@ public class OrderManagement extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jLabel6))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addComponent(fullReportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -574,12 +520,14 @@ public class OrderManagement extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(jLabel7))
-                            .addComponent(completeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel6)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel4Layout.createSequentialGroup()
+                                    .addGap(14, 14, 14)
+                                    .addComponent(jLabel7))
+                                .addComponent(completeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(37, 37, 37)
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(40, 40, 40))
@@ -600,9 +548,7 @@ public class OrderManagement extends javax.swing.JFrame {
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(fullReportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(73, 73, 73)
                         .addComponent(completeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -610,7 +556,7 @@ public class OrderManagement extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
@@ -668,7 +614,7 @@ public class OrderManagement extends javax.swing.JFrame {
         );
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        jLabel5.setText("Order Management");
+        jLabel5.setText(" Company Purchases");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -677,7 +623,7 @@ public class OrderManagement extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(172, 172, 172)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 790, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -719,36 +665,67 @@ public class OrderManagement extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1549, Short.MAX_VALUE)
+            .addGap(0, 1581, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 823, Short.MAX_VALUE)
+            .addGap(0, 809, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void previousBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_previousBtnActionPerformed
 
     private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
         // TODO add your handling code here:
         Dashboard d = new Dashboard();
         d.setVisible(true);
         this.dispose();
-
     }//GEN-LAST:event_homeBtnActionPerformed
+
+    private void previousBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_previousBtnActionPerformed
+
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        Refresh();
+    }//GEN-LAST:event_refreshBtnActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // Make Order
+        OrderMaking orderMaking = new OrderMaking();
+        orderMaking.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // View Bill
+//        if (evt.getClickCount() == 2) {
+//            billBtn.setEnabled(true);
+//
+//            String status = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 5));
+//
+//            if (!status.equals("complete")) {
+//                completeBtn.setEnabled(true);
+//                String id = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
+//                invoiceID = Integer.parseInt(id);
+//            } else {
+//                completeBtn.setEnabled(false);
+//            }
+//
+//        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         // Advance Search
         actualProfit = 0;
         ReportTotal = 0;
+        estimateExpenses = 0;
+
         SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
 
         String ToDate;
@@ -760,66 +737,22 @@ public class OrderManagement extends javax.swing.JFrame {
         } catch (NullPointerException ne) {
             ToDate = "null";
         }
-
         try {
             FromDate = simpleDateformat.format(jDateChooser2.getDate());
             jLabel21.setText(ToDate);
         } catch (NullPointerException ne) {
             FromDate = "null";
         }
-
+//
         try {
-            String Queary = "SELECT * FROM `invoice` "
-                    + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile`   "
-                    + "INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` "
-                    + "INNER JOIN `payment_status` ON `invoice`.`payment_status_id` = `payment_status`.`id` ";
+            String Queary = "SELECT * FROM `cashbook` "
+                    + "INNER JOIN `location` ON `location`.`id` = `cashbook`.`location_id` ";
 
-//        Enter Parameter
+            //        Enter Parameter
             if (!jTextField1.getText().isEmpty()) {
-                Queary += " WHERE `invoice`.`invoice_id` = '" + jTextField1.getText() + "' ";
-
-                if (!jTextField3.getText().isEmpty()) {
-                    ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + jTextField3.getText() + "' OR `name` = '" + jTextField3.getText() + "'");
-                    if (rs.next()) {
-                        String customer_id = rs.getString("mobile");
-
-                        Queary += " AND `invoice`.`customer_mobile` = '" + customer_id + "' ";
-                    }
-                }
-
-                if (jComboBox1.getSelectedIndex() != 0) {
-                    Queary += " AND `customer`.`location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
-                }
-
-                if (ToDate != "null" && FromDate != "null") {
-                    Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
-                } else if (ToDate != "null") {
-                    Queary += " AND `invoice`.`date` >= '" + ToDate + "' ";
-                } else if (FromDate != "null") {
-                    Queary += " AND `invoice`.`date` <= '" + FromDate + "' ";
-                }
-
-            } else if (!jTextField3.getText().isEmpty()) {
-                if (!jTextField3.getText().isEmpty()) {
-                    ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` LIKE '%" + jTextField3.getText() + "%' OR `name` LIKE '%" + jTextField3.getText() + "%' ");
-                    if (rs.next()) {
-                        String customer_id = rs.getString("mobile");
-                        Queary += " WHERE `invoice`.`customer_mobile` = '" + customer_id + "' ";
-                    }
-                    if (jComboBox1.getSelectedIndex() != 0) {
-                        Queary += " AND `customer`.`location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
-                    }
-
-                    if (ToDate != "null" && FromDate != "null") {
-                        Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
-                    } else if (ToDate != "null") {
-                        Queary += " AND `invoice`.`date` >= '" + ToDate + "' ";
-                    } else if (FromDate != "null") {
-                        Queary += " AND `invoice`.`date` <= '" + FromDate + "' ";
-                    }
-                }
+                Queary += " WHERE `cashbookId` LIKE '%" + jTextField1.getText() + "%' ";
             } else if (jComboBox1.getSelectedIndex() != 0) {
-                Queary += " WHERE `customer`.`location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
+                Queary += " WHERE `location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
 
                 if (ToDate != "null" && FromDate != "null") {
                     Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
@@ -835,41 +768,24 @@ public class OrderManagement extends javax.swing.JFrame {
             } else if (FromDate != "null") {
                 Queary += " WHERE `invoice`.`date` <= '" + FromDate + "' ";
             }
-
+//
             ResultSet rs = MySQL.execute(Queary);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
 
             while (rs.next()) {
                 Vector v = new Vector();
-                v.add(rs.getString("invoice_id"));
-                v.add(rs.getString("name"));
-                v.add(rs.getString("nic"));
+                v.add(rs.getString("cashbookId"));
+                v.add(rs.getString("reason"));
                 v.add(rs.getString("date"));
+                v.add(rs.getString("amount"));
                 v.add(rs.getString("location_name"));
-                v.add(rs.getString("status_name"));
-                v.add(rs.getDouble("discount"));
-                v.add(rs.getDouble("advance_payment"));
-                v.add(rs.getDouble("total_price"));
 
-                estimateProfit += rs.getDouble("total_price");
-
-                if (rs.getString("payment_status_id").equals("2")) {
-                    actualProfit += rs.getDouble("total_price");
-                    ReportTotal++;
-                } else {
-                    actualProfit += rs.getDouble("advance_payment");
-                    advanceTotal += rs.getDouble("advance_payment");
-
-                    ReportTotal++;
-                }
+                estimateExpenses += rs.getDouble("amount");
 
                 dtm.addRow(v);
             }
-            esProfitCountLable.setText(String.valueOf(estimateProfit));
-            acCountLable.setText(String.valueOf(actualProfit));
-            advanceCountLable.setText(String.valueOf(advanceTotal));
-            jLabel10.setText(String.valueOf(ReportTotal));
+            esProfitCountLable.setText(String.valueOf(estimateExpenses));
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -880,195 +796,70 @@ public class OrderManagement extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchBtnActionPerformed
 
-    private void billBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_billBtnActionPerformed
-        // View Report
-        int selectedRow = jTable1.getSelectedRow();
-        String Ivoice_id = (String) jTable1.getValueAt(selectedRow, 0);
+    private void completeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeBtnActionPerformed
+        // Add Payment
+        String reason = jTextArea1.getText();
+        String amount = jTextField2.getText();
+        String date = null;
         try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `invoice_item` INNER JOIN `invoice` ON `invoice`.`invoice_id` = `invoice_item`.`invoice_id`  WHERE `invoice`.`invoice_id` = '" + Ivoice_id + "'");
-            int count = 0;
-            boolean lens = false;
-            while (rs.next()) {
-                count = count + 1;
-            }
-            if (count == 0) {
-                lens = true;
-            }
-
-            if (count == 1 || lens) {
-                Reports.OrderPurchaceInvoice(Ivoice_id);
-            } else {
-                Reports.WithoutPrescriptionOrderPurchaceInvoice(Ivoice_id);
-            }
+            Date getDate = jDateChooser3.getDate();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            date = simpleDateFormat.format(getDate);
         } catch (Exception e) {
+            System.out.println("Exception");
             e.printStackTrace();
         }
-    }//GEN-LAST:event_billBtnActionPerformed
 
-    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
-        Refresh();
-    }//GEN-LAST:event_refreshBtnActionPerformed
+        int location = jComboBox2.getSelectedIndex();
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
-
-    private int invoiceID;
-
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // View Bill
-        if (evt.getClickCount() == 2) {
-            billBtn.setEnabled(true);
-
-            String status = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 5));
-
-            if (!status.equals("complete")) {
-                completeBtn.setEnabled(true);
-                String id = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
-                invoiceID = Integer.parseInt(id);
-            } else {
-                completeBtn.setEnabled(false);
-            }
-
+        if (reason.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "PLease Enter a Reason.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (amount.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "PLease Enter a Amount.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (!amount.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "PLease Enter a Valid Amount.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (date == null) {
+            JOptionPane.showMessageDialog(this, "PLease Enter a Date.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (jComboBox2.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "PLease Enter a Location.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            MySQL.execute("INSERT INTO `cashbook`  (`reason`,`date`,`amount`,`location_id`) VALUES ('" + reason + "','" + date + "','" + amount + "','" + location + "') ");
+            JOptionPane.showMessageDialog(this, "Expensess Added.", "Error", JOptionPane.OK_OPTION);
+            Refresh();
         }
-
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // Make Order
-        OrderMaking orderMaking = new OrderMaking();
-        orderMaking.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void completeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeBtnActionPerformed
-//        CompletePayment dialog = new GUI.DIALOG.CompletePayment(this, true, invoiceID);
-//        dialog.setVisible(true);
-//
-//        dialog.addWindowListener(new WindowAdapter() {
-//            @Override
-//            public void windowClosed(WindowEvent e) {
-//                Refresh();
-//            }
-//        });
-
-        CompletePayments completePayments = new CompletePayments(this, rootPaneCheckingEnabled, invoiceID);
-        completePayments.setVisible(true);
-        completePayments.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                Refresh();
-            }
-        });
-
-
     }//GEN-LAST:event_completeBtnActionPerformed
-
-    private void fullReportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullReportBtnActionPerformed
-        try {
-            String ToDate;
-            String FromDate;
-            SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
-
-            try {
-                ToDate = simpleDateformat.format(jDateChooser1.getDate());
-                jLabel22.setText(ToDate);
-            } catch (NullPointerException ne) {
-                ToDate = "null";
-            }
-
-            try {
-                FromDate = simpleDateformat.format(jDateChooser2.getDate());
-                jLabel21.setText(ToDate);
-            } catch (NullPointerException ne) {
-                FromDate = "null";
-            }
-
-            String Queary = "SELECT "
-                    + "invoice.invoice_id, "
-                    + "invoice.payment_status_id, "
-                    + "invoice.total_price, "
-                    + "invoice.advance_payment, "
-                    + "invoice.subtotal, "
-                    + "invoice.lenstotal, "
-                    + "stock.cost, "
-                    + "stock.saling_price, "
-                    + "invoice_item.qty, "
-                    + "invoice.date FROM invoice "
-                    + "INNER JOIN invoice_item ON invoice_item.invoice_id = invoice.invoice_id "
-                    + "INNER JOIN stock ON invoice_item.stock_id = stock.id ";
-
-            if (ToDate != "null" && FromDate != "null") {
-                Queary += "WHERE invoice.date BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
-            } else if (ToDate != "null") {
-                Queary += " WHERE invoice.date >= '" + ToDate + "' ";
-            } else if (FromDate != "null") {
-                Queary += " WHERE invoice.date <= '" + FromDate + "' ";
-            }
-
-            ResultSet rs = MySQL.execute(Queary);
-
-            DecimalFormat df = new DecimalFormat("0.00");
-
-            double totalIncome = 0;
-            double estimatePayment = 0;
-            double advancement = 0;
-            double completePayment = 0;
-            double costOfGoods = 0;
-            double profit = 0;
-
-            while (rs.next()) {
-                double ep = Double.parseDouble(rs.getString("subTotal"));
-                estimatePayment = +ep;
-                costOfGoods = +rs.getInt("cost");
-                if (rs.getInt("payment_status_id") == 1) {//not paid
-                    advancement = +rs.getInt("advance_payment");
-                } else {
-                    completePayment = +Double.parseDouble(rs.getString("subTotal"));
-                }
-
-            }
-
-            totalIncome = advancement + completePayment;
-            profit = totalIncome - costOfGoods;
-
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("from_date", String.valueOf(FromDate));
-            parameters.put("to_date", String.valueOf(ToDate));
-
-            parameters.put("total_income", String.valueOf(df.format(totalIncome)));
-
-            parameters.put("estimate_payment", String.valueOf(df.format(estimatePayment)));
-            parameters.put("advancement", String.valueOf(df.format(advancement)));
-            parameters.put("complete_payment", String.valueOf(df.format(completePayment)));
-            parameters.put("cost_of_goods", String.valueOf(df.format(costOfGoods)));
-            parameters.put("profit", String.valueOf(df.format(profit)));
-
-            try {
-                JREmptyDataSource eds = new JREmptyDataSource();
-
-                JasperPrint jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("/reports/EagleEyeIncome.jasper"), parameters, eds);
-                JasperViewer.viewReport(jasperPrint, false);
-            } catch (Exception e) {
-                logger.log(Level.WARNING, OrderManagement.class.getName(), e);
-
-            }
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }//GEN-LAST:event_fullReportBtnActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        FlatMacDarkLaf.setup();
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CompanyPurchases.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CompanyPurchases.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CompanyPurchases.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(CompanyPurchases.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OrderManagement().setVisible(true);
+                new CompanyPurchases().setVisible(true);
             }
         });
     }
@@ -1078,26 +869,26 @@ public class OrderManagement extends javax.swing.JFrame {
     private javax.swing.JLabel acLable;
     private javax.swing.JLabel advanceCountLable;
     private javax.swing.JLabel advanceLable;
-    private javax.swing.JButton billBtn;
     private javax.swing.JButton completeBtn;
     private javax.swing.JLabel dateField;
     private javax.swing.JLabel esProfitCountLable;
     private javax.swing.JLabel esProfitLable;
-    private javax.swing.JButton fullReportBtn;
     private javax.swing.JButton homeBtn;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.toedter.calendar.JDateChooser jDateChooser3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -1105,6 +896,8 @@ public class OrderManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1116,6 +909,7 @@ public class OrderManagement extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -1123,13 +917,13 @@ public class OrderManagement extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JButton previousBtn;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton searchBtn;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel userNameField;
     // End of variables declaration//GEN-END:variables
-
 }
