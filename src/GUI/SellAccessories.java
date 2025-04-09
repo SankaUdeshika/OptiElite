@@ -15,9 +15,9 @@ import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-import model.MySQL;
-import model.Reports;
-import model.UserDetails;
+import models.MySQL;
+import models.Reports;
+import models.UserDetails;
 
 public class SellAccessories extends javax.swing.JFrame {
 

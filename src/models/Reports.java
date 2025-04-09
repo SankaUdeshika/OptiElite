@@ -1,10 +1,10 @@
-package model;
+package models;
 
 //import gui.StockManagement;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.MySQL;
+import models.MySQL;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;

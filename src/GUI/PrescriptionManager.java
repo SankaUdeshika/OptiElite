@@ -11,9 +11,9 @@ import java.util.Date;
 import java.util.Vector;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-import model.MySQL;
-import model.Reports;
-import model.UserDetails;
+import models.MySQL;
+import models.Reports;
+import models.UserDetails;
 
 public class PrescriptionManager extends javax.swing.JFrame {
 

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.MySQL;
+import models.MySQL;
 
 
 public class MobileAdding extends javax.swing.JFrame {

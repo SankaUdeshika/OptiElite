@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.MySQL;
+import models.MySQL;
 
 /**
  *

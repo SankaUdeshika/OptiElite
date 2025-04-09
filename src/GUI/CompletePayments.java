@@ -5,7 +5,7 @@
 package GUI;
 
 import java.sql.ResultSet;
-import model.MySQL;
+import models.MySQL;
 
 /**
  *

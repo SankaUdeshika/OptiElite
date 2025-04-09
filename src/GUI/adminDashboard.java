@@ -9,7 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.Timer;
-import model.UserDetails;
+import models.UserDetails;
 
 public class adminDashboard extends javax.swing.JFrame {
 

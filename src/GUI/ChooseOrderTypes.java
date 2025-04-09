@@ -11,7 +11,7 @@ import gui.PrescripitonAdding;
 import gui.lensOrder;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import model.MySQL;
+import models.MySQL;
 import java.sql.ResultSet;
 
 /**

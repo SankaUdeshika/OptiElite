@@ -1,15 +1,15 @@
 package gui;
 
 import GUI.medicalCondition;
-import MODEL.Route;
-import model.UserDetails;
+import models.Navs;
+import models.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import model.MySQL;
+import models.MySQL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -18,7 +18,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-import model.Reports;
+import models.Reports;
 
 public class CustomerManagement extends javax.swing.JFrame {
 
@@ -34,11 +34,13 @@ public class CustomerManagement extends javax.swing.JFrame {
         time();
         operater();
         CustomerLoadingTable();
-        if (Route.Route) {
-            jButton1.setVisible(true);
-        } else {
-            jButton1.setVisible(false);
-        }
+        
+//        if (Navs.isRoutee()) {
+//            jButton1.setVisible(true);
+//        } else {
+//            jButton1.setVisible(false);
+//        }
+
         previousBtn.setEnabled(false);
         enableUpdateField(false);
     }

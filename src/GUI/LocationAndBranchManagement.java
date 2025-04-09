@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.MySQL;
+import models.MySQL;
 
 
 public class LocationAndBranchManagement extends javax.swing.JFrame {

@@ -5,7 +5,7 @@
 package Resources;
 
 import javax.swing.table.DefaultTableModel;
-import model.MySQL;
+import models.MySQL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;

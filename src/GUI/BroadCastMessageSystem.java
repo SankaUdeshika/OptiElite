@@ -1,6 +1,6 @@
 package gui;
 
-import model.UserDetails;
+import models.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.AWTException;
 import java.awt.Dimension;
@@ -27,7 +27,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-import model.MySQL;
+import models.MySQL;
 import java.awt.datatransfer.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -804,7 +804,8 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
 
         jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 350, 410, 110));
 
-        jToggleButton1.setText("Choose Image");
+        jToggleButton1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jToggleButton1.setText("Send Image");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jToggleButton1ActionPerformed(evt);

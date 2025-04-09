@@ -1,7 +1,7 @@
 package gui;
 
 import GUI.medicalCondition;
-import MODEL.medicalTemporyData;
+import models.medicalTemporyData;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -18,8 +18,8 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import model.MySQL;
-import model.UserDetails;
+import models.MySQL;
+import models.UserDetails;
 
 public class CustomerRegister extends javax.swing.JFrame {
 

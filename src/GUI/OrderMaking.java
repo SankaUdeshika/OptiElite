@@ -5,8 +5,8 @@ import GUI.TypeLensChange;
 import GUI.TypeLensCortinChange;
 import GUI.TypeLensDesignChange;
 import GUI.TypeLensTintChange;
-import model.Reports;
-import model.UserDetails;
+import models.Reports;
+import models.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import static gui.Login.logger;
 import java.awt.Dimension;
@@ -25,7 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-import model.MySQL;
+import models.MySQL;
 
 public class OrderMaking extends javax.swing.JFrame {
 
@@ -149,7 +149,7 @@ public class OrderMaking extends javax.swing.JFrame {
     public void LoadStockProducts() {
         try {
 //            aniwaren Login wenna wenawa
-            ResultSet rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `location` ON `location`.`id` = `stock`.`location_id`  WHERE `category`.`id` =  '1'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "'  AND `qty` > 0 ");
+            ResultSet rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `location` ON `location`.`id` = `stock`.`location_id`  WHERE `category`.`id` =  '1' OR `category`.`id` =  '4'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "'  AND `qty` > 0 ");
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
 
@@ -160,6 +160,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 v.add(rs.getString("id"));
                 v.add(rs.getString("sub_category"));
                 v.add(rs.getString("saling_price"));
+                v.add(rs.getString("product.id"));
 
                 dtm.addRow(v);
             }
@@ -736,17 +737,17 @@ public class OrderMaking extends javax.swing.JFrame {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Brand", "Frame Id", "Frame Name", "Price"
+                "Brand", "Frame ID", "Frame Name", "Price", "product ID"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -760,9 +761,6 @@ public class OrderMaking extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(jTable3);
         if (jTable3.getColumnModel().getColumnCount() > 0) {
-            jTable3.getColumnModel().getColumn(0).setResizable(false);
-            jTable3.getColumnModel().getColumn(1).setResizable(false);
-            jTable3.getColumnModel().getColumn(2).setResizable(false);
             jTable3.getColumnModel().getColumn(3).setResizable(false);
         }
 
@@ -1101,8 +1099,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(jLabel21)
                                             .addComponent(jComboBox5, 0, 160, Short.MAX_VALUE)
-                                            .addComponent(jButton12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                            .addComponent(jButton12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(44, 44, 44))
         );
@@ -1914,6 +1911,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 v.add(rs.getString("id"));
                 v.add(rs.getString("sub_category"));
                 v.add(rs.getString("saling_price"));
+                v.add(rs.getString("product.id"));
 
                 dtm.addRow(v);
             }
@@ -1961,7 +1959,7 @@ public class OrderMaking extends javax.swing.JFrame {
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
         TypeLensBrandChange typeBrandChange = new TypeLensBrandChange(this);
-        typeBrandChange.setVisible(true); 
+        typeBrandChange.setVisible(true);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed

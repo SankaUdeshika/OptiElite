@@ -1,7 +1,7 @@
 package gui;
 
-import MODEL.Route;
-import model.UserDetails;
+import models.Navs;
+import models.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import static gui.Login.logger;
 import java.awt.Dimension;
@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import javax.swing.Timer;
-import model.MySQL;
+import models.MySQL;
 
 public class Dashboard extends javax.swing.JFrame {
 
@@ -22,6 +22,7 @@ public class Dashboard extends javax.swing.JFrame {
      * Creates new form Dashboard
      */
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    Navs GoObject;
 
     public Dashboard() {
         initComponents();
@@ -477,8 +478,8 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Route.Route = true;
-        CustomerManagement cm  = new CustomerManagement();
+        Navs.routee = true;
+        CustomerManagement cm = new CustomerManagement();
         cm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed

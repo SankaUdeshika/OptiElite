@@ -4,10 +4,10 @@
  */
 package GUI;
 
-import MODEL.medicalTemporyData;
+import models.medicalTemporyData;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
-import model.MySQL;
+import models.MySQL;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 

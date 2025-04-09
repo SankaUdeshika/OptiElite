@@ -1,6 +1,6 @@
 package gui;
 
-import model.UserDetails;
+import models.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import static gui.Login.logger;
 import java.awt.Dimension;
@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-import model.MySQL;
+import models.MySQL;
 
 public class BrandManagementFrame extends javax.swing.JFrame {
 

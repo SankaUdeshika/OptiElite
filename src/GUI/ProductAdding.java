@@ -1,12 +1,12 @@
 package gui;
 
-import model.UserDetails;
+import models.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import model.MySQL;
+import models.MySQL;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
@@ -216,6 +216,19 @@ public class ProductAdding extends javax.swing.JFrame {
             } else if (category == "Accessories") {
 //                Accessories Category
                 ResultSet rs = MySQL.execute("SELECT * FROM `sub_category` WHERE `category_id`  = '3'");
+                Vector v = new Vector();
+                v.add("Select Category");
+                SupplierMap.clear();
+                while (rs.next()) {
+                    v.add(String.valueOf(rs.getString("sub_category")));
+                    SubCategoryMap.put(rs.getString("sub_category"), rs.getInt("id"));
+
+                }
+                DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+                jComboBox2.setModel(dfm);
+            } else if (category == "SunGlass") {
+//                Accessories Category
+                ResultSet rs = MySQL.execute("SELECT * FROM `sub_category` WHERE `category_id`  = '4'");
                 Vector v = new Vector();
                 v.add("Select Category");
                 SupplierMap.clear();
@@ -696,6 +709,10 @@ public class ProductAdding extends javax.swing.JFrame {
             jTextField3.setText("");
             jTextField3.setEnabled(true);
             loadSubCategory("Accessories");
+        } else if (jComboBox5.getSelectedIndex() == 4) { // Accessories
+            jTextField3.setText("");
+            jTextField3.setEnabled(false);
+            loadSubCategory("SunGlass");
         } else if (jComboBox5.getSelectedIndex() == 0) { // Accessories
             jTextField3.setText("");
             jTextField3.setEnabled(false);

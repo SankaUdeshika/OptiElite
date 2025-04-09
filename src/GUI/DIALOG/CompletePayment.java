@@ -2,7 +2,7 @@ package GUI.DIALOG;
 
 import java.sql.ResultSet;
 import javax.swing.JDialog;
-import model.MySQL;
+import models.MySQL;
 
 /**
  * @author thida
