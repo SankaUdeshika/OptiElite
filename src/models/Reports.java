@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 
-
 public class Reports {
 
     public static void OrderPurchaceInvoice(String id) {
@@ -113,11 +112,14 @@ public class Reports {
 
             if (rs.next()) {
                 System.out.println(" product invoice id is " + reportmap.get("id"));
-                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/NewEagleEyeOrderReport.jasper"), reportmap, MySQL.getConnection());
+//                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/NewEagleEyeOrderReport.jasper"), reportmap, MySQL.getConnection());
+                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_invoice.jasper"), reportmap, MySQL.getConnection());
+
                 JasperViewer.viewReport(jasperPrint, false);
             } else {
                 System.out.println("lens invoice id is " + reportmap.get("id"));
-                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Blank_A4_Landscape_1.jasper"), reportmap, MySQL.getConnection());
+                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_invoice.jasper"), reportmap, MySQL.getConnection());
+//                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Blank_A4_Landscape_1.jasper"), reportmap, MySQL.getConnection());
                 JasperViewer.viewReport(jasperPrint, false);
             }
 
