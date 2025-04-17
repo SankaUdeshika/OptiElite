@@ -1,5 +1,6 @@
 package gui;
 
+import GUI.Printsouts;
 import GUI.TypeLensBrandChange;
 import GUI.TypeLensChange;
 import GUI.TypeLensCortinChange;
@@ -395,7 +396,9 @@ public class OrderMaking extends javax.swing.JFrame {
             Vector v = new Vector();
 
             v.add("Select Warrenty Period ");
+
             while (rs.next()) {
+                System.out.println("working");
                 v.add(String.valueOf(rs.getString("warrenty_id") + ") " + rs.getString("warrenty")));
                 TintMap.put(rs.getString("warrenty"), rs.getString("warrenty_id"));
             }
@@ -497,11 +500,11 @@ public class OrderMaking extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         jComboBox7 = new javax.swing.JComboBox<>();
-        jToggleButton1 = new javax.swing.JToggleButton();
         jButton8 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -940,13 +943,6 @@ public class OrderMaking extends javax.swing.JFrame {
 
         jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Warrenty" }));
 
-        jToggleButton1.setText("Manage");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
-            }
-        });
-
         jButton8.setText("Manage");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -972,6 +968,13 @@ public class OrderMaking extends javax.swing.JFrame {
         jButton12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton12ActionPerformed(evt);
+            }
+        });
+
+        jButton13.setText("Manage");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
             }
         });
 
@@ -1066,9 +1069,9 @@ public class OrderMaking extends javax.swing.JFrame {
                             .addComponent(jLabel13)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jComboBox1, 0, 150, Short.MAX_VALUE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1149,17 +1152,19 @@ public class OrderMaking extends javax.swing.JFrame {
                     .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButton1)
-                    .addComponent(jButton8)
-                    .addComponent(jButton10)
-                    .addComponent(jButton11)
-                    .addComponent(jButton12))
-                .addGap(9, 9, 9)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton9)
-                    .addComponent(jLabel20)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton8)
+                            .addComponent(jButton10)
+                            .addComponent(jButton11)
+                            .addComponent(jButton12))
+                        .addGap(9, 9, 9)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton9)
+                            .addComponent(jLabel20)
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButton13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1708,9 +1713,12 @@ public class OrderMaking extends javax.swing.JFrame {
                                                 MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                             }
 //
-                                            Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                            Refresh();
 
+//                                          Order Successs. -> prints
+                                            Printsouts printsouts = new Printsouts(invoiceId);
+                                            printsouts.setVisible(true);
+//                                            Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+//                                            Refresh();
                                         } else {
                                             JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                         }
@@ -1816,8 +1824,10 @@ public class OrderMaking extends javax.swing.JFrame {
                                                 MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                             }
 //
-                                            Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                            Refresh();
+                                            Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
+                                            printsouts.setVisible(true);
+//                                            Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
+//                                            Refresh();
 
                                         } else {
                                             JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1950,12 +1960,6 @@ public class OrderMaking extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTable3MouseClicked
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        // TODO add your handling code here:
-        TypeLensChange typeLensChange = new TypeLensChange(this);
-        typeLensChange.setVisible(true);
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
-
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
         TypeLensBrandChange typeBrandChange = new TypeLensBrandChange(this);
@@ -1979,6 +1983,12 @@ public class OrderMaking extends javax.swing.JFrame {
         TypeLensTintChange ltt = new TypeLensTintChange(this);
         ltt.setVisible(true);
     }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        // TODO add your handling code here:
+        TypeLensChange typeLensChange = new TypeLensChange(this);
+        typeLensChange.setVisible(true);
+    }//GEN-LAST:event_jButton13ActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -2001,6 +2011,7 @@ public class OrderMaking extends javax.swing.JFrame {
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -2076,7 +2087,6 @@ public class OrderMaking extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
-    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel userNameField;
     // End of variables declaration//GEN-END:variables
