@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import gui.Dashboard;
 import models.Reports;
 
 /**
@@ -11,19 +12,19 @@ import models.Reports;
  * @author sanka
  */
 public class Printsouts extends javax.swing.JFrame {
-
+    
     int invoiceId;
-
+    
     public Printsouts(int invoiceID) {
         initComponents();
         this.invoiceId = invoiceID;
     }
-
+    
     public Printsouts(String type, int invoiceID) {
         initComponents();
         this.invoiceId = invoiceID;
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -35,6 +36,7 @@ public class Printsouts extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setText("Print");
@@ -42,6 +44,11 @@ public class Printsouts extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jButton1.setText("Job card");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jButton2.setText("Invoice");
@@ -52,6 +59,11 @@ public class Printsouts extends javax.swing.JFrame {
         });
 
         jButton3.setText("close");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,9 +113,18 @@ public class Printsouts extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // print inovice
         Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-
+        
 
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Reports.JobOrderPrints(String.valueOf(invoiceId));
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -135,7 +156,7 @@ public class Printsouts extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-
+                
             }
         });
     }
