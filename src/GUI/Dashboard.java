@@ -1,5 +1,6 @@
 package gui;
 
+import GUI.StockDashboard;
 import models.Navs;
 import models.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
@@ -465,9 +466,8 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_accessoriesBtnActionPerformed
 
     private void stockBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockBtnActionPerformed
-        StockAdd sa = new StockAdd();
-        sa.setVisible(true);
-        this.dispose();
+        StockDashboard sd = new StockDashboard();
+        sd.setVisible(true);
     }//GEN-LAST:event_stockBtnActionPerformed
 
     private void lensOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lensOrderBtnActionPerformed

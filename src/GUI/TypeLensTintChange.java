@@ -24,13 +24,13 @@ public class TypeLensTintChange extends javax.swing.JFrame {
      * Creates new form TypeLensTintChange
      */
     OrderMaking parentObject;
-    
+
     public TypeLensTintChange(OrderMaking object) {
         initComponents();
         loadLensTint();
         parentObject = object;
     }
-    
+
     public void loadLensTint() {
         try {
 //            aniwaren Login wenna wenawa
@@ -223,7 +223,6 @@ public class TypeLensTintChange extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //Close
-        parentObject.LoadLensTint();
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 

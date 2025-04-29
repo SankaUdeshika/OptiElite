@@ -91,7 +91,7 @@ public class OrderMaking extends javax.swing.JFrame {
     public double Discount = 0;
     public double AdvancedPayment = 0;
     public double SubTotal = 0;
-    
+
     public void CalculateLensTotal() {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `stock`  WHERE `id` = '" + jTextField6.getText() + "'  AND `location_id` = '" + UserDetails.UserLocation_id + "' ");
@@ -100,6 +100,16 @@ public class OrderMaking extends javax.swing.JFrame {
                 System.out.println(frame_price);
                 ChangeTotal();
             }
+
+            if (!jTextField7.getText().isEmpty()) {
+                ResultSet lensRs = MySQL.execute("SELECT * FROM `lens_stock`  WHERE `lens_id` = '" + jTextField7.getText() + "' ");
+                if (lensRs.next()) {
+                    LensTotal = lensRs.getDouble("lens_price");
+                    System.out.println("Lens Price " + LensTotal);
+                    ChangeTotal();
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.log(Level.WARNING, "Data failed to load", e);
@@ -107,6 +117,7 @@ public class OrderMaking extends javax.swing.JFrame {
         }
         ChangeTotal();
     }
+
     public void ChangeTotal() {
 
         SubTotal = frame_price + LensTotal;
@@ -121,24 +132,25 @@ public class OrderMaking extends javax.swing.JFrame {
 
     public void Refresh() {
         LoadCustomer();
-       
+
         LoadStockProducts();
         LoadWarrenty();
         jTextField4.setText("");
         jTextField4.setEnabled(false);
-        loadtable();
+        lensLoading();
+        jTextField7.setEnabled(true);
     }
 
     public void Refresh(String mobile) {
         LoadCustomer(mobile);
-       
+
         LoadStockProducts();
         LoadWarrenty();
         jTextField4.setText("");
         jTextField4.setEnabled(false);
         jTable2.setEnabled(false);
         jTextField1.setEnabled(false);
-        loadtable();
+        lensLoading();
     }
 
     public void LoadStockProducts() {
@@ -454,6 +466,11 @@ public class OrderMaking extends javax.swing.JFrame {
         });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/reload.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel6.setText("Actions");
@@ -720,17 +737,14 @@ public class OrderMaking extends javax.swing.JFrame {
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Lens_id", "Lens_Brand", "Lens_Type", "Lens_Cortin", "Lens_Design", "Lens_Tint", "Lens_Price"
+                "Lens id", "Lens Code", "Lens Brand", "Lens Type", "Lens Cortin", "Lens Design", "Lens Tint", "Lens Price"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, true
+                false, true, false, false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -744,7 +758,7 @@ public class OrderMaking extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(jTable4);
         if (jTable4.getColumnModel().getColumnCount() > 0) {
-            jTable4.getColumnModel().getColumn(3).setResizable(false);
+            jTable4.getColumnModel().getColumn(4).setResizable(false);
         }
 
         jTextField7.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1239,66 +1253,66 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                             invoiceId = Inser_rs.getInt(1);
 
-//                                        Add Lens Properties
-                                            //        Lens Type  
-                                            String LensTypemapID = "0";
-                                            if (jComboBox1.getSelectedIndex() != 0) {
-                                                String lensType = (String) jComboBox1.getSelectedItem();
-                                                String LensmapArray[] = lensType.split("\\)");
-                                                LensTypemapID = LensmapArray[1].trim();
-                                                LensTypemapID = LensMap.get(LensTypemapID);
-
-                                                MySQL.execute("INSERT INTO `invoice_lens_type` (`lens_type_l_type_id`,`invoice_invoice_id`)"
-                                                        + " VALUES ('" + LensTypemapID + "','" + invoiceId + "') ");
-                                            }
-
-                                            //        Cortin Details 
-                                            String cortinmapName;
-                                            if (jComboBox2.getSelectedIndex() != 0) {
-                                                System.out.println("wokring");
-                                                String lensType = (String) jComboBox2.getSelectedItem();
-                                                String LensmapArray[] = lensType.split("\\)");
-                                                cortinmapName = LensmapArray[1].trim();
-                                                cortinmapName = CortinMap.get(cortinmapName);
-
-                                                MySQL.execute("INSERT INTO `invoice_coating` (`coating_l_coating_id`,`invoice_invoice_id`)"
-                                                        + " VALUES ('" + cortinmapName + "','" + invoiceId + "') ");
-                                            }
-
-                                            //     Lens   Brand Details 
-                                            String BrandmapName;
-                                            if (jComboBox3.getSelectedIndex() != 0) {
-                                                String lensType = (String) jComboBox3.getSelectedItem();
-                                                String LensmapArray[] = lensType.split("\\)");
-                                                BrandmapName = LensmapArray[1].trim();
-                                                BrandmapName = BrandMap.get(BrandmapName);
-
-                                                MySQL.execute("INSERT INTO `invoice_lens_brand` (`lens_brand_l_brand_id`,`invoice_invoice_id`)"
-                                                        + " VALUES ('" + BrandmapName + "','" + invoiceId + "') ");
-                                            }
-                                            //        Design Details 
-                                            String DesignmapName;
-                                            if (jComboBox4.getSelectedIndex() != 0) {
-                                                String lensType = (String) jComboBox4.getSelectedItem();
-                                                String LensmapArray[] = lensType.split("\\)");
-                                                DesignmapName = LensmapArray[1].trim();
-                                                DesignmapName = DesingdMap.get(DesignmapName);
-
-                                                MySQL.execute("INSERT INTO `invoice_design` (`design_l_design_id`,`invoice_invoice_id`)"
-                                                        + " VALUES ('" + DesignmapName + "','" + invoiceId + "') ");
-
-                                            }
-                                            //        Tint Details 
-                                            String TintmapName;
-                                            if (jComboBox5.getSelectedIndex() != 0) {
-                                                String lensType = (String) jComboBox5.getSelectedItem();
-                                                String LensmapArray[] = lensType.split("\\)");
-                                                TintmapName = LensmapArray[1].trim();
-                                                TintmapName = TintMap.get(TintmapName);
-
-                                                MySQL.execute("INSERT INTO `invoice_tint` (`tint_l_tint_id`,`invoice_invoice_id`)"
-                                                        + " VALUES ('" + TintmapName + "','" + invoiceId + "') ");
-                                            }
+////                                        Add Lens Properties
+//                                            //        Lens Type  
+//                                            String LensTypemapID = "0";
+//                                            if (jComboBox1.getSelectedIndex() != 0) {
+//                                                String lensType = (String) jComboBox1.getSelectedItem();
+//                                                String LensmapArray[] = lensType.split("\\)");
+//                                                LensTypemapID = LensmapArray[1].trim();
+//                                                LensTypemapID = LensMap.get(LensTypemapID);
+//
+//                                                MySQL.execute("INSERT INTO `invoice_lens_type` (`lens_type_l_type_id`,`invoice_invoice_id`)"
+//                                                        + " VALUES ('" + LensTypemapID + "','" + invoiceId + "') ");
+//                                            }
+//
+//                                            //        Cortin Details 
+//                                            String cortinmapName;
+//                                            if (jComboBox2.getSelectedIndex() != 0) {
+//                                                System.out.println("wokring");
+//                                                String lensType = (String) jComboBox2.getSelectedItem();
+//                                                String LensmapArray[] = lensType.split("\\)");
+//                                                cortinmapName = LensmapArray[1].trim();
+//                                                cortinmapName = CortinMap.get(cortinmapName);
+//
+//                                                MySQL.execute("INSERT INTO `invoice_coating` (`coating_l_coating_id`,`invoice_invoice_id`)"
+//                                                        + " VALUES ('" + cortinmapName + "','" + invoiceId + "') ");
+//                                            }
+//
+//                                            //     Lens   Brand Details 
+//                                            String BrandmapName;
+//                                            if (jComboBox3.getSelectedIndex() != 0) {
+//                                                String lensType = (String) jComboBox3.getSelectedItem();
+//                                                String LensmapArray[] = lensType.split("\\)");
+//                                                BrandmapName = LensmapArray[1].trim();
+//                                                BrandmapName = BrandMap.get(BrandmapName);
+//
+//                                                MySQL.execute("INSERT INTO `invoice_lens_brand` (`lens_brand_l_brand_id`,`invoice_invoice_id`)"
+//                                                        + " VALUES ('" + BrandmapName + "','" + invoiceId + "') ");
+//                                            }
+//                                            //        Design Details 
+//                                            String DesignmapName;
+//                                            if (jComboBox4.getSelectedIndex() != 0) {
+//                                                String lensType = (String) jComboBox4.getSelectedItem();
+//                                                String LensmapArray[] = lensType.split("\\)");
+//                                                DesignmapName = LensmapArray[1].trim();
+//                                                DesignmapName = DesingdMap.get(DesignmapName);
+//
+//                                                MySQL.execute("INSERT INTO `invoice_design` (`design_l_design_id`,`invoice_invoice_id`)"
+//                                                        + " VALUES ('" + DesignmapName + "','" + invoiceId + "') ");
+//
+//                                            }
+//                                            //        Tint Details 
+//                                            String TintmapName;
+//                                            if (jComboBox5.getSelectedIndex() != 0) {
+//                                                String lensType = (String) jComboBox5.getSelectedItem();
+//                                                String LensmapArray[] = lensType.split("\\)");
+//                                                TintmapName = LensmapArray[1].trim();
+//                                                TintmapName = TintMap.get(TintmapName);
+//
+//                                                MySQL.execute("INSERT INTO `invoice_tint` (`tint_l_tint_id`,`invoice_invoice_id`)"
+//                                                        + " VALUES ('" + TintmapName + "','" + invoiceId + "') ");
+//                                            }
 //
 ////                                        add Invoice Items
                                             MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1350,66 +1364,66 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                             invoiceId = Inser_rs.getInt(1);
 
-//                                        Add Lens Properties
-                                            //        Lens Type  
-                                            String LensTypemapID = "0";
-                                            if (jComboBox1.getSelectedIndex() != 0) {
-                                                String lensType = (String) jComboBox1.getSelectedItem();
-                                                String LensmapArray[] = lensType.split("\\)");
-                                                LensTypemapID = LensmapArray[1].trim();
-                                                LensTypemapID = LensMap.get(LensTypemapID);
-
-                                                MySQL.execute("INSERT INTO `invoice_lens_type` (`lens_type_l_type_id`,`invoice_invoice_id`)"
-                                                        + " VALUES ('" + LensTypemapID + "','" + invoiceId + "') ");
-                                            }
-
-                                            //        Cortin Details 
-                                            String cortinmapName;
-                                            if (jComboBox2.getSelectedIndex() != 0) {
-                                                System.out.println("wokring");
-                                                String lensType = (String) jComboBox2.getSelectedItem();
-                                                String LensmapArray[] = lensType.split("\\)");
-                                                cortinmapName = LensmapArray[1].trim();
-                                                cortinmapName = CortinMap.get(cortinmapName);
-
-                                                MySQL.execute("INSERT INTO `invoice_coating` (`coating_l_coating_id`,`invoice_invoice_id`)"
-                                                        + " VALUES ('" + cortinmapName + "','" + invoiceId + "') ");
-                                            }
-
-                                            //     Lens   Brand Details 
-                                            String BrandmapName;
-                                            if (jComboBox3.getSelectedIndex() != 0) {
-                                                String lensType = (String) jComboBox3.getSelectedItem();
-                                                String LensmapArray[] = lensType.split("\\)");
-                                                BrandmapName = LensmapArray[1].trim();
-                                                BrandmapName = BrandMap.get(BrandmapName);
-
-                                                MySQL.execute("INSERT INTO `invoice_lens_brand` (`lens_brand_l_brand_id`,`invoice_invoice_id`)"
-                                                        + " VALUES ('" + BrandmapName + "','" + invoiceId + "') ");
-                                            }
-                                            //        Design Details 
-                                            String DesignmapName;
-                                            if (jComboBox4.getSelectedIndex() != 0) {
-                                                String lensType = (String) jComboBox4.getSelectedItem();
-                                                String LensmapArray[] = lensType.split("\\)");
-                                                DesignmapName = LensmapArray[1].trim();
-                                                DesignmapName = DesingdMap.get(DesignmapName);
-
-                                                MySQL.execute("INSERT INTO `invoice_design` (`design_l_design_id`,`invoice_invoice_id`)"
-                                                        + " VALUES ('" + DesignmapName + "','" + invoiceId + "') ");
-
-                                            }
-                                            //        Tint Details 
-                                            String TintmapName;
-                                            if (jComboBox5.getSelectedIndex() != 0) {
-                                                String lensType = (String) jComboBox5.getSelectedItem();
-                                                String LensmapArray[] = lensType.split("\\)");
-                                                TintmapName = LensmapArray[1].trim();
-                                                TintmapName = TintMap.get(TintmapName);
-
-                                                MySQL.execute("INSERT INTO `invoice_tint` (`tint_l_tint_id`,`invoice_invoice_id`)"
-                                                        + " VALUES ('" + TintmapName + "','" + invoiceId + "') ");
-                                            }
+////                                        Add Lens Properties
+//                                            //        Lens Type  
+//                                            String LensTypemapID = "0";
+//                                            if (jComboBox1.getSelectedIndex() != 0) {
+//                                                String lensType = (String) jComboBox1.getSelectedItem();
+//                                                String LensmapArray[] = lensType.split("\\)");
+//                                                LensTypemapID = LensmapArray[1].trim();
+//                                                LensTypemapID = LensMap.get(LensTypemapID);
+//
+//                                                MySQL.execute("INSERT INTO `invoice_lens_type` (`lens_type_l_type_id`,`invoice_invoice_id`)"
+//                                                        + " VALUES ('" + LensTypemapID + "','" + invoiceId + "') ");
+//                                            }
+//
+//                                            //        Cortin Details 
+//                                            String cortinmapName;
+//                                            if (jComboBox2.getSelectedIndex() != 0) {
+//                                                System.out.println("wokring");
+//                                                String lensType = (String) jComboBox2.getSelectedItem();
+//                                                String LensmapArray[] = lensType.split("\\)");
+//                                                cortinmapName = LensmapArray[1].trim();
+//                                                cortinmapName = CortinMap.get(cortinmapName);
+//
+//                                                MySQL.execute("INSERT INTO `invoice_coating` (`coating_l_coating_id`,`invoice_invoice_id`)"
+//                                                        + " VALUES ('" + cortinmapName + "','" + invoiceId + "') ");
+//                                            }
+//
+//                                            //     Lens   Brand Details 
+//                                            String BrandmapName;
+//                                            if (jComboBox3.getSelectedIndex() != 0) {
+//                                                String lensType = (String) jComboBox3.getSelectedItem();
+//                                                String LensmapArray[] = lensType.split("\\)");
+//                                                BrandmapName = LensmapArray[1].trim();
+//                                                BrandmapName = BrandMap.get(BrandmapName);
+//
+//                                                MySQL.execute("INSERT INTO `invoice_lens_brand` (`lens_brand_l_brand_id`,`invoice_invoice_id`)"
+//                                                        + " VALUES ('" + BrandmapName + "','" + invoiceId + "') ");
+//                                            }
+//                                            //        Design Details 
+//                                            String DesignmapName;
+//                                            if (jComboBox4.getSelectedIndex() != 0) {
+//                                                String lensType = (String) jComboBox4.getSelectedItem();
+//                                                String LensmapArray[] = lensType.split("\\)");
+//                                                DesignmapName = LensmapArray[1].trim();
+//                                                DesignmapName = DesingdMap.get(DesignmapName);
+//
+//                                                MySQL.execute("INSERT INTO `invoice_design` (`design_l_design_id`,`invoice_invoice_id`)"
+//                                                        + " VALUES ('" + DesignmapName + "','" + invoiceId + "') ");
+//
+//                                            }
+//                                            //        Tint Details 
+//                                            String TintmapName;
+//                                            if (jComboBox5.getSelectedIndex() != 0) {
+//                                                String lensType = (String) jComboBox5.getSelectedItem();
+//                                                String LensmapArray[] = lensType.split("\\)");
+//                                                TintmapName = LensmapArray[1].trim();
+//                                                TintmapName = TintMap.get(TintmapName);
+//
+//                                                MySQL.execute("INSERT INTO `invoice_tint` (`tint_l_tint_id`,`invoice_invoice_id`)"
+//                                                        + " VALUES ('" + TintmapName + "','" + invoiceId + "') ");
+//                                            }
 //
 ////                                        add Invoice Items
                                             MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1549,7 +1563,13 @@ public class OrderMaking extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField11ActionPerformed
 
     private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
-        // TODO add your handling code here:
+        // Select Lens
+        if (evt.getClickCount() == 1) {
+            jTextField7.setText(String.valueOf(jTable4.getValueAt(jTable4.getSelectedRow(), 0)));
+            jTextField7.setEnabled(false);
+//            System.out.println(String.valueOf(jTable3.getValueAt(jTable3.getSelectedRow(), 1)));
+            CalculateLensTotal();
+        }
     }//GEN-LAST:event_jTable4MouseClicked
 
     private void jTextField7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField7MouseClicked
@@ -1565,18 +1585,63 @@ public class OrderMaking extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField7KeyPressed
 
     private void jTextField7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyReleased
-        // TODO add your handling code here:
+        // Search Lens By his Lens Code and frame id
+        String brand_details = jTextField6.getText();
+
+        try {
+            //            aniwaren Login wenna wenawa
+            ResultSet rs = MySQL.execute("SELECT * \n"
+                    + "FROM lens_stock \n"
+                    + "INNER JOIN lens_brand ON lens_stock.lens_brand_lens_brand_id = lens_brand.lens_brand_id\n"
+                    + "INNER JOIN lens_type ON lens_stock.lens_type_lens_type_id = lens_type.lens_type_id\n"
+                    + "INNER JOIN lens_cortin ON lens_stock.lens_cortin_lens_cortin_id = lens_cortin.lens_cortin_id\n"
+                    + "INNER JOIN lens_design ON lens_stock.lens_design_lens_design_id = lens_design.lens_design_id\n"
+                    + "INNER JOIN lens_tint ON lens_stock.lens_tint_lens_tint_id = lens_tint.lens_tint_id WHERE `lens_code` LIKE '%" + jTextField7.getText() + "%' ");
+
+//                  SELECT * FROM `stock` INNER JOIN `product` ON `product`.`id` = `stock`.`product_id` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `location` ON `location`.`id` = `stock`.`location_id`  WHERE `category`.`id` =  '1'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "'  AND `qty` > 0 
+            DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
+            dtm.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("lens_id"));
+                v.add(rs.getString("lens_code"));
+                v.add(rs.getString("lens_brand"));
+                v.add(rs.getString("lens_type"));
+                v.add(rs.getString("lens_cortin"));
+                v.add(rs.getString("lens_design"));
+                v.add(rs.getString("lens_tint"));
+                v.add(rs.getString("lens_price"));
+
+                dtm.addRow(v);
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", se);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", e);
+
+        }
     }//GEN-LAST:event_jTextField7KeyReleased
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-      
-       
+
         LensStockAdding lenseAdding = new LensStockAdding();
         lenseAdding.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
-    
-    public void loadtable() {
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        Refresh();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    public void lensLoading() {
         try {
             ResultSet rs = MySQL.execute("SELECT * \n"
                     + "FROM lens_stock \n"
@@ -1585,18 +1650,19 @@ public class OrderMaking extends javax.swing.JFrame {
                     + "INNER JOIN lens_cortin ON lens_stock.lens_cortin_lens_cortin_id = lens_cortin.lens_cortin_id\n"
                     + "INNER JOIN lens_design ON lens_stock.lens_design_lens_design_id = lens_design.lens_design_id\n"
                     + "INNER JOIN lens_tint ON lens_stock.lens_tint_lens_tint_id = lens_tint.lens_tint_id");
-            DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
+            DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
             dtm.setRowCount(0);
 
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("lens_id"));
+                v.add(rs.getString("lens_code"));
                 v.add(rs.getString("lens_brand"));
                 v.add(rs.getString("lens_type"));
-                 v.add(rs.getString("lens_cortin"));
-                  v.add(rs.getString("lens_design"));
-                   v.add(rs.getString("lens_tint"));
-                    v.add(rs.getString("lens_price"));
+                v.add(rs.getString("lens_cortin"));
+                v.add(rs.getString("lens_design"));
+                v.add(rs.getString("lens_tint"));
+                v.add(rs.getString("lens_price"));
                 dtm.addRow(v);
             }
 
@@ -1608,6 +1674,7 @@ public class OrderMaking extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     /**
      *
      * @param args the command line arguments

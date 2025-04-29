@@ -230,7 +230,6 @@ public class TypeLensBrandChange extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //Close
-        parentObject.LoadLensBrand();
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
