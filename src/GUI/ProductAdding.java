@@ -1,5 +1,6 @@
 package gui;
 
+import GUI.LensStockAdding;
 import models.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Dimension;
@@ -300,6 +301,7 @@ public class ProductAdding extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jButton7 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -578,6 +580,14 @@ public class ProductAdding extends javax.swing.JFrame {
         }
 
         jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 250, 100));
+
+        jButton7.setText("Change");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 500, 228, 42));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -872,6 +882,12 @@ public class ProductAdding extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField2KeyReleased
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        LensStockAdding lenseAdding = new LensStockAdding();
+        lenseAdding.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -894,6 +910,7 @@ public class ProductAdding extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;

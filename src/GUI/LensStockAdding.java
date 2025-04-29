@@ -4,13 +4,20 @@
  */
 package GUI;
 
+import com.mysql.cj.xdevapi.Result;
 import gui.Dashboard;
+import static gui.Login.logger;
 import gui.StockManagement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Vector;
+import java.util.logging.Level;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 import models.MySQL;
 
 /**
@@ -24,7 +31,23 @@ public class LensStockAdding extends javax.swing.JFrame {
      */
     public LensStockAdding() {
         initComponents();
+        LoadLensTint();
+        LoadLensDesign();
+        LoadLensBrand();
+        LoadLensCortin();
+        LoadLensesType();
+        loadtable();
+        jButton5.setVisible(false);
+        jButton7.setVisible(false);
     }
+
+    HashMap<String, String> LensMap = new HashMap<>();
+    HashMap<String, String> CortinMap = new HashMap<>();
+    HashMap<String, String> BrandMap = new HashMap<>();
+    HashMap<String, String> DesingdMap = new HashMap<>();
+    HashMap<String, String> TintMap = new HashMap<>();
+
+    String lens_id;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,45 +65,34 @@ public class LensStockAdding extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
         jButton6 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel13 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
-        jLabel16 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
-        jLabel24 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jTextField13 = new javax.swing.JTextField();
-        jLabel27 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jLabel28 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
-        jTextField15 = new javax.swing.JTextField();
         jSeparator6 = new javax.swing.JSeparator();
-        jLabel29 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jLabel32 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
-        jLabel31 = new javax.swing.JLabel();
-        SKUNO = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jTextField7 = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jComboBox4 = new javax.swing.JComboBox<>();
+        jComboBox5 = new javax.swing.JComboBox<>();
+        jButton4 = new javax.swing.JButton();
+        jLabel22 = new javax.swing.JLabel();
+        jTextField8 = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -119,16 +131,8 @@ public class LensStockAdding extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel6.setText("Actions");
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/diskette (1).png"))); // NOI18N
-        jButton4.setText("Add Stock");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Customer management.png"))); // NOI18N
-        jButton6.setText("Stock Management");
+        jButton6.setText("Lens Management");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -145,322 +149,233 @@ public class LensStockAdding extends javax.swing.JFrame {
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
 
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
-            }
-        });
-        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField5KeyReleased(evt);
-            }
-        });
-
-        jLabel15.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel15.setText("Stock Date");
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Company", "Supplier"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable2MouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(jTable2);
-
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Row No", "Stock ID", "Product ID", "Product Brand", "Sub Category", "Qty", "Size", "Unit Price", "Selling Price", "Date TIme", "Supplier", "Location", "Total Cost", "SKU"
+                "Lens_id", "Lens Brand", "Lens Type", "Lens_Code", "Lens Cortin", "Lens Design", "Lens Tint", "Lens Price"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable3MouseClicked(evt);
             }
         });
         jScrollPane3.setViewportView(jTable3);
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel16.setText("Sub Category");
+        jLabel8.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel8.setText("Lens Type");
 
-        jTextField10.setText("Search By");
-        jTextField10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField10ActionPerformed(evt);
-            }
-        });
-        jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField10KeyReleased(evt);
-            }
-        });
+        jLabel17.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        jLabel17.setText("Lens Options");
 
         jLabel24.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel24.setText("Quantity");
+        jLabel24.setText("Lens Brand");
 
-        jTextField11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField11ActionPerformed(evt);
-            }
-        });
-        jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField11KeyReleased(evt);
-            }
-        });
+        jLabel41.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel41.setText("Cortin");
 
         jLabel25.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel25.setText("Product ID");
+        jLabel25.setText("Lens Design");
 
-        jLabel26.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel26.setText("Supplier Company");
+        jLabel21.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel21.setText("Lens Tint");
 
-        jLabel27.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel27.setText("Buying Unit Price");
+        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField7ActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        jLabel20.setText("Lens Price");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jButton4.setText("Add Price");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
+                jButton4ActionPerformed(evt);
             }
         });
 
-        jLabel28.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel28.setText("Location");
+        jLabel22.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        jLabel22.setText("Lens Code");
 
-        jLabel30.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel30.setText("Selling Price");
-
-        jLabel29.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel29.setText("Add Stock");
-
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+        jTextField8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
-            }
-        });
-        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField6KeyReleased(evt);
+                jTextField8ActionPerformed(evt);
             }
         });
 
-        jLabel32.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel32.setText("Product Brand");
-
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Product ID", "Row No", "Brand", "SubCategory"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        jButton5.setText("Delete");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
             }
         });
-        jTable4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable4MouseClicked(evt);
+
+        jButton7.setText("Update");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
             }
         });
-        jScrollPane4.setViewportView(jTable4);
-
-        jLabel31.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel31.setText("SKU No");
-
-        jLabel1.setText("Frame Size (optional)");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel32))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 1025, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel22)
+                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel20))
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel24)
-                                .addGap(46, 46, 46)
-                                .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20, 20, 20)
-                                .addComponent(jLabel30))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22)
-                                .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jSeparator5)
-                        .addContainerGap())))
+                                .addGap(93, 93, 93)
+                                .addComponent(jButton4)))
+                        .addGap(89, 89, 89))))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(711, 711, 711)
+                        .addComponent(jSeparator5))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                .addGap(65, 65, 65)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(81, 81, 81))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(jLabel14)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel17)
+                                        .addGap(55, 55, 55))
+                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel8)
+                                        .addComponent(jLabel25)
+                                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                            .addComponent(jButton7)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jButton5))))
+                                .addGap(67, 67, 67)))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel21)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel24)
+                                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(43, 43, 43)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel41)))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel29)
-                            .addComponent(jLabel13)))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14)
-                            .addComponent(jLabel25))
-                        .addGap(332, 332, 332)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel15)
-                                            .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel28)
-                                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(jTextField1))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addGap(3, 3, 3)
-                                        .addComponent(jLabel31))
-                                    .addComponent(SKUNO, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 1025, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
-            .addComponent(jScrollPane3)
+                            .addComponent(jLabel13)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1000, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel13)
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
-                .addComponent(jLabel29)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel25)
-                                .addComponent(jLabel32)
-                                .addComponent(jLabel16)
-                                .addComponent(jLabel26))
-                            .addComponent(jLabel15))
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel28)
-                        .addGap(10, 10, 10)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel31)
-                        .addGap(10, 10, 10)
-                        .addComponent(SKUNO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(4, 4, 4)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGap(20, 20, 20))
+                        .addComponent(jLabel17)
+                        .addGap(76, 76, 76)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(jLabel14)
+                        .addGap(41, 41, 41)
+                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addComponent(jLabel8)
+                                .addGap(67, 67, 67)
+                                .addComponent(jLabel25)
+                                .addGap(20, 20, 20)
+                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel24)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel21)
+                                .addGap(21, 21, 21)
+                                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(jLabel22)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel41))
+                                .addGap(29, 29, 29)
+                                .addComponent(jLabel20)
+                                .addGap(19, 19, 19)
+                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addComponent(jButton4)
+                        .addGap(44, 44, 44))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel24)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel27)
-                                .addComponent(jLabel30)))
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton7)
+                            .addComponent(jButton5))
+                        .addGap(65, 65, 65))))
         );
-
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/spect.png"))); // NOI18N
-        jButton5.setText("Add New Product");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -479,15 +394,13 @@ public class LensStockAdding extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel6)
                         .addGroup(jPanel4Layout.createSequentialGroup()
                             .addGap(8, 8, 8)
-                            .addComponent(jLabel7))
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(35, 35, 35)
+                            .addComponent(jLabel7))))
+                .addGap(18, 18, 18)
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(27, 27, 27))
+                .addGap(44, 44, 44))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -502,11 +415,7 @@ public class LensStockAdding extends javax.swing.JFrame {
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65)
+                .addGap(203, 203, 203)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
@@ -632,10 +541,9 @@ public class LensStockAdding extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -657,96 +565,6 @@ public class LensStockAdding extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // Add Stock Process
-        String FrameSize = jTextField1.getText();
-        String Product_id = jTextField11.getText();
-        int row = jTable4.getSelectedRow();
-        String productintid = String.valueOf(jTable4.getValueAt(row, 1));
-        System.out.println(productintid);
-
-        Date chooseDate;
-        String formatDate = "";
-        try {
-            chooseDate = jDateChooser2.getDate();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            formatDate = sdf.format(chooseDate);
-        } catch (NullPointerException ne) {
-            chooseDate = null;
-        }
-
-        String SupplierTableRow = "";
-        String supplier_ID = "";
-        try {
-            SupplierTableRow = String.valueOf(jTable2.getValueAt(jTable2.getSelectedRow(), 0));
-            String supplier_array[] = SupplierTableRow.split("->");
-            supplier_ID = supplier_array[0];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            SupplierTableRow = "null";
-        }
-
-        int Location_id = jComboBox3.getSelectedIndex();
-
-        String Qty = jTextField4.getText();
-
-        double CostPrice;
-        double SellingPrice;
-
-        try {
-            CostPrice = Double.parseDouble(jTextField13.getText());
-
-        } catch (NumberFormatException e) {
-            CostPrice = 0.0;
-        }
-
-        try {
-            SellingPrice = Double.parseDouble(jTextField15.getText());
-
-        } catch (NumberFormatException e) {
-            SellingPrice = 0.0;
-        }
-
-        try {
-            ResultSet p_rs = MySQL.execute("SELECT * FROM `product` WHERE `product`.`id` = '" + Product_id + "' AND `product`.`intid` =  '" + productintid + "' ");
-
-            //        validation
-            if (Product_id.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please Select or Type Product ID", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (!p_rs.next()) {
-                JOptionPane.showMessageDialog(this, "Invalid Product ID,", "Invlaid Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (SupplierTableRow == "null") {
-                JOptionPane.showMessageDialog(this, "Please Select Supplier from Table,", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (chooseDate == null) {
-                JOptionPane.showMessageDialog(this, "Please Select a Date", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (Location_id == 0) {
-                JOptionPane.showMessageDialog(this, "Please Select a Location", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (Qty.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please Enter Quantity", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (!Qty.matches("\\d+")) {
-                JOptionPane.showMessageDialog(this, "Please Enter Valid Quanity", "Invalid Data Type", JOptionPane.ERROR_MESSAGE);
-            } else if (CostPrice == 0.0) {
-                JOptionPane.showMessageDialog(this, "Please Enter Buying Cost", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (String.valueOf(CostPrice).matches("\\d+")) {
-                JOptionPane.showMessageDialog(this, "Please Enter Valid  Cost", "Invalid  Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (SellingPrice == 0.0) {
-                JOptionPane.showMessageDialog(this, "Please Enter selling price", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (String.valueOf(SellingPrice).matches("\\d+")) {
-                JOptionPane.showMessageDialog(this, "Please Enter Valid  Selling Price", "Invalid  Parameters", JOptionPane.ERROR_MESSAGE);
-            } else {
-
-                MySQL.execute("INSERT INTO `stock` (`product_id`,`supplier_supplier_id`,`location_id`,`cost`,`saling_price`,`stock_date`,`qty`,`product_intid`,`SKU`,`FrameSize`) "
-                    + "VALUES ('" + Product_id + "','" + supplier_ID + "','" + Location_id + "','" + CostPrice + "','" + SellingPrice + "','" + formatDate + "','" + Qty + "','" + productintid + "','" + SKUNO.getText() + "','" + FrameSize + "')");
-
-                JOptionPane.showMessageDialog(this, "Stock Adding Success ", "Insert Success", JOptionPane.ERROR_MESSAGE);
-//                refresh();
-            }
-        } catch (SQLException se) {
-            JOptionPane.showMessageDialog(this, "Please Check Your Network or Try again later");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         StockManagement stockManagement = new StockManagement();
@@ -754,168 +572,324 @@ public class LensStockAdding extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+
+    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_jTextField7ActionPerformed
 
-    private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
-        // Search ReleseKey By Product Sub Category
-        try {
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        System.out.println("working Add Price");
+        if (jComboBox1.getSelectedItem().equals("Select Lens Type")) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Type", JOptionPane.ERROR_MESSAGE);
+        } else if (jComboBox3.getSelectedItem().equals("Select Lens Brand")) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Band", JOptionPane.ERROR_MESSAGE);
+        } else if (jComboBox2.getSelectedItem().equals("Select Lens Cortin")) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Cortin", JOptionPane.ERROR_MESSAGE);
+        } else if (jComboBox4.getSelectedItem().equals("Select Lens Design")) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Brand", JOptionPane.ERROR_MESSAGE);
+        } else if (jComboBox5.getSelectedItem().equals("Select Lens Tint")) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Tint", JOptionPane.ERROR_MESSAGE);
+        } else if (jTextField7.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Enter Lens Price", JOptionPane.ERROR_MESSAGE);
+        } else if (jTextField8.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Error", "Enter Lens Code", JOptionPane.ERROR_MESSAGE);
+        } else {
+            int Type = jComboBox1.getSelectedIndex();
+            int Brand = jComboBox3.getSelectedIndex();
+            int Cortin = jComboBox2.getSelectedIndex();
+            int Design = jComboBox4.getSelectedIndex();
+            int Tint = jComboBox5.getSelectedIndex();
+            String Price = jTextField7.getText().toString();
+            String Code = jTextField8.getText().toString();
 
-            jTextField11.setText("");
-            jTextField6.setText("");
-
-            ResultSet rs = MySQL.execute("SELECT * FROM `product` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` WHERE `sub_category`.`sub_category`  LIKE '%" + jTextField5.getText() + "%' ");
-            DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
-            dtm.setRowCount(0);
-
-            while (rs.next()) {
-                Vector v = new Vector();
-                v.add(rs.getString("product.id"));
-                v.add(rs.getString("product.intid"));
-                v.add(rs.getString("brand_name"));
-                v.add(rs.getString("sub_category"));
-                dtm.addRow(v);
-            }
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Please Check Your Internet Connection. and Please Try again Later");
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Some Thing Wrong Please Try again Later or Contact Devloper");
-
+            MySQL.execute(
+                    "INSERT INTO lens_stock "
+                    + "( lens_brand_lens_brand_id, lens_code, lens_type_lens_type_id, "
+                    + "lens_cortin_lens_cortin_id, lens_design_lens_design_id, lens_tint_lens_tint_id, lens_price) "
+                    + "VALUES ("
+                    + "'" + Brand + "', '" + Code + "', '" + Type + "', '"
+                    + Cortin + "', '" + Design + "', '" + Tint + "','" + Price + "'"
+                    + ");"
+            );
+            loadtable();
         }
-    }//GEN-LAST:event_jTextField5KeyReleased
+    }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        // Select Product
+    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField8ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+
         if (evt.getClickCount() == 2) {
-            int table2SelectedRow = jTable2.getSelectedRow();
-            String SupplierDetails = String.valueOf(jTable2.getValueAt(table2SelectedRow, 0));
-            String id[] = SupplierDetails.split("->");
+            int SelectedRow = jTable3.getSelectedRow();
 
-            jTextField10.setText("Supplier id is =" + id[0]);
+            String BrandName = String.valueOf(jTable3.getValueAt(SelectedRow, 1));
+            selectComboBoxItem(jComboBox3, BrandName);
 
+            String TypeName = String.valueOf(jTable3.getValueAt(SelectedRow, 2));
+            selectComboBoxItem(jComboBox1, TypeName);
+
+            jTextField8.setText(String.valueOf(jTable3.getValueAt(SelectedRow, 3)));
+
+            String CortinName = String.valueOf(jTable3.getValueAt(SelectedRow, 4));
+            selectComboBoxItem(jComboBox2, CortinName);
+
+            String DesignName = String.valueOf(jTable3.getValueAt(SelectedRow, 5));
+            selectComboBoxItem(jComboBox4, DesignName);
+
+            String TintName = String.valueOf(jTable3.getValueAt(SelectedRow, 6));
+            selectComboBoxItem(jComboBox5, TintName);
+
+            jTextField7.setText(String.valueOf(jTable3.getValueAt(SelectedRow, 7)));
+
+            lens_id = jTable3.getValueAt(SelectedRow, 0).toString();
+
+            jButton5.setVisible(true);
+            jButton7.setVisible(true);
+            jButton4.setVisible(false);
         }
-    }//GEN-LAST:event_jTable2MouseClicked
 
-    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField10ActionPerformed
+    }//GEN-LAST:event_jTable3MouseClicked
 
-    private void jTextField10KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyReleased
-        // Search Key From Supplier
-        try {
-
-            ResultSet rs = MySQL.execute("SELECT * FROM `supplier` INNER JOIN `company` ON `company`.`id` = `supplier`.`company_id`  WHERE `company`.`CompanyName` LIKE '%" + jTextField10.getText() + "%' ");
-            DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
-            dtm.setRowCount(0);
-
-            while (rs.next()) {
-                Vector v = new Vector();
-                v.add(rs.getString("supplier_id") + "->" + rs.getString("Supplier_Name"));
-                v.add(rs.getString("CompanyName"));
-                dtm.addRow(v);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_jTextField10KeyReleased
-
-    private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField11ActionPerformed
-
-    private void jTextField11KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyReleased
-        // Key Relesed Search by Product ID
-        try {
-
-            jTextField6.setText("");
-            jTextField5.setText("");
-
-            ResultSet rs = MySQL.execute("SELECT * FROM `product` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` WHERE `product`.id LIKE '%" + jTextField11.getText() + "%'  ");
-            DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
-            dtm.setRowCount(0);
-
-            while (rs.next()) {
-                Vector v = new Vector();
-                v.add(rs.getString("product.id"));
-                v.add(rs.getString("product.intid"));
-                v.add(rs.getString("brand_name"));
-                v.add(rs.getString("sub_category"));
-                dtm.addRow(v);
-
-            }
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Please Check Your Internet Connection. and Please Try again Later");
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Some Thing Wrong Please Try again Later or Contact Devloper");
-
-        }
-    }//GEN-LAST:event_jTextField11KeyReleased
-
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
-
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
-
-    private void jTextField6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyReleased
-        // Search By Brand Name Key Relesed
-        try {
-
-            jTextField11.setText("");
-            jTextField5.setText("");
-
-            ResultSet rs = MySQL.execute("SELECT * FROM `product` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` WHERE `brand`.`brand_name`  LIKE '%" + jTextField6.getText() + "%' ");
-            DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
-            dtm.setRowCount(0);
-
-            while (rs.next()) {
-                Vector v = new Vector();
-                v.add(rs.getString("product.id"));
-                v.add(rs.getString("product.intid"));
-                v.add(rs.getString("brand_name"));
-                v.add(rs.getString("sub_category"));
-                dtm.addRow(v);
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        if (jComboBox1.getSelectedItem().equals("Select Lens Type")) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Type", JOptionPane.ERROR_MESSAGE);
+        } else if (jComboBox3.getSelectedItem().equals("Select Lens Brand")) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Band", JOptionPane.ERROR_MESSAGE);
+        } else if (jComboBox2.getSelectedItem().equals("Select Lens Cortin")) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Cortin", JOptionPane.ERROR_MESSAGE);
+        } else if (jComboBox4.getSelectedItem().equals("Select Lens Design")) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Brand", JOptionPane.ERROR_MESSAGE);
+        } else if (jComboBox5.getSelectedItem().equals("Select Lens Tint")) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Tint", JOptionPane.ERROR_MESSAGE);
+        } else if (jTextField7.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Enter Lens Price", JOptionPane.ERROR_MESSAGE);
+        } else if (jTextField8.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Error", "Enter Lens Code", JOptionPane.ERROR_MESSAGE);
+        } else {
+            int Type = jComboBox1.getSelectedIndex();
+            int Brand = jComboBox3.getSelectedIndex();
+            int Cortin = jComboBox2.getSelectedIndex();
+            int Design = jComboBox4.getSelectedIndex();
+            int Tint = jComboBox5.getSelectedIndex();
+            String Price = jTextField7.getText().toString();
+            String Code = jTextField8.getText().toString();
+            try {
+                MySQL.execute(
+                        "UPDATE lens_stock SET "
+                        + "lens_brand_lens_brand_id = '" + Brand + "', "
+                        + "lens_code = '" + Code + "', "
+                        + "lens_type_lens_type_id = '" + Type + "', "
+                        + "lens_cortin_lens_cortin_id = '" + Cortin + "', "
+                        + "lens_design_lens_design_id = '" + Design + "', "
+                        + "lens_tint_lens_tint_id = '" + Tint + "', "
+                        + "lens_price = '" + Price + "' "
+                        + "WHERE lens_id = '" + lens_id + "';"
+                );
+            } catch (Exception e) {
+                System.out.println(e);
             }
 
-        } catch (SQLException se) {
-            se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Please Check Your Internet Connection. and Please Try again Later");
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Some Thing Wrong Please Try again Later or Contact Devloper");
-
+            loadtable();
         }
-    }//GEN-LAST:event_jTextField6KeyReleased
-
-    private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
-        // Product Table Double Click
-        if (evt.getClickCount() == 2) {
-            int table2SelectedRow = jTable4.getSelectedRow();
-            String Product_id = String.valueOf(jTable4.getValueAt(table2SelectedRow, 0));
-            String Brand = String.valueOf(jTable4.getValueAt(table2SelectedRow, 1));
-            String SubCategory = String.valueOf(jTable4.getValueAt(table2SelectedRow, 2));
-
-            jTextField11.setText(Product_id);
-            jTextField6.setText(Brand);
-            jTextField5.setText(SubCategory);
-
-        }
-    }//GEN-LAST:event_jTable4MouseClicked
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:\
-        smallProductAdding sm = new smallProductAdding();
-        sm.setVisible(true);
+        try {
+            MySQL.execute("DELETE FROM lens_stock WHERE lens_id = '" + lens_id + "';");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    public void LoadLensTint() {
+        try {
+
+            ResultSet rs = MySQL.execute("SELECT * FROM `lens_tint`");
+            Vector v = new Vector();
+
+            v.add("Select Lens Tint");
+            while (rs.next()) {
+                v.add(String.valueOf(rs.getString("lens_tint_id") + ") " + rs.getString("lens_tint")));
+                TintMap.put(rs.getString("lens_tint"), rs.getString("lens_tint_id"));
+
+            }
+
+            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+            jComboBox5.setModel(dfm);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", se);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.log(Level.WARNING, "Data failed to load", e);
+
+        }
+    }
+
+    private void selectComboBoxItem(JComboBox comboBox, String value) {
+        for (int i = 0; i < comboBox.getItemCount(); i++) {
+            String item = comboBox.getItemAt(i).toString();
+
+            // Split by ") " and get the second part (the name)
+            if (item.contains(") ")) {
+                String[] parts = item.split("\\) ", 2);
+                if (parts.length == 2) {
+                    String name = parts[1];
+                    if (name.equals(value)) {
+                        comboBox.setSelectedIndex(i);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void LoadLensDesign() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `lens_design`");
+            Vector v = new Vector();
+
+            v.add("Select Lens Design");
+            while (rs.next()) {
+                v.add(String.valueOf(rs.getString("lens_design_id") + ") " + rs.getString("lens_design")));
+                DesingdMap.put(rs.getString("lens_design"), rs.getString("lens_design_id"));
+            }
+
+            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+            jComboBox4.setModel(dfm);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", se);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.log(Level.WARNING, "Data failed to load", e);
+
+        }
+    }
+
+    public void LoadLensBrand() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `lens_brand`");
+            Vector v = new Vector();
+
+            v.add("Select Lens Brand");
+            while (rs.next()) {
+                v.add(String.valueOf(rs.getString("lens_brand_id") + ") " + rs.getString("lens_brand")));
+                BrandMap.put(rs.getString("lens_brand"), rs.getString("lens_brand_id"));
+            }
+
+            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+            jComboBox3.setModel(dfm);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", se);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.log(Level.WARNING, "Data failed to load", e);
+
+        }
+    }
+
+    public void LoadLensCortin() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `lens_cortin`");
+            Vector v = new Vector();
+
+            v.add("Select Lens Cortin");
+            while (rs.next()) {
+                v.add(String.valueOf(rs.getString("lens_cortin_id") + ") " + rs.getString("lens_cortin")));
+                CortinMap.put(rs.getString("lens_cortin"), rs.getString("lens_cortin_id"));
+            }
+
+            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+            jComboBox2.setModel(dfm);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", se);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.log(Level.WARNING, "Data failed to load", e);
+
+        }
+    }
+
+    public void LoadLensesType() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `lens_type`");
+            Vector v = new Vector();
+
+            v.add("Select Lens Type");
+            while (rs.next()) {
+                v.add(String.valueOf(rs.getString("lens_type_id") + ") " + rs.getString("lens_type")));
+                LensMap.put(rs.getString("lens_type"), rs.getString("lens_type_id"));
+            }
+
+            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+            jComboBox1.setModel(dfm);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", se);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.log(Level.WARNING, "Data failed to load", e);
+
+        }
+    }
+
+    public void loadtable() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * \n"
+                    + "FROM lens_stock \n"
+                    + "INNER JOIN lens_brand ON lens_stock.lens_brand_lens_brand_id = lens_brand.lens_brand_id\n"
+                    + "INNER JOIN lens_type ON lens_stock.lens_type_lens_type_id = lens_type.lens_type_id\n"
+                    + "INNER JOIN lens_cortin ON lens_stock.lens_cortin_lens_cortin_id = lens_cortin.lens_cortin_id\n"
+                    + "INNER JOIN lens_design ON lens_stock.lens_design_lens_design_id = lens_design.lens_design_id\n"
+                    + "INNER JOIN lens_tint ON lens_stock.lens_tint_lens_tint_id = lens_tint.lens_tint_id");
+            DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
+            dtm.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("lens_id"));
+                v.add(rs.getString("lens_brand"));
+                v.add(rs.getString("lens_type"));
+                v.add(rs.getString("lens_code"));
+                v.add(rs.getString("lens_cortin"));
+                v.add(rs.getString("lens_design"));
+                v.add(rs.getString("lens_tint"));
+                v.add(rs.getString("lens_price"));
+                dtm.addRow(v);
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -953,7 +927,6 @@ public class LensStockAdding extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField SKUNO;
     private javax.swing.JLabel dateField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -961,52 +934,42 @@ public class LensStockAdding extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField15;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel userNameField;
     // End of variables declaration//GEN-END:variables

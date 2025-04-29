@@ -744,6 +744,19 @@
                     </Component>
                   </SubComponents>
                 </Container>
+                <Component class="javax.swing.JButton" name="jButton7">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Change"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton7ActionPerformed"/>
+                  </Events>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                      <AbsoluteConstraints x="300" y="500" width="228" height="42"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
               </SubComponents>
             </Container>
           </SubComponents>
