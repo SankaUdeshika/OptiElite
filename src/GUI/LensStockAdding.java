@@ -4,6 +4,15 @@
  */
 package GUI;
 
+import gui.Dashboard;
+import gui.StockManagement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import models.MySQL;
+
 /**
  *
  * @author sanka
@@ -729,7 +738,7 @@ public class LensStockAdding extends javax.swing.JFrame {
                     + "VALUES ('" + Product_id + "','" + supplier_ID + "','" + Location_id + "','" + CostPrice + "','" + SellingPrice + "','" + formatDate + "','" + Qty + "','" + productintid + "','" + SKUNO.getText() + "','" + FrameSize + "')");
 
                 JOptionPane.showMessageDialog(this, "Stock Adding Success ", "Insert Success", JOptionPane.ERROR_MESSAGE);
-                refresh();
+//                refresh();
             }
         } catch (SQLException se) {
             JOptionPane.showMessageDialog(this, "Please Check Your Network or Try again later");
