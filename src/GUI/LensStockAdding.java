@@ -17,6 +17,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 import models.MySQL;
 
 /**
@@ -708,6 +709,7 @@ public class LensStockAdding extends javax.swing.JFrame {
 
     public void LoadLensTint() {
         try {
+
             ResultSet rs = MySQL.execute("SELECT * FROM `lens_tint`");
             Vector v = new Vector();
 
@@ -715,6 +717,7 @@ public class LensStockAdding extends javax.swing.JFrame {
             while (rs.next()) {
                 v.add(String.valueOf(rs.getString("lens_tint_id") + ") " + rs.getString("lens_tint")));
                 TintMap.put(rs.getString("lens_tint"), rs.getString("lens_tint_id"));
+
             }
 
             DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
