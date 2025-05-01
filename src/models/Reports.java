@@ -18,115 +18,34 @@ public class Reports {
 
     public static void JobOrderPrints(String id) {
         try {
+            // check if prescription have or no
             ResultSet prescription_rs = MySQL.execute("SELECT * FROM `invoice` WHERE `invoice_id` = '" + id + "' AND  `prescription_details_job_no` IS NULL");
 
             if (prescription_rs.next()) {
-                System.out.println("yess");
+                //invoice without Prescription Details
+                System.out.println("NO Prescription.");
             } else {
+                System.out.println("With Prescription");
+
+                //invoice with Prescription
                 try {
-                    
-                    String tintName = "";
-
-                    String coatingName = "";
-
-                    String DesignName = "";
-
-                    String lensTypeName = "";
-
-                    String lens_brandName = "";
-
-                    try {
-                        //          Search Lens Tint 
-                        ResultSet Tint_Rs = MySQL.execute("SELECT * FROM `invoice_tint` INNER JOIN `tint` ON `tint`.`l_tint_id` = `invoice_tint`.`tint_l_tint_id` WHERE `invoice_invoice_id` = '" + id + "'");
-                        if (Tint_Rs.next()) {
-                            tintName = Tint_Rs.getString("l_tint");
-
-                        } else {
-                            tintName = "-";
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        //          Search Lens Coating 
-                        ResultSet Coating_Rs = MySQL.execute("SELECT * FROM `invoice_coating` INNER JOIN `coating` ON `coating`.`l_coating_id` = `invoice_coating`.`coating_l_coating_id` WHERE `invoice_invoice_id` = '" + id + "'");
-                        if (Coating_Rs.next()) {
-                            coatingName = Coating_Rs.getString("l_coating");
-
-                        } else {
-                            coatingName = "-";
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        //          Search Lens Design 
-                        ResultSet Coating_Rs = MySQL.execute("SELECT * FROM `invoice_design` INNER JOIN `design` ON `design`.`l_design_id` = `invoice_design`.`design_l_design_id` WHERE `invoice_invoice_id` = '" + id + "'");
-                        if (Coating_Rs.next()) {
-                            DesignName = Coating_Rs.getString("l_design");
-
-                        } else {
-                            DesignName = "-";
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        //          Search Lens Type 
-                        ResultSet Coating_Rs = MySQL.execute("SELECT * FROM `invoice_lens_type` INNER JOIN `lens_type` ON `lens_type`.`l_type_id` = `invoice_lens_type`.`lens_type_l_type_id` WHERE `invoice_invoice_id` = '" + id + "'");
-                        if (Coating_Rs.next()) {
-                            lensTypeName = Coating_Rs.getString("l_type");
-
-                        } else {
-                            lensTypeName = "-";
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        //          Search Lens band 
-                        ResultSet Coating_Rs = MySQL.execute("SELECT * FROM `invoice_lens_brand` INNER JOIN `lens_brand` ON `invoice_lens_brand`.`lens_brand_l_brand_id` = `lens_brand`.`l_brand_id` WHERE `invoice_invoice_id` = '" + id + "'");
-                        if (Coating_Rs.next()) {
-                            lens_brandName = Coating_Rs.getString("l_brand");
-
-                        } else {
-                            lens_brandName = "-";
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-//            get Details
+                    // get Details
                     HashMap<String, Object> reportmap = new HashMap<>();
-
                     reportmap.put("id", id);
-                    reportmap.put("tintName", tintName);
-                    reportmap.put("coatingName", coatingName);
-                    reportmap.put("DesignName", DesignName);
-                    reportmap.put("lensTypeName", lensTypeName);
-                    reportmap.put("lens_brandName", lens_brandName);
 
-//            check if stock is available
+                    // check if stock is available
                     ResultSet rs = MySQL.execute("SELECT * FROM `invoice_item` WHERE `invoice_id` = '" + id + "' ");
 
                     if (rs.next()) {
                         System.out.println(" product invoice id is " + reportmap.get("id"));
-//                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/NewEagleEyeOrderReport.jasper"), reportmap, MySQL.getConnection());
-                        JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/JobCard.jasper"), reportmap, MySQL.getConnection());
+                        //JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/NewEagleEyeOrderReport.jasper"), reportmap, MySQL.getConnection());
+                        JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_job_card.jasper"), reportmap, MySQL.getConnection());
 
                         JasperViewer.viewReport(jasperPrint, false);
                     } else {
                         System.out.println("lens invoice id is " + reportmap.get("id"));
                         JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/JobCard.jasper"), reportmap, MySQL.getConnection());
-//                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Blank_A4_Landscape_1.jasper"), reportmap, MySQL.getConnection());
+                        //JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Blank_A4_Landscape_1.jasper"), reportmap, MySQL.getConnection());
                         JasperViewer.viewReport(jasperPrint, false);
                     }
 
@@ -147,107 +66,22 @@ public class Reports {
 
     public static void OrderPurchaceInvoice(String id) {
         try {
-            String tintName = "";
-
-            String coatingName = "";
-
-            String DesignName = "";
-
-            String lensTypeName = "";
-
-            String lens_brandName = "";
-
-            try {
-                //          Search Lens Tint 
-                ResultSet Tint_Rs = MySQL.execute("SELECT * FROM `invoice_tint` INNER JOIN `tint` ON `tint`.`l_tint_id` = `invoice_tint`.`tint_l_tint_id` WHERE `invoice_invoice_id` = '" + id + "'");
-                if (Tint_Rs.next()) {
-                    tintName = Tint_Rs.getString("l_tint");
-
-                } else {
-                    tintName = "-";
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                //          Search Lens Coating 
-                ResultSet Coating_Rs = MySQL.execute("SELECT * FROM `invoice_coating` INNER JOIN `coating` ON `coating`.`l_coating_id` = `invoice_coating`.`coating_l_coating_id` WHERE `invoice_invoice_id` = '" + id + "'");
-                if (Coating_Rs.next()) {
-                    coatingName = Coating_Rs.getString("l_coating");
-
-                } else {
-                    coatingName = "-";
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                //          Search Lens Design 
-                ResultSet Coating_Rs = MySQL.execute("SELECT * FROM `invoice_design` INNER JOIN `design` ON `design`.`l_design_id` = `invoice_design`.`design_l_design_id` WHERE `invoice_invoice_id` = '" + id + "'");
-                if (Coating_Rs.next()) {
-                    DesignName = Coating_Rs.getString("l_design");
-
-                } else {
-                    DesignName = "-";
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                //          Search Lens Type 
-                ResultSet Coating_Rs = MySQL.execute("SELECT * FROM `invoice_lens_type` INNER JOIN `lens_type` ON `lens_type`.`l_type_id` = `invoice_lens_type`.`lens_type_l_type_id` WHERE `invoice_invoice_id` = '" + id + "'");
-                if (Coating_Rs.next()) {
-                    lensTypeName = Coating_Rs.getString("l_type");
-
-                } else {
-                    lensTypeName = "-";
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                //          Search Lens band 
-                ResultSet Coating_Rs = MySQL.execute("SELECT * FROM `invoice_lens_brand` INNER JOIN `lens_brand` ON `invoice_lens_brand`.`lens_brand_l_brand_id` = `lens_brand`.`l_brand_id` WHERE `invoice_invoice_id` = '" + id + "'");
-                if (Coating_Rs.next()) {
-                    lens_brandName = Coating_Rs.getString("l_brand");
-
-                } else {
-                    lens_brandName = "-";
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
 //            get Details
             HashMap<String, Object> reportmap = new HashMap<>();
-
             reportmap.put("id", id);
-            reportmap.put("tintName", tintName);
-            reportmap.put("coatingName", coatingName);
-            reportmap.put("DesignName", DesignName);
-            reportmap.put("lensTypeName", lensTypeName);
-            reportmap.put("lens_brandName", lens_brandName);
 
-//            check if stock is available
+//            check if stock is  available in invoice item.
             ResultSet rs = MySQL.execute("SELECT * FROM `invoice_item` WHERE `invoice_id` = '" + id + "' ");
 
             if (rs.next()) {
                 System.out.println(" product invoice id is " + reportmap.get("id"));
 //                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/NewEagleEyeOrderReport.jasper"), reportmap, MySQL.getConnection());
-                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_invoice.jasper"), reportmap, MySQL.getConnection());
+                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_order_invoice.jasper"), reportmap, MySQL.getConnection());
 
                 JasperViewer.viewReport(jasperPrint, false);
             } else {
                 System.out.println("lens invoice id is " + reportmap.get("id"));
-                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_invoice.jasper"), reportmap, MySQL.getConnection());
+                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_order_invoice.jasper"), reportmap, MySQL.getConnection());
 //                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Blank_A4_Landscape_1.jasper"), reportmap, MySQL.getConnection());
                 JasperViewer.viewReport(jasperPrint, false);
             }

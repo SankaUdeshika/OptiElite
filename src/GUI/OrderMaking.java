@@ -1229,6 +1229,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                 } else {
 //                                        INSERT PROCESS
                                     if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) {
+                                        System.out.println("Prescription Selected");
                                         int paymentStatus = 0;
                                         if (AdvancedPayment == 0) {
                                             paymentStatus = 2;
@@ -1246,100 +1247,83 @@ public class OrderMaking extends javax.swing.JFrame {
                                             System.out.println("Warrenty id is :- " + WarrentyPeriod);
                                         }
 
-                                        ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`)"
-                                                + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "') ");
-                                        int invoiceId = 0;
-                                        if (Inser_rs.next()) {
+                                        ResultSet Inser_rs;
+                                        //     Add Lens Properties
+                                        if (jTable4.getSelectedRow() != -1) {
+                                            String lensStock_id = String.valueOf(jTable4.getValueAt(jTable4.getSelectedRow(), 0));
+                                            ResultSet lensResultSet = MySQL.execute("SELECT * FROM `lens_stock` WHERE `lens_id` = '" + lensStock_id + "'");
 
-                                            invoiceId = Inser_rs.getInt(1);
+                                            // if lens select
+                                            if (lensResultSet.next()) {
+                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`)"
+                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "') ");
 
-////                                        Add Lens Properties
-//                                            //        Lens Type  
-//                                            String LensTypemapID = "0";
-//                                            if (jComboBox1.getSelectedIndex() != 0) {
-//                                                String lensType = (String) jComboBox1.getSelectedItem();
-//                                                String LensmapArray[] = lensType.split("\\)");
-//                                                LensTypemapID = LensmapArray[1].trim();
-//                                                LensTypemapID = LensMap.get(LensTypemapID);
-//
-//                                                MySQL.execute("INSERT INTO `invoice_lens_type` (`lens_type_l_type_id`,`invoice_invoice_id`)"
-//                                                        + " VALUES ('" + LensTypemapID + "','" + invoiceId + "') ");
-//                                            }
-//
-//                                            //        Cortin Details 
-//                                            String cortinmapName;
-//                                            if (jComboBox2.getSelectedIndex() != 0) {
-//                                                System.out.println("wokring");
-//                                                String lensType = (String) jComboBox2.getSelectedItem();
-//                                                String LensmapArray[] = lensType.split("\\)");
-//                                                cortinmapName = LensmapArray[1].trim();
-//                                                cortinmapName = CortinMap.get(cortinmapName);
-//
-//                                                MySQL.execute("INSERT INTO `invoice_coating` (`coating_l_coating_id`,`invoice_invoice_id`)"
-//                                                        + " VALUES ('" + cortinmapName + "','" + invoiceId + "') ");
-//                                            }
-//
-//                                            //     Lens   Brand Details 
-//                                            String BrandmapName;
-//                                            if (jComboBox3.getSelectedIndex() != 0) {
-//                                                String lensType = (String) jComboBox3.getSelectedItem();
-//                                                String LensmapArray[] = lensType.split("\\)");
-//                                                BrandmapName = LensmapArray[1].trim();
-//                                                BrandmapName = BrandMap.get(BrandmapName);
-//
-//                                                MySQL.execute("INSERT INTO `invoice_lens_brand` (`lens_brand_l_brand_id`,`invoice_invoice_id`)"
-//                                                        + " VALUES ('" + BrandmapName + "','" + invoiceId + "') ");
-//                                            }
-//                                            //        Design Details 
-//                                            String DesignmapName;
-//                                            if (jComboBox4.getSelectedIndex() != 0) {
-//                                                String lensType = (String) jComboBox4.getSelectedItem();
-//                                                String LensmapArray[] = lensType.split("\\)");
-//                                                DesignmapName = LensmapArray[1].trim();
-//                                                DesignmapName = DesingdMap.get(DesignmapName);
-//
-//                                                MySQL.execute("INSERT INTO `invoice_design` (`design_l_design_id`,`invoice_invoice_id`)"
-//                                                        + " VALUES ('" + DesignmapName + "','" + invoiceId + "') ");
-//
-//                                            }
-//                                            //        Tint Details 
-//                                            String TintmapName;
-//                                            if (jComboBox5.getSelectedIndex() != 0) {
-//                                                String lensType = (String) jComboBox5.getSelectedItem();
-//                                                String LensmapArray[] = lensType.split("\\)");
-//                                                TintmapName = LensmapArray[1].trim();
-//                                                TintmapName = TintMap.get(TintmapName);
-//
-//                                                MySQL.execute("INSERT INTO `invoice_tint` (`tint_l_tint_id`,`invoice_invoice_id`)"
-//                                                        + " VALUES ('" + TintmapName + "','" + invoiceId + "') ");
-//                                            }
-//
-////                                        add Invoice Items
-                                            MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
-                                                    + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
-                                            JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
+                                                int invoiceId = 0;
+                                                if (Inser_rs.next()) {
 
-//                                        reduce the stock qty
-                                            ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
-                                            if (stock_rs.next()) {
-                                                int stockQty = stock_rs.getInt("qty");
+                                                    invoiceId = Inser_rs.getInt(1);
 
-                                                stockQty = stockQty - 1;
-                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
+                                                    //add Invoice Items
+                                                    MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
+                                                            + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
+                                                    JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
+
+                                                    // reduce the stock qty
+                                                    ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
+                                                    if (stock_rs.next()) {
+                                                        int stockQty = stock_rs.getInt("qty");
+
+                                                        stockQty = stockQty - 1;
+                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
+                                                    }
+
+                                                    //  Order Successs. -> prints
+                                                    Printsouts printsouts = new Printsouts(invoiceId);
+                                                    printsouts.setVisible(true);
+                                                    // Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                                    //   Refresh();
+                                                } else {
+                                                    JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                                }
+
+                                            } else {
+                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`)"
+                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "') ");
+
+                                                int invoiceId = 0;
+                                                if (Inser_rs.next()) {
+
+                                                    invoiceId = Inser_rs.getInt(1);
+
+                                                    // add Invoice Items
+                                                    MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
+                                                            + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
+                                                    JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
+
+                                                    // reduce the stock qty
+                                                    ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
+                                                    if (stock_rs.next()) {
+                                                        int stockQty = stock_rs.getInt("qty");
+
+                                                        stockQty = stockQty - 1;
+                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
+                                                    }
+
+                                                    // Order Successs. -> prints
+                                                    Printsouts printsouts = new Printsouts(invoiceId);
+                                                    printsouts.setVisible(true);
+                                                    //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                                    //  Refresh();
+                                                } else {
+                                                    JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                                }
                                             }
-//
-
-//                                          Order Successs. -> prints
-                                            Printsouts printsouts = new Printsouts(invoiceId);
-                                            printsouts.setVisible(true);
-//                                            Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-//                                            Refresh();
-                                        } else {
-                                            JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                         }
 
                                     } else {
 
+                                        System.out.println("Prescription not Selected");
+                                        
                                         int paymentStatus = 0;
                                         if (AdvancedPayment == 0) {
                                             paymentStatus = 2;
@@ -1356,97 +1340,84 @@ public class OrderMaking extends javax.swing.JFrame {
                                             WarrentyPeriod = TintMap.get(WarrentyPeriod);
                                             System.out.println("Warrenty id is :- " + WarrentyPeriod);
                                         }
-                                        ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`)"
-                                                + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "') ");
-//
-                                        int invoiceId = 0;
-                                        if (Inser_rs.next()) {
 
-                                            invoiceId = Inser_rs.getInt(1);
+                                        //         Add Lens Properties
+                                        ResultSet Inser_rs;
+                                        //   Add Lens Properties
+                                        if (jTable4.getSelectedRow() != -1) {
+                                            String lensStock_id = String.valueOf(jTable4.getValueAt(jTable4.getSelectedRow(), 0));
+                                            ResultSet lensResultSet = MySQL.execute("SELECT * FROM `lens_stock` WHERE `lens_id` = '" + lensStock_id + "'");
 
-////                                        Add Lens Properties
-//                                            //        Lens Type  
-//                                            String LensTypemapID = "0";
-//                                            if (jComboBox1.getSelectedIndex() != 0) {
-//                                                String lensType = (String) jComboBox1.getSelectedItem();
-//                                                String LensmapArray[] = lensType.split("\\)");
-//                                                LensTypemapID = LensmapArray[1].trim();
-//                                                LensTypemapID = LensMap.get(LensTypemapID);
-//
-//                                                MySQL.execute("INSERT INTO `invoice_lens_type` (`lens_type_l_type_id`,`invoice_invoice_id`)"
-//                                                        + " VALUES ('" + LensTypemapID + "','" + invoiceId + "') ");
-//                                            }
-//
-//                                            //        Cortin Details 
-//                                            String cortinmapName;
-//                                            if (jComboBox2.getSelectedIndex() != 0) {
-//                                                System.out.println("wokring");
-//                                                String lensType = (String) jComboBox2.getSelectedItem();
-//                                                String LensmapArray[] = lensType.split("\\)");
-//                                                cortinmapName = LensmapArray[1].trim();
-//                                                cortinmapName = CortinMap.get(cortinmapName);
-//
-//                                                MySQL.execute("INSERT INTO `invoice_coating` (`coating_l_coating_id`,`invoice_invoice_id`)"
-//                                                        + " VALUES ('" + cortinmapName + "','" + invoiceId + "') ");
-//                                            }
-//
-//                                            //     Lens   Brand Details 
-//                                            String BrandmapName;
-//                                            if (jComboBox3.getSelectedIndex() != 0) {
-//                                                String lensType = (String) jComboBox3.getSelectedItem();
-//                                                String LensmapArray[] = lensType.split("\\)");
-//                                                BrandmapName = LensmapArray[1].trim();
-//                                                BrandmapName = BrandMap.get(BrandmapName);
-//
-//                                                MySQL.execute("INSERT INTO `invoice_lens_brand` (`lens_brand_l_brand_id`,`invoice_invoice_id`)"
-//                                                        + " VALUES ('" + BrandmapName + "','" + invoiceId + "') ");
-//                                            }
-//                                            //        Design Details 
-//                                            String DesignmapName;
-//                                            if (jComboBox4.getSelectedIndex() != 0) {
-//                                                String lensType = (String) jComboBox4.getSelectedItem();
-//                                                String LensmapArray[] = lensType.split("\\)");
-//                                                DesignmapName = LensmapArray[1].trim();
-//                                                DesignmapName = DesingdMap.get(DesignmapName);
-//
-//                                                MySQL.execute("INSERT INTO `invoice_design` (`design_l_design_id`,`invoice_invoice_id`)"
-//                                                        + " VALUES ('" + DesignmapName + "','" + invoiceId + "') ");
-//
-//                                            }
-//                                            //        Tint Details 
-//                                            String TintmapName;
-//                                            if (jComboBox5.getSelectedIndex() != 0) {
-//                                                String lensType = (String) jComboBox5.getSelectedItem();
-//                                                String LensmapArray[] = lensType.split("\\)");
-//                                                TintmapName = LensmapArray[1].trim();
-//                                                TintmapName = TintMap.get(TintmapName);
-//
-//                                                MySQL.execute("INSERT INTO `invoice_tint` (`tint_l_tint_id`,`invoice_invoice_id`)"
-//                                                        + " VALUES ('" + TintmapName + "','" + invoiceId + "') ");
-//                                            }
-//
-////                                        add Invoice Items
-                                            MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
-                                                    + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
-                                            JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
+                                            // if lens select
+                                            if (lensResultSet.next()) {
+                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`)"
+                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "') ");
 
-//                                        reduce the stock qty
-                                            ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
-                                            if (stock_rs.next()) {
-                                                int stockQty = stock_rs.getInt("qty");
+                                                int invoiceId = 0;
+                                                if (Inser_rs.next()) {
 
-                                                stockQty = stockQty - 1;
-                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
+                                                    invoiceId = Inser_rs.getInt(1);
+
+                                                    //   add Invoice Items
+                                                    MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
+                                                            + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
+                                                    JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
+
+                                                    //   reduce the stock qty
+                                                    ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
+                                                    if (stock_rs.next()) {
+                                                        int stockQty = stock_rs.getInt("qty");
+
+                                                        stockQty = stockQty - 1;
+                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
+                                                    }
+//
+                                                    Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
+                                                    printsouts.setVisible(true);
+                                                    //  Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
+                                                    // Refresh();
+
+                                                } else {
+                                                    JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                                }
+
+                                            } else {
+                                                
+                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`)"
+                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "') ");
+
+                                                int invoiceId = 0;
+                                                if (Inser_rs.next()) {
+
+                                                    invoiceId = Inser_rs.getInt(1);
+
+                                                    //   add Invoice Items
+                                                    MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
+                                                            + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
+                                                    JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
+
+                                                    //   reduce the stock qty
+                                                    ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
+                                                    if (stock_rs.next()) {
+                                                        int stockQty = stock_rs.getInt("qty");
+
+                                                        stockQty = stockQty - 1;
+                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
+                                                    }
+//
+                                                    Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
+                                                    printsouts.setVisible(true);
+                                                    //  Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
+                                                    // Refresh();
+
+                                                } else {
+                                                    JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                                }
+
                                             }
-//
-                                            Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
-                                            printsouts.setVisible(true);
-//                                            Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
-//                                            Refresh();
 
-                                        } else {
-                                            JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                         }
+
                                     }
                                 }
 
