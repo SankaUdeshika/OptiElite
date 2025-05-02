@@ -1852,3 +1852,5 @@ java.lang.NullPointerException: Cannot invoke "java.sql.ResultSet.next()" becaus
 
 May 02, 2025 10:07:40 PM gui.Login signInBtnActionPerformed
 INFO: user has logged succesfully
+May 02, 2025 11:59:08 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
