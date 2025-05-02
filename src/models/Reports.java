@@ -24,6 +24,37 @@ public class Reports {
             if (prescription_rs.next()) {
                 //invoice without Prescription Details
                 System.out.println("NO Prescription.");
+
+                try {
+                    // get Details
+                    HashMap<String, Object> reportmap = new HashMap<>();
+                    reportmap.put("id", id);
+
+                    // check if stock is available
+                    ResultSet rs = MySQL.execute("SELECT * FROM `invoice_item` WHERE `invoice_id` = '" + id + "' ");
+
+                    if (rs.next()) {
+                        System.out.println(" product invoice id is " + reportmap.get("id"));
+                        //JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/NewEagleEyeOrderReport.jasper"), reportmap, MySQL.getConnection());
+                        JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_job_card.jasper"), reportmap, MySQL.getConnection());
+
+                        JasperViewer.viewReport(jasperPrint, false);
+                    } else {
+                        System.out.println("lens invoice id is " + reportmap.get("id"));
+                        JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/JobCard.jasper"), reportmap, MySQL.getConnection());
+                        //JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Blank_A4_Landscape_1.jasper"), reportmap, MySQL.getConnection());
+                        JasperViewer.viewReport(jasperPrint, false);
+                    }
+
+//            JasperPrint jasperPrint = JasperFillManager.fillReport("reports/EagleEyeOrders.jasper", reportmap, MySQL.getConnection());
+//            JasperPrint jasperPrint = JasperFillManager.fillReport("reports/EagleEyeOrders.jasper", reportmap,new JRTableModelDataSource(model));
+                } catch (JRException ex) {
+                    ex.printStackTrace();
+                    Logger.getLogger(Reports.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Reports.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             } else {
                 System.out.println("With Prescription");
 
@@ -74,12 +105,26 @@ public class Reports {
             ResultSet rs = MySQL.execute("SELECT * FROM `invoice_item` WHERE `invoice_id` = '" + id + "' ");
 
             if (rs.next()) {
-                System.out.println(" product invoice id is " + reportmap.get("id"));
-//                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/NewEagleEyeOrderReport.jasper"), reportmap, MySQL.getConnection());
-                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_order_invoice.jasper"), reportmap, MySQL.getConnection());
+                // Frame Purhase
 
-                JasperViewer.viewReport(jasperPrint, false);
+                ResultSet invoice_rs = MySQL.execute("SELECT * FROM `invoice` WHERE `invoice_id` ='" + id + "'  ");
+                if (invoice_rs.next()) {
+                    if (invoice_rs.getInt("lens_stock_lens_id") == 0) {
+                        // without Lens
+                        System.out.println(" product invoice id is " + reportmap.get("id"));
+                        JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/NoLensOptielite_order_invoice.jasper"), reportmap, MySQL.getConnection());
+                        JasperViewer.viewReport(jasperPrint, false);
+                    } else {
+                        // with lens
+                        System.out.println(" product invoice id is " + reportmap.get("id"));
+                        JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_order_invoice.jasper"), reportmap, MySQL.getConnection());
+                        JasperViewer.viewReport(jasperPrint, false);
+                    }
+
+                }
+
             } else {
+                // lens Purchase
                 System.out.println("lens invoice id is " + reportmap.get("id"));
                 JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_order_invoice.jasper"), reportmap, MySQL.getConnection());
 //                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Blank_A4_Landscape_1.jasper"), reportmap, MySQL.getConnection());
