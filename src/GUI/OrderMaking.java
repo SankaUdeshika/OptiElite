@@ -1356,7 +1356,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                             }
 
                                         } else {
-                                            
+
                                             Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`)"
                                                     + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "') ");
 
@@ -1486,7 +1486,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                             }
 
                                         } else {
-                                            
+
                                             Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`)"
                                                     + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "') ");
 
@@ -1529,7 +1529,81 @@ public class OrderMaking extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(this, "Please Select a Valid Frame", "InValid  Frame id", JOptionPane.ERROR_MESSAGE);
                         }
                     } else {
-                        JOptionPane.showMessageDialog(this, "Please Select a Frame", "Empty  Frame id", JOptionPane.ERROR_MESSAGE);
+
+                        int OptionResult = JOptionPane.showConfirmDialog(this, "Are You Sure Make Only Lens Purchase?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                        if (OptionResult == 0) {
+                            //OK
+
+                            //   payment Method Validation
+                            if (buttonGroup1.getSelection() != null) {
+                                //    payment Assign
+                                if (jRadioButton2.isSelected()) {
+                                    paymentMethodSelecetd = 1;
+                                } else if (jRadioButton3.isSelected()) {
+                                    paymentMethodSelecetd = 2;
+                                } else if (jRadioButton4.isSelected()) {
+                                    paymentMethodSelecetd = 3;
+                                } else if (jRadioButton1.isSelected()) {
+                                    paymentMethodSelecetd = 4;
+                                }
+
+                                if (JoBtype == 0) {
+                                    JOptionPane.showMessageDialog(this, "Please Sekect Job Type");
+                                } else {
+                                    //  INSERT PROCESS
+                                    int payment_status_id = 1;
+
+                                    if (jTextField11.getText().isBlank()) {
+                                        payment_status_id = 2;
+                                    }
+
+                                    if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) {
+                                        ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`)"
+                                                + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "') ");
+                                        int invoiceId = 0;
+                                        if (Inser_rs.next()) {
+
+                                            invoiceId = Inser_rs.getInt(1);
+
+                                            Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                            Refresh();
+
+                                        } else {
+                                            JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                        }
+
+                                    } else {
+
+                                        if (jTextField11.getText().isBlank()) {
+                                            payment_status_id = 2;
+                                        }
+
+                                        ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`)"
+                                                + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "') ");
+                                        //
+                                        int invoiceId = 0;
+                                        if (Inser_rs.next()) {
+
+                                            invoiceId = Inser_rs.getInt(1);
+
+                                            JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
+                                            Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                            Refresh();
+
+                                        } else {
+                                            JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                        }
+                                    }
+                                }
+
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Please Select a Payment Method", "InValid  Payment Method", JOptionPane.ERROR_MESSAGE);
+                            }
+
+                        } else {
+                            System.out.println("NO");
+                        }
+
                     }
 
                 } else {

@@ -120,14 +120,12 @@ public class Reports {
                         JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_order_invoice.jasper"), reportmap, MySQL.getConnection());
                         JasperViewer.viewReport(jasperPrint, false);
                     }
-
                 }
 
             } else {
                 // lens Purchase
                 System.out.println("lens invoice id is " + reportmap.get("id"));
-                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Optielite_order_invoice.jasper"), reportmap, MySQL.getConnection());
-//                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Blank_A4_Landscape_1.jasper"), reportmap, MySQL.getConnection());
+                JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/NoFrameOptielite_order_invoice.jasper"), reportmap, MySQL.getConnection());
                 JasperViewer.viewReport(jasperPrint, false);
             }
 
