@@ -1,6 +1,5 @@
 package gui;
 
-import GUI.ChooseOrderTypes;
 import models.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Dimension;
@@ -1141,7 +1140,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
 
                 JOptionPane.showMessageDialog(this, "Prescription Adding Success", "Insert Success", JOptionPane.WARNING_MESSAGE);
 
-                ChooseOrderTypes chooseOrderTypes = new ChooseOrderTypes(Customer_mobile);
+                OrderMaking chooseOrderTypes = new OrderMaking(Customer_mobile);
                 chooseOrderTypes.setVisible(true);
                 this.dispose();
 
@@ -1159,7 +1158,8 @@ public class PrescripitonAdding extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // without saving
-        ChooseOrderTypes chooseOrderTypes = new ChooseOrderTypes(customerIdField.getText().toString());
+
+        OrderMaking chooseOrderTypes = new OrderMaking(customerIdField.getText().toString());
         chooseOrderTypes.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
