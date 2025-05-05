@@ -11,6 +11,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 
@@ -97,9 +98,26 @@ public class Reports {
 
     public static void OrderPurchaceInvoice(String id) {
         try {
-//            get Details
+
+            //            get Details
             HashMap<String, Object> reportmap = new HashMap<>();
             reportmap.put("id", id);
+
+            // Pyament History
+            int count = 0;
+            ArrayList<String> list = new ArrayList<>();
+            ResultSet paymentResult = MySQL.execute("SELECT * FROM `advance_payment_history` WHERE `invoice_invoice_id` = '" + id + "' ");
+
+            while (paymentResult.next()) {
+                count++;
+                reportmap.put("payment"+count,paymentResult.getString("date") + " -"+ paymentResult.getString("paid_amount") +" Paid");
+            }
+
+            try {
+                Thread.sleep(2000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 //            check if stock is  available in invoice item.
             ResultSet rs = MySQL.execute("SELECT * FROM `invoice_item` WHERE `invoice_id` = '" + id + "' ");
