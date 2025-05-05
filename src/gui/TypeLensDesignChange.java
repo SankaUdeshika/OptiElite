@@ -41,8 +41,8 @@ public class TypeLensDesignChange extends javax.swing.JFrame {
 
             while (rs.next()) {
                 Vector v = new Vector();
-                v.add(rs.getString("l_design_id"));
-                v.add(rs.getString("l_design"));
+                v.add(rs.getString("lens_design_id"));
+                v.add(rs.getString("lens_design"));
                 dtm.addRow(v);
             }
 
@@ -188,9 +188,9 @@ public class TypeLensDesignChange extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Enter a lens Design", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                ResultSet rs = MySQL.execute("SELECT * FROM `design` WHERE `l_design` = '" + LensDesign + "' ");
+                ResultSet rs = MySQL.execute("SELECT * FROM `lens_design` WHERE `lens_design` = '" + LensDesign + "' ");
                 if (!rs.next()) {
-                    MySQL.execute("INSERT INTO `design` (`l_design`) VALUES ('" + LensDesign + "') ");
+                    MySQL.execute("INSERT INTO `lens_design` (`lens_design`) VALUES ('" + LensDesign + "') ");
                     JOptionPane.showMessageDialog(this, "Lens Design Added", "Success", JOptionPane.OK_OPTION);
                     loadLensDesign();
                 }

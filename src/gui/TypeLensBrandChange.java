@@ -44,8 +44,8 @@ public class TypeLensBrandChange extends javax.swing.JFrame {
             while (rs.next()) {
 
                 Vector v = new Vector();
-                v.add(rs.getString("l_brand_id"));
-                v.add(rs.getString("l_brand"));
+                v.add(rs.getString("lens_brand_id"));
+                v.add(rs.getString("lens_brand"));
                 dtm.addRow(v);
             }
 
@@ -192,9 +192,9 @@ public class TypeLensBrandChange extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Enter a lens Brand", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                ResultSet rs = MySQL.execute("SELECT * FROM `lens_brand` WHERE `l_brand` = '" + LensBrand + "' ");
+                ResultSet rs = MySQL.execute("SELECT * FROM `lens_brand` WHERE `lens_brand` = '" + LensBrand + "' ");
                 if (!rs.next()) {
-                    MySQL.execute("INSERT INTO `lens_brand` (`l_brand`) VALUES ('" + LensBrand + "') ");
+                    MySQL.execute("INSERT INTO `lens_brand` (`lens_brand`) VALUES ('" + LensBrand + "') ");
                     JOptionPane.showMessageDialog(this, "Lens Brand Added", "Success", JOptionPane.OK_OPTION);
                     LoadLensBrand();
                 }

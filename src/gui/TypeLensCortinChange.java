@@ -40,8 +40,8 @@ public class TypeLensCortinChange extends javax.swing.JFrame {
 
             while (rs.next()) {
                 Vector v = new Vector();
-                v.add(rs.getString("l_coating_id"));
-                v.add(rs.getString("l_coating"));
+                v.add(rs.getString("lens_coating_id"));
+                v.add(rs.getString("lens_coating"));
                 dtm.addRow(v);
             }
 
@@ -187,9 +187,9 @@ public class TypeLensCortinChange extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Enter a lens Cortin", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                ResultSet rs = MySQL.execute("SELECT * FROM `coating` WHERE `l_coating` = '" + LensCortin + "' ");
+                ResultSet rs = MySQL.execute("SELECT * FROM `lens_cortin` WHERE `lens_cortin` = '" + LensCortin + "' ");
                 if (!rs.next()) {
-                    MySQL.execute("INSERT INTO `coating` (`l_coating`) VALUES ('" + LensCortin + "') ");
+                    MySQL.execute("INSERT INTO `coating` (`lens_cortin`) VALUES ('" + LensCortin + "') ");
                     JOptionPane.showMessageDialog(this, "Lens Cortin Added", "Success", JOptionPane.OK_OPTION);
                     loadLensCortin();
                 }

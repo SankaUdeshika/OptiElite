@@ -23,9 +23,9 @@ public class TypeLensTintChange extends javax.swing.JFrame {
     /**
      * Creates new form TypeLensTintChange
      */
-    OrderMaking parentObject;
+    LensStockAdding parentObject;
 
-    public TypeLensTintChange(OrderMaking object) {
+    public TypeLensTintChange(LensStockAdding object) {
         initComponents();
         loadLensTint();
         parentObject = object;
@@ -40,8 +40,8 @@ public class TypeLensTintChange extends javax.swing.JFrame {
 
             while (rs.next()) {
                 Vector v = new Vector();
-                v.add(rs.getString("l_tint_id"));
-                v.add(rs.getString("l_tint"));
+                v.add(rs.getString("lens_tint_id"));
+                v.add(rs.getString("lens_tint"));
                 dtm.addRow(v);
             }
 
@@ -184,9 +184,9 @@ public class TypeLensTintChange extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Enter a lens Tint", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                ResultSet rs = MySQL.execute("SELECT * FROM `tint` WHERE `l_tint` = '" + LensTint + "' ");
+                ResultSet rs = MySQL.execute("SELECT * FROM `lens_tint` WHERE `lens_tint` = '" + LensTint + "' ");
                 if (!rs.next()) {
-                    MySQL.execute("INSERT INTO `tint` (`l_tint`) VALUES ('" + LensTint + "') ");
+                    MySQL.execute("INSERT INTO `lens_tint` (`lens_tint`) VALUES ('" + LensTint + "') ");
                     JOptionPane.showMessageDialog(this, "Lens Tint Added", "Success", JOptionPane.OK_OPTION);
                     loadLensTint();
                 }

@@ -794,6 +794,8 @@ public class LensStockAdding extends javax.swing.JFrame {
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
+        TypeLensTintChange lt = new TypeLensTintChange(this);
+        lt.setVisible(true);
     }//GEN-LAST:event_jButton12ActionPerformed
     
     public void LoadLensTint() {
