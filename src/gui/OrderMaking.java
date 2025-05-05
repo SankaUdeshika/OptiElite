@@ -371,6 +371,8 @@ public class OrderMaking extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jTextField8 = new javax.swing.JTextField();
+        jLabel35 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -440,7 +442,7 @@ public class OrderMaking extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(172, 172, 172)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 972, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -722,6 +724,11 @@ public class OrderMaking extends javax.swing.JFrame {
                 jTextField11ActionPerformed(evt);
             }
         });
+        jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField11KeyReleased(evt);
+            }
+        });
 
         jLabel40.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel40.setText("Sub Total");
@@ -807,6 +814,9 @@ public class OrderMaking extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("X");
 
+        jLabel35.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel35.setText("Pay Amount");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -814,43 +824,43 @@ public class OrderMaking extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17))
-                        .addGap(40, 40, 40)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9))
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField6)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE))
-                        .addGap(44, 44, 44))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel15))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel17))
+                                .addGap(40, 40, 40)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9))
+                                .addGap(50, 50, 50)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jScrollPane3)
+                                    .addComponent(jTextField6)))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jTextField7, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(57, 57, 57)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel15)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGap(43, 43, 43)
+                                        .addComponent(jButton8))))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel23)
@@ -866,13 +876,12 @@ public class OrderMaking extends javax.swing.JFrame {
                                 .addGap(30, 30, 30)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel12)
-                                    .addComponent(jComboBox6, 0, 260, Short.MAX_VALUE)
+                                    .addComponent(jComboBox6, 0, 164, Short.MAX_VALUE)
                                     .addComponent(jComboBox7, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(30, 30, 30)
+                                .addGap(36, 36, 36)
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20, 20, 20)
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addGap(10, 10, 10)
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -882,39 +891,45 @@ public class OrderMaking extends javax.swing.JFrame {
                                                 .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(60, 60, 60)
                                                 .addComponent(jLabel39))
-                                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(2, 2, 2)
-                                                .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addGroup(jPanel6Layout.createSequentialGroup()
+                                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                                            .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                            .addGap(0, 0, 0)
+                                                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                            .addGap(18, 18, 18)
+                                                            .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                    .addGap(2, 2, 2)
+                                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                                            .addGap(4, 4, 4)
+                                                            .addComponent(jLabel38))
+                                                        .addComponent(jLabel34))
+                                                    .addGap(30, 30, 30)
+                                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel35)
+                                                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGroup(jPanel6Layout.createSequentialGroup()
+                                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(2, 2, 2)
+                                                    .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                                        .addGap(100, 100, 100)
-                                                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(10, 10, 10)
-                                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 0, 0)
-                                                .addComponent(jButton5))
-                                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(0, 0, 0)
-                                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(40, 40, 40)
-                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel34)
-                                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                            .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                                                .addGap(30, 30, 30)
-                                                                .addComponent(jLabel38)))
-                                                        .addGap(34, 34, 34)
-                                                        .addComponent(jButton8))))))
-                                    .addComponent(jLabel14))))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(31, 31, 31)
+                                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(0, 0, 0)
+                                                    .addComponent(jButton5)))))
+                                    .addComponent(jLabel14))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator8)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -946,9 +961,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
@@ -956,32 +969,45 @@ public class OrderMaking extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(58, 58, 58)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton8)
+                        .addGap(16, 16, 16)))
                 .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel14)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel23)
-                        .addGap(15, 15, 15)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton2)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(jRadioButton4))
+                                .addComponent(jLabel23)
+                                .addGap(15, 15, 15)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jRadioButton2)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGap(40, 40, 40)
+                                        .addComponent(jRadioButton4))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGap(20, 20, 20)
+                                        .addComponent(jRadioButton3))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGap(60, 60, 60)
+                                        .addComponent(jRadioButton1))))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
+                                .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(68, 68, 68)
+                                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
-                                .addComponent(jRadioButton3))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addComponent(jRadioButton1))))
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(2, 2, 2))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
@@ -990,35 +1016,33 @@ public class OrderMaking extends javax.swing.JFrame {
                             .addComponent(jLabel39, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(10, 10, 10)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel32)
-                            .addComponent(jLabel31)
-                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5))
-                        .addGap(3, 3, 3)
-                        .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel33)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton6)))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(jLabel27))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel38)
-                                    .addComponent(jButton8)))
-                            .addComponent(jLabel34)))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(28, Short.MAX_VALUE))
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel32)
+                                    .addComponent(jLabel31)
+                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton5))
+                                .addGap(13, 13, 13)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(jLabel33)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jButton6)
+                                                .addComponent(jLabel27))))
+                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                            .addComponent(jLabel35)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                            .addComponent(jLabel34)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jLabel38)))))
+                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -1030,7 +1054,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                            .addComponent(jButton7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.LEADING)
@@ -1047,8 +1071,8 @@ public class OrderMaking extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 1150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1081,12 +1105,12 @@ public class OrderMaking extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jSeparator1)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1218,6 +1242,7 @@ public class OrderMaking extends javax.swing.JFrame {
         String Customer_mobile = jTextField1.getText();
         String Prescription_id = jTextField4.getText();
         String Frame_id = jTextField6.getText();
+        double Payamount = Double.parseDouble(jTextField8.getText());
         String product_intid;
         int lensQty = Integer.parseInt(jTextField5.getText());
         int JoBtype = jComboBox6.getSelectedIndex();
@@ -1242,76 +1267,210 @@ public class OrderMaking extends javax.swing.JFrame {
             if (!Customer_mobile.isEmpty()) {
                 ResultSet cust_rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + Customer_mobile + "'");
                 if (cust_rs.next()) {
-//                            Frame Id Validation
-                    if (!Frame_id.isEmpty()) {
-                        ResultSet Frame_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' AND `qty` > 0 ");
-                        if (Frame_rs.next()) {
-                            product_intid = String.valueOf(Frame_rs.getInt("product_intid"));
-//                                   payment Method Validation
-                            if (buttonGroup1.getSelection() != null) {
-//                                        payment Assign
-                                if (jRadioButton2.isSelected()) {
-                                    paymentMethodSelecetd = 1;
-                                } else if (jRadioButton3.isSelected()) {
-                                    paymentMethodSelecetd = 2;
-                                } else if (jRadioButton4.isSelected()) {
-                                    paymentMethodSelecetd = 3;
-                                } else if (jRadioButton1.isSelected()) {
-                                    paymentMethodSelecetd = 4;
-                                }
-                                
-                                if (JoBtype == 0) {
-                                    JOptionPane.showMessageDialog(this, "Please Sekect Job Type");
-                                } else {
-//                                        INSERT PROCESS
-                                    if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) {
-                                        System.out.println("Prescription Selected");
-                                        int paymentStatus = 0;
-                                        if (AdvancedPayment == 0) {
-                                            paymentStatus = 2;
-                                        } else {
-                                            paymentStatus = 1;
-                                        }
+                    
+                    if (jTextField8.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Please don't let empty Payment Amount", "Empty Payment Amount", JOptionPane.ERROR_MESSAGE);
+                    } else {
 
-                                        //        Warrenty Details 
-                                        String WarrentyPeriod = "1";
-                                        if (jComboBox7.getSelectedIndex() != 0) {
-                                            String warrentyType = (String) jComboBox7.getSelectedItem();
-                                            String warrentyArray[] = warrentyType.split("\\)");
-                                            WarrentyPeriod = warrentyArray[1].trim();
-                                            WarrentyPeriod = TintMap.get(WarrentyPeriod);
-                                            System.out.println("Warrenty id is :- " + WarrentyPeriod);
-                                        }
-                                        
-                                        ResultSet Inser_rs;
-                                        //     Add Lens Properties
-                                        if (jTable4.getSelectedRow() != -1) {
-                                            
-                                            if (jTextField5.getText().isEmpty()) {
-                                                JOptionPane.showMessageDialog(this, "Please Enter Lens Amount", "Empty Lenses Quantity", JOptionPane.ERROR_MESSAGE);
-                                            } else if (lensQty > 2) {
-                                                JOptionPane.showMessageDialog(this, "Please Enter Valid Lens Amount", "Invalid Lenses Quantity", JOptionPane.ERROR_MESSAGE);
+//                        Frame Id Validation
+                        if (!Frame_id.isEmpty()) {
+                            ResultSet Frame_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' AND `qty` > 0 ");
+                            if (Frame_rs.next()) {
+                                product_intid = String.valueOf(Frame_rs.getInt("product_intid"));
+//                                   payment Method Validation
+                                if (buttonGroup1.getSelection() != null) {
+//                                        payment Assign
+                                    if (jRadioButton2.isSelected()) {
+                                        paymentMethodSelecetd = 1;
+                                    } else if (jRadioButton3.isSelected()) {
+                                        paymentMethodSelecetd = 2;
+                                    } else if (jRadioButton4.isSelected()) {
+                                        paymentMethodSelecetd = 3;
+                                    } else if (jRadioButton1.isSelected()) {
+                                        paymentMethodSelecetd = 4;
+                                    }
+                                    
+                                    if (JoBtype == 0) {
+                                        JOptionPane.showMessageDialog(this, "Please Sekect Job Type");
+                                    } else {
+//                                        INSERT PROCESS
+                                        if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) {
+                                            System.out.println("Prescription Selected");
+                                            int paymentStatus = 0;
+                                            if (AdvancedPayment == 0) {
+                                                paymentStatus = 2;
                                             } else {
+                                                paymentStatus = 1;
+                                            }
+
+                                            //        Warrenty Details 
+                                            String WarrentyPeriod = "1";
+                                            if (jComboBox7.getSelectedIndex() != 0) {
+                                                String warrentyType = (String) jComboBox7.getSelectedItem();
+                                                String warrentyArray[] = warrentyType.split("\\)");
+                                                WarrentyPeriod = warrentyArray[1].trim();
+                                                WarrentyPeriod = TintMap.get(WarrentyPeriod);
+                                                System.out.println("Warrenty id is :- " + WarrentyPeriod);
+                                            }
+                                            
+                                            ResultSet Inser_rs;
+                                            //     Add Lens Properties
+                                            if (jTable4.getSelectedRow() != -1) {
+                                                
+                                                if (jTextField5.getText().isEmpty()) {
+                                                    JOptionPane.showMessageDialog(this, "Please Enter Lens Amount", "Empty Lenses Quantity", JOptionPane.ERROR_MESSAGE);
+                                                } else if (lensQty > 2) {
+                                                    JOptionPane.showMessageDialog(this, "Please Enter Valid Lens Amount", "Invalid Lenses Quantity", JOptionPane.ERROR_MESSAGE);
+                                                } else {
+                                                    String lensStock_id = String.valueOf(jTable4.getValueAt(jTable4.getSelectedRow(), 0));
+                                                    ResultSet lensResultSet = MySQL.execute("SELECT * FROM `lens_stock` WHERE `lens_id` = '" + lensStock_id + "'");
+
+                                                    // if lens select
+                                                    if (lensResultSet.next()) {
+                                                        
+                                                        Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`)"
+                                                                + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "') ");
+                                                        
+                                                        int invoiceId = 0;
+                                                        if (Inser_rs.next()) {
+                                                            
+                                                            invoiceId = Inser_rs.getInt(1);
+
+                                                            //add Invoice Items
+                                                            MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
+                                                                    + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
+                                                            JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
+
+                                                            // reduce the stock qty
+                                                            ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
+                                                            if (stock_rs.next()) {
+                                                                int stockQty = stock_rs.getInt("qty");
+                                                                
+                                                                stockQty = stockQty - 1;
+                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
+                                                            }
+
+                                                            //  Order Successs. -> prints
+                                                            Printsouts printsouts = new Printsouts(invoiceId);
+                                                            printsouts.setVisible(true);
+                                                            // Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                                            //   Refresh();
+                                                        } else {
+                                                            JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                                        }
+                                                        
+                                                    } else {
+                                                        Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`)"
+                                                                + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + Payamount + "') ");
+                                                        
+                                                        int invoiceId = 0;
+                                                        if (Inser_rs.next()) {
+                                                            
+                                                            invoiceId = Inser_rs.getInt(1);
+
+                                                            // add Invoice Items
+                                                            MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
+                                                                    + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
+                                                            JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
+
+                                                            // reduce the stock qty
+                                                            ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
+                                                            if (stock_rs.next()) {
+                                                                int stockQty = stock_rs.getInt("qty");
+                                                                
+                                                                stockQty = stockQty - 1;
+                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
+                                                            }
+
+                                                            // Order Successs. -> prints
+                                                            Printsouts printsouts = new Printsouts(invoiceId);
+                                                            printsouts.setVisible(true);
+                                                            //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                                            //  Refresh();
+                                                        } else {
+                                                            JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                                        }
+                                                    }
+                                                }
+                                                
+                                            } else {
+                                                
+                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`)"
+                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + Payamount + "') ");
+                                                
+                                                int invoiceId = 0;
+                                                if (Inser_rs.next()) {
+                                                    
+                                                    invoiceId = Inser_rs.getInt(1);
+
+                                                    // add Invoice Items
+                                                    MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
+                                                            + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
+                                                    JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
+
+                                                    // reduce the stock qty
+                                                    ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
+                                                    if (stock_rs.next()) {
+                                                        int stockQty = stock_rs.getInt("qty");
+                                                        
+                                                        stockQty = stockQty - 1;
+                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
+                                                    }
+
+                                                    // Order Successs. -> prints
+                                                    Printsouts printsouts = new Printsouts(invoiceId);
+                                                    printsouts.setVisible(true);
+                                                    //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                                    //  Refresh();
+                                                } else {
+                                                    JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                                }
+                                            }
+                                            
+                                        } else {
+                                            
+                                            System.out.println("Prescription not Selected");
+                                            
+                                            int paymentStatus = 0;
+                                            if (AdvancedPayment == 0) {
+                                                paymentStatus = 2;
+                                            } else {
+                                                paymentStatus = 1;
+                                            }
+
+                                            //        Warrenty Details 
+                                            String WarrentyPeriod = "1";
+                                            if (jComboBox7.getSelectedIndex() != 0) {
+                                                String warrentyType = (String) jComboBox7.getSelectedItem();
+                                                String warrentyArray[] = warrentyType.split("\\)");
+                                                WarrentyPeriod = warrentyArray[1].trim();
+                                                WarrentyPeriod = TintMap.get(WarrentyPeriod);
+                                                System.out.println("Warrenty id is :- " + WarrentyPeriod);
+                                            }
+
+                                            //         Add Lens Properties
+                                            ResultSet Inser_rs;
+                                            //   Add Lens Properties
+                                            if (jTable4.getSelectedRow() != -1) {
                                                 String lensStock_id = String.valueOf(jTable4.getValueAt(jTable4.getSelectedRow(), 0));
                                                 ResultSet lensResultSet = MySQL.execute("SELECT * FROM `lens_stock` WHERE `lens_id` = '" + lensStock_id + "'");
 
                                                 // if lens select
                                                 if (lensResultSet.next()) {
-                                                    
-                                                    Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`)"
-                                                            + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "') ");
+                                                    Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`payment_amount`)"
+                                                            + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + Payamount + "') ");
                                                     
                                                     int invoiceId = 0;
                                                     if (Inser_rs.next()) {
                                                         
                                                         invoiceId = Inser_rs.getInt(1);
 
-                                                        //add Invoice Items
+                                                        //   add Invoice Items
                                                         MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
                                                                 + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
                                                         JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
 
-                                                        // reduce the stock qty
+                                                        //   reduce the stock qty
                                                         ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
                                                         if (stock_rs.next()) {
                                                             int stockQty = stock_rs.getInt("qty");
@@ -1319,31 +1478,32 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             stockQty = stockQty - 1;
                                                             MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                         }
-
-                                                        //  Order Successs. -> prints
-                                                        Printsouts printsouts = new Printsouts(invoiceId);
+//
+                                                        Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
                                                         printsouts.setVisible(true);
-                                                        // Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                                        //   Refresh();
+                                                        //  Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
+                                                        // Refresh();
+
                                                     } else {
                                                         JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                     }
                                                     
                                                 } else {
-                                                    Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`)"
-                                                            + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "') ");
+                                                    
+                                                    Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`)"
+                                                            + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + Payamount + "') ");
                                                     
                                                     int invoiceId = 0;
                                                     if (Inser_rs.next()) {
                                                         
                                                         invoiceId = Inser_rs.getInt(1);
 
-                                                        // add Invoice Items
+                                                        //   add Invoice Items
                                                         MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
                                                                 + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
                                                         JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
 
-                                                        // reduce the stock qty
+                                                        //   reduce the stock qty
                                                         ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
                                                         if (stock_rs.next()) {
                                                             int stockQty = stock_rs.getInt("qty");
@@ -1351,96 +1511,34 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             stockQty = stockQty - 1;
                                                             MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                         }
-
-                                                        // Order Successs. -> prints
-                                                        Printsouts printsouts = new Printsouts(invoiceId);
+//
+                                                        Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
                                                         printsouts.setVisible(true);
-                                                        //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                                        //  Refresh();
+                                                        //  Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
+                                                        // Refresh();
+
                                                     } else {
                                                         JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                     }
-                                                }
-                                            }
-                                            
-                                        } else {
-                                            
-                                            Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`)"
-                                                    + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "') ");
-                                            
-                                            int invoiceId = 0;
-                                            if (Inser_rs.next()) {
-                                                
-                                                invoiceId = Inser_rs.getInt(1);
-
-                                                // add Invoice Items
-                                                MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
-                                                        + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
-                                                JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
-
-                                                // reduce the stock qty
-                                                ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
-                                                if (stock_rs.next()) {
-                                                    int stockQty = stock_rs.getInt("qty");
                                                     
-                                                    stockQty = stockQty - 1;
-                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                 }
-
-                                                // Order Successs. -> prints
-                                                Printsouts printsouts = new Printsouts(invoiceId);
-                                                printsouts.setVisible(true);
-                                                //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                                //  Refresh();
+                                                
                                             } else {
-                                                JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
-                                            }
-                                        }
-                                        
-                                    } else {
-                                        
-                                        System.out.println("Prescription not Selected");
-                                        
-                                        int paymentStatus = 0;
-                                        if (AdvancedPayment == 0) {
-                                            paymentStatus = 2;
-                                        } else {
-                                            paymentStatus = 1;
-                                        }
-
-                                        //        Warrenty Details 
-                                        String WarrentyPeriod = "1";
-                                        if (jComboBox7.getSelectedIndex() != 0) {
-                                            String warrentyType = (String) jComboBox7.getSelectedItem();
-                                            String warrentyArray[] = warrentyType.split("\\)");
-                                            WarrentyPeriod = warrentyArray[1].trim();
-                                            WarrentyPeriod = TintMap.get(WarrentyPeriod);
-                                            System.out.println("Warrenty id is :- " + WarrentyPeriod);
-                                        }
-
-                                        //         Add Lens Properties
-                                        ResultSet Inser_rs;
-                                        //   Add Lens Properties
-                                        if (jTable4.getSelectedRow() != -1) {
-                                            String lensStock_id = String.valueOf(jTable4.getValueAt(jTable4.getSelectedRow(), 0));
-                                            ResultSet lensResultSet = MySQL.execute("SELECT * FROM `lens_stock` WHERE `lens_id` = '" + lensStock_id + "'");
-
-                                            // if lens select
-                                            if (lensResultSet.next()) {
-                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`)"
-                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "') ");
+                                                
+                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`)"
+                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + Payamount + "') ");
                                                 
                                                 int invoiceId = 0;
                                                 if (Inser_rs.next()) {
                                                     
                                                     invoiceId = Inser_rs.getInt(1);
 
-                                                    //   add Invoice Items
+                                                    // add Invoice Items
                                                     MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
                                                             + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
                                                     JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
 
-                                                    //   reduce the stock qty
+                                                    // reduce the stock qty
                                                     ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
                                                     if (stock_rs.next()) {
                                                         int stockQty = stock_rs.getInt("qty");
@@ -1448,172 +1546,105 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         stockQty = stockQty - 1;
                                                         MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                     }
-//
-                                                    Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
-                                                    printsouts.setVisible(true);
-                                                    //  Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
-                                                    // Refresh();
 
+                                                    // Order Successs. -> prints
+                                                    Printsouts printsouts = new Printsouts(invoiceId);
+                                                    printsouts.setVisible(true);
+                                                    //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                                    //  Refresh();
                                                 } else {
                                                     JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                 }
-                                                
-                                            } else {
-                                                
-                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`)"
-                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "') ");
-                                                
-                                                int invoiceId = 0;
-                                                if (Inser_rs.next()) {
-                                                    
-                                                    invoiceId = Inser_rs.getInt(1);
-
-                                                    //   add Invoice Items
-                                                    MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
-                                                            + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
-                                                    JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
-
-                                                    //   reduce the stock qty
-                                                    ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
-                                                    if (stock_rs.next()) {
-                                                        int stockQty = stock_rs.getInt("qty");
-                                                        
-                                                        stockQty = stockQty - 1;
-                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
-                                                    }
-//
-                                                    Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
-                                                    printsouts.setVisible(true);
-                                                    //  Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
-                                                    // Refresh();
-
-                                                } else {
-                                                    JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
-                                                }
-                                                
                                             }
                                             
-                                        } else {
-                                            
-                                            Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`)"
-                                                    + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "') ");
-                                            
-                                            int invoiceId = 0;
-                                            if (Inser_rs.next()) {
-                                                
-                                                invoiceId = Inser_rs.getInt(1);
-
-                                                // add Invoice Items
-                                                MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
-                                                        + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
-                                                JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
-
-                                                // reduce the stock qty
-                                                ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
-                                                if (stock_rs.next()) {
-                                                    int stockQty = stock_rs.getInt("qty");
-                                                    
-                                                    stockQty = stockQty - 1;
-                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
-                                                }
-
-                                                // Order Successs. -> prints
-                                                Printsouts printsouts = new Printsouts(invoiceId);
-                                                printsouts.setVisible(true);
-                                                //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                                //  Refresh();
-                                            } else {
-                                                JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
-                                            }
                                         }
-                                        
                                     }
-                                }
-                            } else {
-                                JOptionPane.showMessageDialog(this, "Please Select a Payment Method", "InValid  Payment Method", JOptionPane.ERROR_MESSAGE);
-                            }
-                            
-                        } else {
-                            JOptionPane.showMessageDialog(this, "Please Select a Valid Frame", "InValid  Frame id", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } else {
-                        
-                        int OptionResult = JOptionPane.showConfirmDialog(this, "Are You Sure Make Only Lens Purchase?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                        if (OptionResult == 0) {
-                            //OK
-
-                            //   payment Method Validation
-                            if (buttonGroup1.getSelection() != null) {
-                                //    payment Assign
-                                if (jRadioButton2.isSelected()) {
-                                    paymentMethodSelecetd = 1;
-                                } else if (jRadioButton3.isSelected()) {
-                                    paymentMethodSelecetd = 2;
-                                } else if (jRadioButton4.isSelected()) {
-                                    paymentMethodSelecetd = 3;
-                                } else if (jRadioButton1.isSelected()) {
-                                    paymentMethodSelecetd = 4;
+                                } else {
+                                    JOptionPane.showMessageDialog(this, "Please Select a Payment Method", "InValid  Payment Method", JOptionPane.ERROR_MESSAGE);
                                 }
                                 
-                                if (JoBtype == 0) {
-                                    JOptionPane.showMessageDialog(this, "Please Sekect Job Type");
-                                } else {
-                                    //  INSERT PROCESS
-                                    int payment_status_id = 1;
-                                    
-                                    if (jTextField11.getText().isBlank()) {
-                                        payment_status_id = 2;
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Please Select a Valid Frame", "InValid  Frame id", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } else {
+                            
+                            int OptionResult = JOptionPane.showConfirmDialog(this, "Are You Sure Make Only Lens Purchase?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                            if (OptionResult == 0) {
+                                //OK
+
+                                //   payment Method Validation
+                                if (buttonGroup1.getSelection() != null) {
+                                    //    payment Assign
+                                    if (jRadioButton2.isSelected()) {
+                                        paymentMethodSelecetd = 1;
+                                    } else if (jRadioButton3.isSelected()) {
+                                        paymentMethodSelecetd = 2;
+                                    } else if (jRadioButton4.isSelected()) {
+                                        paymentMethodSelecetd = 3;
+                                    } else if (jRadioButton1.isSelected()) {
+                                        paymentMethodSelecetd = 4;
                                     }
                                     
-                                    if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) {
-                                        ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`)"
-                                                + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "') ");
-                                        int invoiceId = 0;
-                                        if (Inser_rs.next()) {
-                                            
-                                            invoiceId = Inser_rs.getInt(1);
-                                            
-                                            Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                            Refresh();
-                                            
-                                        } else {
-                                            JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
-                                        }
-                                        
+                                    if (JoBtype == 0) {
+                                        JOptionPane.showMessageDialog(this, "Please Sekect Job Type");
                                     } else {
+                                        //  INSERT PROCESS
+                                        int payment_status_id = 1;
                                         
                                         if (jTextField11.getText().isBlank()) {
                                             payment_status_id = 2;
                                         }
                                         
-                                        ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`)"
-                                                + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "') ");
-                                        //
-                                        int invoiceId = 0;
-                                        if (Inser_rs.next()) {
-                                            
-                                            invoiceId = Inser_rs.getInt(1);
-                                            
-                                            JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
-                                            Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                            Refresh();
+                                        if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) {
+                                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`)"
+                                                    + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "') ");
+                                            int invoiceId = 0;
+                                            if (Inser_rs.next()) {
+                                                
+                                                invoiceId = Inser_rs.getInt(1);
+                                                
+                                                Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                                Refresh();
+                                                
+                                            } else {
+                                                JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                            }
                                             
                                         } else {
-                                            JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                            
+                                            if (jTextField11.getText().isBlank()) {
+                                                payment_status_id = 2;
+                                            }
+                                            
+                                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`)"
+                                                    + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "') ");
+                                            //
+                                            int invoiceId = 0;
+                                            if (Inser_rs.next()) {
+                                                
+                                                invoiceId = Inser_rs.getInt(1);
+                                                
+                                                JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
+                                                Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                                Refresh();
+                                                
+                                            } else {
+                                                JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                                            }
                                         }
                                     }
+                                    
+                                } else {
+                                    JOptionPane.showMessageDialog(this, "Please Select a Payment Method", "InValid  Payment Method", JOptionPane.ERROR_MESSAGE);
                                 }
                                 
                             } else {
-                                JOptionPane.showMessageDialog(this, "Please Select a Payment Method", "InValid  Payment Method", JOptionPane.ERROR_MESSAGE);
+                                System.out.println("NO");
                             }
                             
-                        } else {
-                            System.out.println("NO");
                         }
                         
-                    }
-                    
+                    }                    
                 } else {
                     JOptionPane.showMessageDialog(this, "Please Select Valid Customer", "Invalid Customer", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1795,6 +1826,12 @@ public class OrderMaking extends javax.swing.JFrame {
         // TODO add your handling code here:
         CalculateLensTotal();
     }//GEN-LAST:event_jTextField5KeyReleased
+
+    private void jTextField11KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyReleased
+        // Copy Advance Payment to Payment Amount
+        String advancePayment = jTextField11.getText();
+        jTextField8.setText(advancePayment);
+    }//GEN-LAST:event_jTextField11KeyReleased
     
     public void lensLoading() {
         try {
@@ -1878,6 +1915,7 @@ public class OrderMaking extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel40;
@@ -1917,6 +1955,7 @@ public class OrderMaking extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel userNameField;
     // End of variables declaration//GEN-END:variables
