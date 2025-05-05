@@ -36,6 +36,7 @@ public class CompletePayments extends javax.swing.JFrame {
         totalPriceField.setEnabled(false);
         dueAmountField.setEnabled(false);
         invoiceIDField.setEnabled(false);
+        paidAmount.setEnabled(false);
 
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM invoice "
@@ -50,9 +51,11 @@ public class CompletePayments extends javax.swing.JFrame {
                 dateField.setText(rs.getString("date"));
                 locationField.setText(rs.getString("location_name"));
                 discountField.setText(rs.getString("discount"));
+
                 advancementField.setText(rs.getString("advance_payment"));
-                totalPriceField.setText(rs.getString("subTotal"));
-                dueAmountField.setText(rs.getString("total_price"));
+                paidAmount.setText(rs.getString("payment_amount"));
+                totalPriceField.setText(rs.getString("total_price"));
+                dueAmountField.setText(String.valueOf(rs.getDouble("advance_payment") + rs.getDouble("total_price") - rs.getDouble("payment_amount")));
             }
 
         } catch (Exception e) {
@@ -95,34 +98,59 @@ public class CompletePayments extends javax.swing.JFrame {
         proceedBtn = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        paidAmount = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel2.setText("Complete Payment");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 18, -1, -1));
 
         jLabel3.setText("Invoice ID");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 101, -1, -1));
+        jPanel1.add(invoiceIDField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 98, 153, -1));
 
         jLabel1.setText("Customer Name");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 141, -1, -1));
 
         jLabel4.setText("Customer NIC");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 181, -1, -1));
 
         jLabel5.setText("Advanced Date");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 221, -1, -1));
 
         jLabel6.setText("Location");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 261, -1, -1));
 
         jLabel7.setText("Discount");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 301, -1, -1));
 
         jLabel8.setText("Advancement");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 341, -1, -1));
+        jPanel1.add(nameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 138, 153, -1));
+        jPanel1.add(nicField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 178, 153, -1));
+        jPanel1.add(dateField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 218, 153, -1));
+        jPanel1.add(locationField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 258, 153, -1));
+        jPanel1.add(discountField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 298, 153, -1));
+        jPanel1.add(advancementField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 338, 153, -1));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setText("Total Price");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 420, -1, -1));
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 627, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel12.setText("Total Due Amount");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 499, -1, -1));
+        jPanel1.add(totalPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 420, 153, -1));
 
         dueAmountField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jPanel1.add(dueAmountField, new org.netbeans.lib.awtextra.AbsoluteConstraints(262, 496, 153, -1));
 
         proceedBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         proceedBtn.setText("Proceed Payment");
@@ -131,110 +159,23 @@ public class CompletePayments extends javax.swing.JFrame {
                 proceedBtnActionPerformed(evt);
             }
         });
+        jPanel1.add(proceedBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(161, 581, 180, 40));
 
         jLabel10.setText("Pay amount");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 556, 73, -1));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(204, 553, 168, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel9))
-                                .addGap(35, 35, 35)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(invoiceIDField)
-                                    .addComponent(nameField)
-                                    .addComponent(nicField)
-                                    .addComponent(dateField)
-                                    .addComponent(locationField)
-                                    .addComponent(discountField)
-                                    .addComponent(advancementField)
-                                    .addComponent(totalPriceField, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel11)
-                                        .addGap(36, 36, 36)
-                                        .addComponent(proceedBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
-                        .addComponent(jLabel12)
-                        .addGap(29, 29, 29)
-                        .addComponent(dueAmountField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jLabel2)))
-                .addGap(100, 100, 100))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addGap(48, 48, 48)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(invoiceIDField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(nicField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(locationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(discountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(advancementField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(totalPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(dueAmountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(52, 52, 52)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(proceedBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel11)
-                .addContainerGap(40, Short.MAX_VALUE))
-        );
+        jButton1.setText("Close");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(211, 633, -1, -1));
+        jPanel1.add(paidAmount, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, 153, -1));
+
+        jLabel13.setText("Paid Amount");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -242,12 +183,15 @@ public class CompletePayments extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -261,22 +205,25 @@ public class CompletePayments extends javax.swing.JFrame {
             if (jTextField1.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter A Payment amount", "Empty Payment Field", JOptionPane.ERROR_MESSAGE);
             } else {
-
-                double dueamount = Double.parseDouble(dueAmountField.getText());
+                double Total_amount = Double.parseDouble(totalPriceField.getText());
+                double paid_amount = Double.parseDouble(paidAmount.getText());
                 double payAmount = Double.parseDouble(jTextField1.getText());
+                double advancedPayment = Double.parseDouble(advancementField.getText());
 
-                double payment = dueamount - payAmount;
+                double payment = paid_amount + payAmount;
+
+                double ballence = (advancedPayment + Total_amount) - payment;
 
                 System.out.println(payment);
 
-                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoice + "','" + payment + "') ");
+                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoice + "','" + payAmount + "') ");
 
-                if (payment <= 0.00) {
+                if (ballence <= 0.00) {
                     System.out.println("Payment Complete");
-                    MySQL.execute("UPDATE invoice SET payment_status_id = 2 , advance_payment ='" + payment + "'  WHERE invoice_id = " + invoice);
+                    MySQL.execute("UPDATE `invoice` SET `payment_status_id` = 2 , `payment_amount` ='" + payment + "'  WHERE invoice_id = " + invoice);
                 } else {
                     System.out.println("Payment not complete");
-                    MySQL.execute("UPDATE invoice SET  advance_payment = '" + payment + "'  WHERE invoice_id = " + invoice);
+                    MySQL.execute("UPDATE `invoice` SET  `payment_amount` = '" + payment + "'  WHERE invoice_id = " + invoice);
                 }
             }
 
@@ -286,6 +233,11 @@ public class CompletePayments extends javax.swing.JFrame {
 
         this.dispose();
     }//GEN-LAST:event_proceedBtnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // close btn
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -327,10 +279,12 @@ public class CompletePayments extends javax.swing.JFrame {
     private javax.swing.JTextField discountField;
     private javax.swing.JTextField dueAmountField;
     private javax.swing.JTextField invoiceIDField;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -344,6 +298,7 @@ public class CompletePayments extends javax.swing.JFrame {
     private javax.swing.JTextField locationField;
     private javax.swing.JTextField nameField;
     private javax.swing.JTextField nicField;
+    private javax.swing.JTextField paidAmount;
     private javax.swing.JButton proceedBtn;
     private javax.swing.JTextField totalPriceField;
     // End of variables declaration//GEN-END:variables

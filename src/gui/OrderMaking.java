@@ -35,14 +35,14 @@ public class OrderMaking extends javax.swing.JFrame {
      * Creates new form OrderMaking
      */
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    
+
     HashMap<String, String> LensMap = new HashMap<>();
     HashMap<String, String> CortinMap = new HashMap<>();
     HashMap<String, String> BrandMap = new HashMap<>();
     HashMap<String, String> DesingdMap = new HashMap<>();
     HashMap<String, String> TintMap = new HashMap<>();
     HashMap<String, String> warrentyMap = new HashMap<>();
-    
+
     public OrderMaking() {
         initComponents();
         setSize(screen.width, screen.height);
@@ -51,7 +51,7 @@ public class OrderMaking extends javax.swing.JFrame {
         operater();
         time();
     }
-    
+
     public OrderMaking(String mobile) {
         initComponents();
         setSize(screen.width, screen.height);
@@ -60,12 +60,12 @@ public class OrderMaking extends javax.swing.JFrame {
         operater();
         time();
     }
-    
+
     private void operater() {
         String name = UserDetails.UserName;
         userNameField.setText(name);
     }
-    
+
     private void time() {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
@@ -80,18 +80,18 @@ public class OrderMaking extends javax.swing.JFrame {
         timer.setInitialDelay(0);
         timer.start();
     }
-    
+
     public double Total;
-    
+
     public double RealTotalWithoutDiscount;
     public int qty;
-    
+
     public double LensTotal = 0;
     public double frame_price = 0;
     public double Discount = 0;
     public double AdvancedPayment = 0;
     public double SubTotal = 0;
-    
+
     public void CalculateLensTotal() {
         try {
             // Frame Price
@@ -111,17 +111,17 @@ public class OrderMaking extends javax.swing.JFrame {
                     ChangeTotal();
                 }
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.log(Level.WARNING, "Data failed to load", e);
-            
+
         }
         ChangeTotal();
     }
-    
+
     public void ChangeTotal() {
-        
+
         SubTotal = frame_price + LensTotal;
         Total = SubTotal - Discount;
         Total = Total - AdvancedPayment;
@@ -129,12 +129,12 @@ public class OrderMaking extends javax.swing.JFrame {
 //        output
         jLabel31.setText(String.valueOf(SubTotal));
         jLabel38.setText(String.valueOf(Total));
-        
+
     }
-    
+
     public void Refresh() {
         LoadCustomer();
-        
+
         LoadStockProducts();
         LoadWarrenty();
         jTextField4.setText("");
@@ -142,10 +142,10 @@ public class OrderMaking extends javax.swing.JFrame {
         lensLoading();
         jTextField7.setEnabled(true);
     }
-    
+
     public void Refresh(String mobile) {
         LoadCustomer(mobile);
-        
+
         LoadStockProducts();
         LoadWarrenty();
         jTextField4.setText("");
@@ -154,71 +154,71 @@ public class OrderMaking extends javax.swing.JFrame {
         jTextField1.setEnabled(false);
         lensLoading();
     }
-    
+
     public void LoadStockProducts() {
         try {
 //            aniwaren Login wenna wenawa
             ResultSet rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `location` ON `location`.`id` = `stock`.`location_id`  WHERE (`category`.`id` =  '1' OR `category`.`id` = '4')  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "'  AND `qty` > 0 ");
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
-                
+
                 Vector v = new Vector();
                 v.add(rs.getString("brand_name"));
                 v.add(rs.getString("id"));
                 v.add(rs.getString("sub_category"));
                 v.add(rs.getString("saling_price"));
                 v.add(rs.getString("product.id"));
-                
+
                 dtm.addRow(v);
             }
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", se);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", e);
-            
+
         }
     }
-    
+
     public void loadCustomerPrescription(String mobile) {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `prescription_details` WHERE `customer_mobile` = '" + mobile + "'  ");
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("job_no"));
                 v.add(rs.getString("prescripiton_date"));
                 dtm.addRow(v);
             }
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", se);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", e);
-            
+
         }
     }
-    
+
     public void LoadCustomer() {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `customer`  ");
             DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("mobile"));
@@ -226,26 +226,26 @@ public class OrderMaking extends javax.swing.JFrame {
                 v.add(rs.getString("nic"));
                 dtm.addRow(v);
             }
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", se);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", e);
-            
+
         }
     }
-    
+
     public void LoadCustomer(String mobile) {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + mobile + "'  ");
             DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("mobile"));
@@ -255,47 +255,47 @@ public class OrderMaking extends javax.swing.JFrame {
             }
             jTextField1.setText(mobile);
             loadCustomerPrescription(mobile);
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", se);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", e);
         }
     }
-    
+
     public void LoadWarrenty() {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `job_warrenty`");
             Vector v = new Vector();
-            
+
             v.add("Select Warrenty Period ");
-            
+
             while (rs.next()) {
                 System.out.println("working");
                 v.add(String.valueOf(rs.getString("warrenty_id") + ") " + rs.getString("warrenty")));
                 TintMap.put(rs.getString("warrenty"), rs.getString("warrenty_id"));
             }
-            
+
             DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
             jComboBox7.setModel(dfm);
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", se);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.log(Level.WARNING, "Data failed to load", e);
-            
+
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1155,29 +1155,29 @@ public class OrderMaking extends javax.swing.JFrame {
         // SEARCH CUSTOMER BY HIS NAME OR ID
 
         String Customer_details = jTextField1.getText();
-        
+
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `name` LIKE '%" + Customer_details + "%' OR `mobile` LIKE '%" + Customer_details + "%'  ");
             DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("mobile"));
                 v.add(rs.getString("name"));
                 dtm.addRow(v);
             }
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", se);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", e);
-            
+
         }
 
     }//GEN-LAST:event_jTextField1KeyReleased
@@ -1260,14 +1260,14 @@ public class OrderMaking extends javax.swing.JFrame {
                 Discount = 0.0; // default value if invalid input
             }
         }
-        
+
         double InsertSubTotal = SubTotal;
-        
+
         try {
             if (!Customer_mobile.isEmpty()) {
                 ResultSet cust_rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + Customer_mobile + "'");
                 if (cust_rs.next()) {
-                    
+
                     if (jTextField8.getText().isEmpty()) {
                         JOptionPane.showMessageDialog(this, "Please don't let empty Payment Amount", "Empty Payment Amount", JOptionPane.ERROR_MESSAGE);
                     } else {
@@ -1289,7 +1289,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                     } else if (jRadioButton1.isSelected()) {
                                         paymentMethodSelecetd = 4;
                                     }
-                                    
+
                                     if (JoBtype == 0) {
                                         JOptionPane.showMessageDialog(this, "Please Sekect Job Type");
                                     } else {
@@ -1312,11 +1312,11 @@ public class OrderMaking extends javax.swing.JFrame {
                                                 WarrentyPeriod = TintMap.get(WarrentyPeriod);
                                                 System.out.println("Warrenty id is :- " + WarrentyPeriod);
                                             }
-                                            
+
                                             ResultSet Inser_rs;
                                             //     Add Lens Properties
                                             if (jTable4.getSelectedRow() != -1) {
-                                                
+
                                                 if (jTextField5.getText().isEmpty()) {
                                                     JOptionPane.showMessageDialog(this, "Please Enter Lens Amount", "Empty Lenses Quantity", JOptionPane.ERROR_MESSAGE);
                                                 } else if (lensQty > 2) {
@@ -1327,14 +1327,17 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                                     // if lens select
                                                     if (lensResultSet.next()) {
-                                                        
+
                                                         Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`)"
                                                                 + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "') ");
-                                                        
+
                                                         int invoiceId = 0;
                                                         if (Inser_rs.next()) {
-                                                            
+
                                                             invoiceId = Inser_rs.getInt(1);
+
+                                                            // payment history
+                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoiceId + "','" + Payamount + "') ");
 
                                                             //add Invoice Items
                                                             MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1345,7 +1348,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
                                                             if (stock_rs.next()) {
                                                                 int stockQty = stock_rs.getInt("qty");
-                                                                
+
                                                                 stockQty = stockQty - 1;
                                                                 MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                             }
@@ -1358,15 +1361,18 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         } else {
                                                             JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                         }
-                                                        
+
                                                     } else {
                                                         Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`)"
                                                                 + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + Payamount + "') ");
-                                                        
+
                                                         int invoiceId = 0;
                                                         if (Inser_rs.next()) {
-                                                            
+
                                                             invoiceId = Inser_rs.getInt(1);
+
+                                                            // payment history
+                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoiceId + "','" + Payamount + "') ");
 
                                                             // add Invoice Items
                                                             MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1377,7 +1383,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
                                                             if (stock_rs.next()) {
                                                                 int stockQty = stock_rs.getInt("qty");
-                                                                
+
                                                                 stockQty = stockQty - 1;
                                                                 MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                             }
@@ -1392,16 +1398,19 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         }
                                                     }
                                                 }
-                                                
+
                                             } else {
-                                                
+
                                                 Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`)"
                                                         + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + Payamount + "') ");
-                                                
+
                                                 int invoiceId = 0;
                                                 if (Inser_rs.next()) {
-                                                    
+
                                                     invoiceId = Inser_rs.getInt(1);
+
+                                                    // payment history
+                                                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoiceId + "','" + Payamount + "') ");
 
                                                     // add Invoice Items
                                                     MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1412,7 +1421,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
                                                     if (stock_rs.next()) {
                                                         int stockQty = stock_rs.getInt("qty");
-                                                        
+
                                                         stockQty = stockQty - 1;
                                                         MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                     }
@@ -1426,11 +1435,11 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                 }
                                             }
-                                            
+
                                         } else {
-                                            
+
                                             System.out.println("Prescription not Selected");
-                                            
+
                                             int paymentStatus = 0;
                                             if (AdvancedPayment == 0) {
                                                 paymentStatus = 2;
@@ -1459,11 +1468,14 @@ public class OrderMaking extends javax.swing.JFrame {
                                                 if (lensResultSet.next()) {
                                                     Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`payment_amount`)"
                                                             + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + Payamount + "') ");
-                                                    
+
                                                     int invoiceId = 0;
                                                     if (Inser_rs.next()) {
-                                                        
+
                                                         invoiceId = Inser_rs.getInt(1);
+
+                                                        // payment history
+                                                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoiceId + "','" + Payamount + "') ");
 
                                                         //   add Invoice Items
                                                         MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1474,7 +1486,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
                                                         if (stock_rs.next()) {
                                                             int stockQty = stock_rs.getInt("qty");
-                                                            
+
                                                             stockQty = stockQty - 1;
                                                             MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                         }
@@ -1487,16 +1499,19 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     } else {
                                                         JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                     }
-                                                    
+
                                                 } else {
-                                                    
+
                                                     Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`)"
                                                             + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + Payamount + "') ");
-                                                    
+
                                                     int invoiceId = 0;
                                                     if (Inser_rs.next()) {
-                                                        
+
                                                         invoiceId = Inser_rs.getInt(1);
+
+                                                        // payment history
+                                                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoiceId + "','" + Payamount + "') ");
 
                                                         //   add Invoice Items
                                                         MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1507,7 +1522,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
                                                         if (stock_rs.next()) {
                                                             int stockQty = stock_rs.getInt("qty");
-                                                            
+
                                                             stockQty = stockQty - 1;
                                                             MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                         }
@@ -1520,17 +1535,17 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     } else {
                                                         JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                     }
-                                                    
+
                                                 }
-                                                
+
                                             } else {
-                                                
+
                                                 Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`)"
                                                         + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + Payamount + "') ");
-                                                
+
                                                 int invoiceId = 0;
                                                 if (Inser_rs.next()) {
-                                                    
+
                                                     invoiceId = Inser_rs.getInt(1);
 
                                                     // add Invoice Items
@@ -1542,7 +1557,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' ");
                                                     if (stock_rs.next()) {
                                                         int stockQty = stock_rs.getInt("qty");
-                                                        
+
                                                         stockQty = stockQty - 1;
                                                         MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                     }
@@ -1556,18 +1571,18 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                 }
                                             }
-                                            
+
                                         }
                                     }
                                 } else {
                                     JOptionPane.showMessageDialog(this, "Please Select a Payment Method", "InValid  Payment Method", JOptionPane.ERROR_MESSAGE);
                                 }
-                                
+
                             } else {
                                 JOptionPane.showMessageDialog(this, "Please Select a Valid Frame", "InValid  Frame id", JOptionPane.ERROR_MESSAGE);
                             }
                         } else {
-                            
+
                             int OptionResult = JOptionPane.showConfirmDialog(this, "Are You Sure Make Only Lens Purchase?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                             if (OptionResult == 0) {
                                 //OK
@@ -1584,67 +1599,67 @@ public class OrderMaking extends javax.swing.JFrame {
                                     } else if (jRadioButton1.isSelected()) {
                                         paymentMethodSelecetd = 4;
                                     }
-                                    
+
                                     if (JoBtype == 0) {
                                         JOptionPane.showMessageDialog(this, "Please Sekect Job Type");
                                     } else {
                                         //  INSERT PROCESS
                                         int payment_status_id = 1;
-                                        
+
                                         if (jTextField11.getText().isBlank()) {
                                             payment_status_id = 2;
                                         }
-                                        
+
                                         if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) {
                                             ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`)"
                                                     + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "') ");
                                             int invoiceId = 0;
                                             if (Inser_rs.next()) {
-                                                
+
                                                 invoiceId = Inser_rs.getInt(1);
-                                                
+
                                                 Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
                                                 Refresh();
-                                                
+
                                             } else {
                                                 JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                             }
-                                            
+
                                         } else {
-                                            
+
                                             if (jTextField11.getText().isBlank()) {
                                                 payment_status_id = 2;
                                             }
-                                            
+
                                             ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`)"
                                                     + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "') ");
                                             //
                                             int invoiceId = 0;
                                             if (Inser_rs.next()) {
-                                                
+
                                                 invoiceId = Inser_rs.getInt(1);
-                                                
+
                                                 JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
                                                 Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
                                                 Refresh();
-                                                
+
                                             } else {
                                                 JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                             }
                                         }
                                     }
-                                    
+
                                 } else {
                                     JOptionPane.showMessageDialog(this, "Please Select a Payment Method", "InValid  Payment Method", JOptionPane.ERROR_MESSAGE);
                                 }
-                                
+
                             } else {
                                 System.out.println("NO");
                             }
-                            
+
                         }
-                        
-                    }                    
+
+                    }
                 } else {
                     JOptionPane.showMessageDialog(this, "Please Select Valid Customer", "Invalid Customer", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1655,11 +1670,11 @@ public class OrderMaking extends javax.swing.JFrame {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Connection", "Database Conneciton Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", se);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.log(Level.WARNING, "Data failed to load", e);
-            
+
         }
 
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -1680,14 +1695,14 @@ public class OrderMaking extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Please Enter Advance Payment", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
+
 
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTextField6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyReleased
         // Search Product By his brand name and frame id
         String brand_details = jTextField6.getText();
-        
+
         try {
             //            aniwaren Login wenna wenawa
             ResultSet rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
@@ -1696,7 +1711,7 @@ public class OrderMaking extends javax.swing.JFrame {
 //                                        SELECT * FROM `stock` INNER JOIN `product` ON `product`.`id` = `stock`.`product_id` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `location` ON `location`.`id` = `stock`.`location_id`  WHERE `category`.`id` =  '1'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "'  AND `qty` > 0 
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("brand_name"));
@@ -1704,20 +1719,20 @@ public class OrderMaking extends javax.swing.JFrame {
                 v.add(rs.getString("sub_category"));
                 v.add(rs.getString("saling_price"));
                 v.add(rs.getString("product.id"));
-                
+
                 dtm.addRow(v);
             }
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", se);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", e);
-            
+
         }
     }//GEN-LAST:event_jTextField6KeyReleased
 
@@ -1771,7 +1786,7 @@ public class OrderMaking extends javax.swing.JFrame {
     private void jTextField7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyReleased
         // Search Lens By his Lens Code and frame id
         String brand_details = jTextField6.getText();
-        
+
         try {
             //            aniwaren Login wenna wenawa
             ResultSet rs = MySQL.execute("SELECT * \n"
@@ -1785,7 +1800,7 @@ public class OrderMaking extends javax.swing.JFrame {
 //                  SELECT * FROM `stock` INNER JOIN `product` ON `product`.`id` = `stock`.`product_id` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `location` ON `location`.`id` = `stock`.`location_id`  WHERE `category`.`id` =  '1'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "'  AND `qty` > 0 
             DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("lens_id"));
@@ -1796,15 +1811,15 @@ public class OrderMaking extends javax.swing.JFrame {
                 v.add(rs.getString("lens_design"));
                 v.add(rs.getString("lens_tint"));
                 v.add(rs.getString("lens_price"));
-                
+
                 dtm.addRow(v);
             }
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", se);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1832,7 +1847,7 @@ public class OrderMaking extends javax.swing.JFrame {
         String advancePayment = jTextField11.getText();
         jTextField8.setText(advancePayment);
     }//GEN-LAST:event_jTextField11KeyReleased
-    
+
     public void lensLoading() {
         try {
             ResultSet rs = MySQL.execute("SELECT * \n"
@@ -1844,7 +1859,7 @@ public class OrderMaking extends javax.swing.JFrame {
                     + "INNER JOIN lens_tint ON lens_stock.lens_tint_lens_tint_id = lens_tint.lens_tint_id");
             DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("lens_id"));
@@ -1857,7 +1872,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 v.add(rs.getString("lens_price"));
                 dtm.addRow(v);
             }
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
