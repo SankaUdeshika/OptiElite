@@ -442,7 +442,7 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_productBtnActionPerformed
 
     private void orderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderBtnActionPerformed
-        ViewOrders om = new ViewOrders();
+        OrderManagement om = new OrderManagement();
         om.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_orderBtnActionPerformed

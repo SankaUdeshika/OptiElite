@@ -276,6 +276,9 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jLabel51 = new javax.swing.JLabel();
         jLabel50 = new javax.swing.JLabel();
         jLabel49 = new javax.swing.JLabel();
+        jTextField38 = new javax.swing.JTextField();
+        jLabel54 = new javax.swing.JLabel();
+        jTextField39 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -568,7 +571,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         });
         jPanel5.add(jTextField17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 80, -1));
         jPanel5.add(jTextField18, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 80, -1));
-        jPanel5.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 680, 10));
+        jPanel5.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 750, 10));
 
         jTextField19.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -678,7 +681,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jPanel5.add(jTextField33, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 80, -1));
 
         jLabel48.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel48.setText("M_PD");
+        jLabel48.setText("PD");
         jPanel5.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 20, -1, -1));
 
         jTextField32.addActionListener(new java.awt.event.ActionListener() {
@@ -702,14 +705,20 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jPanel5.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, -1, -1));
 
         jLabel50.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel50.setText("VA");
+        jLabel50.setText("DVA");
         jPanel5.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, -1, -1));
 
         jLabel49.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel49.setText("N_PD");
+        jLabel49.setText("NVA");
         jPanel5.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
+        jPanel5.add(jTextField38, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 40, 80, -1));
 
-        jPanel6.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 460, 770, 140));
+        jLabel54.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel54.setText("Height");
+        jPanel5.add(jLabel54, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
+        jPanel5.add(jTextField39, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 80, 80, -1));
+
+        jPanel6.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 460, -1, 140));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel19.setText("1");
@@ -764,13 +773,12 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
                                         .addComponent(jLabel7)
                                         .addGap(139, 139, 139))
                                     .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(0, 0, Short.MAX_VALUE)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -1028,22 +1036,24 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 String R_SPH = jTextField37.getText();
                 String R_Cyl = jTextField36.getText();
                 String R_Axis = jTextField35.getText();
-                String PR_Va = jTextField34.getText();
-                String R_N_PD = jTextField33.getText();
+                String PR_DVa = jTextField34.getText();
+                String R_NVA = jTextField33.getText();
                 String R_M_PD = jTextField32.getText();
                 String R_Addiiton = jTextField31.getText();
+                String R_Height = jTextField38.getText();
 
                 String L_SPH = jTextField21.getText();
                 String L_Cyl = jTextField17.getText();
                 String L_Axis = jTextField19.getText();
-                String PL_Va = jTextField18.getText();
-                String L_N_PD = jTextField22.getText();
+                String PL_DVa = jTextField18.getText();
+                String L_NVA = jTextField22.getText();
                 String L_M_PD = jTextField23.getText();
                 String L_Addiiton = jTextField30.getText();
+                String L_Height = jTextField39.getText();
 
-                MySQL.execute("INSERT INTO `prescription_details` (`L_SPH`,`L_Addition`,`L_Va`,`L_N_PD`,`L_M_PD`,`customer_mobile`,`users_id`,"
-                        + "`R_Va`,`R_N_PD`,`R_M_PD`,`R_SPH`,`R_Addition`,`prescripiton_date`,`L_CYL`,`R_CYL`,`L_Axis`,`R_Axis`) "
-                        + "VALUES ('" + L_SPH + "','" + L_Addiiton + "','" + PL_Va + "','" + L_N_PD + "','" + L_M_PD + "','" + Customer_mobile + "','" + user_id + "','" + PR_Va + "','" + R_N_PD + "','" + R_M_PD + "','" + R_SPH + "','" + R_Addiiton + "','" + datechooser + "','" + L_Cyl + "','" + R_Cyl + "','" + L_Axis + "','" + R_Axis + "')  ");
+                MySQL.execute("INSERT INTO `prescription_details` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,`customer_mobile`,`users_id`,"
+                        + "`R_DVA`,`R_NVA`,`R_M_PD`,`R_SPH`,`R_Addition`,`prescripiton_date`,`L_CYL`,`R_CYL`,`L_Axis`,`R_Axis`,`R_HEIGHT`) "
+                        + "VALUES ('" + L_SPH + "','" + L_Addiiton + "','" + PL_DVa + "','" + L_NVA + "','" + L_M_PD + "','"+L_Height+"','" + Customer_mobile + "','" + user_id + "','" + PR_DVa + "','" + R_NVA + "','" + R_M_PD + "','" + R_SPH + "','" + R_Addiiton + "','" + datechooser + "','" + L_Cyl + "','" + R_Cyl + "','" + L_Axis + "','" + R_Axis + "','"+R_Height+"')  ");
 
                 JOptionPane.showMessageDialog(this, "Prescription Adding Success", "Insert Success", JOptionPane.WARNING_MESSAGE);
 
@@ -1222,6 +1232,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1272,6 +1283,8 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField35;
     private javax.swing.JTextField jTextField36;
     private javax.swing.JTextField jTextField37;
+    private javax.swing.JTextField jTextField38;
+    private javax.swing.JTextField jTextField39;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
