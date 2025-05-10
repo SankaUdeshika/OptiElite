@@ -110,7 +110,7 @@ public class Reports {
 
             while (paymentResult.next()) {
                 count++;
-                reportmap.put("payment"+count,paymentResult.getString("date") + " -"+ paymentResult.getString("paid_amount") +" Paid");
+                reportmap.put("payment"+count,paymentResult.getString("date") + " = "+ paymentResult.getString("paid_amount") +" Paid");
             }
 
             try {
