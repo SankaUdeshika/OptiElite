@@ -1053,7 +1053,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
 
                 MySQL.execute("INSERT INTO `prescription_details` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,`customer_mobile`,`users_id`,"
                         + "`R_DVA`,`R_NVA`,`R_M_PD`,`R_SPH`,`R_Addition`,`prescripiton_date`,`L_CYL`,`R_CYL`,`L_Axis`,`R_Axis`,`R_HEIGHT`) "
-                        + "VALUES ('" + L_SPH + "','" + L_Addiiton + "','" + PL_DVa + "','" + L_NVA + "','" + L_M_PD + "','"+L_Height+"','" + Customer_mobile + "','" + user_id + "','" + PR_DVa + "','" + R_NVA + "','" + R_M_PD + "','" + R_SPH + "','" + R_Addiiton + "','" + datechooser + "','" + L_Cyl + "','" + R_Cyl + "','" + L_Axis + "','" + R_Axis + "','"+R_Height+"')  ");
+                        + "VALUES ('" + L_SPH + "','" + L_Addiiton + "','" + PL_DVa + "','" + L_NVA + "','" + L_M_PD + "','" + L_Height + "','" + Customer_mobile + "','" + user_id + "','" + PR_DVa + "','" + R_NVA + "','" + R_M_PD + "','" + R_SPH + "','" + R_Addiiton + "','" + datechooser + "','" + L_Cyl + "','" + R_Cyl + "','" + L_Axis + "','" + R_Axis + "','" + R_Height + "')  ");
 
                 JOptionPane.showMessageDialog(this, "Prescription Adding Success", "Insert Success", JOptionPane.WARNING_MESSAGE);
 
@@ -1132,21 +1132,26 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 String R_Axis = jTextField35.getText();
                 String PR_Va = jTextField34.getText();
                 String R_N_PD = jTextField33.getText();
+                String PR_DVa = jTextField34.getText();
+                String R_NVA = jTextField33.getText();
                 String R_M_PD = jTextField32.getText();
                 String R_Addiiton = jTextField31.getText();
+                String R_Height = jTextField38.getText();
 
                 String L_SPH = jTextField21.getText();
                 String L_Cyl = jTextField17.getText();
                 String L_Axis = jTextField19.getText();
                 String PL_Va = jTextField18.getText();
                 String L_N_PD = jTextField22.getText();
+                String PL_DVa = jTextField18.getText();
+                String L_NVA = jTextField22.getText();
                 String L_M_PD = jTextField23.getText();
                 String L_Addiiton = jTextField30.getText();
+                String L_Height = jTextField39.getText();
 
-                MySQL.execute("INSERT INTO `prescription_details` (`L_SPH`,`L_Addition`,`L_Va`,`L_N_PD`,`L_M_PD`,`customer_mobile`,`users_id`,"
-                        + "`R_Va`,`R_N_PD`,`R_M_PD`,`R_SPH`,`R_Addition`,`prescripiton_date`,`L_CYL`,`R_CYL`,`L_Axis`,`R_Axis`) "
-                        + "VALUES ('" + L_SPH + "','" + L_Addiiton + "','" + PL_Va + "','" + L_N_PD + "','" + L_M_PD + "','" + Customer_mobile + "','" + user_id + "','" + PR_Va + "','" + R_N_PD + "','" + R_M_PD + "','" + R_SPH + "','" + R_Addiiton + "','" + datechooser + "','" + L_Cyl + "','" + R_Cyl + "','" + L_Axis + "','" + R_Axis + "')  ");
-
+                MySQL.execute("INSERT INTO `prescription_details` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,`customer_mobile`,`users_id`,"
+                        + "`R_DVA`,`R_NVA`,`R_M_PD`,`R_SPH`,`R_Addition`,`prescripiton_date`,`L_CYL`,`R_CYL`,`L_Axis`,`R_Axis`,`R_HEIGHT`) "
+                        + "VALUES ('" + L_SPH + "','" + L_Addiiton + "','" + PL_DVa + "','" + L_NVA + "','" + L_M_PD + "','" + L_Height + "','" + Customer_mobile + "','" + user_id + "','" + PR_DVa + "','" + R_NVA + "','" + R_M_PD + "','" + R_SPH + "','" + R_Addiiton + "','" + datechooser + "','" + L_Cyl + "','" + R_Cyl + "','" + L_Axis + "','" + R_Axis + "','" + R_Height + "')  ");
                 JOptionPane.showMessageDialog(this, "Prescription Adding Success", "Insert Success", JOptionPane.WARNING_MESSAGE);
 
                 OrderMaking chooseOrderTypes = new OrderMaking(Customer_mobile);
