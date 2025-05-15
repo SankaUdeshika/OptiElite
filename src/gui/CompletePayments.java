@@ -5,6 +5,8 @@
 package gui;
 
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import models.MySQL;
 
@@ -216,7 +218,14 @@ public class CompletePayments extends javax.swing.JFrame {
 
                 System.out.println(payment);
 
-                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoice + "','" + payAmount + "') ");
+                // payment history
+                LocalDateTime now = LocalDateTime.now();
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String curruntDay = now.format(dateFormatter);
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                String curruntTime = now.format(timeFormatter);
+
+                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoice + "','" + payAmount + "','"+curruntDay+"','"+curruntTime+"') ");
 
                 if (ballence <= 0.00) {
                     System.out.println("Payment Complete");

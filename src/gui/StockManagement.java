@@ -27,7 +27,22 @@ public class StockManagement extends javax.swing.JFrame {
 
     public StockManagement() {
         initComponents();
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `users` WHERE `id` = '" + UserDetails.UserId + "' ");
+            if (rs.next()) {
+                int userType_id = rs.getInt("user_type_id");
+                if (userType_id == 2) {
+                    Dashboard d = new Dashboard();
+                    d.setVisible(true);
+                    this.dispose();
+                    
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.log(Level.WARNING, "Data failed to load", e);
 
+        }
         setSize(screen.width, screen.height);
         Refresh();
         operater();

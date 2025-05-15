@@ -19,6 +19,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -1099,23 +1101,27 @@ public class OrderMaking extends javax.swing.JFrame {
 
         if (jRadioButton5.isSelected()) { // bag
             try {
-                ResultSet bag_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '15' AND `qty` >= 0 ");
+                ResultSet bag_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '15' AND `qty` > 0 ");
                 if (bag_rs.next()) {
+                    System.out.println("stock have");
                     bag = true;
                     bag_stock_id = String.valueOf(bag_rs.getInt("stock.id"));
                 } else {
+                    System.out.println("stock NO");
                     JOptionPane.showMessageDialog(this, "You dont have enough Bag Quantity. Please add Bag Stock and Try again later", "Empty Bag Quantity", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Please check your connection or Something Wrong please try again later", "Something Worng", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
-        } else if (jRadioButton6.isSelected()) { // box
+        }
+
+        if (jRadioButton6.isSelected()) { // box
             try {
-                ResultSet box_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '10' AND `qty` >= 0 ");
+                ResultSet box_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '10' AND `qty` > 0 ");
                 if (box_rs.next()) {
                     box = true;
-                    box_stock_id = String.valueOf(box_rs.getInt("`stock`.`id`"));
+                    box_stock_id = String.valueOf(box_rs.getInt("stock.id"));
                 } else {
                     JOptionPane.showMessageDialog(this, "You dont have enough Box Quantity. Please add Box Stock and Try again later", "Empty Box Quantity", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1123,9 +1129,11 @@ public class OrderMaking extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Please check your connection or Something Wrong please try again later", "Something Worng", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
-        } else if (jRadioButton7.isSelected()) { // clothing
+        }
+//        
+        if (jRadioButton7.isSelected()) { // clothing
             try {
-                ResultSet clothing_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '14' AND `qty` >= 0 ");
+                ResultSet clothing_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '14' AND `qty` > 0 ");
                 if (clothing_rs.next()) {
                     clothing = true;
                     clothing_stock_id = String.valueOf(clothing_rs.getInt("stock.id"));
@@ -1137,7 +1145,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
-
+//
         if (jRadioButton5.isSelected() == true && bag == false) { // bag
             go = false;
         } else if (jRadioButton6.isSelected() == true && box == false) { // box
@@ -1148,7 +1156,7 @@ public class OrderMaking extends javax.swing.JFrame {
             go = true;
         }
 
-        //        process Start if Accesssories items are available
+        //   process Start if Accesssories items are available
         if (go) {
             ChangeTotal(); //refresh the Total
             // Bill The Order
@@ -1174,7 +1182,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 }
             }
 
-            double InsertSubTotal = SubTotal;
+            double InsertSubTotal = SubTotal - Discount;
 
             try {
                 if (!Customer_mobile.isEmpty()) {
@@ -1250,7 +1258,12 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 invoiceId = Inser_rs.getInt(1);
 
                                                                 // payment history
-                                                                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoiceId + "','" + Payamount + "') ");
+                                                                LocalDateTime now = LocalDateTime.now();
+                                                                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                                                String curruntDay = now.format(dateFormatter);
+                                                                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                                                                String curruntTime = now.format(timeFormatter);
+                                                                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "') ");
 
                                                                 //add Invoice Items
                                                                 MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1269,20 +1282,26 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 // reduse the other stocks ---
                                                                 if (jRadioButton5.isSelected()) { // box
                                                                     ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
-                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                    if (reduceBox_rs.next()) {
+                                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                    }
                                                                 }
 
                                                                 if (jRadioButton6.isSelected()) { // bag
                                                                     ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
-                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                                    if (reduceBox_rs.next()) {
+                                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                                    }
                                                                 }
 
                                                                 if (jRadioButton7.isSelected()) { // clothing
                                                                     ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + clothing_stock_id + "' ");
-                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                                    if (reduceBox_rs.next()) {
+                                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                                    }
                                                                 }
 
                                                                 //  Order Successs. -> prints
@@ -1304,7 +1323,12 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 invoiceId = Inser_rs.getInt(1);
 
                                                                 // payment history
-                                                                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoiceId + "','" + Payamount + "') ");
+                                                                LocalDateTime now = LocalDateTime.now();
+                                                                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                                                String curruntDay = now.format(dateFormatter);
+                                                                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                                                                String curruntTime = now.format(timeFormatter);
+                                                                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "') ");
 
                                                                 // add Invoice Items
                                                                 MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1323,20 +1347,26 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 // reduse the other stocks ---
                                                                 if (jRadioButton5.isSelected()) { // box
                                                                     ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
-                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                    if (reduceBox_rs.next()) {
+                                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                    }
                                                                 }
 
                                                                 if (jRadioButton6.isSelected()) { // bag
                                                                     ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
-                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                                    if (reduceBox_rs.next()) {
+                                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                                    }
                                                                 }
 
                                                                 if (jRadioButton7.isSelected()) { // clothing
                                                                     ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + clothing_stock_id + "' ");
-                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                                    if (reduceBox_rs.next()) {
+                                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                                    }
                                                                 }
 
                                                                 // Order Successs. -> prints
@@ -1361,7 +1391,12 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         invoiceId = Inser_rs.getInt(1);
 
                                                         // payment history
-                                                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoiceId + "','" + Payamount + "') ");
+                                                        LocalDateTime now = LocalDateTime.now();
+                                                        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                                        String curruntDay = now.format(dateFormatter);
+                                                        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                                                        String curruntTime = now.format(timeFormatter);
+                                                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "') ");
 
                                                         // add Invoice Items
                                                         MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1380,22 +1415,27 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         // reduse the other stocks ---
                                                         if (jRadioButton5.isSelected()) { // box
                                                             ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
-                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                            if (reduceBox_rs.next()) {
+                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                            }
                                                         }
 
                                                         if (jRadioButton6.isSelected()) { // bag
                                                             ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
-                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                            if (reduceBox_rs.next()) {
+                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                            }
                                                         }
 
                                                         if (jRadioButton7.isSelected()) { // clothing
                                                             ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + clothing_stock_id + "' ");
-                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                            if (reduceBox_rs.next()) {
+                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                            }
                                                         }
-
                                                         // Order Successs. -> prints
                                                         Printsouts printsouts = new Printsouts(invoiceId);
                                                         printsouts.setVisible(true);
@@ -1445,7 +1485,12 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             invoiceId = Inser_rs.getInt(1);
 
                                                             // payment history
-                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoiceId + "','" + Payamount + "') ");
+                                                            LocalDateTime now = LocalDateTime.now();
+                                                            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                                            String curruntDay = now.format(dateFormatter);
+                                                            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                                                            String curruntTime = now.format(timeFormatter);
+                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "') ");
 
                                                             //   add Invoice Items
                                                             MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1464,20 +1509,26 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             // reduse the other stocks ---
                                                             if (jRadioButton5.isSelected()) { // box
                                                                 ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
-                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                if (reduceBox_rs.next()) {
+                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                }
                                                             }
 
                                                             if (jRadioButton6.isSelected()) { // bag
                                                                 ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
-                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                                if (reduceBox_rs.next()) {
+                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                                }
                                                             }
 
                                                             if (jRadioButton7.isSelected()) { // clothing
                                                                 ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + clothing_stock_id + "' ");
-                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                                if (reduceBox_rs.next()) {
+                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                                }
                                                             }
 
 //
@@ -1501,7 +1552,12 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             invoiceId = Inser_rs.getInt(1);
 
                                                             // payment history
-                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`) VALUES ('" + invoiceId + "','" + Payamount + "') ");
+                                                            LocalDateTime now = LocalDateTime.now();
+                                                            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                                            String curruntDay = now.format(dateFormatter);
+                                                            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                                                            String curruntTime = now.format(timeFormatter);
+                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "') ");
 
                                                             //   add Invoice Items
                                                             MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1520,20 +1576,26 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             // reduse the other stocks ---
                                                             if (jRadioButton5.isSelected()) { // box
                                                                 ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
-                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                if (reduceBox_rs.next()) {
+                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                }
                                                             }
 
                                                             if (jRadioButton6.isSelected()) { // bag
                                                                 ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
-                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                                if (reduceBox_rs.next()) {
+                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                                }
                                                             }
 
                                                             if (jRadioButton7.isSelected()) { // clothing
                                                                 ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + clothing_stock_id + "' ");
-                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                                if (reduceBox_rs.next()) {
+                                                                    int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                                }
                                                             }
 
 //
@@ -1575,20 +1637,26 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         // reduse the other stocks ---
                                                         if (jRadioButton5.isSelected()) { // box
                                                             ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
-                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                            if (reduceBox_rs.next()) {
+                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                            }
                                                         }
 
                                                         if (jRadioButton6.isSelected()) { // bag
                                                             ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
-                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                            if (reduceBox_rs.next()) {
+                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                            }
                                                         }
 
                                                         if (jRadioButton7.isSelected()) { // clothing
                                                             ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + clothing_stock_id + "' ");
-                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                            if (reduceBox_rs.next()) {
+                                                                int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                            }
                                                         }
 
                                                         // Order Successs. -> prints
@@ -1650,20 +1718,26 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     // reduse the other stocks ---
                                                     if (jRadioButton5.isSelected()) { // box
                                                         ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
-                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                        if (reduceBox_rs.next()) {
+                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                        }
                                                     }
 
                                                     if (jRadioButton6.isSelected()) { // bag
                                                         ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
-                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                        if (reduceBox_rs.next()) {
+                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                        }
                                                     }
 
                                                     if (jRadioButton7.isSelected()) { // clothing
                                                         ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + clothing_stock_id + "' ");
-                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                        if (reduceBox_rs.next()) {
+                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                        }
                                                     }
 
                                                     Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
@@ -1690,20 +1764,26 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     // reduse the other stocks ---
                                                     if (jRadioButton5.isSelected()) { // box
                                                         ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
-                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                        if (reduceBox_rs.next()) {
+                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                        }
                                                     }
 
                                                     if (jRadioButton6.isSelected()) { // bag
                                                         ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
-                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                        if (reduceBox_rs.next()) {
+                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
+                                                        }
                                                     }
 
                                                     if (jRadioButton7.isSelected()) { // clothing
                                                         ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + clothing_stock_id + "' ");
-                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                        if (reduceBox_rs.next()) {
+                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
+                                                        }
                                                     }
 
                                                     JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);

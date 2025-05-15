@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
-import java.sql.ResultSet;
+import java.sql.ResultSet;  
 import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;

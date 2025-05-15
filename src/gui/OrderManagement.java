@@ -33,27 +33,27 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class OrderManagement extends javax.swing.JFrame {
-    
+
     int actualProfit = 0;
     int estimateProfit = 0;
     int advanceTotal = 0;
     double ReportTotal = 0;
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    
+
     public OrderManagement() {
         initComponents();
         setSize(screen.width, screen.height);
-        
+
         operater();
         time();
         Refresh();
     }
-    
+
     private void operater() {
         String name = UserDetails.UserName;
         userNameField.setText(name);
     }
-    
+
     private void time() {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
@@ -68,7 +68,7 @@ public class OrderManagement extends javax.swing.JFrame {
         timer.setInitialDelay(0);
         timer.start();
     }
-    
+
     public void Refresh() {
         LoadOrderTable();
         loadLocations();
@@ -79,22 +79,22 @@ public class OrderManagement extends javax.swing.JFrame {
         jDateChooser2.setDate(null);
         completeBtn.setEnabled(false);
         billBtn.setEnabled(false);
-        
+
     }
-    
+
     public void loadLocations() {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `location` ORDER BY `id` ASC");
             Vector v = new Vector();
-            
+
             v.add("Select Locaiton");
             while (rs.next()) {
                 v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("location_name")));
             }
-            
+
             DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
             jComboBox1.setModel(dfm);
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
@@ -102,20 +102,22 @@ public class OrderManagement extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void LoadOrderTable() {
         try {
             ResultSet rs = MySQL.execute("SELECT DISTINCT "
                     + "`invoice`.`invoice_id`,`name`,`nic`,`date`,`location_name`,`advance_payment`,`discount`,`total_price`,`status_name`, `payment_status`.`status_name`, `payment_status_id` "
                     + "FROM `invoice` "
                     + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile` "
-                    + "INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` "
+                    + "INNER JOIN `invoice_item` ON `invoice_item`.`invoice_id` = `invoice`.`invoice_id` "
+                    + "INNER JOIN `stock` ON `stock`.`id` = `invoice_item`.`stock_id` "
+                    + "INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
                     + "INNER JOIN `payment_status` ON `invoice`.`payment_status_id` = `payment_status`.`id` "
                     + "ORDER BY `date` DESC "
             );
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("invoice_id"));
@@ -127,27 +129,27 @@ public class OrderManagement extends javax.swing.JFrame {
                 v.add(rs.getDouble("discount"));
                 v.add(rs.getDouble("advance_payment"));
                 v.add(rs.getDouble("total_price"));
-                
+
                 estimateProfit += rs.getDouble("total_price");
-                
+
                 if (rs.getString("payment_status_id").equals("2")) {
                     actualProfit += rs.getDouble("total_price");
                     ReportTotal++;
                 } else {
                     actualProfit += rs.getDouble("advance_payment");
                     advanceTotal += rs.getDouble("advance_payment");
-                    
+
                     ReportTotal++;
                 }
-                
+
                 dtm.addRow(v);
             }
-            
+
             esProfitCountLable.setText("Rs." + String.valueOf(estimateProfit));
             acCountLable.setText("Rs." + String.valueOf(actualProfit));
             advanceCountLable.setText("Rs." + String.valueOf(advanceTotal));
             jLabel10.setText("Rs." + String.valueOf(ReportTotal));
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
@@ -156,10 +158,10 @@ public class OrderManagement extends javax.swing.JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "load table error", e);
-            
+
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -395,7 +397,9 @@ public class OrderManagement extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator6, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jSeparator5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1)))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
@@ -751,47 +755,49 @@ public class OrderManagement extends javax.swing.JFrame {
         actualProfit = 0;
         ReportTotal = 0;
         SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
-        
+
         String ToDate;
         String FromDate;
-        
+
         try {
             ToDate = simpleDateformat.format(jDateChooser1.getDate());
             jLabel22.setText(ToDate);
         } catch (NullPointerException ne) {
             ToDate = "null";
         }
-        
+
         try {
             FromDate = simpleDateformat.format(jDateChooser2.getDate());
             jLabel21.setText(ToDate);
         } catch (NullPointerException ne) {
             FromDate = "null";
         }
-        
+
         try {
             String Queary = "SELECT * FROM `invoice` "
                     + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile`   "
-                    + "INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` "
+                    + "INNER JOIN `invoice_item` ON `invoice_item`.`invoice_id` = `invoice`.`invoice_id` "
+                    + "INNER JOIN `stock` ON `stock`.`id` = `invoice_item`.`stock_id` "
+                    + "INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
                     + "INNER JOIN `payment_status` ON `invoice`.`payment_status_id` = `payment_status`.`id` ";
 
 //        Enter Parameter
             if (!jTextField1.getText().isEmpty()) {
                 Queary += " WHERE `invoice`.`invoice_id` = '" + jTextField1.getText() + "' ";
-                
+
                 if (!jTextField3.getText().isEmpty()) {
                     ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + jTextField3.getText() + "' OR `name` = '" + jTextField3.getText() + "'");
                     if (rs.next()) {
                         String customer_id = rs.getString("mobile");
-                        
+
                         Queary += " AND `invoice`.`customer_mobile` = '" + customer_id + "' ";
                     }
                 }
-                
+
                 if (jComboBox1.getSelectedIndex() != 0) {
                     Queary += " AND `customer`.`location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
                 }
-                
+
                 if (ToDate != "null" && FromDate != "null") {
                     Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
                 } else if (ToDate != "null") {
@@ -799,7 +805,7 @@ public class OrderManagement extends javax.swing.JFrame {
                 } else if (FromDate != "null") {
                     Queary += " AND `invoice`.`date` <= '" + FromDate + "' ";
                 }
-                
+
             } else if (!jTextField3.getText().isEmpty()) {
                 if (!jTextField3.getText().isEmpty()) {
                     ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` LIKE '%" + jTextField3.getText() + "%' OR `name` LIKE '%" + jTextField3.getText() + "%' ");
@@ -810,7 +816,7 @@ public class OrderManagement extends javax.swing.JFrame {
                     if (jComboBox1.getSelectedIndex() != 0) {
                         Queary += " AND `customer`.`location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
                     }
-                    
+
                     if (ToDate != "null" && FromDate != "null") {
                         Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
                     } else if (ToDate != "null") {
@@ -821,7 +827,7 @@ public class OrderManagement extends javax.swing.JFrame {
                 }
             } else if (jComboBox1.getSelectedIndex() != 0) {
                 Queary += " WHERE `customer`.`location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
-                
+
                 if (ToDate != "null" && FromDate != "null") {
                     Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
                 } else if (ToDate != "null") {
@@ -836,11 +842,11 @@ public class OrderManagement extends javax.swing.JFrame {
             } else if (FromDate != "null") {
                 Queary += " WHERE `invoice`.`date` <= '" + FromDate + "' ";
             }
-            
+
             ResultSet rs = MySQL.execute(Queary);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("invoice_id"));
@@ -852,26 +858,26 @@ public class OrderManagement extends javax.swing.JFrame {
                 v.add(rs.getDouble("discount"));
                 v.add(rs.getDouble("advance_payment"));
                 v.add(rs.getDouble("total_price"));
-                
+
                 estimateProfit += rs.getDouble("total_price");
-                
+
                 if (rs.getString("payment_status_id").equals("2")) {
                     actualProfit += rs.getDouble("total_price");
                     ReportTotal++;
                 } else {
                     actualProfit += rs.getDouble("advance_payment");
                     advanceTotal += rs.getDouble("advance_payment");
-                    
+
                     ReportTotal++;
                 }
-                
+
                 dtm.addRow(v);
             }
             esProfitCountLable.setText(String.valueOf(estimateProfit));
             acCountLable.setText(String.valueOf(actualProfit));
             advanceCountLable.setText(String.valueOf(advanceTotal));
             jLabel10.setText(String.valueOf(ReportTotal));
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
@@ -895,7 +901,7 @@ public class OrderManagement extends javax.swing.JFrame {
             if (count == 0) {
                 lens = true;
             }
-            
+
             if (count == 1 || lens) {
                 Printsouts p = new Printsouts(invoiceID);
                 p.setVisible(true);
@@ -915,16 +921,16 @@ public class OrderManagement extends javax.swing.JFrame {
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
-    
+
     private int invoiceID;
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // View Bill
         if (evt.getClickCount() == 2) {
             billBtn.setEnabled(true);
-            
+
             String status = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 5));
-            
+
             if (!status.equals("complete")) {
                 completeBtn.setEnabled(true);
                 String id = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
@@ -932,7 +938,7 @@ public class OrderManagement extends javax.swing.JFrame {
             } else {
                 completeBtn.setEnabled(false);
             }
-            
+
         }
 
     }//GEN-LAST:event_jTable1MouseClicked
@@ -963,7 +969,7 @@ public class OrderManagement extends javax.swing.JFrame {
                 Refresh();
             }
         });
-        
+
 
     }//GEN-LAST:event_completeBtnActionPerformed
 
@@ -972,21 +978,21 @@ public class OrderManagement extends javax.swing.JFrame {
             String ToDate;
             String FromDate;
             SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
-            
+
             try {
                 ToDate = simpleDateformat.format(jDateChooser1.getDate());
                 jLabel22.setText(ToDate);
             } catch (NullPointerException ne) {
                 ToDate = "null";
             }
-            
+
             try {
                 FromDate = simpleDateformat.format(jDateChooser2.getDate());
                 jLabel21.setText(ToDate);
             } catch (NullPointerException ne) {
                 FromDate = "null";
             }
-            
+
             String Queary = "SELECT "
                     + "invoice.invoice_id, "
                     + "invoice.payment_status_id, "
@@ -1000,7 +1006,7 @@ public class OrderManagement extends javax.swing.JFrame {
                     + "invoice.date FROM invoice "
                     + "INNER JOIN invoice_item ON invoice_item.invoice_id = invoice.invoice_id "
                     + "INNER JOIN stock ON invoice_item.stock_id = stock.id ";
-            
+
             if (ToDate != "null" && FromDate != "null") {
                 Queary += "WHERE invoice.date BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
             } else if (ToDate != "null") {
@@ -1008,18 +1014,18 @@ public class OrderManagement extends javax.swing.JFrame {
             } else if (FromDate != "null") {
                 Queary += " WHERE invoice.date <= '" + FromDate + "' ";
             }
-            
+
             ResultSet rs = MySQL.execute(Queary);
-            
+
             DecimalFormat df = new DecimalFormat("0.00");
-            
+
             double totalIncome = 0;
             double estimatePayment = 0;
             double advancement = 0;
             double completePayment = 0;
             double costOfGoods = 0;
             double profit = 0;
-            
+
             while (rs.next()) {
                 double ep = Double.parseDouble(rs.getString("subTotal"));
                 estimatePayment = +ep;
@@ -1029,34 +1035,34 @@ public class OrderManagement extends javax.swing.JFrame {
                 } else {
                     completePayment = +Double.parseDouble(rs.getString("subTotal"));
                 }
-                
+
             }
-            
+
             totalIncome = advancement + completePayment;
             profit = totalIncome - costOfGoods;
-            
+
             HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("from_date", String.valueOf(FromDate));
             parameters.put("to_date", String.valueOf(ToDate));
-            
+
             parameters.put("total_income", String.valueOf(df.format(totalIncome)));
-            
+
             parameters.put("estimate_payment", String.valueOf(df.format(estimatePayment)));
             parameters.put("advancement", String.valueOf(df.format(advancement)));
             parameters.put("complete_payment", String.valueOf(df.format(completePayment)));
             parameters.put("cost_of_goods", String.valueOf(df.format(costOfGoods)));
             parameters.put("profit", String.valueOf(df.format(profit)));
-            
+
             try {
                 JREmptyDataSource eds = new JREmptyDataSource();
-                
+
                 JasperPrint jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("/reports/EagleEyeIncome.jasper"), parameters, eds);
                 JasperViewer.viewReport(jasperPrint, false);
             } catch (Exception e) {
                 logger.log(Level.WARNING, OrderManagement.class.getName(), e);
-                
+
             }
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }

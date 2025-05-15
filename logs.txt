@@ -2191,3 +2191,157 @@ May 11, 2025 7:27:57 PM gui.Login signInBtnActionPerformed
 INFO: user has logged succesfully
 May 11, 2025 7:33:10 PM gui.Login signInBtnActionPerformed
 INFO: user has logged succesfully
+May 11, 2025 8:00:30 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 8:11:47 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 8:33:24 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 8:33:44 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 8:39:14 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 8:39:48 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 8:43:38 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 8:45:48 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 8:46:21 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 8:50:18 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 8:52:49 PM gui.OrderMaking jButton4ActionPerformed
+WARNING: Data failed to load
+java.sql.SQLException: Before start of result set
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:129)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:89)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:63)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.checkRowPos(ResultSetImpl.java:517)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.getObject(ResultSetImpl.java:1314)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.getInt(ResultSetImpl.java:822)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.getInt(ResultSetImpl.java:843)
+	at gui.OrderMaking.jButton4ActionPerformed(OrderMaking.java:1285)
+	at gui.OrderMaking.access$300(OrderMaking.java:34)
+	at gui.OrderMaking$4.actionPerformed(OrderMaking.java:496)
+	at java.desktop/javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1967)
+	at java.desktop/javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2308)
+	at java.desktop/javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:405)
+	at java.desktop/javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:262)
+	at java.desktop/javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:279)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6635)
+	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3342)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6400)
+	at java.desktop/java.awt.Container.processEvent(Container.java:2263)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5011)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2321)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4843)
+	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4918)
+	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4547)
+	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4488)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2307)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2772)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4843)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:772)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:715)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:389)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:95)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:745)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:743)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:389)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:742)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 11, 2025 8:59:18 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 9:00:33 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 9:02:42 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 11, 2025 10:18:36 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 12, 2025 9:57:15 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 14, 2025 10:30:43 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 14, 2025 10:31:44 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 15, 2025 12:02:32 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 15, 2025 12:06:28 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 15, 2025 12:10:03 AM gui.Login loadLocations
+WARNING: Please Check Your Internet Connection or Please Try again later
+java.lang.NullPointerException
+	at gui.Login.loadLocations(Login.java:36)
+	at gui.Login.<init>(Login.java:27)
+	at gui.Login$3.run(Login.java:288)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:313)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:770)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:715)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:389)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:740)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 15, 2025 12:12:51 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 15, 2025 12:18:08 AM gui.Login loadLocations
+WARNING: Please Check Your Internet Connection or Please Try again later
+java.lang.NullPointerException
+	at gui.Login.loadLocations(Login.java:36)
+	at gui.Login.<init>(Login.java:27)
+	at gui.Login$3.run(Login.java:288)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:313)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:770)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:715)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:389)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:740)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 15, 2025 12:18:58 AM gui.Login loadLocations
+WARNING: Please Check Your Internet Connection or Please Try again later
+java.lang.NullPointerException
+	at gui.Login.loadLocations(Login.java:36)
+	at gui.Login.<init>(Login.java:27)
+	at gui.Login$3.run(Login.java:288)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:313)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:770)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:715)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:389)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:740)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+May 15, 2025 12:19:22 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+May 15, 2025 1:32:12 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully

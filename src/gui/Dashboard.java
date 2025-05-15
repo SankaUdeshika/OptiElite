@@ -46,6 +46,8 @@ public class Dashboard extends javax.swing.JFrame {
                 int userType_id = rs.getInt("user_type_id");
                 if (userType_id == 1) {
                     adminBtn.setEnabled(true);
+                } else if (userType_id == 2) {
+                    adminBtn.setEnabled(false);
                 }
             }
         } catch (Exception e) {
@@ -97,15 +99,13 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         adminBtn = new javax.swing.JButton();
         customerBtn = new javax.swing.JButton();
-        productBtn = new javax.swing.JButton();
         orderBtn = new javax.swing.JButton();
         exitBtn = new javax.swing.JButton();
         prescriptionsBtn = new javax.swing.JButton();
         signOutBtn = new javax.swing.JButton();
         accessoriesBtn = new javax.swing.JButton();
-        stockBtn = new javax.swing.JButton();
-        lensOrderBtn = new javax.swing.JToggleButton();
         jButton2 = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -139,7 +139,7 @@ public class Dashboard extends javax.swing.JFrame {
                 adminBtnActionPerformed(evt);
             }
         });
-        jPanel11.add(adminBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, 210, 64));
+        jPanel11.add(adminBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 210, 64));
 
         customerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/customer.png"))); // NOI18N
         customerBtn.setText("Customer");
@@ -150,15 +150,6 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel11.add(customerBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 210, 64));
 
-        productBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/product.png"))); // NOI18N
-        productBtn.setText("Products");
-        productBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productBtnActionPerformed(evt);
-            }
-        });
-        jPanel11.add(productBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 210, 64));
-
         orderBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Orders.png"))); // NOI18N
         orderBtn.setText("Orders");
         orderBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -166,7 +157,7 @@ public class Dashboard extends javax.swing.JFrame {
                 orderBtnActionPerformed(evt);
             }
         });
-        jPanel11.add(orderBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 210, 64));
+        jPanel11.add(orderBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 210, 64));
 
         exitBtn.setText("Exit");
         exitBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -183,7 +174,7 @@ public class Dashboard extends javax.swing.JFrame {
                 prescriptionsBtnActionPerformed(evt);
             }
         });
-        jPanel11.add(prescriptionsBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 210, 64));
+        jPanel11.add(prescriptionsBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 210, 64));
 
         signOutBtn.setText("Sign out");
         signOutBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -200,25 +191,7 @@ public class Dashboard extends javax.swing.JFrame {
                 accessoriesBtnActionPerformed(evt);
             }
         });
-        jPanel11.add(accessoriesBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 400, 210, 64));
-
-        stockBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/product.png"))); // NOI18N
-        stockBtn.setText("Stock");
-        stockBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stockBtnActionPerformed(evt);
-            }
-        });
-        jPanel11.add(stockBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, 210, 64));
-
-        lensOrderBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/lens.png"))); // NOI18N
-        lensOrderBtn.setText("Only Lens Order");
-        lensOrderBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lensOrderBtnActionPerformed(evt);
-            }
-        });
-        jPanel11.add(lensOrderBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 240, 210, 70));
+        jPanel11.add(accessoriesBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 210, 64));
 
         jButton2.setText("Company Purchases");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -226,7 +199,16 @@ public class Dashboard extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel11.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 320, 210, 60));
+        jPanel11.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, 210, 60));
+
+        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/stokManagement.png"))); // NOI18N
+        jToggleButton1.setText("View Stock");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+        jPanel11.add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 240, 210, 60));
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -435,12 +417,6 @@ public class Dashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_customerBtnActionPerformed
 
-    private void productBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productBtnActionPerformed
-        ProductAdding pa = new ProductAdding();
-        pa.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_productBtnActionPerformed
-
     private void orderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderBtnActionPerformed
         OrderManagement om = new OrderManagement();
         om.setVisible(true);
@@ -473,17 +449,6 @@ public class Dashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_accessoriesBtnActionPerformed
 
-    private void stockBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockBtnActionPerformed
-        StockDashboard sd = new StockDashboard();
-        sd.setVisible(true);
-    }//GEN-LAST:event_stockBtnActionPerformed
-
-    private void lensOrderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lensOrderBtnActionPerformed
-        lensOrder lo = new lensOrder();
-        lo.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_lensOrderBtnActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         Navs.routee = true;
@@ -495,6 +460,13 @@ public class Dashboard extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        // View Stock
+        ViewStock viewStock = new ViewStock();
+        viewStock.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -532,12 +504,10 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextPane jTextPane1;
-    private javax.swing.JToggleButton lensOrderBtn;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JButton orderBtn;
     private javax.swing.JButton prescriptionsBtn;
-    private javax.swing.JButton productBtn;
     private javax.swing.JButton signOutBtn;
-    private javax.swing.JButton stockBtn;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel userNameField;

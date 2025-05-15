@@ -21,12 +21,12 @@ public class adminDashboard extends javax.swing.JFrame {
     public adminDashboard() {
         initComponents();
         this.setSize(screen.width, screen.height);
-        
+
         operater();
         time();
     }
-    
-      private void operater() {
+
+    private void operater() {
         String name = UserDetails.UserName;
         userNameField.setText(name);
     }
@@ -343,9 +343,8 @@ public class adminDashboard extends javax.swing.JFrame {
 
     private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton28ActionPerformed
         // TODO add your handling code here:
-        StockManagement sm = new StockManagement();
-        sm.setVisible(true);
-        this.dispose();
+        StockDashboard sd = new StockDashboard();
+        sd.setVisible(true);
     }//GEN-LAST:event_jButton28ActionPerformed
 
     private void jButton29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton29ActionPerformed
