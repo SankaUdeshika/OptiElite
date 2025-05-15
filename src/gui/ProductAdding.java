@@ -734,13 +734,26 @@ public class ProductAdding extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // Adding Product Brand
         String brand = jTextField1.getText();
-        if (brand.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Plese Enter a brand text");
-        } else {
-            MySQL.execute("INSERT INTO `brand` (`brand_name`) VALUES ('" + brand + "')");
-            JOptionPane.showMessageDialog(this, "Brand Insert Success");
-            Refresh();
+
+        try {
+            ResultSet brand_rs = MySQL.execute("SELECT * FROM `brand` WHERE `brand_name` = '" + brand + "' ");
+            if (brand_rs.next()) {
+                JOptionPane.showMessageDialog(this, "Already Registerd this Brand", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                if (brand.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Plese Enter a brand text");
+                } else {
+                    MySQL.execute("INSERT INTO `brand` (`brand_name`) VALUES ('" + brand + "')");
+                    JOptionPane.showMessageDialog(this, "Brand Insert Success");
+                    Refresh();
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Something Worng, ", "Please Try again later", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
+
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
