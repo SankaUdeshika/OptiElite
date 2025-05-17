@@ -798,14 +798,14 @@ public class OrderMaking extends javax.swing.JFrame {
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null}
             },
             new String [] {
-                "Lens id", "Lens Code", "Lens Brand", "Lens Type", "Lens Cortin", "Lens Design", "Lens Tint", "Lens Price"
+                "Lens id", "Lens Code", "Lens Price", "Lens Supplier"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, false, false, true, true
+                false, true, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -819,7 +819,7 @@ public class OrderMaking extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(jTable4);
         if (jTable4.getColumnModel().getColumnCount() > 0) {
-            jTable4.getColumnModel().getColumn(4).setResizable(false);
+            jTable4.getColumnModel().getColumn(0).setResizable(false);
         }
 
         jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 306, 880, 95));
@@ -2002,11 +2002,8 @@ public class OrderMaking extends javax.swing.JFrame {
         try {
             ResultSet rs = MySQL.execute("SELECT * \n"
                     + "FROM lens_stock \n"
-                    + "INNER JOIN lens_brand ON lens_stock.lens_brand_lens_brand_id = lens_brand.lens_brand_id\n"
-                    + "INNER JOIN lens_type ON lens_stock.lens_type_lens_type_id = lens_type.lens_type_id\n"
-                    + "INNER JOIN lens_cortin ON lens_stock.lens_cortin_lens_cortin_id = lens_cortin.lens_cortin_id\n"
-                    + "INNER JOIN lens_design ON lens_stock.lens_design_lens_design_id = lens_design.lens_design_id\n"
-                    + "INNER JOIN lens_tint ON lens_stock.lens_tint_lens_tint_id = lens_tint.lens_tint_id");
+                    + "INNER JOIN supplier ON supplier.supplier_id = lens_stock.supplier_id ");
+            
             DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
             dtm.setRowCount(0);
 
@@ -2014,12 +2011,8 @@ public class OrderMaking extends javax.swing.JFrame {
                 Vector v = new Vector();
                 v.add(rs.getString("lens_id"));
                 v.add(rs.getString("lens_code"));
-                v.add(rs.getString("lens_brand"));
-                v.add(rs.getString("lens_type"));
-                v.add(rs.getString("lens_cortin"));
-                v.add(rs.getString("lens_design"));
-                v.add(rs.getString("lens_tint"));
                 v.add(rs.getString("lens_price"));
+                v.add(rs.getString("Supplier_Name"));
                 dtm.addRow(v);
             }
 

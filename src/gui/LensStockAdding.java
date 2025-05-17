@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -32,27 +33,49 @@ public class LensStockAdding extends javax.swing.JFrame {
      * Creates new form LensStockAdding
      */
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    
+
     public LensStockAdding() {
         initComponents();
         setSize(screen.width, screen.height);
-        LoadLensTint();
-        LoadLensDesign();
-        LoadLensBrand();
-        LoadLensCortin();
-        LoadLensesType();
         loadtable();
+        LoadSupplier();
         jButton5.setVisible(false);
         jButton7.setVisible(false);
     }
-    
+
     HashMap<String, String> LensMap = new HashMap<>();
     HashMap<String, String> CortinMap = new HashMap<>();
     HashMap<String, String> BrandMap = new HashMap<>();
     HashMap<String, String> DesingdMap = new HashMap<>();
     HashMap<String, String> TintMap = new HashMap<>();
-    
+
+    HashMap<String, Integer> SupplierMap = new HashMap<>();
+
     String lens_id;
+
+    public void LoadSupplier() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `supplier` INNER JOIN `company` ON `company`.`id` = `supplier`.`company_id`");
+            Vector v = new Vector();
+            v.add("Select Supplier");
+
+            SupplierMap.clear();
+
+            while (rs.next()) {
+                v.add(String.valueOf(rs.getString("Supplier_Name")));
+                SupplierMap.put(rs.getString("Supplier_Name"), rs.getInt("supplier_id"));
+            }
+
+            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+            jComboBox1.setModel(dfm);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -80,29 +103,18 @@ public class LensStockAdding extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
         jSeparator6 = new javax.swing.JSeparator();
-        jLabel8 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel41 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jComboBox5 = new javax.swing.JComboBox<>();
         jButton4 = new javax.swing.JButton();
         jLabel22 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel24 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -165,17 +177,17 @@ public class LensStockAdding extends javax.swing.JFrame {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Lens_id", "Lens Brand", "Lens Type", "Lens_Code", "Lens Cortin", "Lens Design", "Lens Tint", "Lens Price"
+                "Lens_id", "Lens_Code", "Lens Price", "Supplier"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -188,69 +200,30 @@ public class LensStockAdding extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(jTable3);
+        if (jTable3.getColumnModel().getColumnCount() > 0) {
+            jTable3.getColumnModel().getColumn(0).setResizable(false);
+            jTable3.getColumnModel().getColumn(1).setResizable(false);
+            jTable3.getColumnModel().getColumn(2).setResizable(false);
+            jTable3.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 63, 760, 298));
         jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 379, 760, 10));
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel8.setText("Lens Type");
-        jPanel6.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 548, -1, -1));
-
         jLabel17.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel17.setText("Lens Options");
         jPanel6.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(56, 389, -1, -1));
-
-        jLabel24.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel24.setText("Lens Brand");
-        jPanel6.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 550, -1, -1));
-
-        jLabel41.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel41.setText("Cortin");
-        jPanel6.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 540, -1, -1));
-
-        jLabel25.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel25.setText("Lens Design");
-        jPanel6.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 610, -1, -1));
-
-        jLabel21.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel21.setText("Lens Tint");
-        jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 620, -1, -1));
 
         jTextField7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField7ActionPerformed(evt);
             }
         });
-        jPanel6.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 490, 190, 23));
+        jPanel6.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 450, 110, 23));
 
         jLabel20.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
         jLabel20.setText("Lens Price");
-        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 450, -1, -1));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 570, 161, 21));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 570, 169, 21));
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel6.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 570, 164, 21));
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel6.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 640, 160, -1));
-
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox5ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jComboBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 640, 164, 21));
+        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 420, -1, -1));
 
         jButton4.setText("Add Price");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -258,18 +231,18 @@ public class LensStockAdding extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 640, -1, -1));
+        jPanel6.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 510, -1, -1));
 
         jLabel22.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
-        jLabel22.setText("Lens Code");
-        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 452, -1, -1));
+        jLabel22.setText("Supplier");
+        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 490, -1, -1));
 
         jTextField8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField8ActionPerformed(evt);
             }
         });
-        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 490, 280, 23));
+        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 450, 460, 23));
 
         jButton5.setText("Delete");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -277,7 +250,7 @@ public class LensStockAdding extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 640, -1, -1));
+        jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 510, -1, -1));
 
         jButton7.setText("Update");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -285,47 +258,19 @@ public class LensStockAdding extends javax.swing.JFrame {
                 jButton7ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 640, -1, -1));
+        jPanel6.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 510, -1, -1));
+        jPanel6.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 450, 140, -1));
 
-        jButton8.setText("Manage");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 570, -1, -1));
+        jLabel23.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        jLabel23.setText("Lens Code");
+        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 420, -1, -1));
 
-        jButton9.setText("Manage");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 570, -1, -1));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 510, 170, -1));
 
-        jButton10.setText("Manage");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 570, -1, -1));
-
-        jButton11.setText("Manage");
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 640, -1, -1));
-
-        jButton12.setText("Manage");
-        jButton12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton12ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 640, -1, -1));
+        jLabel24.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        jLabel24.setText("Lens ID");
+        jPanel6.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, -1, -1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -349,7 +294,7 @@ public class LensStockAdding extends javax.swing.JFrame {
                             .addGap(8, 8, 8)
                             .addComponent(jLabel7))))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 824, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 916, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -520,130 +465,29 @@ public class LensStockAdding extends javax.swing.JFrame {
         stockManagement.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
-    
-
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        System.out.println("working Add Price");
-        if (jComboBox1.getSelectedItem().equals("Select Lens Type")) {
-            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Type", JOptionPane.ERROR_MESSAGE);
-        } else if (jComboBox3.getSelectedItem().equals("Select Lens Brand")) {
-            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Band", JOptionPane.ERROR_MESSAGE);
-        } else if (jComboBox2.getSelectedItem().equals("Select Lens Cortin")) {
-            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Cortin", JOptionPane.ERROR_MESSAGE);
-        } else if (jComboBox4.getSelectedItem().equals("Select Lens Design")) {
-            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Brand", JOptionPane.ERROR_MESSAGE);
-        } else if (jComboBox5.getSelectedItem().equals("Select Lens Tint")) {
-            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Tint", JOptionPane.ERROR_MESSAGE);
-        } else if (jTextField7.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Error", "Please Enter Lens Price", JOptionPane.ERROR_MESSAGE);
-        } else if (jTextField8.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Error", "Enter Lens Code", JOptionPane.ERROR_MESSAGE);
-        } else {
-            int Type = jComboBox1.getSelectedIndex();
-            int Brand = jComboBox3.getSelectedIndex();
-            int Cortin = jComboBox2.getSelectedIndex();
-            int Design = jComboBox4.getSelectedIndex();
-            int Tint = jComboBox5.getSelectedIndex();
-            String Price = jTextField7.getText().toString();
-            String Code = jTextField8.getText().toString();
-            
-            MySQL.execute(
-                    "INSERT INTO lens_stock "
-                    + "( lens_brand_lens_brand_id, lens_code, lens_type_lens_type_id, "
-                    + "lens_cortin_lens_cortin_id, lens_design_lens_design_id, lens_tint_lens_tint_id, lens_price) "
-                    + "VALUES ("
-                    + "'" + Brand + "', '" + Code + "', '" + Type + "', '"
-                    + Cortin + "', '" + Design + "', '" + Tint + "','" + Price + "'"
-                    + ");"
-            );
-            loadtable();
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField8ActionPerformed
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
-        
-        if (evt.getClickCount() == 2) {
-            int SelectedRow = jTable3.getSelectedRow();
-            
-            String BrandName = String.valueOf(jTable3.getValueAt(SelectedRow, 1));
-            selectComboBoxItem(jComboBox3, BrandName);
-            
-            String TypeName = String.valueOf(jTable3.getValueAt(SelectedRow, 2));
-            selectComboBoxItem(jComboBox1, TypeName);
-            
-            jTextField8.setText(String.valueOf(jTable3.getValueAt(SelectedRow, 3)));
-            
-            String CortinName = String.valueOf(jTable3.getValueAt(SelectedRow, 4));
-            selectComboBoxItem(jComboBox2, CortinName);
-            
-            String DesignName = String.valueOf(jTable3.getValueAt(SelectedRow, 5));
-            selectComboBoxItem(jComboBox4, DesignName);
-            
-            String TintName = String.valueOf(jTable3.getValueAt(SelectedRow, 6));
-            selectComboBoxItem(jComboBox5, TintName);
-            
-            jTextField7.setText(String.valueOf(jTable3.getValueAt(SelectedRow, 7)));
-            
-            lens_id = jTable3.getValueAt(SelectedRow, 0).toString();
-            
-            jButton5.setVisible(true);
-            jButton7.setVisible(true);
-            jButton4.setVisible(false);
-        }
-
-    }//GEN-LAST:event_jTable3MouseClicked
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if (jComboBox1.getSelectedItem().equals("Select Lens Type")) {
-            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Type", JOptionPane.ERROR_MESSAGE);
-        } else if (jComboBox3.getSelectedItem().equals("Select Lens Brand")) {
-            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Band", JOptionPane.ERROR_MESSAGE);
-        } else if (jComboBox2.getSelectedItem().equals("Select Lens Cortin")) {
-            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Cortin", JOptionPane.ERROR_MESSAGE);
-        } else if (jComboBox4.getSelectedItem().equals("Select Lens Design")) {
-            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Brand", JOptionPane.ERROR_MESSAGE);
-        } else if (jComboBox5.getSelectedItem().equals("Select Lens Tint")) {
-            JOptionPane.showMessageDialog(this, "Error", "Please Selsect Lens Tint", JOptionPane.ERROR_MESSAGE);
-        } else if (jTextField7.getText().isEmpty()) {
+        if (jTextField7.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Error", "Please Enter Lens Price", JOptionPane.ERROR_MESSAGE);
         } else if (jTextField8.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Error", "Enter Lens Code", JOptionPane.ERROR_MESSAGE);
         } else {
-            int Type = jComboBox1.getSelectedIndex();
-            int Brand = jComboBox3.getSelectedIndex();
-            int Cortin = jComboBox2.getSelectedIndex();
-            int Design = jComboBox4.getSelectedIndex();
-            int Tint = jComboBox5.getSelectedIndex();
+            String supplier = String.valueOf(jComboBox1.getSelectedItem());
+            String Lens_id = jTextField1.getText();
             String Price = jTextField7.getText().toString();
             String Code = jTextField8.getText().toString();
             try {
                 MySQL.execute(
                         "UPDATE lens_stock SET "
-                        + "lens_brand_lens_brand_id = '" + Brand + "', "
                         + "lens_code = '" + Code + "', "
-                        + "lens_type_lens_type_id = '" + Type + "', "
-                        + "lens_cortin_lens_cortin_id = '" + Cortin + "', "
-                        + "lens_design_lens_design_id = '" + Design + "', "
-                        + "lens_tint_lens_tint_id = '" + Tint + "', "
-                        + "lens_price = '" + Price + "' "
+                        + "lens_price = '" + Price + "', "
+                        + "supplier_id = '" + SupplierMap.get(supplier) + "' "
                         + "WHERE lens_id = '" + lens_id + "';"
                 );
             } catch (Exception e) {
                 System.out.println(e);
             }
-            
+
             loadtable();
         }
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -651,74 +495,79 @@ public class LensStockAdding extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         try {
             MySQL.execute("DELETE FROM lens_stock WHERE lens_id = '" + lens_id + "';");
+            loadtable();
+
         } catch (Exception e) {
             System.out.println(e);
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
         // TODO add your handling code here:
-        TypeLensChange tc = new TypeLensChange(this);
-        tc.setVisible(true);
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_jTextField8ActionPerformed
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
-        TypeLensCortinChange tc = new TypeLensCortinChange(this);
-        tc.setVisible(true);
-    }//GEN-LAST:event_jButton9ActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        System.out.println("working Add Price");
 
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:
-        TypeLensBrandChange tb = new TypeLensBrandChange(this);
-        tb.setVisible(true);
-    }//GEN-LAST:event_jButton10ActionPerformed
+        String supplier_name = String.valueOf(jComboBox1.getSelectedItem());
 
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
-        TypeLensDesignChange typeLensDesignChange = new TypeLensDesignChange(this);
-        typeLensDesignChange.setVisible(true);
+        if (supplier_name.equals("Select Supplier")) {
+            JOptionPane.showConfirmDialog(this, "Please Select a Supplier", "Empty Supplier Error", JOptionPane.ERROR_MESSAGE);
+        } else if (jTextField1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Enter a Lens Code", JOptionPane.ERROR_MESSAGE);
+        } else if (jTextField7.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Error", "Please Enter Lens Price", JOptionPane.ERROR_MESSAGE);
+        } else if (jTextField8.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Error", "Enter Lens Code", JOptionPane.ERROR_MESSAGE);
+        } else {
 
-    }//GEN-LAST:event_jButton11ActionPerformed
+            String Lens_id = jTextField1.getText().toString();
+            String Price = jTextField7.getText().toString();
+            String Code = jTextField8.getText().toString();
+            System.out.println(SupplierMap.get(supplier_name));
 
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        // TODO add your handling code here:
-        TypeLensTintChange lt = new TypeLensTintChange(this);
-        lt.setVisible(true);
-    }//GEN-LAST:event_jButton12ActionPerformed
+            ResultSet lens_rs = MySQL.execute("SELECT * FROM `lens_stock` WHERE `lens_id` = '" + Lens_id + "' ");
 
-    private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox5ActionPerformed
-    
-    public void LoadLensTint() {
-        try {
-            
-            ResultSet rs = MySQL.execute("SELECT * FROM `lens_tint`");
-            Vector v = new Vector();
-            
-            v.add("Select Lens Tint");
-            while (rs.next()) {
-                v.add(String.valueOf(rs.getString("lens_tint_id") + ") " + rs.getString("lens_tint")));
-                TintMap.put(rs.getString("lens_tint"), rs.getString("lens_tint_id"));
-                
+            try {
+                if (!lens_rs.next()) {
+                    MySQL.execute(
+                            "INSERT INTO `lens_stock` ( `lens_id`, `lens_code`, `lens_price`, `supplier_id`) VALUES ('" + Lens_id + "','" + Code + "','" + Price + "','" + SupplierMap.get(supplier_name) + "') ");
+                    loadtable();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Already Registerd this  code ", "Error code ", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (Exception e) {
             }
-            
-            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
-            jComboBox5.setModel(dfm);
-            
-        } catch (SQLException se) {
-            se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.WARNING, "Data failed to load", se);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.log(Level.WARNING, "Data failed to load", e);
-            
+
         }
-    }
-    
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField7ActionPerformed
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+
+        if (evt.getClickCount() == 2) {
+            int SelectedRow = jTable3.getSelectedRow();
+
+//            String TypeName = String.valueOf(jTable3.getValueAt(SelectedRow, 2));
+//            selectComboBoxItem(jComboBox1, TypeName);
+            jTextField1.setText(String.valueOf(jTable3.getValueAt(SelectedRow, 0)));
+            jTextField1.setEnabled(false);
+
+            jTextField8.setText(String.valueOf(jTable3.getValueAt(SelectedRow, 1)));
+            jTextField7.setText(String.valueOf(jTable3.getValueAt(SelectedRow, 2)));
+            lens_id = jTable3.getValueAt(SelectedRow, 0).toString();
+//            jComboBox1.setSelectedItem(SupplierMap.get(jTable3.getValueAt(SelectedRow, 3)));
+
+            jButton5.setVisible(true);
+            jButton7.setVisible(true);
+            jButton4.setVisible(false);
+        }
+    }//GEN-LAST:event_jTable3MouseClicked
+
     private void selectComboBoxItem(JComboBox comboBox, String value) {
         for (int i = 0; i < comboBox.getItemCount(); i++) {
             String item = comboBox.getItemAt(i).toString();
@@ -736,136 +585,24 @@ public class LensStockAdding extends javax.swing.JFrame {
             }
         }
     }
-    
-    public void LoadLensDesign() {
-        try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `lens_design`");
-            Vector v = new Vector();
-            
-            v.add("Select Lens Design");
-            while (rs.next()) {
-                v.add(String.valueOf(rs.getString("lens_design_id") + ") " + rs.getString("lens_design")));
-                DesingdMap.put(rs.getString("lens_design"), rs.getString("lens_design_id"));
-            }
-            
-            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
-            jComboBox4.setModel(dfm);
-            
-        } catch (SQLException se) {
-            se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.WARNING, "Data failed to load", se);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.log(Level.WARNING, "Data failed to load", e);
-            
-        }
-    }
-    
-    public void LoadLensBrand() {
-        try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `lens_brand`");
-            Vector v = new Vector();
-            
-            v.add("Select Lens Brand");
-            while (rs.next()) {
-                v.add(String.valueOf(rs.getString("lens_brand_id") + ") " + rs.getString("lens_brand")));
-                BrandMap.put(rs.getString("lens_brand"), rs.getString("lens_brand_id"));
-            }
-            
-            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
-            jComboBox3.setModel(dfm);
-            
-        } catch (SQLException se) {
-            se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.WARNING, "Data failed to load", se);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.log(Level.WARNING, "Data failed to load", e);
-            
-        }
-    }
-    
-    public void LoadLensCortin() {
-        try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `lens_cortin`");
-            Vector v = new Vector();
-            
-            v.add("Select Lens Cortin");
-            while (rs.next()) {
-                v.add(String.valueOf(rs.getString("lens_cortin_id") + ") " + rs.getString("lens_cortin")));
-                CortinMap.put(rs.getString("lens_cortin"), rs.getString("lens_cortin_id"));
-            }
-            
-            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
-            jComboBox2.setModel(dfm);
-            
-        } catch (SQLException se) {
-            se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.WARNING, "Data failed to load", se);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.log(Level.WARNING, "Data failed to load", e);
-            
-        }
-    }
-    
-    public void LoadLensesType() {
-        try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `lens_type`");
-            Vector v = new Vector();
-            
-            v.add("Select Lens Type");
-            while (rs.next()) {
-                v.add(String.valueOf(rs.getString("lens_type_id") + ") " + rs.getString("lens_type")));
-                LensMap.put(rs.getString("lens_type"), rs.getString("lens_type_id"));
-            }
-            
-            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
-            jComboBox1.setModel(dfm);
-            
-        } catch (SQLException se) {
-            se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
-            logger.log(Level.WARNING, "Data failed to load", se);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.log(Level.WARNING, "Data failed to load", e);
-            
-        }
-    }
-    
+
     public void loadtable() {
         try {
             ResultSet rs = MySQL.execute("SELECT * \n"
                     + "FROM lens_stock \n"
-                    + "INNER JOIN lens_brand ON lens_stock.lens_brand_lens_brand_id = lens_brand.lens_brand_id\n"
-                    + "INNER JOIN lens_type ON lens_stock.lens_type_lens_type_id = lens_type.lens_type_id\n"
-                    + "INNER JOIN lens_cortin ON lens_stock.lens_cortin_lens_cortin_id = lens_cortin.lens_cortin_id\n"
-                    + "INNER JOIN lens_design ON lens_stock.lens_design_lens_design_id = lens_design.lens_design_id\n"
-                    + "INNER JOIN lens_tint ON lens_stock.lens_tint_lens_tint_id = lens_tint.lens_tint_id");
+                    + "INNER JOIN supplier ON supplier.supplier_id = lens_stock.supplier_id");
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("lens_id"));
-                v.add(rs.getString("lens_brand"));
-                v.add(rs.getString("lens_type"));
                 v.add(rs.getString("lens_code"));
-                v.add(rs.getString("lens_cortin"));
-                v.add(rs.getString("lens_design"));
-                v.add(rs.getString("lens_tint"));
                 v.add(rs.getString("lens_price"));
+                v.add(rs.getString("Supplier_Name"));
                 dtm.addRow(v);
             }
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
@@ -913,22 +650,13 @@ public class LensStockAdding extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dateField;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -936,15 +664,12 @@ public class LensStockAdding extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
@@ -957,6 +682,7 @@ public class LensStockAdding extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTable jTable3;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JLabel timeField;
