@@ -110,7 +110,7 @@ public class OrderManagement extends javax.swing.JFrame {
                     + "FROM `invoice` "
                     + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile` "
                     + "INNER JOIN `invoice_item` ON `invoice_item`.`invoice_id` = `invoice`.`invoice_id` "
-                    + "INNER JOIN `stock` ON `stock`.`id` = `invoice_item`.`stock_id` "
+                    + "INNER JOIN `stock` ON `stock`.`id` = `invoice_location`"
                     + "INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
                     + "INNER JOIN `payment_status` ON `invoice`.`payment_status_id` = `payment_status`.`id` "
                     + "ORDER BY `date` DESC "
