@@ -238,11 +238,9 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JSeparator();
         jPanel5 = new javax.swing.JPanel();
         jTextField17 = new javax.swing.JTextField();
-        jTextField18 = new javax.swing.JTextField();
         jSeparator8 = new javax.swing.JSeparator();
         jTextField19 = new javax.swing.JTextField();
         jTextField21 = new javax.swing.JTextField();
-        jTextField22 = new javax.swing.JTextField();
         jTextField23 = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jLabel38 = new javax.swing.JLabel();
@@ -259,19 +257,15 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jTextField28 = new javax.swing.JTextField();
         jTextField29 = new javax.swing.JTextField();
         jLabel44 = new javax.swing.JLabel();
-        jTextField30 = new javax.swing.JTextField();
         jLabel53 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
         jLabel52 = new javax.swing.JLabel();
         jTextField37 = new javax.swing.JTextField();
         jTextField36 = new javax.swing.JTextField();
         jTextField35 = new javax.swing.JTextField();
-        jTextField34 = new javax.swing.JTextField();
-        jTextField33 = new javax.swing.JTextField();
         jLabel48 = new javax.swing.JLabel();
         jTextField32 = new javax.swing.JTextField();
         jLabel47 = new javax.swing.JLabel();
-        jTextField31 = new javax.swing.JTextField();
         jLabel46 = new javax.swing.JLabel();
         jLabel51 = new javax.swing.JLabel();
         jLabel50 = new javax.swing.JLabel();
@@ -279,6 +273,12 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jTextField38 = new javax.swing.JTextField();
         jLabel54 = new javax.swing.JLabel();
         jTextField39 = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jComboBox4 = new javax.swing.JComboBox<>();
+        jComboBox5 = new javax.swing.JComboBox<>();
+        jComboBox6 = new javax.swing.JComboBox<>();
         jLabel19 = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -570,7 +570,6 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             }
         });
         jPanel5.add(jTextField17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 80, -1));
-        jPanel5.add(jTextField18, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 80, -1));
         jPanel5.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 750, 10));
 
         jTextField19.addActionListener(new java.awt.event.ActionListener() {
@@ -586,8 +585,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             }
         });
         jPanel5.add(jTextField21, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 80, -1));
-        jPanel5.add(jTextField22, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, 80, -1));
-        jPanel5.add(jTextField23, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 80, 80, -1));
+        jPanel5.add(jTextField23, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, 80, -1));
 
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -649,7 +647,6 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jPanel7.add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 10, -1, -1));
 
         jPanel5.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 810, 100));
-        jPanel5.add(jTextField30, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, 80, -1));
 
         jLabel53.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel53.setText("Left Eye");
@@ -675,26 +672,28 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 jTextField36ActionPerformed(evt);
             }
         });
+        jTextField36.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField36KeyReleased(evt);
+            }
+        });
         jPanel5.add(jTextField36, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 80, -1));
         jPanel5.add(jTextField35, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 40, 80, -1));
-        jPanel5.add(jTextField34, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 40, 80, -1));
-        jPanel5.add(jTextField33, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 80, -1));
 
         jLabel48.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel48.setText("PD");
-        jPanel5.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 20, -1, -1));
+        jPanel5.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, -1, -1));
 
         jTextField32.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField32ActionPerformed(evt);
             }
         });
-        jPanel5.add(jTextField32, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 40, 80, -1));
+        jPanel5.add(jTextField32, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 40, 80, -1));
 
         jLabel47.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel47.setText("Cyl.");
         jPanel5.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, -1, -1));
-        jPanel5.add(jTextField31, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 40, 80, -1));
 
         jLabel46.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel46.setText("Axis.");
@@ -702,7 +701,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
 
         jLabel51.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel51.setText("Addtion");
-        jPanel5.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, -1, -1));
+        jPanel5.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
 
         jLabel50.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel50.setText("DVA");
@@ -710,15 +709,43 @@ public class PrescripitonAdding extends javax.swing.JFrame {
 
         jLabel49.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel49.setText("NVA");
-        jPanel5.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
-        jPanel5.add(jTextField38, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 40, 80, -1));
+        jPanel5.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 20, -1, -1));
+        jPanel5.add(jTextField38, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 40, 80, -1));
 
         jLabel54.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel54.setText("Height");
         jPanel5.add(jLabel54, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
-        jPanel5.add(jTextField39, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 80, 80, -1));
+        jPanel5.add(jTextField39, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 80, 80, -1));
 
-        jPanel6.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 460, -1, 140));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "6/6", "6/9", "6/12", "6/18", "6/18", "6/24", "6/36", "6/60" }));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 40, 80, -1));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "6/6", "6/9", "6/12", "6/18", "6/18", "6/24", "6/36", "6/60" }));
+        jPanel5.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 80, -1));
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N.6", "N.8", "N.10", "N.12", "N.18", "N.36" }));
+        jPanel5.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 40, 80, -1));
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N.6", "N.8", "N.10", "N.12", "N.18", "N.36" }));
+        jPanel5.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 80, 80, -1));
+
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "+0.75", "+1.00", "+1.25", "+1.50", "+1.75", "+2.00", "+2.25", "+2.50", "+2.75", "+3.00", "+3.25", "+3.50" }));
+        jPanel5.add(jComboBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 80, -1));
+
+        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "+0.75", "+1.00", "+1.25", "+1.50", "+1.75", "+2.00", "+2.25", "+2.50", "+2.75", "+3.00", "+3.25", "+3.50", " " }));
+        jPanel5.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, 80, -1));
+
+        jPanel6.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, -1, 130));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel19.setText("1");
@@ -816,7 +843,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -863,7 +890,14 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     }//GEN-LAST:event_backBtnActionPerformed
 
     private void jTextField17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField17ActionPerformed
-        // TODO add your handling code here:
+        // Minus CYl
+        String CYL = jTextField17.getText();
+
+        if (CYL.startsWith("-")) {
+            System.out.println("no Minus CYL");
+        } else {
+            jTextField17.setText("-" + CYL);
+        }
     }//GEN-LAST:event_jTextField17ActionPerformed
 
     private void jTextField21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField21ActionPerformed
@@ -1036,19 +1070,19 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 String R_SPH = jTextField37.getText();
                 String R_Cyl = jTextField36.getText();
                 String R_Axis = jTextField35.getText();
-                String PR_DVa = jTextField34.getText();
-                String R_NVA = jTextField33.getText();
+                String PR_DVa = String.valueOf(jComboBox1.getSelectedItem());
+                String R_NVA = String.valueOf(jComboBox3.getSelectedItem());
                 String R_M_PD = jTextField32.getText();
-                String R_Addiiton = jTextField31.getText();
+                String R_Addiiton = String.valueOf(jComboBox5.getSelectedItem());
                 String R_Height = jTextField38.getText();
 
                 String L_SPH = jTextField21.getText();
                 String L_Cyl = jTextField17.getText();
                 String L_Axis = jTextField19.getText();
-                String PL_DVa = jTextField18.getText();
-                String L_NVA = jTextField22.getText();
+                String PL_DVa = String.valueOf(jComboBox2.getSelectedIndex());
+                String L_NVA = String.valueOf(jComboBox4.getSelectedItem());
                 String L_M_PD = jTextField23.getText();
-                String L_Addiiton = jTextField30.getText();
+                String L_Addiiton = String.valueOf(jComboBox6.getSelectedIndex());
                 String L_Height = jTextField39.getText();
 
                 MySQL.execute("INSERT INTO `prescription_details` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,`customer_mobile`,`users_id`,"
@@ -1130,23 +1164,19 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 String R_SPH = jTextField37.getText();
                 String R_Cyl = jTextField36.getText();
                 String R_Axis = jTextField35.getText();
-                String PR_Va = jTextField34.getText();
-                String R_N_PD = jTextField33.getText();
-                String PR_DVa = jTextField34.getText();
-                String R_NVA = jTextField33.getText();
+                String PR_DVa = String.valueOf(jComboBox1.getSelectedItem());
+                String R_NVA = String.valueOf(jComboBox3.getSelectedItem());
                 String R_M_PD = jTextField32.getText();
-                String R_Addiiton = jTextField31.getText();
+                String R_Addiiton = String.valueOf(jComboBox5.getSelectedItem());
                 String R_Height = jTextField38.getText();
 
                 String L_SPH = jTextField21.getText();
                 String L_Cyl = jTextField17.getText();
                 String L_Axis = jTextField19.getText();
-                String PL_Va = jTextField18.getText();
-                String L_N_PD = jTextField22.getText();
-                String PL_DVa = jTextField18.getText();
-                String L_NVA = jTextField22.getText();
+                String PL_DVa = String.valueOf(jComboBox2.getSelectedIndex());
+                String L_NVA = String.valueOf(jComboBox4.getSelectedItem());
                 String L_M_PD = jTextField23.getText();
-                String L_Addiiton = jTextField30.getText();
+                String L_Addiiton = String.valueOf(jComboBox6.getSelectedIndex());
                 String L_Height = jTextField39.getText();
 
                 MySQL.execute("INSERT INTO `prescription_details` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,`customer_mobile`,`users_id`,"
@@ -1178,6 +1208,29 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jTextField36KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField36KeyReleased
+        // minus added
+
+        String CYL = jTextField36.getText();
+
+        if (CYL.startsWith("-")) {
+            System.out.println("yess");
+        } else {
+            System.out.println("NO");
+            jTextField36.setText("-" + CYL);
+        }
+
+
+    }//GEN-LAST:event_jTextField36KeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -1201,6 +1254,12 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton9;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JComboBox<String> jComboBox5;
+    private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1268,10 +1327,8 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField15;
     private javax.swing.JTextField jTextField16;
     private javax.swing.JTextField jTextField17;
-    private javax.swing.JTextField jTextField18;
     private javax.swing.JTextField jTextField19;
     private javax.swing.JTextField jTextField21;
-    private javax.swing.JTextField jTextField22;
     private javax.swing.JTextField jTextField23;
     private javax.swing.JTextField jTextField24;
     private javax.swing.JTextField jTextField25;
@@ -1280,11 +1337,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField28;
     private javax.swing.JTextField jTextField29;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField30;
-    private javax.swing.JTextField jTextField31;
     private javax.swing.JTextField jTextField32;
-    private javax.swing.JTextField jTextField33;
-    private javax.swing.JTextField jTextField34;
     private javax.swing.JTextField jTextField35;
     private javax.swing.JTextField jTextField36;
     private javax.swing.JTextField jTextField37;
