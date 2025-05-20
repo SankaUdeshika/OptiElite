@@ -57,7 +57,8 @@ public class CompletePayments extends javax.swing.JFrame {
                 advancementField.setText(rs.getString("advance_payment"));
                 paidAmount.setText(rs.getString("payment_amount"));
                 totalPriceField.setText(rs.getString("total_price"));
-                dueAmountField.setText(String.valueOf(rs.getDouble("advance_payment") + rs.getDouble("total_price") - rs.getDouble("payment_amount")));
+                subTotal.setText(rs.getString("subtotal"));
+                dueAmountField.setText(String.valueOf(rs.getDouble("subtotal") - rs.getDouble("payment_amount")));
             }
 
         } catch (Exception e) {
@@ -103,6 +104,8 @@ public class CompletePayments extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         paidAmount = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        subTotal = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -142,8 +145,8 @@ public class CompletePayments extends javax.swing.JFrame {
         jPanel1.add(advancementField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 338, 153, -1));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel9.setText("Total Price");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 420, -1, -1));
+        jLabel9.setText("Sub Total");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 460, -1, -1));
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 627, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -179,6 +182,11 @@ public class CompletePayments extends javax.swing.JFrame {
         jLabel13.setText("Paid Amount");
         jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, -1, -1));
 
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel14.setText("Total Price");
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 420, -1, -1));
+        jPanel1.add(subTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, 150, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -211,12 +219,13 @@ public class CompletePayments extends javax.swing.JFrame {
                 double paid_amount = Double.parseDouble(paidAmount.getText());
                 double payAmount = Double.parseDouble(jTextField1.getText());
                 double advancedPayment = Double.parseDouble(advancementField.getText());
+                double subTotalAmount = Double.parseDouble(subTotal.getText());
 
                 double payment = paid_amount + payAmount;
 
                 double ballence = (advancedPayment + Total_amount) - payment;
 
-                System.out.println(payment);
+                double newtotalPayment = subTotalAmount - (paid_amount + payAmount);
 
                 // payment history
                 LocalDateTime now = LocalDateTime.now();
@@ -225,7 +234,8 @@ public class CompletePayments extends javax.swing.JFrame {
                 DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                 String curruntTime = now.format(timeFormatter);
 
-                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoice + "','" + payAmount + "','"+curruntDay+"','"+curruntTime+"') ");
+                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoice + "','" + payAmount + "','" + curruntDay + "','" + curruntTime + "') ");
+                MySQL.execute("UPDATE `invoice` SET `total_price` = '" + newtotalPayment + "'  WHERE `invoice_id` = '" + invoice + "' ");
 
                 if (ballence <= 0.00) {
                     System.out.println("Payment Complete");
@@ -294,6 +304,7 @@ public class CompletePayments extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -309,6 +320,7 @@ public class CompletePayments extends javax.swing.JFrame {
     private javax.swing.JTextField nicField;
     private javax.swing.JTextField paidAmount;
     private javax.swing.JButton proceedBtn;
+    private javax.swing.JTextField subTotal;
     private javax.swing.JTextField totalPriceField;
     // End of variables declaration//GEN-END:variables
 }
