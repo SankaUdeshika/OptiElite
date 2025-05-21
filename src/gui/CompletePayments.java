@@ -77,6 +77,7 @@ public class CompletePayments extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -106,6 +107,10 @@ public class CompletePayments extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         subTotal = new javax.swing.JTextField();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jRadioButton4 = new javax.swing.JRadioButton();
+        jRadioButton1 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -117,45 +122,45 @@ public class CompletePayments extends javax.swing.JFrame {
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 18, -1, -1));
 
         jLabel3.setText("Invoice ID");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 101, -1, -1));
-        jPanel1.add(invoiceIDField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 98, 153, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, -1, -1));
+        jPanel1.add(invoiceIDField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, 153, -1));
 
         jLabel1.setText("Customer Name");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 141, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, -1, -1));
 
         jLabel4.setText("Customer NIC");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 181, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 140, -1, -1));
 
         jLabel5.setText("Advanced Date");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 221, -1, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, -1, -1));
 
         jLabel6.setText("Location");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 261, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 200, -1, -1));
 
         jLabel7.setText("Discount");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 301, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, -1, -1));
 
         jLabel8.setText("Advancement");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 341, -1, -1));
-        jPanel1.add(nameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 138, 153, -1));
-        jPanel1.add(nicField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 178, 153, -1));
-        jPanel1.add(dateField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 218, 153, -1));
-        jPanel1.add(locationField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 258, 153, -1));
-        jPanel1.add(discountField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 298, 153, -1));
-        jPanel1.add(advancementField, new org.netbeans.lib.awtextra.AbsoluteConstraints(221, 338, 153, -1));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 260, -1, -1));
+        jPanel1.add(nameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, 153, -1));
+        jPanel1.add(nicField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, 153, -1));
+        jPanel1.add(dateField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 170, 153, -1));
+        jPanel1.add(locationField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 153, -1));
+        jPanel1.add(discountField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 230, 153, -1));
+        jPanel1.add(advancementField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 260, 153, -1));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setText("Sub Total");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 460, -1, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 360, -1, -1));
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 627, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel12.setText("Total Due Amount");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 499, -1, -1));
-        jPanel1.add(totalPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 420, 153, -1));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
+        jPanel1.add(totalPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 320, 153, -1));
 
         dueAmountField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jPanel1.add(dueAmountField, new org.netbeans.lib.awtextra.AbsoluteConstraints(262, 496, 153, -1));
+        jPanel1.add(dueAmountField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 400, 153, -1));
 
         proceedBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         proceedBtn.setText("Proceed Payment");
@@ -164,11 +169,11 @@ public class CompletePayments extends javax.swing.JFrame {
                 proceedBtnActionPerformed(evt);
             }
         });
-        jPanel1.add(proceedBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(161, 581, 180, 40));
+        jPanel1.add(proceedBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 550, 180, 40));
 
         jLabel10.setText("Pay amount");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 556, 73, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(204, 553, 168, -1));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 460, 73, -1));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 460, 168, -1));
 
         jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -176,16 +181,32 @@ public class CompletePayments extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(211, 633, -1, -1));
-        jPanel1.add(paidAmount, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, 153, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 620, -1, -1));
+        jPanel1.add(paidAmount, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 290, 153, -1));
 
         jLabel13.setText("Paid Amount");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, -1, -1));
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 290, -1, -1));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel14.setText("Total Price");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 420, -1, -1));
-        jPanel1.add(subTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, 150, -1));
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, -1, -1));
+        jPanel1.add(subTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 360, 150, -1));
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setText("Cash");
+        jPanel1.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 500, 50, -1));
+
+        buttonGroup1.add(jRadioButton3);
+        jRadioButton3.setText("Card");
+        jPanel1.add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 500, 50, -1));
+
+        buttonGroup1.add(jRadioButton4);
+        jRadioButton4.setText("Online Payment");
+        jPanel1.add(jRadioButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 500, 110, -1));
+
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setText("Bank Deposit");
+        jPanel1.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 500, 90, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -220,6 +241,18 @@ public class CompletePayments extends javax.swing.JFrame {
                 double payAmount = Double.parseDouble(jTextField1.getText());
                 double advancedPayment = Double.parseDouble(advancementField.getText());
                 double subTotalAmount = Double.parseDouble(subTotal.getText());
+                int paymentMethodSelecetd = 0;
+
+//                payment Assign
+                if (jRadioButton2.isSelected()) {
+                    paymentMethodSelecetd = 1;
+                } else if (jRadioButton3.isSelected()) {
+                    paymentMethodSelecetd = 2;
+                } else if (jRadioButton4.isSelected()) {
+                    paymentMethodSelecetd = 3;
+                } else if (jRadioButton1.isSelected()) {
+                    paymentMethodSelecetd = 4;
+                }
 
                 double payment = paid_amount + payAmount;
 
@@ -234,7 +267,7 @@ public class CompletePayments extends javax.swing.JFrame {
                 DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                 String curruntTime = now.format(timeFormatter);
 
-                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoice + "','" + payAmount + "','" + curruntDay + "','" + curruntTime + "') ");
+                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoice + "','" + payAmount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "') ");
                 MySQL.execute("UPDATE `invoice` SET `total_price` = '" + newtotalPayment + "'  WHERE `invoice_id` = '" + invoice + "' ");
 
                 if (ballence <= 0.00) {
@@ -294,6 +327,7 @@ public class CompletePayments extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField advancementField;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField dateField;
     private javax.swing.JTextField discountField;
     private javax.swing.JTextField dueAmountField;
@@ -314,6 +348,10 @@ public class CompletePayments extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField locationField;
     private javax.swing.JTextField nameField;
