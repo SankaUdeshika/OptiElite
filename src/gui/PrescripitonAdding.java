@@ -569,6 +569,11 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 jTextField17ActionPerformed(evt);
             }
         });
+        jTextField17.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField17KeyReleased(evt);
+            }
+        });
         jPanel5.add(jTextField17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 80, -1));
         jPanel5.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 750, 10));
 
@@ -1079,10 +1084,10 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 String L_SPH = jTextField21.getText();
                 String L_Cyl = jTextField17.getText();
                 String L_Axis = jTextField19.getText();
-                String PL_DVa = String.valueOf(jComboBox2.getSelectedIndex());
+                String PL_DVa = String.valueOf(jComboBox2.getSelectedItem());
                 String L_NVA = String.valueOf(jComboBox4.getSelectedItem());
                 String L_M_PD = jTextField23.getText();
-                String L_Addiiton = String.valueOf(jComboBox6.getSelectedIndex());
+                String L_Addiiton = String.valueOf(jComboBox6.getSelectedItem());
                 String L_Height = jTextField39.getText();
 
                 MySQL.execute("INSERT INTO `prescription_details` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,`customer_mobile`,`users_id`,"
@@ -1173,10 +1178,10 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 String L_SPH = jTextField21.getText();
                 String L_Cyl = jTextField17.getText();
                 String L_Axis = jTextField19.getText();
-                String PL_DVa = String.valueOf(jComboBox2.getSelectedIndex());
+                String PL_DVa = String.valueOf(jComboBox2.getSelectedItem());
                 String L_NVA = String.valueOf(jComboBox4.getSelectedItem());
                 String L_M_PD = jTextField23.getText();
-                String L_Addiiton = String.valueOf(jComboBox6.getSelectedIndex());
+                String L_Addiiton = String.valueOf(jComboBox6.getSelectedItem());
                 String L_Height = jTextField39.getText();
 
                 MySQL.execute("INSERT INTO `prescription_details` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,`customer_mobile`,`users_id`,"
@@ -1230,6 +1235,18 @@ public class PrescripitonAdding extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jTextField36KeyReleased
+
+    private void jTextField17KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField17KeyReleased
+        // TODO add your handling code here:
+        String CYL = jTextField17.getText();
+
+        if (CYL.startsWith("-")) {
+            System.out.println("yess");
+        } else {
+            System.out.println("NO");
+            jTextField17.setText("-" + CYL);
+        }
+    }//GEN-LAST:event_jTextField17KeyReleased
 
     /**
      * @param args the command line arguments
