@@ -1216,7 +1216,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                             JOptionPane.showMessageDialog(this, "Please Sekect Job Type");
                                         } else {
 //                                        INSERT PROCESS
-                                            if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) {
+                                            if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) { // prescription selected
                                                 System.out.println("Prescription Selected");
                                                 int paymentStatus = 0;
                                                 if (AdvancedPayment == 0) {
@@ -1264,7 +1264,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 String curruntDay = now.format(dateFormatter);
                                                                 DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                                                                 String curruntTime = now.format(timeFormatter);
-                                                                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "') ");
+                                                                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','"+paymentMethodSelecetd+"') ");
 
                                                                 //add Invoice Items
                                                                 MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1329,7 +1329,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 String curruntDay = now.format(dateFormatter);
                                                                 DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                                                                 String curruntTime = now.format(timeFormatter);
-                                                                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "') ");
+                                                                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','"+paymentMethodSelecetd+"') ");
 
                                                                 // add Invoice Items
                                                                 MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1397,7 +1397,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         String curruntDay = now.format(dateFormatter);
                                                         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                                                         String curruntTime = now.format(timeFormatter);
-                                                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "') ");
+                                                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','"+paymentMethodSelecetd+"') ");
 
                                                         // add Invoice Items
                                                         MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1491,7 +1491,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             String curruntDay = now.format(dateFormatter);
                                                             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                                                             String curruntTime = now.format(timeFormatter);
-                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "') ");
+                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','"+paymentMethodSelecetd+"') ");
 
                                                             //   add Invoice Items
                                                             MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1558,7 +1558,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             String curruntDay = now.format(dateFormatter);
                                                             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                                                             String curruntTime = now.format(timeFormatter);
-                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "') ");
+                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','"+paymentMethodSelecetd+"') ");
 
                                                             //   add Invoice Items
                                                             MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1621,6 +1621,14 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                                         invoiceId = Inser_rs.getInt(1);
 
+                                                        // payment history
+                                                        LocalDateTime now = LocalDateTime.now();
+                                                        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                                        String curruntDay = now.format(dateFormatter);
+                                                        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                                                        String curruntTime = now.format(timeFormatter);
+                                                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','"+paymentMethodSelecetd+"') ");
+
                                                         // add Invoice Items
                                                         MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
                                                                 + " VALUES ('" + invoiceId + "','" + Frame_id + "','" + jTextField2.getText() + "') ");
@@ -1664,7 +1672,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         Printsouts printsouts = new Printsouts(invoiceId);
                                                         printsouts.setVisible(true);
                                                         //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                                        //  Refresh();
+                                                        Refresh();
                                                     } else {
                                                         JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                     }
@@ -1680,10 +1688,9 @@ public class OrderMaking extends javax.swing.JFrame {
                                     JOptionPane.showMessageDialog(this, "Please Select a Valid Frame", "InValid  Frame id", JOptionPane.ERROR_MESSAGE);
                                 }
                             } else {
-
+                                //only lens order
                                 int OptionResult = JOptionPane.showConfirmDialog(this, "Are You Sure Make Only Lens Purchase?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                                 if (OptionResult == 0) {
-                                    //OK
 
                                     //   payment Method Validation
                                     if (buttonGroup1.getSelection() != null) {
@@ -1709,12 +1716,20 @@ public class OrderMaking extends javax.swing.JFrame {
                                             }
 
                                             if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) {
-                                                ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`,`clothing`,`box`,`bag`,`invoice_location`)"
-                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "') ");
+                                                ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`,`clothing`,`box`,`bag`,`invoice_location`,`payment_amount`)"
+                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "') ");
                                                 int invoiceId = 0;
                                                 if (Inser_rs.next()) {
 
                                                     invoiceId = Inser_rs.getInt(1);
+
+                                                    // payment history
+                                                    LocalDateTime now = LocalDateTime.now();
+                                                    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                                    String curruntDay = now.format(dateFormatter);
+                                                    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                                                    String curruntTime = now.format(timeFormatter);
+                                                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','"+paymentMethodSelecetd+"') ");
 
                                                     // reduse the other stocks ---
                                                     if (jRadioButton5.isSelected()) { // box
@@ -1741,7 +1756,8 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         }
                                                     }
 
-                                                    Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                                    Printsouts printsouts = new Printsouts(invoiceId);
+                                                    printsouts.setVisible(true);
                                                     Refresh();
 
                                                 } else {
@@ -1754,13 +1770,21 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     payment_status_id = 2;
                                                 }
 
-                                                ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`,`clothing`,`box`,`bag`,`invoice_location`)"
-                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "') ");
+                                                ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`,`clothing`,`box`,`bag`,`invoice_location`,`payment_amount`)"
+                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "') ");
                                                 //
                                                 int invoiceId = 0;
                                                 if (Inser_rs.next()) {
 
                                                     invoiceId = Inser_rs.getInt(1);
+
+                                                    // payment history
+                                                    LocalDateTime now = LocalDateTime.now();
+                                                    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                                    String curruntDay = now.format(dateFormatter);
+                                                    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                                                    String curruntTime = now.format(timeFormatter);
+                                                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','"+paymentMethodSelecetd+"') ");
 
                                                     // reduse the other stocks ---
                                                     if (jRadioButton5.isSelected()) { // box
@@ -1788,7 +1812,8 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     }
 
                                                     JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
-                                                    Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
+                                                    Printsouts printsouts = new Printsouts(invoiceId);
+                                                    printsouts.setVisible(true);
                                                     Refresh();
 
                                                 } else {
