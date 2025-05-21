@@ -120,7 +120,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
     
     public void LoadUsers() {
         try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `users` INNER JOIN `user_type` ON `users`.`user_type_id` = `user_type`.`id` INNER JOIN `user_status` ON `user_status`.`status_id` = `users`.`user_status_status_id` INNER JOIN `location` ON `location`.`id` = `invoice_location` ");
+            ResultSet rs = MySQL.execute("SELECT * FROM `users` INNER JOIN `user_type` ON `users`.`user_type_id` = `user_type`.`id` INNER JOIN `user_status` ON `user_status`.`status_id` = `users`.`user_status_status_id` INNER JOIN `location` ON `location`.`id` = `users`.`location_id` ");
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
             
