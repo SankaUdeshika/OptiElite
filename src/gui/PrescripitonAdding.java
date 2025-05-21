@@ -744,10 +744,10 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N.6", "N.8", "N.10", "N.12", "N.18", "N.36" }));
         jPanel5.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 80, 80, -1));
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "+0.75", "+1.00", "+1.25", "+1.50", "+1.75", "+2.00", "+2.25", "+2.50", "+2.75", "+3.00", "+3.25", "+3.50" }));
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "+0.75", "+1.00", "+1.25", "+1.50", "+1.75", "+2.00", "+2.25", "+2.50", "+2.75", "+3.00", "+3.25", "+3.50" }));
         jPanel5.add(jComboBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 80, -1));
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "+0.75", "+1.00", "+1.25", "+1.50", "+1.75", "+2.00", "+2.25", "+2.50", "+2.75", "+3.00", "+3.25", "+3.50", " " }));
+        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "+0.75", "+1.00", "+1.25", "+1.50", "+1.75", "+2.00", "+2.25", "+2.50", "+2.75", "+3.00", "+3.25", "+3.50", " " }));
         jPanel5.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, 80, -1));
 
         jPanel6.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, -1, 130));
