@@ -111,6 +111,7 @@ public class CompletePayments extends javax.swing.JFrame {
         jRadioButton3 = new javax.swing.JRadioButton();
         jRadioButton4 = new javax.swing.JRadioButton();
         jRadioButton1 = new javax.swing.JRadioButton();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -169,11 +170,17 @@ public class CompletePayments extends javax.swing.JFrame {
                 proceedBtnActionPerformed(evt);
             }
         });
-        jPanel1.add(proceedBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 550, 180, 40));
+        jPanel1.add(proceedBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 570, 180, 40));
 
-        jLabel10.setText("Pay amount");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 460, 73, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 460, 168, -1));
+        jLabel10.setText("Payment Method");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 510, 100, -1));
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 450, 168, -1));
 
         jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -194,19 +201,22 @@ public class CompletePayments extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Cash");
-        jPanel1.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 500, 50, -1));
+        jPanel1.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 470, 70, 30));
 
         buttonGroup1.add(jRadioButton3);
         jRadioButton3.setText("Card");
-        jPanel1.add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 500, 50, -1));
+        jPanel1.add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 490, 70, 30));
 
         buttonGroup1.add(jRadioButton4);
         jRadioButton4.setText("Online Payment");
-        jPanel1.add(jRadioButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 500, 110, -1));
+        jPanel1.add(jRadioButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 510, 140, 30));
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Bank Deposit");
-        jPanel1.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 500, 90, -1));
+        jPanel1.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 530, 120, 30));
+
+        jLabel15.setText("Pay amount");
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 450, 73, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -233,49 +243,56 @@ public class CompletePayments extends javax.swing.JFrame {
 
         try {
 
+            System.out.println(buttonGroup1.getSelection());
+
             if (jTextField1.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter A Payment amount", "Empty Payment Field", JOptionPane.ERROR_MESSAGE);
             } else {
-                double Total_amount = Double.parseDouble(totalPriceField.getText());
-                double paid_amount = Double.parseDouble(paidAmount.getText());
-                double payAmount = Double.parseDouble(jTextField1.getText());
-                double advancedPayment = Double.parseDouble(advancementField.getText());
-                double subTotalAmount = Double.parseDouble(subTotal.getText());
-                int paymentMethodSelecetd = 0;
+                if (buttonGroup1.getSelection() != null) {
+                    double Total_amount = Double.parseDouble(totalPriceField.getText());
+                    double paid_amount = Double.parseDouble(paidAmount.getText());
+                    double payAmount = Double.parseDouble(jTextField1.getText());
+                    double advancedPayment = Double.parseDouble(advancementField.getText());
+                    double subTotalAmount = Double.parseDouble(subTotal.getText());
+                    int paymentMethodSelecetd = 0;
 
 //                payment Assign
-                if (jRadioButton2.isSelected()) {
-                    paymentMethodSelecetd = 1;
-                } else if (jRadioButton3.isSelected()) {
-                    paymentMethodSelecetd = 2;
-                } else if (jRadioButton4.isSelected()) {
-                    paymentMethodSelecetd = 3;
-                } else if (jRadioButton1.isSelected()) {
-                    paymentMethodSelecetd = 4;
-                }
+                    if (jRadioButton2.isSelected()) {
+                        paymentMethodSelecetd = 1;
+                    } else if (jRadioButton3.isSelected()) {
+                        paymentMethodSelecetd = 2;
+                    } else if (jRadioButton4.isSelected()) {
+                        paymentMethodSelecetd = 3;
+                    } else if (jRadioButton1.isSelected()) {
+                        paymentMethodSelecetd = 4;
+                    }
 
-                double payment = paid_amount + payAmount;
+                    double payment = paid_amount + payAmount;
 
-                double ballence = (advancedPayment + Total_amount) - payment;
+                    double ballence = (advancedPayment + Total_amount) - payment;
 
-                double newtotalPayment = subTotalAmount - (paid_amount + payAmount);
+                    double newtotalPayment = subTotalAmount - (paid_amount + payAmount);
 
-                // payment history
-                LocalDateTime now = LocalDateTime.now();
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                String curruntDay = now.format(dateFormatter);
-                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-                String curruntTime = now.format(timeFormatter);
+                    // payment history
+                    LocalDateTime now = LocalDateTime.now();
+                    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    String curruntDay = now.format(dateFormatter);
+                    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                    String curruntTime = now.format(timeFormatter);
 
-                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoice + "','" + payAmount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "') ");
-                MySQL.execute("UPDATE `invoice` SET `total_price` = '" + newtotalPayment + "'  WHERE `invoice_id` = '" + invoice + "' ");
+                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoice + "','" + payAmount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "') ");
+                    MySQL.execute("UPDATE `invoice` SET `total_price` = '" + newtotalPayment + "'  WHERE `invoice_id` = '" + invoice + "' ");
 
-                if (ballence <= 0.00) {
-                    System.out.println("Payment Complete");
-                    MySQL.execute("UPDATE `invoice` SET `payment_status_id` = 2 , `payment_amount` ='" + payment + "'  WHERE invoice_id = " + invoice);
+                    if (ballence <= 0.00) {
+                        System.out.println("Payment Complete");
+                        MySQL.execute("UPDATE `invoice` SET `payment_status_id` = 2 , `payment_amount` ='" + payment + "'  WHERE invoice_id = " + invoice);
+                    } else {
+                        System.out.println("Payment not complete");
+                        MySQL.execute("UPDATE `invoice` SET  `payment_amount` = '" + payment + "'  WHERE invoice_id = " + invoice);
+                    }
+                    this.dispose();
                 } else {
-                    System.out.println("Payment not complete");
-                    MySQL.execute("UPDATE `invoice` SET  `payment_amount` = '" + payment + "'  WHERE invoice_id = " + invoice);
+                    JOptionPane.showMessageDialog(this, "Please Select a Payment Method", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
@@ -283,13 +300,17 @@ public class CompletePayments extends javax.swing.JFrame {
             System.out.println(e);
         }
 
-        this.dispose();
+
     }//GEN-LAST:event_proceedBtnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // close btn
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -339,6 +360,7 @@ public class CompletePayments extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
