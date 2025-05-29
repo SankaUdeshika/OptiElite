@@ -62,6 +62,7 @@ public class SellAccessories extends javax.swing.JFrame {
     public void Refresh() {
         LoadCustomer();
         LoadStockProducts();
+
     }
 
     public void LoadCustomer() {
@@ -85,6 +86,11 @@ public class SellAccessories extends javax.swing.JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public void removeItemTable() {
+        DefaultTableModel dft = (DefaultTableModel) jTable4.getModel();
+        dft.setRowCount(0);
     }
 
     public void LoadStockProducts() {
@@ -214,6 +220,8 @@ public class SellAccessories extends javax.swing.JFrame {
         jButton9 = new javax.swing.JButton();
         jComboBox6 = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        jTextField8 = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -349,7 +357,7 @@ public class SellAccessories extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel12.setText("Total Amount ");
-        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 340, -1, -1));
+        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 340, -1, -1));
         jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 460, 420, 10));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
@@ -448,7 +456,7 @@ public class SellAccessories extends javax.swing.JFrame {
 
         jLabel22.setFont(new java.awt.Font("Segoe UI Historic", 0, 36)); // NOI18N
         jLabel22.setText("-");
-        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 410, 20, 20));
+        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 410, 20, 20));
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Bank Deposit");
@@ -467,17 +475,17 @@ public class SellAccessories extends javax.swing.JFrame {
         jPanel6.add(jRadioButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 420, -1, -1));
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel6.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 360, 10, 100));
+        jPanel6.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 360, 10, 100));
 
         jLabel23.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel23.setText("Pending Bill Items");
-        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 340, -1, -1));
+        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 340, -1, -1));
 
         jTextField2.setText("1");
         jPanel6.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 50, -1, -1));
 
         jSeparator7.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel6.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 370, 10, 100));
+        jPanel6.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, 10, 100));
 
         jLabel30.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel30.setText("Qty");
@@ -485,28 +493,28 @@ public class SellAccessories extends javax.swing.JFrame {
 
         jLabel31.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
         jLabel31.setText("Rs.0.00");
-        jPanel6.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 410, 110, 30));
+        jPanel6.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 410, 110, 30));
 
         jLabel33.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel33.setText("Sub Total");
-        jPanel6.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 370, 70, 30));
+        jPanel6.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 370, 70, 30));
 
         jLabel34.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel34.setText("Total Price");
-        jPanel6.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 470, -1, -1));
+        jPanel6.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 470, -1, -1));
 
         jLabel38.setFont(new java.awt.Font("Segoe UI Historic", 1, 24)); // NOI18N
         jLabel38.setText("Rs.0.00");
-        jPanel6.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 490, -1, -1));
-        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 410, 110, -1));
+        jPanel6.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 490, -1, -1));
+        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 410, 110, -1));
 
         jLabel39.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel39.setText("Discount");
-        jPanel6.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 370, -1, 30));
+        jPanel6.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 370, -1, 30));
 
         jLabel27.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel27.setText("=");
-        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 490, 30, 30));
+        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 490, 30, 30));
 
         jButton5.setText("Add Discount");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -514,7 +522,7 @@ public class SellAccessories extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 410, -1, -1));
+        jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 410, -1, -1));
         jPanel6.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, 930, 10));
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
@@ -545,7 +553,7 @@ public class SellAccessories extends javax.swing.JFrame {
             jTable4.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 370, 350, 120));
+        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 370, 350, 120));
 
         jLabel24.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel24.setText("Payment Method");
@@ -557,7 +565,7 @@ public class SellAccessories extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 500, 150, -1));
+        jPanel6.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 500, 150, -1));
 
         jButton10.setText("Add Items");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
@@ -569,8 +577,8 @@ public class SellAccessories extends javax.swing.JFrame {
 
         jLabel35.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel35.setText("Advance Payment");
-        jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 470, 130, 20));
-        jPanel6.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 500, 90, -1));
+        jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 470, 130, 20));
+        jPanel6.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 500, 90, -1));
 
         jButton9.setText("Add");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -578,7 +586,7 @@ public class SellAccessories extends javax.swing.JFrame {
                 jButton9ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 500, 60, -1));
+        jPanel6.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 500, 60, -1));
 
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select JobType", "Shop Orders", "EyeCamp Orders" }));
         jPanel6.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 260, 260, -1));
@@ -586,6 +594,11 @@ public class SellAccessories extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel13.setText("Order Types");
         jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 210, -1, -1));
+
+        jLabel37.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel37.setText("Pay Amount");
+        jPanel6.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 470, -1, -1));
+        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 490, 170, 32));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -752,6 +765,7 @@ public class SellAccessories extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // Bill The Order
         String Customer_mobile = jTextField1.getText();
+        String pay_amount = jTextField8.getText();
         int paymentMethodSelecetd = 0;
 
         Date today = new Date();
@@ -784,6 +798,8 @@ public class SellAccessories extends javax.swing.JFrame {
             int jobType = jComboBox6.getSelectedIndex();
             if (jobType == 0) {
                 JOptionPane.showMessageDialog(this, "Please Select ORder Type");
+            } else if (jTextField8.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Enter a Pay amount ", "Empty Amount", JOptionPane.ERROR_MESSAGE);
             } else {
                 try {
                     if (!Customer_mobile.isEmpty()) {
@@ -798,8 +814,8 @@ public class SellAccessories extends javax.swing.JFrame {
                             }
 
                             //                                    Invoice INSERT PROCESS
-                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, payment_status_id)"
-                                    + " VALUES ('" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "') ");
+                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, `payment_status_id`,`invoice_location`,`payment_amount`)"
+                                    + " VALUES ('" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "') ");
 
                             int invoiceId;
                             if (Inser_rs.next()) {
@@ -833,6 +849,7 @@ public class SellAccessories extends javax.swing.JFrame {
                                 Refresh();
 //                            Print Bill
                                 Reports.WithoutPrescriptionOrderPurchaceInvoice(String.valueOf(invoiceId));
+                                removeItemTable();
                                 Refresh();
                             } else {
                                 JOptionPane.showMessageDialog(this, "Some thing went Wrong, Please Try again later", "Invalid Customer", JOptionPane.ERROR_MESSAGE);
@@ -919,7 +936,7 @@ public class SellAccessories extends javax.swing.JFrame {
         try {
             //            aniwaren Login wenna wenawa
             ResultSet rs = MySQL.execute("SELECT * FROM `product` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `stock` ON `stock`.`product_id` = `product`.`id` INNER JOIN `location` ON `stock`.`location_id`  = `location`.`id` "
-                + " WHERE `category`.`id` =  '1'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' AND  `brand_name` LIKE '%" + brand_details + "%' OR `product`.`id` LIKE '%" + brand_details + "%' AND `category`.`id` =  '1' AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' ");
+                    + " WHERE `category`.`id` =  '1'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' AND  `brand_name` LIKE '%" + brand_details + "%' OR `product`.`id` LIKE '%" + brand_details + "%' AND `category`.`id` =  '1' AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' ");
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
 
@@ -1170,6 +1187,7 @@ public class SellAccessories extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel5;
@@ -1201,6 +1219,7 @@ public class SellAccessories extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField8;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel userNameField;
