@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import models.MySQL;
+import models.UserDetails;
 
 /**
  *
@@ -280,7 +281,7 @@ public class CompletePayments extends javax.swing.JFrame {
                     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                     String curruntTime = now.format(timeFormatter);
 
-                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`) VALUES ('" + invoice + "','" + payAmount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "') ");
+                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoice + "','" + payAmount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','"+UserDetails.UserLocation_id+"') ");
                     MySQL.execute("UPDATE `invoice` SET `total_price` = '" + newtotalPayment + "'  WHERE `invoice_id` = '" + invoice + "' ");
 
                     if (ballence <= 0.00) {
