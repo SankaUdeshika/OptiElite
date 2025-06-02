@@ -826,7 +826,7 @@ public class OrderManagement extends javax.swing.JFrame {
                     }
                 }
             } else if (jComboBox1.getSelectedIndex() != 0) {
-                Queary += " WHERE `customer`.`location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
+                Queary += " WHERE `invoice_location` = '" + jComboBox1.getSelectedIndex() + "' ";
 
                 if (ToDate != "null" && FromDate != "null") {
                     Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
@@ -844,6 +844,7 @@ public class OrderManagement extends javax.swing.JFrame {
             }
 
             ResultSet rs = MySQL.execute(Queary);
+            System.out.println(Queary);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
 

@@ -50,9 +50,31 @@ public class CompanyPurchases extends javax.swing.JFrame {
 
     public void Refresh() {
         loadReports();
+        loadLocations();
         jTextArea1.setText("");
         jTextField2.setText("");
         jDateChooser1.setDate(null);
+    }
+
+    public void loadLocations() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `location` ORDER BY `id` ASC");
+            Vector v = new Vector();
+
+            v.add("Select Locaiton");
+            while (rs.next()) {
+                v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("location_name")));
+            }
+
+            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+            jComboBox1.setModel(dfm);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadReports() {
@@ -69,8 +91,8 @@ public class CompanyPurchases extends javax.swing.JFrame {
                 v.add(rs.getString("report_id"));
                 v.add(rs.getString("date"));
                 v.add(rs.getString("branch_name"));
-                v.add(rs.getString("branch_name"));
-                v.add(rs.getString("fname") + " " + rs.getString("lname"));
+//                v.add(rs.getString("branch_name"));
+//                v.add(rs.getString("fname") + " " + rs.getString("lname"));
                 dtm.addRow(v);
             }
 
@@ -119,8 +141,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel11 = new javax.swing.JLabel();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jLabel14 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -238,7 +258,7 @@ public class CompanyPurchases extends javax.swing.JFrame {
                 searchBtnActionPerformed(evt);
             }
         });
-        jPanel6.add(searchBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(598, 90, 140, -1));
+        jPanel6.add(searchBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 90, 140, -1));
         jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 910, 10));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -250,13 +270,8 @@ public class CompanyPurchases extends javax.swing.JFrame {
         jPanel6.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(356, 90, 110, -1));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel11.setText("Expenses ID");
+        jLabel11.setText("Report ID");
         jPanel6.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
-        jPanel6.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(478, 90, 110, -1));
-
-        jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel14.setText("To Date");
-        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(478, 60, -1, -1));
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jPanel6.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 440, 20, 140));
@@ -597,78 +612,54 @@ public class CompanyPurchases extends javax.swing.JFrame {
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         // Advance Search
-//        actualProfit = 0;
-//        ReportTotal = 0;
-//        estimateExpenses = 0;
-//
-//        SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
-//
-//        String ToDate;
-//        String FromDate;
-//
-//        try {
-//            ToDate = simpleDateformat.format(jDateChooser1.getDate());
-//            jLabel22.setText(ToDate);
-//        } catch (NullPointerException ne) {
-//            ToDate = "null";
-//        }
-//        try {
-//            FromDate = simpleDateformat.format(jDateChooser2.getDate());
-//            jLabel21.setText(ToDate);
-//        } catch (NullPointerException ne) {
-//            FromDate = "null";
-//        }
-//        //
-//        try {
-//            String Queary = "SELECT * FROM `cashbook` "
-//                    + "INNER JOIN `location` ON `location`.`id` = `cashbook`.`location_id` ";
-//
-//            //        Enter Parameter
-//            if (!jTextField1.getText().isEmpty()) {
-//                Queary += " WHERE `cashbookId` LIKE '%" + jTextField1.getText() + "%' ";
-//            } else if (jComboBox1.getSelectedIndex() != 0) {
-//                Queary += " WHERE `location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
-//
-//                if (ToDate != "null" && FromDate != "null") {
-//                    Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
-//                } else if (ToDate != "null") {
-//                    Queary += " AND `date` >= '" + ToDate + "' ";
-//                } else if (FromDate != "null") {
-//                    Queary += " AND `date` <= '" + FromDate + "' ";
-//                }
-//            } else if (ToDate != "null" && FromDate != "null") {
-//                Queary += " WHERE `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
-//            } else if (ToDate != "null") {
-//                Queary += " WHERE `date` >= '" + ToDate + "' ";
-//            } else if (FromDate != "null") {
-//                Queary += " WHERE `date` <= '" + FromDate + "' ";
-//            }
-//            //
-//            ResultSet rs = MySQL.execute(Queary);
-//            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-//            dtm.setRowCount(0);
-//
-//            while (rs.next()) {
-//                Vector v = new Vector();
-//                v.add(rs.getString("cashbookId"));
-//                v.add(rs.getString("reason"));
-//                v.add(rs.getString("date"));
-//                v.add(rs.getString("amount"));
-//                v.add(rs.getString("location_name"));
-//
-//                estimateExpenses += rs.getDouble("amount");
-//
-//                dtm.addRow(v);
-//            }
-//            esProfitCountLable.setText(String.valueOf(estimateExpenses));
-//
-//        } catch (SQLException se) {
-//            se.printStackTrace();
-//            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
+
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
+
+        String FromDate;
+
+        try {
+            FromDate = simpleDateformat.format(jDateChooser1.getDate());
+        } catch (NullPointerException ne) {
+            FromDate = "null";
+        }
+
+        //
+        try {
+            String Queary = "SELECT * FROM `daily_report` "
+                    + "INNER JOIN `location` ON `location`.`id` = `daily_report`.`location_id` ";
+
+            //        Enter Parameter
+            if (!jTextField1.getText().isEmpty()) {
+                Queary += " WHERE `report_id` LIKE '%" + jTextField1.getText() + "%' ";
+            } else if (jComboBox1.getSelectedIndex() != 0) {
+                Queary += " WHERE `location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
+                if (FromDate != "null") {
+                    Queary += " AND `date` <= '" + FromDate + "' ";
+                }
+            } else if (FromDate != "null") {
+                Queary += " WHERE `date` <= '" + FromDate + "' ";
+            }
+            //
+            ResultSet rs = MySQL.execute(Queary);
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("report_id"));
+                v.add(rs.getString("date"));
+                v.add(rs.getString("branch_name"));
+
+                dtm.addRow(v);
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_searchBtnActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -783,12 +774,10 @@ public class CompanyPurchases extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel26;
