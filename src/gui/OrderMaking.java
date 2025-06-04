@@ -623,7 +623,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 jTextField6KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 83, 452, -1));
+        jPanel6.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 83, 390, -1));
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -654,7 +654,7 @@ public class OrderMaking extends javax.swing.JFrame {
             jTable3.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 111, -1, 129));
+        jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 111, 390, 129));
 
         jLabel17.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel17.setText("Customer mobile Or Name");
@@ -761,7 +761,7 @@ public class OrderMaking extends javax.swing.JFrame {
             }
         });
         jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 490, -1, -1));
-        jPanel6.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 401, 1349, 14));
+        jPanel6.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 410, 1030, 14));
 
         jTextField11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -823,7 +823,7 @@ public class OrderMaking extends javax.swing.JFrame {
             jTable4.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 306, 880, 95));
+        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 306, 780, 95));
 
         jTextField7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -843,7 +843,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 jTextField7KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 278, 880, -1));
+        jPanel6.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 278, 780, -1));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel13.setText("Lense Id or Type");
@@ -855,7 +855,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 jButton8ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(973, 363, -1, -1));
+        jPanel6.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 360, -1, -1));
 
         jTextField5.setText("2");
         jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -863,14 +863,14 @@ public class OrderMaking extends javax.swing.JFrame {
                 jTextField5KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(996, 329, 47, -1));
+        jPanel6.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 320, 47, -1));
 
         jLabel1.setText("Lnes Qty");
-        jPanel6.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(996, 307, 63, -1));
+        jPanel6.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 300, 63, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("X");
-        jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(942, 307, 48, 44));
+        jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 300, 48, 44));
         jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 550, 170, 32));
 
         jLabel35.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
@@ -939,8 +939,8 @@ public class OrderMaking extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(81, 81, 81)
+                        .addComponent(jButton4)
+                        .addGap(62, 62, 62)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel7)

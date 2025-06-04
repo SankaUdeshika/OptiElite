@@ -242,6 +242,7 @@ public class Reports {
 
                 while (reportItems.next()) {
                     reportedDate = String.valueOf(reportItems.getDate("date"));
+                    System.out.println(reportedDate);
                     reportedLocation = String.valueOf(reportItems.getInt("daily_report.location_id"));
                     itemCount++;
                     reportmap.put("description_Item" + String.valueOf(itemCount), reportItems.getString("description"));

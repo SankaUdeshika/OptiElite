@@ -208,33 +208,12 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jTextField3 = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jSeparator6 = new javax.swing.JSeparator();
         jLabel15 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
-        jTextField10 = new javax.swing.JTextField();
-        jTextField11 = new javax.swing.JTextField();
-        jSeparator5 = new javax.swing.JSeparator();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
-        jLabel27 = new javax.swing.JLabel();
-        jTextField13 = new javax.swing.JTextField();
-        jTextField14 = new javax.swing.JTextField();
-        jLabel28 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
-        jTextField15 = new javax.swing.JTextField();
-        jTextField16 = new javax.swing.JTextField();
-        jLabel30 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
         jSeparator7 = new javax.swing.JSeparator();
         jPanel5 = new javax.swing.JPanel();
         jTextField17 = new javax.swing.JTextField();
@@ -429,7 +408,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel12.setText("Prescription  Details");
-        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, -1, -1));
+        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -473,7 +452,6 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel14.setText("2024/06/12");
         jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 140, -1, -1));
-        jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 400, 760, 10));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel15.setText("Customer Infomations");
@@ -501,65 +479,6 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jLabel18.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel18.setText("Operator Name");
         jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 120, -1, -1));
-
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 80, -1));
-        jPanel1.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 80, -1));
-        jPanel1.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 80, -1));
-        jPanel1.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 90, 80, -1));
-        jPanel1.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 90, 80, -1));
-        jPanel1.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 650, 10));
-
-        jLabel25.setFont(new java.awt.Font("Segoe UI Historic", 0, 24)); // NOI18N
-        jLabel25.setText("Left Eye");
-        jPanel1.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
-
-        jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 24)); // NOI18N
-        jLabel13.setText("Right Eye");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-
-        jLabel26.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel26.setText("Va");
-        jPanel1.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 70, 30));
-
-        jTextField12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField12ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jTextField12, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, 80, -1));
-
-        jLabel27.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel27.setText("PH");
-        jPanel1.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, 70, 30));
-        jPanel1.add(jTextField13, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 80, -1));
-        jPanel1.add(jTextField14, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 50, 80, -1));
-
-        jLabel28.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel28.setText("Hub");
-        jPanel1.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, 80, 30));
-
-        jLabel29.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel29.setText("IOL");
-        jPanel1.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 20, 70, 30));
-        jPanel1.add(jTextField15, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 50, 80, -1));
-        jPanel1.add(jTextField16, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 50, 80, -1));
-
-        jLabel30.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel30.setText("Sub");
-        jPanel1.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 20, 80, 30));
-
-        jPanel6.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 760, 120));
-
-        jLabel20.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel20.setText("Assessment Details");
-        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, -1, -1));
         jPanel6.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 770, 10));
 
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -575,7 +494,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             }
         });
         jPanel5.add(jTextField17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 80, -1));
-        jPanel5.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 750, 10));
+        jPanel5.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 710, 10));
 
         jTextField19.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -750,7 +669,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "+0.75", "+1.00", "+1.25", "+1.50", "+1.75", "+2.00", "+2.25", "+2.50", "+2.75", "+3.00", "+3.25", "+3.50", " " }));
         jPanel5.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, 80, -1));
 
-        jPanel6.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, -1, 130));
+        jPanel6.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 830, 130));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel19.setText("1");
@@ -1059,18 +978,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             } else if (Customer_mobile.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Select Customer from Customer table", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                String R_VA = jTextField12.getText();
-                String R_PH = jTextField13.getText();
-                String R_HUB = jTextField14.getText();
-                String R_IOL = jTextField15.getText();
-                String R_Sub = jTextField16.getText();
-
-                String L_VA = jTextField7.getText();
-                String L_PH = jTextField8.getText();
-                String L_HUB = jTextField9.getText();
-                String L_IOL = jTextField10.getText();
-                String L_Sub = jTextField11.getText();
-
+              
 //        prescription Details
                 String R_SPH = jTextField37.getText();
                 String R_Cyl = jTextField36.getText();
@@ -1114,14 +1022,6 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_customerIdFieldActionPerformed
 
-    private void jTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField12ActionPerformed
-
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
-
     private void jTextField32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField32ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField32ActionPerformed
@@ -1153,17 +1053,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             } else if (Customer_mobile.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Select Customer from Customer table", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                String R_VA = jTextField12.getText();
-                String R_PH = jTextField13.getText();
-                String R_HUB = jTextField14.getText();
-                String R_IOL = jTextField15.getText();
-                String R_Sub = jTextField16.getText();
-
-                String L_VA = jTextField7.getText();
-                String L_PH = jTextField8.getText();
-                String L_HUB = jTextField9.getText();
-                String L_IOL = jTextField10.getText();
-                String L_Sub = jTextField11.getText();
+             
 
 //        prescription Details
                 String R_SPH = jTextField37.getText();
@@ -1280,20 +1170,12 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
@@ -1318,7 +1200,6 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1330,19 +1211,10 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField15;
-    private javax.swing.JTextField jTextField16;
     private javax.swing.JTextField jTextField17;
     private javax.swing.JTextField jTextField19;
     private javax.swing.JTextField jTextField21;
@@ -1361,9 +1233,6 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField38;
     private javax.swing.JTextField jTextField39;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel userNameField;

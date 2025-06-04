@@ -193,7 +193,8 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel11.add(accessoriesBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 210, 64));
 
-        jButton2.setText("Company Purchases");
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Customer Prescription.png"))); // NOI18N
+        jButton2.setText("Daily Reports");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
