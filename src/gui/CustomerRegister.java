@@ -641,9 +641,10 @@ public class CustomerRegister extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Alread Registred this Usaer", "Already Registerd", JOptionPane.ERROR_MESSAGE);
             } else if (CustomerName.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter Customer Name");
-            } else if (!CustomerName.matches(expression)) {
-                JOptionPane.showMessageDialog(this, "Please Enter Valid Customer Namer", "Invalid Customer Name", JOptionPane.ERROR_MESSAGE);
-            } else if (whatssapp.isEmpty()) {
+            } //            else if (!CustomerName.matches(expression)) {
+            //                JOptionPane.showMessageDialog(this, "Please Enter Valid Customer Namer", "Invalid Customer Name", JOptionPane.ERROR_MESSAGE);
+            //            }
+            else if (whatssapp.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter a Whatsapp Mobile  ", "Empty Mobile 01", JOptionPane.ERROR_MESSAGE);
             } else if (whatssapp.matches(mobileExpresion)) {
                 JOptionPane.showMessageDialog(this, "Please Enter valid a Whatsapp Mobile  ", "please Enter a Valid Mobile 01", JOptionPane.ERROR_MESSAGE);

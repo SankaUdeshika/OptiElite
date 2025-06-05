@@ -523,8 +523,8 @@
                       <StringArray count="4">
                         <StringItem index="0" value="Select Quality"/>
                         <StringItem index="1" value="Branded"/>
-                        <StringItem index="2" value="High Copy"/>
-                        <StringItem index="3" value="Fake"/>
+                        <StringItem index="2" value="Grade A"/>
+                        <StringItem index="3" value="Grade B"/>
                       </StringArray>
                     </Property>
                   </Properties>

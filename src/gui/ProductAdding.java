@@ -479,7 +479,7 @@ public class ProductAdding extends javax.swing.JFrame {
         jLabel22.setText("Quality");
         jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Quality", "Branded", "High Copy", "Fake" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Quality", "Branded", "Grade A", "Grade B" }));
         jPanel6.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 250, -1));
 
         jLabel23.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N

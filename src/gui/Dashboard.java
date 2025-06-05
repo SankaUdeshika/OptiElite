@@ -106,6 +106,7 @@ public class Dashboard extends javax.swing.JFrame {
         accessoriesBtn = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
+        jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -210,6 +211,14 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
         jPanel11.add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 240, 210, 60));
+
+        jButton3.setText("Extra Purchases");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel11.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 320, 210, 60));
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -472,6 +481,14 @@ public class Dashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // Extra Purchases Window Open
+        ExtraPurchases ep = new ExtraPurchases();
+        ep.setVisible(true);
+        
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -494,6 +511,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton exitBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

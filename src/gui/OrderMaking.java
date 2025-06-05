@@ -1309,7 +1309,10 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 Printsouts printsouts = new Printsouts(invoiceId);
                                                                 printsouts.setVisible(true);
                                                                 // Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                                                // Refresh();
+                                                                Refresh();
+                                                                Dashboard d = new Dashboard();
+                                                                d.setVisible(true);
+                                                                this.dispose();
                                                             } else {
                                                                 JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                             }
@@ -1373,7 +1376,10 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 Printsouts printsouts = new Printsouts(invoiceId);
                                                                 printsouts.setVisible(true);
                                                                 //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                                                //  Refresh();
+                                                                Refresh();
+                                                                Dashboard d = new Dashboard();
+                                                                d.setVisible(true);
+                                                                this.dispose();
                                                             } else {
                                                                 JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                             }
@@ -1396,7 +1402,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         String curruntDay = now.format(dateFormatter);
                                                         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                                                         String curruntTime = now.format(timeFormatter);
-                                                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','"+UserDetails.UserLocation_id+"') ");
+                                                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "') ");
 
                                                         // add Invoice Items
                                                         MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1440,7 +1446,10 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         Printsouts printsouts = new Printsouts(invoiceId);
                                                         printsouts.setVisible(true);
                                                         //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-                                                        //  Refresh();
+                                                        Refresh();
+                                                        Dashboard d = new Dashboard();
+                                                        d.setVisible(true);
+                                                        this.dispose();
                                                     } else {
                                                         JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                     }
@@ -1490,7 +1499,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             String curruntDay = now.format(dateFormatter);
                                                             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                                                             String curruntTime = now.format(timeFormatter);
-                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','"+UserDetails.UserLocation_id+"') ");
+                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "') ");
 
                                                             //   add Invoice Items
                                                             MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1535,7 +1544,10 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
                                                             printsouts.setVisible(true);
                                                             //  Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
-                                                            // Refresh();
+                                                            Refresh();
+                                                            Dashboard d = new Dashboard();
+                                                            d.setVisible(true);
+                                                            this.dispose();
 
                                                         } else {
                                                             JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1557,7 +1569,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             String curruntDay = now.format(dateFormatter);
                                                             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                                                             String curruntTime = now.format(timeFormatter);
-                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','"+UserDetails.UserLocation_id+"') ");
+                                                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "') ");
 
                                                             //   add Invoice Items
                                                             MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1602,7 +1614,10 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
                                                             printsouts.setVisible(true);
                                                             //  Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
-                                                            // Refresh();
+                                                            Refresh();
+                                                            Dashboard d = new Dashboard();
+                                                            d.setVisible(true);
+                                                            this.dispose();
 
                                                         } else {
                                                             JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1626,7 +1641,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         String curruntDay = now.format(dateFormatter);
                                                         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                                                         String curruntTime = now.format(timeFormatter);
-                                                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','"+UserDetails.UserLocation_id+"') ");
+                                                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "') ");
 
                                                         // add Invoice Items
                                                         MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`,`stock_id`,`qty`)"
@@ -1672,6 +1687,9 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         printsouts.setVisible(true);
                                                         //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
                                                         Refresh();
+                                                        Dashboard d = new Dashboard();
+                                                        d.setVisible(true);
+                                                        this.dispose();
                                                     } else {
                                                         JOptionPane.showMessageDialog(this, "Unable to process Your Request, Please Try again later", "Error", JOptionPane.ERROR_MESSAGE);
                                                     }
@@ -1728,7 +1746,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     String curruntDay = now.format(dateFormatter);
                                                     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                                                     String curruntTime = now.format(timeFormatter);
-                                                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','"+UserDetails.UserLocation_id+"') ");
+                                                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "') ");
 
                                                     // reduse the other stocks ---
                                                     if (jRadioButton5.isSelected()) { // box
