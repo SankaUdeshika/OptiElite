@@ -79,7 +79,25 @@ public class OrderManagement extends javax.swing.JFrame {
         jDateChooser2.setDate(null);
         completeBtn.setEnabled(false);
         billBtn.setEnabled(false);
+        LoadDeleteButton();
+    }
 
+    public void LoadDeleteButton() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `users` WHERE `id` =  '" + UserDetails.UserId + "'");
+            if (rs.next()) {
+                String userID = rs.getString("user_type_id");
+                System.out.println("User id is = " + userID);
+
+                if (userID.equals("1")) {
+                    jToggleButton1.setVisible(true);
+                } else {
+                    jToggleButton1.setVisible(false);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadLocations() {
@@ -212,6 +230,7 @@ public class OrderManagement extends javax.swing.JFrame {
         advanceLable = new javax.swing.JLabel();
         fullReportBtn = new javax.swing.JButton();
         completeBtn = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -546,6 +565,14 @@ public class OrderManagement extends javax.swing.JFrame {
             }
         });
 
+        jToggleButton1.setForeground(new java.awt.Color(204, 0, 0));
+        jToggleButton1.setText("Delete Order");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -569,15 +596,16 @@ public class OrderManagement extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(14, 14, 14)
                                 .addComponent(jLabel7))
-                            .addComponent(completeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(completeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -598,7 +626,9 @@ public class OrderManagement extends javax.swing.JFrame {
                         .addComponent(fullReportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(completeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7)
@@ -1059,6 +1089,41 @@ public class OrderManagement extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_fullReportBtnActionPerformed
 
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        // Delete Order
+
+        if (jTable1.getSelectedRow() != -1) {
+
+            int selectROw = jTable1.getSelectedRow();
+            String invoiceId = String.valueOf(jTable1.getValueAt(selectROw, 0));
+            System.out.println(invoiceId);
+
+//            Delete From Advance Payemnts
+            try {
+                MySQL.execute("DELETE FROM `advance_payment_history` WHERE `invoice_invoice_id`  ='" + invoiceId + "' ");
+            } catch (Exception e) {
+            }
+//            Delete From Invoice Item
+            try {
+                MySQL.execute("DELETE FROM `invoice_item` WHERE `invoice_id`  ='" + invoiceId + "' ");
+            } catch (Exception e) {
+                System.out.println("Invoice ItemF Exception");
+            }
+//            Delete From Invoice 
+            try {
+                MySQL.execute("DELETE FROM `invoice` WHERE `invoice_id`  ='" + invoiceId + "' ");
+            } catch (Exception e) {
+                System.out.println("Invoice  Exception");
+            }
+            
+            Refresh();
+
+        } else {
+            JOptionPane.showMessageDialog(this, "please Select a Order row", "Empty Row", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1125,6 +1190,7 @@ public class OrderManagement extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JButton previousBtn;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton searchBtn;

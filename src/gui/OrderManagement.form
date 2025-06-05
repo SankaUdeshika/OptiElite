@@ -93,22 +93,23 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="refreshBtn" min="-2" pref="62" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jToggleButton1" min="-2" pref="190" max="-2" attributes="0"/>
                                   <Component id="jButton6" min="-2" pref="196" max="-2" attributes="0"/>
-                                  <Component id="jSeparator4" alignment="1" min="-2" pref="196" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                                       <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="completeBtn" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
+                                  <Component id="jSeparator4" alignment="0" min="-2" pref="196" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel6" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="177" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -133,7 +134,9 @@
                               <Component id="fullReportBtn" min="-2" pref="43" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="completeBtn" min="-2" pref="41" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jToggleButton1" min="-2" pref="41" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                               <Component id="jSeparator4" min="-2" pref="16" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
@@ -721,6 +724,17 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="completeBtnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JToggleButton" name="jToggleButton1">
+              <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="cc" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Delete Order"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton1ActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
