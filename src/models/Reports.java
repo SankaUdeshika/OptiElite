@@ -266,7 +266,7 @@ public class Reports {
 
                 ResultSet today_payments = MySQL.execute("SELECT * FROM `advance_payment_history` INNER JOIN `payment_method` ON `payment_method`.`Payment_id` = `advance_payment_history`.`payment_method` WHERE `date` = '" + reportedDate + "' AND `advance_payment_history`.`location_id` = '" + reportedLocation + "'");
                 while (today_payments.next()) {
-                    System.out.println("Working inside ");
+         
                     if (today_payments.getString("payment_name").equals("Cash")) { // Cash
                         cashCollection += today_payments.getDouble("paid_amount");
                     } else if (today_payments.getString("payment_name").equals("Card")) { // Card
@@ -282,7 +282,7 @@ public class Reports {
                     TotalSale = rs.getDouble("total_subtotal");
                 }
 
-                BankDeposit = totalSellingCollection - Double.parseDouble(String.valueOf(reportmap.get("total_expenses")));
+                BankDeposit = cashCollection - Double.parseDouble(String.valueOf(reportmap.get("total_expenses")));
                 reportmap.put("cashCollection", String.valueOf(cashCollection));
                 reportmap.put("cardCollection", String.valueOf(cardCollection));
                 reportmap.put("onlinePaymentCollection", String.valueOf(onlinePaymentCollection));
