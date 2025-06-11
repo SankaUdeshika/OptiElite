@@ -36,7 +36,6 @@ public class OrderManagement extends javax.swing.JFrame {
 
     int actualProfit = 0;
     int estimateProfit = 0;
-    int advanceTotal = 0;
     double ReportTotal = 0;
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -122,9 +121,12 @@ public class OrderManagement extends javax.swing.JFrame {
     }
 
     public void LoadOrderTable() {
+        estimateProfit = 0;
+        actualProfit = 0;
+        ReportTotal = 0;
         try {
             ResultSet rs = MySQL.execute("SELECT DISTINCT "
-                    + "`invoice`.`invoice_id`,`name`,`nic`,`date`,`location_name`,`advance_payment`,`discount`,`total_price`,`status_name`, `payment_status`.`status_name`, `payment_status_id` "
+                    + "`subtotal`,`invoice`.`invoice_id`,`name`,`nic`,`date`,`location_name`,`advance_payment`,`discount`,`total_price`,`status_name`, `payment_status`.`status_name`, `payment_status_id` "
                     + "FROM `invoice` "
                     + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile` "
                     + "LEFT JOIN `invoice_item` ON `invoice_item`.`invoice_id` = `invoice`.`invoice_id` "
@@ -140,32 +142,31 @@ public class OrderManagement extends javax.swing.JFrame {
                 Vector v = new Vector();
                 v.add(rs.getString("invoice_id"));
                 v.add(rs.getString("name"));
-                v.add(rs.getString("nic"));
                 v.add(rs.getString("date"));
                 v.add(rs.getString("location_name"));
                 v.add(rs.getString("status_name"));
                 v.add(rs.getDouble("discount"));
                 v.add(rs.getDouble("advance_payment"));
                 v.add(rs.getDouble("total_price"));
-
-                estimateProfit += rs.getDouble("total_price");
+                v.add(rs.getDouble("subtotal"));
+                double payedAmount = rs.getDouble("total_price") - rs.getDouble("subtotal");
+                v.add(payedAmount);
+                estimateProfit += rs.getDouble("subtotal");
 
                 if (rs.getString("payment_status_id").equals("2")) {
-                    actualProfit += rs.getDouble("total_price");
+                    actualProfit += rs.getDouble("subtotal");
                     ReportTotal++;
                 } else {
-                    actualProfit += rs.getDouble("advance_payment");
-                    advanceTotal += rs.getDouble("advance_payment");
+                    actualProfit += rs.getDouble("subtotal") - rs.getDouble("total_price");
+//                    advanceTotal += rs.getDouble("advance_payment");
 
                     ReportTotal++;
                 }
-
                 dtm.addRow(v);
             }
 
             esProfitCountLable.setText("Rs." + String.valueOf(estimateProfit));
             acCountLable.setText("Rs." + String.valueOf(actualProfit));
-            advanceCountLable.setText("Rs." + String.valueOf(advanceTotal));
             jLabel10.setText("Rs." + String.valueOf(ReportTotal));
 
         } catch (SQLException se) {
@@ -226,8 +227,6 @@ public class OrderManagement extends javax.swing.JFrame {
         esProfitLable = new javax.swing.JLabel();
         acLable = new javax.swing.JLabel();
         acCountLable = new javax.swing.JLabel();
-        advanceCountLable = new javax.swing.JLabel();
-        advanceLable = new javax.swing.JLabel();
         fullReportBtn = new javax.swing.JButton();
         completeBtn = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
@@ -290,17 +289,14 @@ public class OrderManagement extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Inovice id", "Customer Name", "Customer NIC", "Date", "Location", "Status", "Discount", "Advancement ", "Total Price"
+                "Inovice id", "Customer Name", "Date", "Location", "Status", "Discount", "Advancement ", "Due Payment", "Sub Total", "Payed"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -313,16 +309,6 @@ public class OrderManagement extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
-            jTable1.getColumnModel().getColumn(5).setResizable(false);
-            jTable1.getColumnModel().getColumn(6).setResizable(false);
-            jTable1.getColumnModel().getColumn(8).setResizable(false);
-        }
 
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -391,19 +377,13 @@ public class OrderManagement extends javax.swing.JFrame {
         jLabel24.setText("Report Details");
 
         esProfitLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        esProfitLable.setText("Estimate Profit");
+        esProfitLable.setText("Total Sale");
 
         acLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        acLable.setText("Actual Profit");
+        acLable.setText("Cash Collection");
 
         acCountLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         acCountLable.setText("..................................");
-
-        advanceCountLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        advanceCountLable.setText("..................................");
-
-        advanceLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        advanceLable.setText("Advance Total");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -430,27 +410,25 @@ public class OrderManagement extends javax.swing.JFrame {
                                                 .addGap(12, 12, 12)
                                                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addComponent(jLabel23)
-                                                .addGap(42, 42, 42)
-                                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addComponent(jLabel20)
-                                                .addGap(25, 25, 25)
-                                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(94, 94, 94)
-                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                                .addComponent(advanceLable)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(advanceCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                                .addComponent(esProfitLable)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(esProfitCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                                .addComponent(acLable)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(acCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                                        .addComponent(jLabel23)
+                                                        .addGap(42, 42, 42)
+                                                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                                        .addComponent(jLabel20)
+                                                        .addGap(25, 25, 25)
+                                                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGap(114, 114, 114)
+                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                                        .addComponent(esProfitLable)
+                                                        .addGap(18, 18, 18)
+                                                        .addComponent(esProfitCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                                        .addComponent(acLable)
+                                                        .addGap(18, 18, 18)
+                                                        .addComponent(acCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
                             .addComponent(jLabel16)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
@@ -481,9 +459,9 @@ public class OrderManagement extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSeparator5)
+                            .addComponent(jSeparator5, javax.swing.GroupLayout.DEFAULT_SIZE, 1006, Short.MAX_VALUE)
                             .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 968, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1006, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane1))))
                 .addContainerGap(163, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -541,10 +519,6 @@ public class OrderManagement extends javax.swing.JFrame {
                             .addComponent(esProfitLable)
                             .addComponent(esProfitCountLable))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(advanceCountLable)
-                            .addComponent(advanceLable))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(acCountLable)
                             .addComponent(acLable))))
@@ -772,6 +746,7 @@ public class OrderManagement extends javax.swing.JFrame {
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         // Advance Search
+        estimateProfit = 0;
         actualProfit = 0;
         ReportTotal = 0;
         SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
@@ -872,22 +847,25 @@ public class OrderManagement extends javax.swing.JFrame {
                 Vector v = new Vector();
                 v.add(rs.getString("invoice_id"));
                 v.add(rs.getString("name"));
-                v.add(rs.getString("nic"));
                 v.add(rs.getString("date"));
                 v.add(rs.getString("location_name"));
                 v.add(rs.getString("status_name"));
                 v.add(rs.getDouble("discount"));
                 v.add(rs.getDouble("advance_payment"));
                 v.add(rs.getDouble("total_price"));
+                v.add(rs.getDouble("subtotal"));
 
-                estimateProfit += rs.getDouble("total_price");
+                double payedAmount = rs.getDouble("subtotal") - rs.getDouble("total_price");
+                v.add(payedAmount);
+
+                estimateProfit += rs.getDouble("subtotal");
 
                 if (rs.getString("payment_status_id").equals("2")) {
-                    actualProfit += rs.getDouble("total_price");
+                    actualProfit += rs.getDouble("subtotal");
                     ReportTotal++;
                 } else {
-                    actualProfit += rs.getDouble("advance_payment");
-                    advanceTotal += rs.getDouble("advance_payment");
+                    actualProfit += rs.getDouble("subtotal") - rs.getDouble("total_price");
+//                    advanceTotal += rs.getDouble("advance_payment");
 
                     ReportTotal++;
                 }
@@ -896,7 +874,6 @@ public class OrderManagement extends javax.swing.JFrame {
             }
             esProfitCountLable.setText(String.valueOf(estimateProfit));
             acCountLable.setText(String.valueOf(actualProfit));
-            advanceCountLable.setText(String.valueOf(advanceTotal));
             jLabel10.setText(String.valueOf(ReportTotal));
 
         } catch (SQLException se) {
@@ -1115,7 +1092,7 @@ public class OrderManagement extends javax.swing.JFrame {
             } catch (Exception e) {
                 System.out.println("Invoice  Exception");
             }
-            
+
             Refresh();
 
         } else {
@@ -1141,8 +1118,6 @@ public class OrderManagement extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel acCountLable;
     private javax.swing.JLabel acLable;
-    private javax.swing.JLabel advanceCountLable;
-    private javax.swing.JLabel advanceLable;
     private javax.swing.JButton billBtn;
     private javax.swing.JButton completeBtn;
     private javax.swing.JLabel dateField;

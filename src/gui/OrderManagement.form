@@ -244,33 +244,32 @@
                                                           <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                                                           <Component id="jLabel10" min="-2" pref="90" max="-2" attributes="0"/>
                                                       </Group>
-                                                      <Group type="102" attributes="0">
-                                                          <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace min="42" pref="42" max="-2" attributes="0"/>
-                                                          <Component id="jLabel22" min="-2" pref="90" max="-2" attributes="0"/>
-                                                      </Group>
                                                       <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace min="25" pref="25" max="-2" attributes="0"/>
-                                                          <Component id="jLabel21" min="-2" pref="90" max="-2" attributes="0"/>
-                                                      </Group>
-                                                  </Group>
-                                                  <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Group type="102" alignment="1" attributes="0">
-                                                          <Component id="advanceLable" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                          <Component id="advanceCountLable" min="-2" pref="140" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <Group type="102" alignment="1" attributes="0">
-                                                          <Component id="esProfitLable" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                          <Component id="esProfitCountLable" min="-2" pref="140" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <Group type="102" alignment="1" attributes="0">
-                                                          <Component id="acLable" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                          <Component id="acCountLable" min="-2" pref="140" max="-2" attributes="0"/>
+                                                          <Group type="103" groupAlignment="0" attributes="0">
+                                                              <Group type="102" alignment="0" attributes="0">
+                                                                  <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
+                                                                  <EmptySpace min="42" pref="42" max="-2" attributes="0"/>
+                                                                  <Component id="jLabel22" min="-2" pref="90" max="-2" attributes="0"/>
+                                                              </Group>
+                                                              <Group type="102" alignment="0" attributes="0">
+                                                                  <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
+                                                                  <EmptySpace min="25" pref="25" max="-2" attributes="0"/>
+                                                                  <Component id="jLabel21" min="-2" pref="90" max="-2" attributes="0"/>
+                                                              </Group>
+                                                          </Group>
+                                                          <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
+                                                          <Group type="103" groupAlignment="0" attributes="0">
+                                                              <Group type="102" alignment="1" attributes="0">
+                                                                  <Component id="esProfitLable" min="-2" max="-2" attributes="0"/>
+                                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                                  <Component id="esProfitCountLable" min="-2" pref="140" max="-2" attributes="0"/>
+                                                              </Group>
+                                                              <Group type="102" alignment="1" attributes="0">
+                                                                  <Component id="acLable" min="-2" max="-2" attributes="0"/>
+                                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                                  <Component id="acCountLable" min="-2" pref="140" max="-2" attributes="0"/>
+                                                              </Group>
+                                                          </Group>
                                                       </Group>
                                                   </Group>
                                               </Group>
@@ -315,9 +314,9 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jSeparator5" max="32767" attributes="0"/>
+                                      <Component id="jSeparator5" pref="1006" max="32767" attributes="0"/>
                                       <Component id="jSeparator6" alignment="0" min="-2" pref="968" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane1" pref="1006" max="32767" attributes="0"/>
+                                      <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -392,11 +391,6 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="advanceCountLable" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="advanceLable" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="acCountLable" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="acLable" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
@@ -438,51 +432,22 @@
                     <Component class="javax.swing.JTable" name="jTable1">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="9" rowCount="4">
+                          <Table columnCount="10" rowCount="1">
                             <Column editable="false" title="Inovice id" type="java.lang.Object"/>
                             <Column editable="false" title="Customer Name" type="java.lang.Object"/>
-                            <Column editable="false" title="Customer NIC" type="java.lang.Object"/>
                             <Column editable="false" title="Date" type="java.lang.Object"/>
                             <Column editable="false" title="Location" type="java.lang.Object"/>
                             <Column editable="false" title="Status" type="java.lang.Object"/>
                             <Column editable="false" title="Discount" type="java.lang.Object"/>
-                            <Column editable="true" title="Advancement " type="java.lang.Object"/>
-                            <Column editable="false" title="Total Price" type="java.lang.Object"/>
+                            <Column editable="false" title="Advancement " type="java.lang.Object"/>
+                            <Column editable="false" title="Due Payment" type="java.lang.Object"/>
+                            <Column editable="false" title="Sub Total" type="java.lang.Object"/>
+                            <Column editable="false" title="Payed" type="java.lang.Object"/>
                           </Table>
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                           <TableColumnModel selectionModel="0">
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
                               <Renderer/>
@@ -492,7 +457,42 @@
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
                               <Renderer/>
@@ -673,7 +673,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI Historic" size="18" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Estimate Profit"/>
+                    <Property name="text" type="java.lang.String" value="Total Sale"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="acLable">
@@ -681,7 +681,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI Historic" size="18" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Actual Profit"/>
+                    <Property name="text" type="java.lang.String" value="Cash Collection"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="acCountLable">
@@ -690,22 +690,6 @@
                       <Font name="Segoe UI Historic" size="18" style="0"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value=".................................."/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="advanceCountLable">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI Historic" size="18" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value=".................................."/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="advanceLable">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Segoe UI Historic" size="18" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Advance Total"/>
                   </Properties>
                 </Component>
               </SubComponents>
