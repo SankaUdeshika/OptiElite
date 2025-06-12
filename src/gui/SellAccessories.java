@@ -936,7 +936,8 @@ public class SellAccessories extends javax.swing.JFrame {
         try {
             //            aniwaren Login wenna wenawa
             ResultSet rs = MySQL.execute("SELECT * FROM `product` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `stock` ON `stock`.`product_id` = `product`.`id` INNER JOIN `location` ON `stock`.`location_id`  = `location`.`id` "
-                    + " WHERE `category`.`id` =  '1'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' AND  `brand_name` LIKE '%" + brand_details + "%' OR `product`.`id` LIKE '%" + brand_details + "%' AND `category`.`id` =  '1' AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' ");
+                    + " WHERE `category`.`id` =  '1'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' AND  `brand_name` LIKE '%" + brand_details + "%' OR `product`.`id` LIKE '%" + brand_details + "%' AND `category`.`id` =  '1' AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "'"
+                            + "OR  `product`.`id` LIKE '%" + brand_details + "%' AND `category`.`id` =  '3' AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' ");
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
 
