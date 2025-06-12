@@ -771,9 +771,9 @@ public class OrderManagement extends javax.swing.JFrame {
         try {
             String Queary = "SELECT * FROM `invoice` "
                     + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile`   "
-                    + "INNER JOIN `invoice_item` ON `invoice_item`.`invoice_id` = `invoice`.`invoice_id` "
-                    + "INNER JOIN `stock` ON `stock`.`id` = `invoice_item`.`stock_id` "
-                    + "INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
+                    + "LEFT JOIN `invoice_item` ON `invoice_item`.`invoice_id` = `invoice`.`invoice_id` "
+                    + "LEFT JOIN `stock` ON `stock`.`id` = `invoice_item`.`stock_id` "
+                    + "INNER JOIN `location` ON `location`.`id` = `invoice_location` "
                     + "INNER JOIN `payment_status` ON `invoice`.`payment_status_id` = `payment_status`.`id` ";
 
 //        Enter Parameter
