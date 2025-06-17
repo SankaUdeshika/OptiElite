@@ -284,6 +284,12 @@ public class OrderManagement extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel8.setText("Locaiton");
 
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
         jLabel9.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel9.setText("From Date");
 
@@ -1100,6 +1106,10 @@ public class OrderManagement extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments

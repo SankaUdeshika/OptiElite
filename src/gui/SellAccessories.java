@@ -104,6 +104,7 @@ public class SellAccessories extends javax.swing.JFrame {
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("brand_name"));
+                v.add(rs.getString("product_id"));
                 v.add(rs.getString("id"));
                 v.add(rs.getString("sub_category"));
                 v.add(rs.getString("saling_price"));
@@ -420,17 +421,17 @@ public class SellAccessories extends javax.swing.JFrame {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Brand", "Stock Id", "Stock Category", "Price", "Qty", "Stock Date"
+                "Brand", "Product Id", "stock_ID", "Stock Category", "Price", "Qty", "Stock Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -445,9 +446,12 @@ public class SellAccessories extends javax.swing.JFrame {
         jScrollPane3.setViewportView(jTable3);
         if (jTable3.getColumnModel().getColumnCount() > 0) {
             jTable3.getColumnModel().getColumn(0).setResizable(false);
+            jTable3.getColumnModel().getColumn(1).setResizable(false);
             jTable3.getColumnModel().getColumn(2).setResizable(false);
             jTable3.getColumnModel().getColumn(3).setResizable(false);
             jTable3.getColumnModel().getColumn(4).setResizable(false);
+            jTable3.getColumnModel().getColumn(5).setResizable(false);
+            jTable3.getColumnModel().getColumn(6).setResizable(false);
         }
 
         jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 600, 180));
@@ -458,36 +462,36 @@ public class SellAccessories extends javax.swing.JFrame {
 
         jLabel22.setFont(new java.awt.Font("Segoe UI Historic", 0, 36)); // NOI18N
         jLabel22.setText("-");
-        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 410, 20, 20));
+        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 410, 20, 20));
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Bank Deposit");
-        jPanel6.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 440, -1, -1));
+        jPanel6.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, -1, -1));
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Cash");
-        jPanel6.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 380, -1, -1));
+        jPanel6.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, -1, -1));
 
         buttonGroup1.add(jRadioButton3);
         jRadioButton3.setText("Card");
-        jPanel6.add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 400, -1, -1));
+        jPanel6.add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, -1, -1));
 
         buttonGroup1.add(jRadioButton4);
         jRadioButton4.setText("Online Payment");
-        jPanel6.add(jRadioButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 420, -1, -1));
+        jPanel6.add(jRadioButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, -1, -1));
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel6.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 360, 10, 100));
+        jPanel6.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 370, 10, 150));
 
         jLabel23.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel23.setText("Pending Bill Items");
-        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 340, -1, -1));
+        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 340, -1, -1));
 
         jTextField2.setText("1");
         jPanel6.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 50, -1, -1));
 
         jSeparator7.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel6.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, 10, 100));
+        jPanel6.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 370, 10, 100));
 
         jLabel30.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel30.setText("Qty");
@@ -495,28 +499,28 @@ public class SellAccessories extends javax.swing.JFrame {
 
         jLabel31.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
         jLabel31.setText("Rs.0.00");
-        jPanel6.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 410, 110, 30));
+        jPanel6.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 410, 110, 30));
 
         jLabel33.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel33.setText("Sub Total");
-        jPanel6.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 370, 70, 30));
+        jPanel6.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 370, 70, 30));
 
         jLabel34.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel34.setText("Total Price");
-        jPanel6.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 470, -1, -1));
+        jPanel6.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 470, -1, -1));
 
         jLabel38.setFont(new java.awt.Font("Segoe UI Historic", 1, 24)); // NOI18N
         jLabel38.setText("Rs.0.00");
-        jPanel6.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 490, -1, -1));
-        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 410, 110, -1));
+        jPanel6.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 490, 100, -1));
+        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 410, 110, -1));
 
         jLabel39.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel39.setText("Discount");
-        jPanel6.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 370, -1, 30));
+        jPanel6.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 370, -1, 30));
 
         jLabel27.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel27.setText("=");
-        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 490, 30, 30));
+        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 490, 30, 30));
 
         jButton5.setText("Add Discount");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -524,7 +528,7 @@ public class SellAccessories extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 410, -1, -1));
+        jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 410, -1, -1));
         jPanel6.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, 930, 10));
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
@@ -555,11 +559,11 @@ public class SellAccessories extends javax.swing.JFrame {
             jTable4.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 370, 350, 120));
+        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 370, 350, 120));
 
         jLabel24.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel24.setText("Payment Method");
-        jPanel6.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 340, -1, -1));
+        jPanel6.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, -1, -1));
 
         jButton6.setText("Delete Item");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -567,7 +571,7 @@ public class SellAccessories extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 500, 150, -1));
+        jPanel6.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 500, 150, -1));
 
         jButton10.setText("Add Items");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
@@ -579,8 +583,8 @@ public class SellAccessories extends javax.swing.JFrame {
 
         jLabel35.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel35.setText("Advance Payment");
-        jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 470, 130, 20));
-        jPanel6.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 500, 90, -1));
+        jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 470, 130, 20));
+        jPanel6.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 500, 90, -1));
 
         jButton9.setText("Add");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -588,7 +592,7 @@ public class SellAccessories extends javax.swing.JFrame {
                 jButton9ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 500, 60, -1));
+        jPanel6.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 500, 60, -1));
 
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select JobType", "Shop Orders", "EyeCamp Orders" }));
         jPanel6.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 260, 260, -1));
@@ -818,8 +822,8 @@ public class SellAccessories extends javax.swing.JFrame {
 //                          Added Discount to the SubTotal
                             InsertSubTotal = InsertSubTotal - Discount;
                             //                                    Invoice INSERT PROCESS
-                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, `payment_status_id`,`invoice_location`,`payment_amount`)"
-                                    + " VALUES ('" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "') ");
+                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, `payment_status_id`,`invoice_location`,`payment_amount`,`job_warrenty_warrenty_id`)"
+                                    + " VALUES ('" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "','1') ");
 
                             int invoiceId;
                             if (Inser_rs.next()) {
@@ -947,15 +951,27 @@ public class SellAccessories extends javax.swing.JFrame {
 
         try {
             //            aniwaren Login wenna wenawa
-            ResultSet rs = MySQL.execute("SELECT * FROM `product` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `stock` ON `stock`.`product_id` = `product`.`id` INNER JOIN `location` ON `stock`.`location_id`  = `location`.`id` "
-                    + " WHERE `category`.`id` =  '1'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' AND  `brand_name` LIKE '%" + brand_details + "%' OR `product`.`id` LIKE '%" + brand_details + "%' AND `category`.`id` =  '1' AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "'"
-                    + "OR  `product`.`id` LIKE '%" + brand_details + "%' AND `category`.`id` =  '3' AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' ");
+            ResultSet rs = MySQL.execute(
+                    "SELECT * FROM `stock` "
+                    + "INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` "
+                    + "INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` "
+                    + "INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` "
+                    + "INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` "
+                    + "INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
+                    + "WHERE (`category`.`id` = '1' OR `category`.`id` = '3') "
+                    + "AND `qty` > 0 "
+                    + "AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' "
+                    + "AND ( `brand`.`brand_name` LIKE '%" + brand_details + "%' "
+                    + "OR `product`.`id` LIKE '%" + brand_details + "%' )"
+            );
+
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
 
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("brand_name"));
+                v.add(rs.getString("product_id"));
                 v.add(rs.getString("id"));
                 v.add(rs.getString("sub_category"));
                 v.add(rs.getString("saling_price"));
@@ -1039,13 +1055,14 @@ public class SellAccessories extends javax.swing.JFrame {
 
             if (qty > 0) {
                 System.out.println(qty);
-                String Stock_id = String.valueOf(jTable3.getValueAt(selectRow, 1));
-                String brand_name = String.valueOf(jTable3.getValueAt(selectRow, 0));
-                String sub_category = String.valueOf(jTable3.getValueAt(selectRow, 2));
+                String Stock_id = String.valueOf(jTable3.getValueAt(selectRow, 2));
+                String brand_name = String.valueOf(jTable3.getValueAt(selectRow, 1));
+                String sub_category = String.valueOf(jTable3.getValueAt(selectRow, 3));
 
                 try {
                     ResultSet rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Stock_id + "' ");
                     if (rs.next()) {
+                        System.out.println("Working"+Stock_id);
                         int curruntQty = rs.getInt("qty");
                         int minusQty = curruntQty - qty;
 

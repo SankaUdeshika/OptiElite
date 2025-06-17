@@ -871,11 +871,11 @@ public class OrderMaking extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("X");
         jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 300, 48, 44));
-        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 550, 170, 32));
+        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 550, 170, 32));
 
         jLabel35.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel35.setText("Pay Amount");
-        jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 530, -1, -1));
+        jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 530, -1, -1));
 
         jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 450, 10, 110));
@@ -1325,6 +1325,9 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                                                 invoiceId = Inser_rs.getInt(1);
 
+                                                                
+                                                                
+                                                                
                                                                 // payment history
                                                                 LocalDateTime now = LocalDateTime.now();
                                                                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -1387,6 +1390,8 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                                 } else {
 
+                                                    
+                                                    
                                                     Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`)"
                                                             + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "') ");
 
@@ -1629,6 +1634,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     if (Inser_rs.next()) {
 
                                                         invoiceId = Inser_rs.getInt(1);
+                                                        
 
                                                         // payment history
                                                         LocalDateTime now = LocalDateTime.now();

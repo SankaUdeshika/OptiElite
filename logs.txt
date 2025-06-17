@@ -2851,3 +2851,55 @@ Jun 17, 2025 5:41:18 PM gui.Login signInBtnActionPerformed
 INFO: user has logged succesfully
 Jun 17, 2025 5:56:35 PM gui.Login signInBtnActionPerformed
 INFO: user has logged succesfully
+Jun 17, 2025 6:05:06 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 17, 2025 6:33:48 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 17, 2025 7:43:42 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 17, 2025 7:51:14 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 12:40:45 AM gui.Login loadLocations
+WARNING: Please Check Your Internet Connection or Please Try again later
+java.lang.NullPointerException
+	at gui.Login.loadLocations(Login.java:36)
+	at gui.Login.<init>(Login.java:27)
+	at gui.Login$3.run(Login.java:288)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:313)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:770)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:715)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:389)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:740)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+Jun 18, 2025 12:43:22 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 12:52:25 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 12:55:36 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 12:56:46 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 1:05:51 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 1:10:54 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 1:11:56 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 1:13:58 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 1:17:58 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 1:30:16 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 1:36:22 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jun 18, 2025 1:54:32 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
