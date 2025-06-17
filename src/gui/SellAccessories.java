@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -813,6 +815,8 @@ public class SellAccessories extends javax.swing.JFrame {
                                 paymentStatus = 1;
                             }
 
+//                          Added Discount to the SubTotal
+                            InsertSubTotal = InsertSubTotal - Discount;
                             //                                    Invoice INSERT PROCESS
                             ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, `payment_status_id`,`invoice_location`,`payment_amount`)"
                                     + " VALUES ('" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "') ");
@@ -820,6 +824,14 @@ public class SellAccessories extends javax.swing.JFrame {
                             int invoiceId;
                             if (Inser_rs.next()) {
                                 invoiceId = Inser_rs.getInt(1);
+
+                                // payment history
+                                LocalDateTime now = LocalDateTime.now();
+                                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                String curruntDay = now.format(dateFormatter);
+                                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                                String curruntTime = now.format(timeFormatter);
+                                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + pay_amount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "') ");
 
 //                            Loop
                                 int rowCount = jTable4.getRowCount();
@@ -937,7 +949,7 @@ public class SellAccessories extends javax.swing.JFrame {
             //            aniwaren Login wenna wenawa
             ResultSet rs = MySQL.execute("SELECT * FROM `product` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `stock` ON `stock`.`product_id` = `product`.`id` INNER JOIN `location` ON `stock`.`location_id`  = `location`.`id` "
                     + " WHERE `category`.`id` =  '1'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' AND  `brand_name` LIKE '%" + brand_details + "%' OR `product`.`id` LIKE '%" + brand_details + "%' AND `category`.`id` =  '1' AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "'"
-                            + "OR  `product`.`id` LIKE '%" + brand_details + "%' AND `category`.`id` =  '3' AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' ");
+                    + "OR  `product`.`id` LIKE '%" + brand_details + "%' AND `category`.`id` =  '3' AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' ");
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
 

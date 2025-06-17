@@ -159,10 +159,27 @@ public class Reports {
         }
     }
 
-    public static void WithoutPrescriptionOrderPurchaceInvoice(String id) {
+    public static void WithoutPrescriptionOrderPurchaceInvoice(String id) throws SQLException {
         try {
             HashMap<String, Object> reportmap = new HashMap<>();
             reportmap.put("id", id);
+
+            // Pyament History
+            int count = 0;
+            ArrayList<String> list = new ArrayList<>();
+            ResultSet paymentResult = MySQL.execute("SELECT * FROM `advance_payment_history` WHERE `invoice_invoice_id` = '" + id + "' ");
+
+            while (paymentResult.next()) {
+                count++;
+                reportmap.put("payment" + count, paymentResult.getString("date") + " = " + paymentResult.getString("paid_amount") + " Paid");
+            }
+
+            try {
+                Thread.sleep(2000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Withoutprescription.jasper"), reportmap, MySQL.getConnection());
 
 //            JasperPrint jasperPrint = JasperFillManager.fillReport("reports/EagleEyeOrders.jasper", reportmap, MySQL.getConnection());
@@ -266,7 +283,7 @@ public class Reports {
 
                 ResultSet today_payments = MySQL.execute("SELECT * FROM `advance_payment_history` INNER JOIN `payment_method` ON `payment_method`.`Payment_id` = `advance_payment_history`.`payment_method` WHERE `date` = '" + reportedDate + "' AND `advance_payment_history`.`location_id` = '" + reportedLocation + "'");
                 while (today_payments.next()) {
-         
+
                     if (today_payments.getString("payment_name").equals("Cash")) { // Cash
                         cashCollection += today_payments.getDouble("paid_amount");
                     } else if (today_payments.getString("payment_name").equals("Card")) { // Card
