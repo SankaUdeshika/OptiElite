@@ -507,11 +507,11 @@ public class SellAccessories extends javax.swing.JFrame {
 
         jLabel34.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel34.setText("Total Price");
-        jPanel6.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 470, -1, -1));
+        jPanel6.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 470, -1, -1));
 
         jLabel38.setFont(new java.awt.Font("Segoe UI Historic", 1, 24)); // NOI18N
         jLabel38.setText("Rs.0.00");
-        jPanel6.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 490, 100, -1));
+        jPanel6.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 490, 170, -1));
         jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 410, 110, -1));
 
         jLabel39.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
@@ -584,6 +584,12 @@ public class SellAccessories extends javax.swing.JFrame {
         jLabel35.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel35.setText("Advance Payment");
         jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 470, 130, 20));
+
+        jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField11KeyReleased(evt);
+            }
+        });
         jPanel6.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 500, 90, -1));
 
         jButton9.setText("Add");
@@ -603,8 +609,8 @@ public class SellAccessories extends javax.swing.JFrame {
 
         jLabel37.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel37.setText("Pay Amount");
-        jPanel6.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 470, -1, -1));
-        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 490, 170, 32));
+        jPanel6.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 520, -1, -1));
+        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 540, 170, 32));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -634,7 +640,7 @@ public class SellAccessories extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -671,7 +677,7 @@ public class SellAccessories extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -684,7 +690,7 @@ public class SellAccessories extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 752, Short.MAX_VALUE)
+            .addGap(0, 753, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -822,8 +828,8 @@ public class SellAccessories extends javax.swing.JFrame {
 //                          Added Discount to the SubTotal
                             InsertSubTotal = InsertSubTotal - Discount;
                             //                                    Invoice INSERT PROCESS
-                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, `payment_status_id`,`invoice_location`,`payment_amount`,`job_warrenty_warrenty_id`)"
-                                    + " VALUES ('" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "','1') ");
+                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, `payment_status_id`,`invoice_location`,`payment_amount`,`job_warrenty_warrenty_id`,`isAccessories`)"
+                                    + " VALUES ('" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "','1','1') ");
 
                             int invoiceId;
                             if (Inser_rs.next()) {
@@ -1062,7 +1068,7 @@ public class SellAccessories extends javax.swing.JFrame {
                 try {
                     ResultSet rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Stock_id + "' ");
                     if (rs.next()) {
-                        System.out.println("Working"+Stock_id);
+                        System.out.println("Working" + Stock_id);
                         int curruntQty = rs.getInt("qty");
                         int minusQty = curruntQty - qty;
 
@@ -1153,6 +1159,12 @@ public class SellAccessories extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jTextField11KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyReleased
+        // TODO add your handling code here:
+        String advancePayment = jTextField11.getText();
+        jTextField8.setText(advancePayment);
+    }//GEN-LAST:event_jTextField11KeyReleased
 
     /**
      * @param args the command line arguments

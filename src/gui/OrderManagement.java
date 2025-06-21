@@ -895,23 +895,29 @@ public class OrderManagement extends javax.swing.JFrame {
         // View Report
         int selectedRow = jTable1.getSelectedRow();
         String Ivoice_id = (String) jTable1.getValueAt(selectedRow, 0);
-        try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `invoice_item` INNER JOIN `invoice` ON `invoice`.`invoice_id` = `invoice_item`.`invoice_id`  WHERE `invoice`.`invoice_id` = '" + Ivoice_id + "'");
-            int count = 0;
-            boolean lens = false;
-            while (rs.next()) {
-                count = count + 1;
-            }
-            if (count == 0) {
-                lens = true;
-            }
 
-            if (count == 1 || lens) {
-                Printsouts p = new Printsouts(invoiceID);
-                p.setVisible(true);
-//                Reports.OrderPurchaceInvoice(Ivoice_id);
-            } else {
+        ResultSet invoiceType_rs = MySQL.execute("SELECT * FROM `invoice` WHERE `invoice_id` = '" + invoiceID + "' AND `isAccessories` = '1' ");
+        try {
+            if (invoiceType_rs.next()) {
                 Reports.WithoutPrescriptionOrderPurchaceInvoice(Ivoice_id);
+            } else {
+                ResultSet rs = MySQL.execute("SELECT * FROM `invoice_item` INNER JOIN `invoice` ON `invoice`.`invoice_id` = `invoice_item`.`invoice_id`  WHERE `invoice`.`invoice_id` = '" + Ivoice_id + "'");
+                int count = 0;
+                boolean lens = false;
+                while (rs.next()) {
+                    count = count + 1;
+                }
+                if (count == 0) {
+                    lens = true;
+                }
+
+                if (count == 1 || lens) {
+                    Printsouts p = new Printsouts(invoiceID);
+                    p.setVisible(true);
+//                Reports.OrderPurchaceInvoice(Ivoice_id);
+                } else {
+                    Reports.WithoutPrescriptionOrderPurchaceInvoice(Ivoice_id);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
