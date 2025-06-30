@@ -2923,3 +2923,25 @@ Jun 21, 2025 4:15:20 PM gui.Login signInBtnActionPerformed
 INFO: user has logged succesfully
 Jun 21, 2025 4:18:12 PM gui.Login signInBtnActionPerformed
 INFO: user has logged succesfully
+Jun 30, 2025 9:38:32 PM gui.Login loadLocations
+WARNING: Please Check Your Internet Connection or Please Try again later
+java.lang.NullPointerException
+	at gui.Login.loadLocations(Login.java:36)
+	at gui.Login.<init>(Login.java:27)
+	at gui.Login$3.run(Login.java:288)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:313)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:770)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:715)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:389)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:740)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+Jun 30, 2025 9:39:03 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
