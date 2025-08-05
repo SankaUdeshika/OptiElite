@@ -250,7 +250,7 @@ public class RepairNote extends javax.swing.JFrame {
         });
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Customer Prescription.png"))); // NOI18N
-        jButton7.setText("Order Management");
+        jButton7.setText("Manage Repair Note");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);

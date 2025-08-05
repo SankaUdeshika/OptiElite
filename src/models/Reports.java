@@ -319,4 +319,31 @@ public class Reports {
 
     }
 
+    public static void PrintRepairNote(String repairId, String invoiceId) {
+        try {
+
+            HashMap<String, Object> reportmap = new HashMap<>();
+            try {
+                ResultSet rs = MySQL.execute("SELECT * FROM `invoice_item` WHERE `invoice_id` = '" + invoiceId + "' ");
+                if (rs.next()) {
+                    reportmap.put("stock_id", rs.getString("stock_id"));
+                } else {
+                    reportmap.put("stock_id", "No Frame Details");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            reportmap.put("repairId", repairId);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/RepairNote.jasper"), reportmap, MySQL.getConnection());
+//            JasperPrint jasperPrint = JasperFillManager.fillReport("reports/EagleEyeOrders.jasper", reportmap, MySQL.getConnection());
+//            JasperPrint jasperPrint = JasperFillManager.fillReport("reports/EagleEyeOrders.jasper", reportmap,new JRTableModelDataSource(model));
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(Reports.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 }
