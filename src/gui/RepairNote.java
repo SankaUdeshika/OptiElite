@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
@@ -36,6 +38,7 @@ public class RepairNote extends javax.swing.JFrame {
 
     public void Refresh() {
         loadOrderTable();
+        jLabel14.setText("No Invoiced Selected");
     }
 
     public void loadOrderTable() {
@@ -82,6 +85,7 @@ public class RepairNote extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -188,7 +192,7 @@ public class RepairNote extends javax.swing.JFrame {
         );
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        jLabel5.setText("Create Order");
+        jLabel5.setText("Repair Notes");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -263,15 +267,19 @@ public class RepairNote extends javax.swing.JFrame {
         jLabel15.setText("Data Serching");
         jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
 
+        buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Bank Deposit");
         jPanel6.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 540, -1, -1));
 
+        buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Cash");
         jPanel6.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 480, -1, -1));
 
+        buttonGroup1.add(jRadioButton3);
         jRadioButton3.setText("Card");
         jPanel6.add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 500, -1, -1));
 
+        buttonGroup1.add(jRadioButton4);
         jRadioButton4.setText("Online Payment");
         jPanel6.add(jRadioButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 520, -1, -1));
 
@@ -341,14 +349,14 @@ public class RepairNote extends javax.swing.JFrame {
         jScrollPane3.setViewportView(jTextArea2);
 
         jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, 500, 120));
-        jPanel6.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 490, 220, -1));
+        jPanel6.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 510, 220, -1));
 
         jLabel1.setText("Approx.cost");
-        jPanel6.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 470, -1, -1));
-        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 490, 220, -1));
+        jPanel6.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 490, -1, -1));
+        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 510, 220, -1));
 
         jLabel2.setText("Total Cost");
-        jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 470, -1, -1));
+        jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 490, -1, -1));
 
         jLabel3.setText("Invoice ID");
         jPanel6.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
@@ -361,8 +369,10 @@ public class RepairNote extends javax.swing.JFrame {
         });
         jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 90, 140, 50));
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(204, 0, 0));
         jLabel4.setText("No Selected Invoices");
-        jPanel6.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 150, 150, -1));
+        jPanel6.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 150, 280, -1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -476,6 +486,56 @@ public class RepairNote extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        String invoiceID = jTextField1.getText();
+        System.out.println(invoiceID);
+        int paymentMethodSelecetd = 0;
+
+        if (invoiceID.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Select a Invoice", "Empty Invoice", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            try {
+                ResultSet resultSet = MySQL.execute("SELECT * FROM `invoice` INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile` WHERE `invoice_id` = '" + invoiceID + "' ");
+                if (resultSet.next()) {
+                    String db_invoice_id = String.valueOf(resultSet.getInt("invoice_id"));
+                    String customer_mobile = String.valueOf(resultSet.getString("mobile"));
+                    System.out.println("Customer Mobile = "+customer_mobile);
+                    Date date = new Date();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String today = simpleDateFormat.format(date);
+
+                    if (buttonGroup1.getSelection() != null) {
+//                                        payment Assign
+                        if (jRadioButton2.isSelected()) {
+                            paymentMethodSelecetd = 1;
+                        } else if (jRadioButton3.isSelected()) {
+                            paymentMethodSelecetd = 2;
+                        } else if (jRadioButton4.isSelected()) {
+                            paymentMethodSelecetd = 3;
+                        } else if (jRadioButton1.isSelected()) {
+                            paymentMethodSelecetd = 4;
+                        }
+                    }
+
+                    String pre_existing_dammage = jTextArea1.getText();
+                    String problem_description = jTextArea2.getText();
+                    String approx_cost = jTextField2.getText();
+                    String totalCost = jTextField3.getText();
+
+                    MySQL.execute("INSERT INTO `repair`  (`date`,`invoice_invoice_id`,`customer_mobile`,`payment_method_Payment_id`,`pre_existing_damage`,`problem_description`,`approx_cost`,`total_cost`)"
+                            + " VALUES ('" + today + "','" + db_invoice_id + "','" + customer_mobile + "','"+paymentMethodSelecetd+"','"+pre_existing_dammage+"','"+problem_description+"','"+approx_cost+"','"+totalCost+"') ");
+                    
+                    JOptionPane.showMessageDialog(this, "Repair Note added", "Success", JOptionPane.OK_OPTION);
+                    
+
+                }else{
+                    JOptionPane.showMessageDialog(this, "No result, Try again later");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
 
 
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -492,7 +552,7 @@ public class RepairNote extends javax.swing.JFrame {
             System.out.println("working");
             String invoiceID = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
             jLabel4.setText("Invoice Number = " + invoiceID);
-
+            jTextField1.setText(invoiceID);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -542,9 +602,8 @@ public class RepairNote extends javax.swing.JFrame {
         int selectedRow = jTable1.getSelectedRow();
         String Ivoice_id = (String) jTable1.getValueAt(selectedRow, 0);
 
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please Select a Invoice");
-        } else {
+        System.out.println(selectedRow);
+        try {
             ResultSet invoiceType_rs = MySQL.execute("SELECT * FROM `invoice` WHERE `invoice_id` = '" + Ivoice_id + "' AND `isAccessories` = '1' ");
             try {
                 if (invoiceType_rs.next()) {
@@ -571,6 +630,8 @@ public class RepairNote extends javax.swing.JFrame {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } catch (ArrayIndexOutOfBoundsException e1) {
+            JOptionPane.showMessageDialog(this, "Please Select a Invoice ID");
         }
 
 
@@ -581,23 +642,7 @@ public class RepairNote extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         FlatMacDarkLaf.setup();
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RepairNote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RepairNote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RepairNote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RepairNote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -608,6 +653,7 @@ public class RepairNote extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel dateField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
