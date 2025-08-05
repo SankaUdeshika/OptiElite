@@ -107,6 +107,7 @@ public class Dashboard extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
         jButton3 = new javax.swing.JButton();
+        adminBtn1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -140,7 +141,7 @@ public class Dashboard extends javax.swing.JFrame {
                 adminBtnActionPerformed(evt);
             }
         });
-        jPanel11.add(adminBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 210, 64));
+        jPanel11.add(adminBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 80, 210, 64));
 
         customerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/customer.png"))); // NOI18N
         customerBtn.setText("Customer");
@@ -219,6 +220,15 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
         jPanel11.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 320, 210, 60));
+
+        adminBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Customer management.png"))); // NOI18N
+        adminBtn1.setText("Repair Notes");
+        adminBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adminBtn1ActionPerformed(evt);
+            }
+        });
+        jPanel11.add(adminBtn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 210, 64));
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -485,9 +495,15 @@ public class Dashboard extends javax.swing.JFrame {
         // Extra Purchases Window Open
         ExtraPurchases ep = new ExtraPurchases();
         ep.setVisible(true);
-        
-        
+
+
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void adminBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminBtn1ActionPerformed
+        RepairNote repairNote = new RepairNote();
+        repairNote.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_adminBtn1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -506,6 +522,7 @@ public class Dashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton accessoriesBtn;
     private javax.swing.JButton adminBtn;
+    private javax.swing.JButton adminBtn1;
     private javax.swing.JButton customerBtn;
     private javax.swing.JLabel dateField;
     private javax.swing.JButton exitBtn;

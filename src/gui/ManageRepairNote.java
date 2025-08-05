@@ -146,7 +146,7 @@ public class ManageRepairNote extends javax.swing.JFrame {
         jLabel6.setText("Actions");
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Customer management.png"))); // NOI18N
-        jButton6.setText("Make Order");
+        jButton6.setText("Add Repair Note");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -477,8 +477,8 @@ public class ManageRepairNote extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // Make Order
-        OrderMaking orderMaking = new OrderMaking();
-        orderMaking.setVisible(true);
+        RepairNote repairNote = new RepairNote();
+        repairNote.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 

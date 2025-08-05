@@ -499,7 +499,7 @@ public class RepairNote extends javax.swing.JFrame {
                 if (resultSet.next()) {
                     String db_invoice_id = String.valueOf(resultSet.getInt("invoice_id"));
                     String customer_mobile = String.valueOf(resultSet.getString("mobile"));
-                    System.out.println("Customer Mobile = "+customer_mobile);
+                    System.out.println("Customer Mobile = " + customer_mobile);
                     Date date = new Date();
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String today = simpleDateFormat.format(date);
@@ -523,12 +523,11 @@ public class RepairNote extends javax.swing.JFrame {
                     String totalCost = jTextField3.getText();
 
                     MySQL.execute("INSERT INTO `repair`  (`date`,`invoice_invoice_id`,`customer_mobile`,`payment_method_Payment_id`,`pre_existing_damage`,`problem_description`,`approx_cost`,`total_cost`)"
-                            + " VALUES ('" + today + "','" + db_invoice_id + "','" + customer_mobile + "','"+paymentMethodSelecetd+"','"+pre_existing_dammage+"','"+problem_description+"','"+approx_cost+"','"+totalCost+"') ");
-                    
-                    JOptionPane.showMessageDialog(this, "Repair Note added", "Success", JOptionPane.OK_OPTION);
-                    
+                            + " VALUES ('" + today + "','" + db_invoice_id + "','" + customer_mobile + "','" + paymentMethodSelecetd + "','" + pre_existing_dammage + "','" + problem_description + "','" + approx_cost + "','" + totalCost + "') ");
 
-                }else{
+                    JOptionPane.showMessageDialog(this, "Repair Note added", "Success", JOptionPane.OK_OPTION);
+
+                } else {
                     JOptionPane.showMessageDialog(this, "No result, Try again later");
                 }
             } catch (Exception e) {
@@ -542,8 +541,8 @@ public class RepairNote extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        OrderManagement om = new OrderManagement();
-        om.setVisible(true);
+        ManageRepairNote manageRepairNote = new ManageRepairNote();
+        manageRepairNote.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
 
