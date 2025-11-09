@@ -259,6 +259,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jComboBox5 = new javax.swing.JComboBox<>();
         jComboBox6 = new javax.swing.JComboBox<>();
         jLabel19 = new javax.swing.JLabel();
+        jToggleButton1 = new javax.swing.JToggleButton();
         jButton9 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -674,6 +675,14 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel19.setText("1");
         jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 140, 140, -1));
+
+        jToggleButton1.setText("Habi");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 430, -1, -1));
 
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/glasses.png"))); // NOI18N
         jButton9.setText("Prescription Management");
@@ -1138,6 +1147,12 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField17KeyReleased
 
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        // TODO add your handling code here:
+        HabitualPrescription habitualPrescription = new HabitualPrescription();
+        habitualPrescription.setVisible(true);
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1233,6 +1248,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField38;
     private javax.swing.JTextField jTextField39;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel userNameField;

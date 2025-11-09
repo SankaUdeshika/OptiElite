@@ -108,6 +108,7 @@ public class Dashboard extends javax.swing.JFrame {
         jToggleButton1 = new javax.swing.JToggleButton();
         jButton3 = new javax.swing.JButton();
         adminBtn1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -229,6 +230,9 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
         jPanel11.add(adminBtn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 210, 64));
+
+        jButton4.setText("Doctor Channeling");
+        jPanel11.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 160, 210, 60));
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -529,6 +533,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
