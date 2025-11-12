@@ -9,6 +9,7 @@ import static gui.CustomerRegister.locationmap;
 import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import models.MySQL;
 
 /**
@@ -25,36 +26,34 @@ public class AddDoctor extends javax.swing.JFrame {
         loadGender();
         loadBranchLocation();
     }
-
+    
     public void refresh() {
         jTextArea1.setText("");
         jTextField1.setText("");
-        jTextField2.setText("");
         jTextField3.setText("");
         jTextField4.setText("");
         jComboBox1.setSelectedIndex(0);
     }
-
+    
     public void loadGender() {
         try {
-
+            
             Vector<String> v = new Vector<>();
-
+            
             ResultSet rs = MySQL.execute("SELECT * FROM `gender` ");
             v.add("Select Gender");
             while (rs.next()) {
                 v.add(rs.getString("gender"));
             }
-            v.add("Select Gender");
-
+            
             DefaultComboBoxModel dmc = new DefaultComboBoxModel(v);
             jComboBox2.setModel(dmc);
-
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    
     public void loadBranchLocation() {
         try {
 
@@ -62,17 +61,17 @@ public class AddDoctor extends javax.swing.JFrame {
 //                locationmap.remove(i);
 //            }
             Vector<String> v = new Vector<>();
-
+            
             ResultSet rs = MySQL.execute("SELECT * FROM `location` ");
             v.add("Select Location");
             while (rs.next()) {
                 v.add(rs.getString("location_name"));
                 locationmap.put(rs.getString("location_name"), rs.getInt("id"));
             }
-
+            
             DefaultComboBoxModel dmc = new DefaultComboBoxModel(v);
             jComboBox1.setModel(dmc);
-
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,8 +111,6 @@ public class AddDoctor extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -241,7 +238,7 @@ public class AddDoctor extends javax.swing.JFrame {
         jLabel6.setText("Actions");
 
         registerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/diskette (1).png"))); // NOI18N
-        registerButton.setText("Register");
+        registerButton.setText("Add");
         registerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registerButtonActionPerformed(evt);
@@ -321,9 +318,6 @@ public class AddDoctor extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel8.setText("Name");
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel9.setText("Nic");
-
         jLabel11.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel11.setText("Whatsap Number");
 
@@ -352,8 +346,6 @@ public class AddDoctor extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel20.setText("gender");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel21.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel21.setText("Email");
 
@@ -374,11 +366,7 @@ public class AddDoctor extends javax.swing.JFrame {
                                     .addComponent(jLabel8)
                                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel12))
-                                .addGap(42, 42, 42)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
+                                .addGap(280, 280, 280)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel20)
                                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -417,15 +405,9 @@ public class AddDoctor extends javax.swing.JFrame {
                         .addGap(37, 37, 37)
                         .addComponent(jLabel12)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                         .addComponent(jLabel21)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -536,6 +518,70 @@ public class AddDoctor extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshBtnActionPerformed
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
+//            Doctor Adding
+        String Name = jTextField1.getText().trim();
+        int gender = jComboBox2.getSelectedIndex();
+        String email = jTextField6.getText().trim();
+        String mobile = jTextField3.getText().trim();
+        String mobile2 = jTextField4.getText().trim();
+        String Address = jTextArea1.getText().trim();
+        int branch_location = jComboBox1.getSelectedIndex();
+
+// Validation flags
+        boolean isValid = true;
+        StringBuilder errorMsg = new StringBuilder();
+
+// Name validation
+        if (Name.isEmpty()) {
+            errorMsg.append("Name cannot be empty.\n");
+            isValid = false;
+        }
+
+// Gender validation
+        if (gender == 0) {
+            errorMsg.append("Please select a gender.\n");
+            isValid = false;
+        }
+
+// Email validation
+        if (email.isEmpty() || !email.matches("^[\\w.-]+@[\\w.-]+\\.\\w{2,}$")) {
+            errorMsg.append("Enter a valid email address.\n");
+            isValid = false;
+        }
+
+// Mobile number validation
+        if (!mobile.matches("\\d{10}")) {
+            errorMsg.append("Primary mobile number must be 10 digits.\n");
+            isValid = false;
+        }
+        if (!mobile2.isEmpty() && !mobile2.matches("\\d{10}")) {
+            errorMsg.append("Secondary mobile number must be 10 digits if provided.\n");
+            isValid = false;
+        }
+
+// Address validation
+        if (Address.isEmpty()) {
+            errorMsg.append("Address cannot be empty.\n");
+            isValid = false;
+        }
+
+// Branch location validation
+        if (branch_location == 0) {
+            errorMsg.append("Please select a branch location.\n");
+            isValid = false;
+        }
+
+// Final check
+        if (!isValid) {
+            JOptionPane.showMessageDialog(null, errorMsg.toString(), "Validation Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            // Proceed with form submission
+            MySQL.execute("INSERT INTO `doctor` (`doc_name`,`email`,`mobile`,`mobile2`,`address`,`gender_gender_id`,`location_id`)"
+                    + "VALUES ('" + Name + "','" + email + "','" + mobile + "','" + mobile2 + "','" + Address + "','" + gender + "','" + branch_location + "')");
+            
+            JOptionPane.showMessageDialog(this, "Success");
+        }
+        
 
     }//GEN-LAST:event_registerButtonActionPerformed
 
@@ -584,7 +630,6 @@ public class AddDoctor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
@@ -598,7 +643,6 @@ public class AddDoctor extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField6;
