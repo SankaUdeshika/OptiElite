@@ -232,6 +232,11 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel11.add(adminBtn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 210, 64));
 
         jButton4.setText("Doctor Channeling");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel11.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 160, 210, 60));
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
@@ -508,6 +513,13 @@ public class Dashboard extends javax.swing.JFrame {
         repairNote.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_adminBtn1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        DoctorChanneling doctorChanneling = new DoctorChanneling();
+        doctorChanneling.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
