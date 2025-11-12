@@ -21,12 +21,15 @@ public class AddDoctor extends javax.swing.JFrame {
     /**
      * Creates new form AddDoctor
      */
-    public AddDoctor() {
+    DoctorChanneling doctorChannelingObject;
+
+    public AddDoctor(DoctorChanneling doctorChanneling) {
         initComponents();
         loadGender();
         loadBranchLocation();
+        doctorChannelingObject = doctorChanneling;
     }
-    
+
     public void refresh() {
         jTextArea1.setText("");
         jTextField1.setText("");
@@ -34,26 +37,26 @@ public class AddDoctor extends javax.swing.JFrame {
         jTextField4.setText("");
         jComboBox1.setSelectedIndex(0);
     }
-    
+
     public void loadGender() {
         try {
-            
+
             Vector<String> v = new Vector<>();
-            
+
             ResultSet rs = MySQL.execute("SELECT * FROM `gender` ");
             v.add("Select Gender");
             while (rs.next()) {
                 v.add(rs.getString("gender"));
             }
-            
+
             DefaultComboBoxModel dmc = new DefaultComboBoxModel(v);
             jComboBox2.setModel(dmc);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public void loadBranchLocation() {
         try {
 
@@ -61,17 +64,17 @@ public class AddDoctor extends javax.swing.JFrame {
 //                locationmap.remove(i);
 //            }
             Vector<String> v = new Vector<>();
-            
+
             ResultSet rs = MySQL.execute("SELECT * FROM `location` ");
             v.add("Select Location");
             while (rs.next()) {
                 v.add(rs.getString("location_name"));
                 locationmap.put(rs.getString("location_name"), rs.getInt("id"));
             }
-            
+
             DefaultComboBoxModel dmc = new DefaultComboBoxModel(v);
             jComboBox1.setModel(dmc);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,7 +100,6 @@ public class AddDoctor extends javax.swing.JFrame {
         timeField = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        homeBtn = new javax.swing.JButton();
         previousBtn = new javax.swing.JButton();
         refreshBtn = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
@@ -213,13 +215,6 @@ public class AddDoctor extends javax.swing.JFrame {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        homeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/home (1).png"))); // NOI18N
-        homeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeBtnActionPerformed(evt);
-            }
-        });
-
         previousBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/back.png"))); // NOI18N
         previousBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -261,7 +256,7 @@ public class AddDoctor extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(9, 9, 9)
+                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,16 +265,14 @@ public class AddDoctor extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(registerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSeparator3)
+                            .addComponent(jSeparator4)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(previousBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jSeparator4))
+                                .addGap(77, 77, 77)
+                                .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
+                        .addGap(11, 11, 11)
                         .addComponent(jLabel7)
                         .addGap(141, 141, 141))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
@@ -293,9 +286,7 @@ public class AddDoctor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(previousBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -498,17 +489,9 @@ public class AddDoctor extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
-        // TODO add your handling code here:
-        Dashboard d = new Dashboard();
-        d.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_homeBtnActionPerformed
-
     private void previousBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousBtnActionPerformed
         // TODO add your handling code here:
-        CustomerManagement cm = new CustomerManagement();
-        cm.setVisible(true);
+        doctorChannelingObject.refresh();
         this.dispose();
     }//GEN-LAST:event_previousBtnActionPerformed
 
@@ -578,10 +561,10 @@ public class AddDoctor extends javax.swing.JFrame {
             // Proceed with form submission
             MySQL.execute("INSERT INTO `doctor` (`doc_name`,`email`,`mobile`,`mobile2`,`address`,`gender_gender_id`,`location_id`)"
                     + "VALUES ('" + Name + "','" + email + "','" + mobile + "','" + mobile2 + "','" + Address + "','" + gender + "','" + branch_location + "')");
-            
+
             JOptionPane.showMessageDialog(this, "Success");
         }
-        
+
 
     }//GEN-LAST:event_registerButtonActionPerformed
 
@@ -602,7 +585,6 @@ public class AddDoctor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddDoctor().setVisible(true);
             }
         });
     }
@@ -610,7 +592,6 @@ public class AddDoctor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dateField;
     private javax.swing.JPanel header;
-    private javax.swing.JButton homeBtn;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;

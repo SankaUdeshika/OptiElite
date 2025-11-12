@@ -37,6 +37,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
     public void refresh() {
         generete_refNo();
         CustomerLoadingTable();
+        DoctorLoadingTable();
     }
 
     public void generete_refNo() {
@@ -44,7 +45,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
         int randomNum = new Random().nextInt(100000);
         String uniqueID = "ID-" + timestamp + "-" + randomNum;
         jTextField4.setText(uniqueID);
-      
+
     }
 
     public void CustomerLoadingTable() {
@@ -58,6 +59,33 @@ public class DoctorChanneling extends javax.swing.JFrame {
                 Vector v = new Vector();
                 v.add(rs.getString("mobile"));
                 v.add(rs.getString("Name"));
+//                v.add(rs.getString("birthday"));
+//                v.add(rs.getString("mobile2"));
+//                v.add(rs.getString("telephone_land"));
+//                v.add(rs.getString("nic"));
+//                v.add(rs.getString("location_name"));
+//                v.add(rs.getString("register_date"));
+//                v.add(rs.getString("email"));
+                dtm.addRow(v);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void DoctorLoadingTable() {
+        try {
+            jTextField1.setText("");
+            ResultSet rs = MySQL.execute("SELECT * FROM `doctor` ");
+            DefaultTableModel dtm = (DefaultTableModel) jTable4.getModel();
+            dtm.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("doc_id"));
+                v.add(rs.getString("doc_name"));
 //                v.add(rs.getString("birthday"));
 //                v.add(rs.getString("mobile2"));
 //                v.add(rs.getString("telephone_land"));
@@ -734,7 +762,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "Data failed to load", e);
 
-        }            
+        }
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
@@ -804,9 +832,9 @@ public class DoctorChanneling extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField7KeyReleased
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        // Customer 
-        CustomerRegister cr = new CustomerRegister();
-        cr.setVisible(true);
+        // Doctor 
+        AddDoctor addDoctor = new AddDoctor(this);
+        addDoctor.setVisible(true);
 
     }//GEN-LAST:event_jButton12ActionPerformed
 
