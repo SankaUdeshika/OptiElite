@@ -24,6 +24,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
      * Creates new form PrescripitonAdding
      */
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    String[] habitualArray;
 
     public PrescripitonAdding() {
         initComponents();
@@ -80,6 +81,13 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         Timer timer = new Timer(1000, timerListener);
         timer.setInitialDelay(0);
         timer.start();
+    }
+
+    public void test() {
+        for (int i = 0; i < habitualArray.length; i++) {
+            String string = habitualArray[i];
+            System.out.println(string);
+        }
     }
 
     public void refresh() {
@@ -676,7 +684,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jLabel19.setText("1");
         jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 140, 140, -1));
 
-        jToggleButton1.setText("Habi");
+        jToggleButton1.setText("Habitual");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jToggleButton1ActionPerformed(evt);
@@ -987,7 +995,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             } else if (Customer_mobile.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Select Customer from Customer table", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-              
+
 //        prescription Details
                 String R_SPH = jTextField37.getText();
                 String R_Cyl = jTextField36.getText();
@@ -1062,7 +1070,6 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             } else if (Customer_mobile.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Select Customer from Customer table", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-             
 
 //        prescription Details
                 String R_SPH = jTextField37.getText();
@@ -1083,10 +1090,24 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 String L_Addiiton = String.valueOf(jComboBox6.getSelectedItem());
                 String L_Height = jTextField39.getText();
 
-                MySQL.execute("INSERT INTO `prescription_details` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,`customer_mobile`,`users_id`,"
+                ResultSet prescription_result = MySQL.execute("INSERT INTO `prescription_details` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,`customer_mobile`,`users_id`,"
                         + "`R_DVA`,`R_NVA`,`R_M_PD`,`R_SPH`,`R_Addition`,`prescripiton_date`,`L_CYL`,`R_CYL`,`L_Axis`,`R_Axis`,`R_HEIGHT`) "
                         + "VALUES ('" + L_SPH + "','" + L_Addiiton + "','" + PL_DVa + "','" + L_NVA + "','" + L_M_PD + "','" + L_Height + "','" + Customer_mobile + "','" + user_id + "','" + PR_DVa + "','" + R_NVA + "','" + R_M_PD + "','" + R_SPH + "','" + R_Addiiton + "','" + datechooser + "','" + L_Cyl + "','" + R_Cyl + "','" + L_Axis + "','" + R_Axis + "','" + R_Height + "')  ");
                 JOptionPane.showMessageDialog(this, "Prescription Adding Success", "Insert Success", JOptionPane.WARNING_MESSAGE);
+
+                int prescription_id = 0;
+                // habitual Prescription
+                if (prescription_result.next()) {
+                    prescription_id = prescription_result.getInt(1);
+                    
+                    System.out.println("habi length "+ habitualArray.length );
+
+                    MySQL.execute("INSERT INTO `habitual` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,"
+                            + "`R_DVA`,`R_NVA`,`R_M_PD`,`R_SPH`,`R_Addition`,`prescripiton_date`,`L_CYL`,`R_CYL`,`L_Axis`,`R_Axis`,`R_HEIGHT`,`prescription_details_job_no`) "
+                            + "VALUES ('" + habitualArray[0] + "','" + habitualArray[1] + "','" + habitualArray[2] + "','" + habitualArray[3] + "','" + habitualArray[4] + "','" + habitualArray[5] + "','" + habitualArray[6] + "','" + habitualArray[7] + "','" + habitualArray[8] + "','" + habitualArray[9] + "','" + habitualArray[10] + "','" + datechooser + "','" + habitualArray[11] + "','" + habitualArray[12] + "','" + habitualArray[13] + "','" + habitualArray[14] + "','" + habitualArray[15] + "','" + prescription_id + "')  ");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Habitual Prescription is not working");
+                }
 
                 OrderMaking chooseOrderTypes = new OrderMaking(Customer_mobile);
                 chooseOrderTypes.setVisible(true);
@@ -1149,7 +1170,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // TODO add your handling code here:
-        HabitualPrescription habitualPrescription = new HabitualPrescription();
+        HabitualPrescription habitualPrescription = new HabitualPrescription(this);
         habitualPrescription.setVisible(true);
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 

@@ -13,8 +13,10 @@ public class HabitualPrescription extends javax.swing.JFrame {
     /**
      * Creates new form HabitualPrescription
      */
-    public HabitualPrescription() {
+    PrescripitonAdding prescripitonAddingObject ;
+    public HabitualPrescription(PrescripitonAdding prescripitonAdding) {
         initComponents();
+        prescripitonAddingObject = prescripitonAdding;
     }
 
     /**
@@ -69,8 +71,11 @@ public class HabitualPrescription extends javax.swing.JFrame {
         jComboBox4 = new javax.swing.JComboBox<>();
         jComboBox5 = new javax.swing.JComboBox<>();
         jComboBox6 = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -84,23 +89,23 @@ public class HabitualPrescription extends javax.swing.JFrame {
                 jTextField17KeyReleased(evt);
             }
         });
-        jPanel5.add(jTextField17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 80, -1));
-        jPanel5.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 710, 10));
+        jPanel5.add(jTextField17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, 80, -1));
+        jPanel5.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 710, 10));
 
         jTextField19.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField19ActionPerformed(evt);
             }
         });
-        jPanel5.add(jTextField19, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, 80, -1));
+        jPanel5.add(jTextField19, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 110, 80, -1));
 
         jTextField21.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField21ActionPerformed(evt);
             }
         });
-        jPanel5.add(jTextField21, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 80, -1));
-        jPanel5.add(jTextField23, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, 80, -1));
+        jPanel5.add(jTextField21, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, 80, -1));
+        jPanel5.add(jTextField23, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 110, 80, -1));
 
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -165,22 +170,22 @@ public class HabitualPrescription extends javax.swing.JFrame {
 
         jLabel53.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel53.setText("Left Eye");
-        jPanel5.add(jLabel53, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
+        jPanel5.add(jLabel53, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, -1, -1));
 
         jLabel31.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel31.setText("Right Eye");
-        jPanel5.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, -1, -1));
+        jPanel5.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
 
         jLabel52.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel52.setText("SPH");
-        jPanel5.add(jLabel52, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, -1));
+        jPanel5.add(jLabel52, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, -1, -1));
 
         jTextField37.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField37ActionPerformed(evt);
             }
         });
-        jPanel5.add(jTextField37, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 80, -1));
+        jPanel5.add(jTextField37, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 80, -1));
 
         jTextField36.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -192,45 +197,45 @@ public class HabitualPrescription extends javax.swing.JFrame {
                 jTextField36KeyReleased(evt);
             }
         });
-        jPanel5.add(jTextField36, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 80, -1));
-        jPanel5.add(jTextField35, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 40, 80, -1));
+        jPanel5.add(jTextField36, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, 80, -1));
+        jPanel5.add(jTextField35, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 80, -1));
 
         jLabel48.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel48.setText("PD");
-        jPanel5.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, -1, -1));
+        jPanel5.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 50, -1, -1));
 
         jTextField32.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField32ActionPerformed(evt);
             }
         });
-        jPanel5.add(jTextField32, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 40, 80, -1));
+        jPanel5.add(jTextField32, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 70, 80, -1));
 
         jLabel47.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel47.setText("Cyl.");
-        jPanel5.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, -1, -1));
+        jPanel5.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, -1, -1));
 
         jLabel46.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel46.setText("Axis.");
-        jPanel5.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 20, -1, -1));
+        jPanel5.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, -1, -1));
 
         jLabel51.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel51.setText("Addtion");
-        jPanel5.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
+        jPanel5.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 50, -1, -1));
 
         jLabel50.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel50.setText("DVA");
-        jPanel5.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, -1, -1));
+        jPanel5.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, -1, -1));
 
         jLabel49.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel49.setText("NVA");
-        jPanel5.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 20, -1, -1));
-        jPanel5.add(jTextField38, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 40, 80, -1));
+        jPanel5.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 50, -1, -1));
+        jPanel5.add(jTextField38, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 70, 80, -1));
 
         jLabel54.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel54.setText("Height");
-        jPanel5.add(jLabel54, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
-        jPanel5.add(jTextField39, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 80, 80, -1));
+        jPanel5.add(jLabel54, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 50, -1, -1));
+        jPanel5.add(jTextField39, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 110, 80, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "6/6", "6/9", "6/12", "6/18", "6/18", "6/24", "6/36", "6/60" }));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
@@ -243,45 +248,66 @@ public class HabitualPrescription extends javax.swing.JFrame {
                 jComboBox1ActionPerformed(evt);
             }
         });
-        jPanel5.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 40, 80, -1));
+        jPanel5.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 70, 80, -1));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "6/6", "6/9", "6/12", "6/18", "6/18", "6/24", "6/36", "6/60" }));
-        jPanel5.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, 80, -1));
+        jPanel5.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 110, 80, -1));
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N.6", "N.8", "N.10", "N.12", "N.18", "N.36" }));
-        jPanel5.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 40, 80, -1));
+        jPanel5.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 70, 80, -1));
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "N.6", "N.8", "N.10", "N.12", "N.18", "N.36" }));
-        jPanel5.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 80, 80, -1));
+        jPanel5.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 110, 80, -1));
 
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "+0.75", "+1.00", "+1.25", "+1.50", "+1.75", "+2.00", "+2.25", "+2.50", "+2.75", "+3.00", "+3.25", "+3.50" }));
-        jPanel5.add(jComboBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 80, -1));
+        jPanel5.add(jComboBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, 80, -1));
 
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "+0.75", "+1.00", "+1.25", "+1.50", "+1.75", "+2.00", "+2.25", "+2.50", "+2.75", "+3.00", "+3.25", "+3.50", " " }));
-        jPanel5.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, 80, -1));
+        jPanel5.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 110, 80, -1));
+
+        jButton1.setText("Back");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        jLabel5.setText("Habitual Prescription");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 879, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton1))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(253, 253, 253)
+                .addComponent(jLabel5)
+                .addContainerGap(284, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 24, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(24, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 830, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 25, Short.MAX_VALUE)))
+                    .addContainerGap(25, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 150, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                .addComponent(jButton1))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 10, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 10, Short.MAX_VALUE)))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(51, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(44, Short.MAX_VALUE)))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField17ActionPerformed
@@ -357,6 +383,33 @@ public class HabitualPrescription extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String[] prescriptionData = {
+            jTextField37.getText(), // R_SPH
+            jTextField36.getText(), // R_Cyl
+            jTextField35.getText(), // R_Axis
+            String.valueOf(jComboBox1.getSelectedItem()), // PR_DVa
+            String.valueOf(jComboBox3.getSelectedItem()), // R_NVA
+            jTextField32.getText(), // R_M_PD
+            String.valueOf(jComboBox5.getSelectedItem()), // R_Addiiton
+            jTextField38.getText(), // R_Height
+
+            jTextField21.getText(), // L_SPH
+            jTextField17.getText(), // L_Cyl
+            jTextField19.getText(), // L_Axis
+            String.valueOf(jComboBox2.getSelectedItem()), // PL_DVa
+            String.valueOf(jComboBox4.getSelectedItem()), // L_NVA
+            jTextField23.getText(), // L_M_PD
+            String.valueOf(jComboBox6.getSelectedItem()), // L_Addiiton
+            jTextField39.getText() // L_Height
+        };
+        
+        prescripitonAddingObject.habitualArray = prescriptionData;
+        prescripitonAddingObject.test();
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -387,12 +440,12 @@ public class HabitualPrescription extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HabitualPrescription().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
@@ -411,6 +464,7 @@ public class HabitualPrescription extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel49;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
