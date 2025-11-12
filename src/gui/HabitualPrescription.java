@@ -4,6 +4,9 @@
  */
 package gui;
 
+import java.sql.ResultSet;
+import models.MySQL;
+
 /**
  *
  * @author sanka
@@ -13,10 +16,84 @@ public class HabitualPrescription extends javax.swing.JFrame {
     /**
      * Creates new form HabitualPrescription
      */
-    PrescripitonAdding prescripitonAddingObject ;
+    PrescripitonAdding prescripitonAddingObject;
+    String prescriptionID;
+
+    public HabitualPrescription(String prescriptioniD) {
+        initComponents();
+        prescriptionID = prescriptioniD;
+        jComboBox1.removeAllItems();
+        jComboBox2.removeAllItems();
+        jComboBox3.removeAllItems();
+        jComboBox4.removeAllItems();
+        jComboBox5.removeAllItems();
+        jComboBox6.removeAllItems();
+
+        loadHabitualPrescription();
+        lockField();
+        jButton1.setVisible(false);
+    }
+
     public HabitualPrescription(PrescripitonAdding prescripitonAdding) {
         initComponents();
         prescripitonAddingObject = prescripitonAdding;
+        jButton2.setVisible(false);
+    }
+
+    public void lockField() {
+        jComboBox1.setEnabled(false);
+        jComboBox2.setEnabled(false);
+        jComboBox3.setEnabled(false);
+        jComboBox4.setEnabled(false);
+        jComboBox5.setEnabled(false);
+        jComboBox6.setEnabled(false);
+
+        jTextField17.setEnabled(false);
+        jTextField19.setEnabled(false);
+        jTextField21.setEnabled(false);
+        jTextField23.setEnabled(false);
+        jTextField24.setEnabled(false);
+        jTextField25.setEnabled(false);
+        jTextField26.setEnabled(false);
+        jTextField27.setEnabled(false);
+        jTextField28.setEnabled(false);
+        jTextField29.setEnabled(false);
+        jTextField32.setEnabled(false);
+        jTextField35.setEnabled(false);
+        jTextField36.setEnabled(false);
+        jTextField37.setEnabled(false);
+        jTextField38.setEnabled(false);
+        jTextField39.setEnabled(false);
+    }
+
+    public void loadHabitualPrescription() {
+
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `habitual` WHERE `job_no` = '" + prescriptionID + "' ");
+            if (rs.next()) {
+
+                jComboBox6.addItem(rs.getString("L_Addition"));
+                jComboBox2.addItem(rs.getString("L_DVA"));
+                jComboBox4.addItem(rs.getString("L_NVA"));
+                jTextField23.setText(String.valueOf(rs.getString("L_M_PD")));
+                jTextField17.setText(String.valueOf(rs.getString("L_CYL")));
+                jTextField19.setText(String.valueOf(rs.getString("L_Axis")));
+                jTextField39.setText(String.valueOf(rs.getString("L_HEIGHT")));
+
+                jComboBox1.addItem(rs.getString("R_DVA"));
+                jComboBox3.addItem(rs.getString("R_NVA"));
+                jTextField32.setText(String.valueOf(rs.getString("R_M_PD")));
+                jTextField37.setText(String.valueOf(rs.getString("R_SPH")));
+                jComboBox5.addItem(rs.getString("R_Addition"));
+                jTextField36.setText(String.valueOf(rs.getString("R_CYL")));
+                jTextField35.setText(String.valueOf(rs.getString("R_Axis")));
+                jTextField38.setText(String.valueOf(rs.getString("R_HEIGHT")));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -73,6 +150,7 @@ public class HabitualPrescription extends javax.swing.JFrame {
         jComboBox6 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -275,12 +353,21 @@ public class HabitualPrescription extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         jLabel5.setText("Habitual Prescription");
 
+        jButton2.setText("back");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1))
             .addGroup(layout.createSequentialGroup()
                 .addGap(253, 253, 253)
@@ -299,6 +386,10 @@ public class HabitualPrescription extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
                 .addComponent(jButton1))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(51, Short.MAX_VALUE)
@@ -310,37 +401,6 @@ public class HabitualPrescription extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField17ActionPerformed
-        // Minus CYl
-        String CYL = jTextField17.getText();
-
-        if (CYL.startsWith("-")) {
-            System.out.println("no Minus CYL");
-        } else {
-            jTextField17.setText("-" + CYL);
-        }
-    }//GEN-LAST:event_jTextField17ActionPerformed
-
-    private void jTextField17KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField17KeyReleased
-        // TODO add your handling code here:
-        String CYL = jTextField17.getText();
-
-        if (CYL.startsWith("-")) {
-            System.out.println("yess");
-        } else {
-            System.out.println("NO");
-            jTextField17.setText("-" + CYL);
-        }
-    }//GEN-LAST:event_jTextField17KeyReleased
-
-    private void jTextField19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField19ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField19ActionPerformed
-
-    private void jTextField21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField21ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField21ActionPerformed
-
     private void jTextField24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField24ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField24ActionPerformed
@@ -348,40 +408,6 @@ public class HabitualPrescription extends javax.swing.JFrame {
     private void jTextField27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField27ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField27ActionPerformed
-
-    private void jTextField37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField37ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField37ActionPerformed
-
-    private void jTextField36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField36ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField36ActionPerformed
-
-    private void jTextField36KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField36KeyReleased
-        // minus added
-
-        String CYL = jTextField36.getText();
-
-        if (CYL.startsWith("-")) {
-            System.out.println("yess");
-        } else {
-            System.out.println("NO");
-            jTextField36.setText("-" + CYL);
-        }
-
-    }//GEN-LAST:event_jTextField36KeyReleased
-
-    private void jTextField32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField32ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField32ActionPerformed
-
-    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ItemStateChanged
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -404,11 +430,80 @@ public class HabitualPrescription extends javax.swing.JFrame {
             String.valueOf(jComboBox6.getSelectedItem()), // L_Addiiton
             jTextField39.getText() // L_Height
         };
-        
+
         prescripitonAddingObject.habitualArray = prescriptionData;
         prescripitonAddingObject.test();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField19ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField19ActionPerformed
+
+    private void jTextField17KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField17KeyReleased
+        // TODO add your handling code here:
+        String CYL = jTextField17.getText();
+
+        if (CYL.startsWith("-")) {
+            System.out.println("yess");
+        } else {
+            System.out.println("NO");
+            jTextField17.setText("-" + CYL);
+        }
+    }//GEN-LAST:event_jTextField17KeyReleased
+
+    private void jTextField17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField17ActionPerformed
+        // Minus CYl
+        String CYL = jTextField17.getText();
+
+        if (CYL.startsWith("-")) {
+            System.out.println("no Minus CYL");
+        } else {
+            jTextField17.setText("-" + CYL);
+        }
+    }//GEN-LAST:event_jTextField17ActionPerformed
+
+    private void jTextField21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField21ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField21ActionPerformed
+
+    private void jTextField32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField32ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField32ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    private void jTextField36KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField36KeyReleased
+        // minus added
+
+        String CYL = jTextField36.getText();
+
+        if (CYL.startsWith("-")) {
+            System.out.println("yess");
+        } else {
+            System.out.println("NO");
+            jTextField36.setText("-" + CYL);
+        }
+    }//GEN-LAST:event_jTextField36KeyReleased
+
+    private void jTextField36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField36ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField36ActionPerformed
+
+    private void jTextField37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField37ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField37ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // view Prescription Close
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -446,6 +541,7 @@ public class HabitualPrescription extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;

@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import models.MySQL;
@@ -123,6 +124,7 @@ public class PrescriptionManager extends javax.swing.JFrame {
         nicField = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         printBtn = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -317,6 +319,13 @@ public class PrescriptionManager extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("Print Habitual");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -342,7 +351,8 @@ public class PrescriptionManager extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(8, 8, 8)
-                                .addComponent(jLabel7)))
+                                .addComponent(jLabel7))
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 1030, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -365,7 +375,9 @@ public class PrescriptionManager extends javax.swing.JFrame {
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
                         .addComponent(printBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(110, 110, 110)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel7)
@@ -571,6 +583,19 @@ public class PrescriptionManager extends javax.swing.JFrame {
         Reports.PrintPrescription(jobno);
     }//GEN-LAST:event_printBtnActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // print habitual
+
+        int selectrow = jTable1.getSelectedRow();
+        if (selectrow == -1) {
+            JOptionPane.showMessageDialog(this, "Please Select a Prescription First");
+        } else {
+            String prescriptioniD = String.valueOf(jTable1.getValueAt(selectrow, 0));
+            HabitualPrescription habitualPrescription = new HabitualPrescription(prescriptioniD);
+            habitualPrescription.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -619,6 +644,7 @@ public class PrescriptionManager extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
