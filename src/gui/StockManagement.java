@@ -35,7 +35,7 @@ public class StockManagement extends javax.swing.JFrame {
                     Dashboard d = new Dashboard();
                     d.setVisible(true);
                     this.dispose();
-                    
+
                 }
             }
         } catch (Exception e) {
@@ -190,7 +190,7 @@ public class StockManagement extends javax.swing.JFrame {
                 v.add(rs.getString("brand_name"));
                 v.add(rs.getString("sub_category"));
                 v.add(rs.getInt("qty"));
-                v.add(rs.getString("frameSize"));
+                v.add(rs.getString("SKU"));
                 v.add(rs.getDouble("cost"));
                 v.add(rs.getDouble("saling_price"));
                 v.add(rs.getDate("stock_date"));
@@ -291,6 +291,8 @@ public class StockManagement extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel31 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
         jToggleButton1 = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
@@ -389,7 +391,7 @@ public class StockManagement extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "StockID", "Product ID", "Product Brand", "Sub Category", "Qty", "Size", "Unit Price", "Selling Price", "Date TIme", "Supplier", "Location", "Total Cost"
+                "StockID", "Product ID", "Product Brand", "Sub Category", "Qty", "SKU", "Unit Price", "Selling Price", "Date TIme", "Supplier", "Location", "Total Cost"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -429,29 +431,29 @@ public class StockManagement extends javax.swing.JFrame {
                 jTextField8ActionPerformed(evt);
             }
         });
-        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, 120, -1));
+        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 100, 120, -1));
 
         jLabel18.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel18.setText("Product ID");
+        jLabel18.setText("SKU ");
         jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, -1, -1));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel19.setText("Supplier");
-        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 70, -1, -1));
+        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 70, -1, -1));
 
         jTextField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField9ActionPerformed(evt);
             }
         });
-        jPanel6.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 120, -1));
+        jPanel6.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, 120, -1));
 
         jLabel20.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel20.setText("Location");
-        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 70, -1, -1));
+        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 70, -1, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 100, 120, -1));
+        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 100, 120, -1));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
@@ -459,16 +461,16 @@ public class StockManagement extends javax.swing.JFrame {
                 jComboBox2ActionPerformed(evt);
             }
         });
-        jPanel6.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 100, 120, -1));
+        jPanel6.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 100, 120, -1));
 
         jLabel22.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel22.setText("Stock Date");
-        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 70, -1, -1));
-        jPanel6.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 100, 140, -1));
+        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 70, -1, -1));
+        jPanel6.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 100, 140, -1));
 
         jLabel23.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel23.setText("Brand");
-        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 70, -1, -1));
+        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 70, -1, -1));
 
         jButton5.setText("Search");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -578,6 +580,11 @@ public class StockManagement extends javax.swing.JFrame {
         jLabel31.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel31.setText("Location");
         jPanel6.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 410, -1, -1));
+        jPanel6.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, 140, -1));
+
+        jLabel26.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel26.setText("Product ID");
+        jPanel6.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, -1, -1));
 
         jToggleButton1.setText("Report");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -1043,6 +1050,9 @@ public class StockManagement extends javax.swing.JFrame {
         } else if (!jTextField9.getText().isEmpty()) {
             querry += " WHERE `supplier`.`supplier_id` LIKE '%" + jTextField9.getText() + "%'";
             JasperStockQuerry += " WHERE `supplier`.`supplier_id` LIKE '%" + jTextField9.getText() + "%'";
+        } else if (!jTextField2.getText().isEmpty()) {
+            querry += " WHERE `stock`.`SKU` = '" + jTextField2.getText() + "'";
+            JasperStockQuerry += " WHERE `stock`.`SKU` = '" + jTextField2.getText() + "'";
         }
 
         if (jComboBox1.getSelectedIndex() != 0) {
@@ -1154,6 +1164,7 @@ public class StockManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
@@ -1182,6 +1193,7 @@ public class StockManagement extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField15;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;

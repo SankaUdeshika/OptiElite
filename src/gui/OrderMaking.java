@@ -380,6 +380,8 @@ public class OrderMaking extends javax.swing.JFrame {
         jRadioButton5 = new javax.swing.JRadioButton();
         jRadioButton6 = new javax.swing.JRadioButton();
         jRadioButton7 = new javax.swing.JRadioButton();
+        jTextField9 = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -601,8 +603,8 @@ public class OrderMaking extends javax.swing.JFrame {
         jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 111, 250, 129));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel10.setText("Frame Id Or Brand");
-        jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 57, -1, -1));
+        jLabel10.setText("SKU");
+        jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 50, -1, -1));
 
         jTextField6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -622,7 +624,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 jTextField6KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 83, 390, -1));
+        jPanel6.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 83, 280, -1));
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -891,6 +893,17 @@ public class OrderMaking extends javax.swing.JFrame {
 
         jRadioButton7.setText("Clothing");
         jPanel6.add(jRadioButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 540, -1, -1));
+
+        jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField9KeyReleased(evt);
+            }
+        });
+        jPanel6.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 80, 90, -1));
+
+        jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel19.setText("Frame Id Or Brand");
+        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 57, -1, -1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -2036,6 +2049,44 @@ public class OrderMaking extends javax.swing.JFrame {
         jTextField8.setText(advancePayment);
     }//GEN-LAST:event_jTextField11KeyReleased
 
+    private void jTextField9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyReleased
+        // Search Product By its SKU
+        
+        String brand_details = jTextField9.getText();
+
+        try {
+            //            aniwaren Login wenna wenawa
+            ResultSet rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
+                    + " WHERE (`category`.`id` =  '1'  OR `category`.`id` =  '4') AND `qty` > 0  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' AND  `stock`.`SKU` LIKE '%" + brand_details + "%' AND `qty` > 0  ");
+
+//                                        SELECT * FROM `stock` INNER JOIN `product` ON `product`.`id` = `stock`.`product_id` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `location` ON `location`.`id` = `stock`.`location_id`  WHERE `category`.`id` =  '1'  AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "'  AND `qty` > 0 
+            DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
+            dtm.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("brand_name"));
+                v.add(rs.getString("id"));
+                v.add(rs.getString("sub_category"));
+                v.add(rs.getString("saling_price"));
+                v.add(rs.getString("product.id"));
+
+                dtm.addRow(v);
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", se);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", e);
+
+        }
+    }//GEN-LAST:event_jTextField9KeyReleased
+
     public void lensLoading() {
         try {
             ResultSet rs = MySQL.execute("SELECT * \n"
@@ -2102,6 +2153,7 @@ public class OrderMaking extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
@@ -2157,6 +2209,7 @@ public class OrderMaking extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel userNameField;
     // End of variables declaration//GEN-END:variables

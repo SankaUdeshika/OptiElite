@@ -509,7 +509,7 @@
                             <Column editable="false" title="Product Brand" type="java.lang.Object"/>
                             <Column editable="false" title="Sub Category" type="java.lang.Object"/>
                             <Column editable="false" title="Qty" type="java.lang.Object"/>
-                            <Column editable="false" title="Size" type="java.lang.Object"/>
+                            <Column editable="false" title="SKU" type="java.lang.Object"/>
                             <Column editable="false" title="Unit Price" type="java.lang.Object"/>
                             <Column editable="false" title="Selling Price" type="java.lang.Object"/>
                             <Column editable="false" title="Date TIme" type="java.lang.Object"/>

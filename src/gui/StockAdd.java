@@ -73,7 +73,7 @@ public class StockAdd extends javax.swing.JFrame {
                 v.add(rs.getString("brand_name"));
                 v.add(rs.getString("sub_category"));
                 v.add(rs.getInt("qty"));
-                v.add(rs.getString("frameSize"));
+                v.add(rs.getString("SKU"));
                 v.add(rs.getDouble("cost"));
                 v.add(rs.getDouble("saling_price"));
                 v.add(rs.getDate("stock_date"));
@@ -341,7 +341,7 @@ public class StockAdd extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Row No", "Stock ID", "Product ID", "Product Brand", "Sub Category", "Qty", "Size", "Unit Price", "Selling Price", "Date TIme", "Supplier", "Location", "Total Cost", "SKU"
+                "Row No", "Stock ID", "Product ID", "Product Brand", "Sub Category", "Qty", "SKU", "Unit Price", "Selling Price", "Date TIme", "Supplier", "Location", "Total Cost", "SKU"
             }
         ) {
             boolean[] canEdit = new boolean [] {
