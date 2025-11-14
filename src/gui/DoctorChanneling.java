@@ -10,12 +10,17 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.Vector;
 import java.util.logging.Level;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.MySQL;
+import models.UserDetails;
 
 /**
  *
@@ -34,10 +39,52 @@ public class DoctorChanneling extends javax.swing.JFrame {
         refresh();
     }
 
+    public void clearFields() {
+        jDateChooser1.setDate(null);
+        jTextField1.setText("");
+        jTextField7.setText("");
+        jComboBox1.setSelectedIndex(0);
+        jComboBox2.setSelectedIndex(0);
+        jComboBox4.setSelectedIndex(0);
+    }
+
     public void refresh() {
         generete_refNo();
         CustomerLoadingTable();
         DoctorLoadingTable();
+        loadLocations();
+        calculatetotal();
+        clearFields();
+    }
+
+    public void loadLocations() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `location` ORDER BY `id` ASC");
+            Vector v = new Vector();
+
+            v.add("Select Locaiton");
+            while (rs.next()) {
+                v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("location_name")));
+            }
+
+            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+            jComboBox4.setModel(dfm);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void calculatetotal() {
+        double doctorFee = Double.parseDouble(jTextField6.getText());
+        double channelingFee = Double.parseDouble(jTextField10.getText());
+
+        double total = doctorFee + channelingFee;
+        jLabel34.setText(String.valueOf(total));
+        jLabel38.setText(String.valueOf(total));
     }
 
     public void generete_refNo() {
@@ -111,6 +158,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel17 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
@@ -140,32 +188,18 @@ public class DoctorChanneling extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
         jSeparator2 = new javax.swing.JSeparator();
-        jLabel32 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
-        jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
-        jButton9 = new javax.swing.JButton();
         jSeparator8 = new javax.swing.JSeparator();
-        jTextField11 = new javax.swing.JTextField();
         jLabel41 = new javax.swing.JLabel();
-        jButton10 = new javax.swing.JButton();
         jLabel42 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
         jTextField7 = new javax.swing.JTextField();
         jLabel43 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
-        jLabel44 = new javax.swing.JLabel();
         jButton12 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
@@ -325,7 +359,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
             }
         });
         jPanel21.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 83, 250, -1));
-        jPanel21.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 520, 480, 10));
+        jPanel21.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 540, 480, 10));
 
         jLabel23.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel23.setText("Data Serching");
@@ -363,6 +397,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
         jLabel24.setText("Frame Id Or Brand");
         jPanel21.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 40, -1, -1));
 
+        jTextField6.setText("2000");
         jTextField6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTextField6MouseClicked(evt);
@@ -387,101 +422,33 @@ public class DoctorChanneling extends javax.swing.JFrame {
         jLabel25.setText("Customer mobile Or Name");
         jPanel21.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 57, -1, -1));
 
-        jLabel31.setFont(new java.awt.Font("Segoe UI Historic", 0, 36)); // NOI18N
-        jLabel31.setText("-");
-        jPanel21.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 500, 20, 20));
-
-        jRadioButton1.setText("Bank Deposit");
-        jPanel21.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 540, -1, -1));
-
-        jRadioButton2.setText("Cash");
-        jPanel21.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 480, -1, -1));
-
-        jRadioButton3.setText("Card");
-        jPanel21.add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 500, -1, -1));
-
-        jRadioButton4.setText("Online Payment");
-        jPanel21.add(jRadioButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 520, -1, -1));
-
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel21.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 450, 10, 110));
-
-        jLabel32.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel32.setText("Payment Method");
-        jPanel21.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, -1, -1));
+        jPanel21.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, 20, 150));
 
         jLabel34.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
         jLabel34.setText("Rs.0.00");
-        jPanel21.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 490, 110, -1));
-
-        jLabel36.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel36.setText("Advance Payment");
-        jPanel21.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 530, 130, -1));
+        jPanel21.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 510, 110, -1));
 
         jLabel37.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel37.setText("Total Price");
-        jPanel21.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 530, -1, -1));
+        jPanel21.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 480, -1, -1));
 
         jLabel38.setFont(new java.awt.Font("Segoe UI Historic", 1, 24)); // NOI18N
         jLabel38.setText("Rs.0.00");
-        jPanel21.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 550, -1, -1));
-
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField3KeyReleased(evt);
-            }
-        });
-        jPanel21.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 490, 110, -1));
-
-        jLabel39.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel39.setText("Discount");
-        jPanel21.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 450, -1, 30));
+        jPanel21.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 500, -1, -1));
 
         jLabel40.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel40.setText("=");
-        jPanel21.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 550, 20, -1));
-
-        jButton9.setText("Add Discount");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
-        jPanel21.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 490, -1, -1));
+        jPanel21.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 500, 20, -1));
         jPanel21.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 410, 1030, 14));
-
-        jTextField11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField11ActionPerformed(evt);
-            }
-        });
-        jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField11KeyReleased(evt);
-            }
-        });
-        jPanel21.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 550, 90, -1));
 
         jLabel41.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel41.setText("Sub Total");
-        jPanel21.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 450, 70, 30));
-
-        jButton10.setText("Add");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
-        jPanel21.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 550, 60, -1));
+        jPanel21.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 470, 70, 30));
 
         jLabel42.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel42.setText("Total Amount ");
-        jPanel21.add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 420, -1, -1));
+        jPanel21.add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, -1, -1));
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -531,11 +498,6 @@ public class DoctorChanneling extends javax.swing.JFrame {
         jLabel43.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel43.setText("Lense Id or Type");
         jPanel21.add(jLabel43, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 252, -1, -1));
-        jPanel21.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 550, 170, 32));
-
-        jLabel44.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel44.setText("Pay Amount");
-        jPanel21.add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 530, -1, -1));
 
         jButton12.setText("Add Doctor");
         jButton12.addActionListener(new java.awt.event.ActionListener() {
@@ -560,7 +522,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
         jLabel6.setText("Appoinment Date");
         jPanel21.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 130, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60" }));
         jPanel21.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 200, -1, -1));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "01", "02", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
@@ -575,6 +537,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
         jLabel11.setText("Channeling fee");
         jPanel21.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 340, -1, -1));
 
+        jTextField10.setText("500");
         jTextField10.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTextField10MouseClicked(evt);
@@ -721,6 +684,61 @@ public class DoctorChanneling extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+//        Add Apppoinment
+
+        //validation
+        if (jTable2.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please Select a Customer", "Empty Customer", JOptionPane.ERROR_MESSAGE);
+        } else if (jTable4.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please Select a Doctor", "Empty Doctor", JOptionPane.ERROR_MESSAGE);
+        } else if (jDateChooser1.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Please Enter a Appoinment Date", "Empty Date", JOptionPane.ERROR_MESSAGE);
+        } else if (jComboBox2.getSelectedItem().toString() == "00" && jComboBox1.getSelectedItem().toString() == "00") {
+            JOptionPane.showMessageDialog(this, "Please Enter a Appoinment Time", "Invalid Date", JOptionPane.ERROR_MESSAGE);
+        } else if (jComboBox4.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Please Enter a Locaiton", "Empty Locaiton", JOptionPane.ERROR_MESSAGE);
+        } else if (jTextField6.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Enter Doctor Fee", "Empty Doctor Fee", JOptionPane.ERROR_MESSAGE);
+        } else if (jTextField10.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Enter Channeling Fee", "Empty Channeling Fee", JOptionPane.ERROR_MESSAGE);
+        } else {
+
+            // get Date 
+            Date getDate = jDateChooser1.getDate();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String AppoinmentDate = sdf.format(getDate);
+
+            // get Time
+            String hr = String.valueOf(jComboBox2.getSelectedItem());
+            String min = String.valueOf(jComboBox1.getSelectedItem());
+
+            String timeString = hr + ":" + min + ":00";
+            Time AppoinmentTime = Time.valueOf(timeString); // java.sql.Time
+
+            // Total
+            String total = jLabel38.getText();
+
+            // fees
+            String doctorFee = jTextField6.getText();
+            String ChannelFee = jTextField10.getText();
+
+            // Doctor Details
+            String doctor_id = String.valueOf(jTable4.getValueAt(jTable4.getSelectedRow(), 0));
+
+            // Customer Details
+            String customer_id = String.valueOf(jTable2.getValueAt(jTable4.getSelectedRow(), 0));
+
+            // User Details
+            String name = UserDetails.UserId;
+
+            try {
+                MySQL.execute("INSERT INTO `channeling_appoinment` (`date`, `time`, `total`, `doctor_fee`, `channeling_fee`, `Doctor_doc_id`, `customer_mobile`,  `users_id`,`payment_status_id`) VALUES ( '" + AppoinmentDate + "', '" + AppoinmentTime + "', '" + total + "', '" + doctorFee + "', '" + ChannelFee + "', '" + doctor_id + "', '" + customer_id + "', '" + name + "','1')");
+                JOptionPane.showMessageDialog(this, "Apppoinment Adding Success", "Success", JOptionPane.OK_OPTION);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
 
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -782,34 +800,8 @@ public class DoctorChanneling extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField6KeyPressed
 
     private void jTextField6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyReleased
-
+        calculatetotal();
     }//GEN-LAST:event_jTextField6KeyReleased
-
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
-
-    private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
-
-    }//GEN-LAST:event_jTextField3KeyReleased
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-
-    }//GEN-LAST:event_jButton9ActionPerformed
-
-    private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField11ActionPerformed
-
-    private void jTextField11KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyReleased
-        // Copy Advance Payment to Payment Amount
-        String advancePayment = jTextField11.getText();
-        jTextField8.setText(advancePayment);
-    }//GEN-LAST:event_jTextField11KeyReleased
-
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-
-    }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
 
@@ -851,7 +843,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField10KeyPressed
 
     private void jTextField10KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyReleased
-        // TODO add your handling code here:
+        calculatetotal();
     }//GEN-LAST:event_jTextField10KeyReleased
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
@@ -875,8 +867,8 @@ public class DoctorChanneling extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel dateField4;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton4;
@@ -884,7 +876,6 @@ public class DoctorChanneling extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
@@ -900,19 +891,14 @@ public class DoctorChanneling extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
-    private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -923,10 +909,6 @@ public class DoctorChanneling extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
@@ -939,12 +921,9 @@ public class DoctorChanneling extends javax.swing.JFrame {
     private javax.swing.JTable jTable4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel timeField4;
     private javax.swing.JLabel userNameField4;
