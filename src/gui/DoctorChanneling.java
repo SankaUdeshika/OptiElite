@@ -732,8 +732,16 @@ public class DoctorChanneling extends javax.swing.JFrame {
             String name = UserDetails.UserId;
 
             try {
-                MySQL.execute("INSERT INTO `channeling_appoinment` (`date`, `time`, `total`, `doctor_fee`, `channeling_fee`, `Doctor_doc_id`, `customer_mobile`,  `users_id`,`payment_status_id`) VALUES ( '" + AppoinmentDate + "', '" + AppoinmentTime + "', '" + total + "', '" + doctorFee + "', '" + ChannelFee + "', '" + doctor_id + "', '" + customer_id + "', '" + name + "','1')");
+                ResultSet insert_rs = MySQL.execute("INSERT INTO `channeling_appoinment` (`date`, `time`, `total`, `doctor_fee`, `channeling_fee`, `Doctor_doc_id`, `customer_mobile`,  `users_id`,`payment_status_id`) VALUES ( '" + AppoinmentDate + "', '" + AppoinmentTime + "', '" + total + "', '" + doctorFee + "', '" + ChannelFee + "', '" + doctor_id + "', '" + customer_id + "', '" + name + "','1')");
                 JOptionPane.showMessageDialog(this, "Apppoinment Adding Success", "Success", JOptionPane.OK_OPTION);
+
+                if (insert_rs.next()) {
+                    int AppoinmentID = insert_rs.getInt(1);
+                    ChannelingPaymentStatus channelingPaymentStatus = new ChannelingPaymentStatus(AppoinmentID);
+                    channelingPaymentStatus.setVisible(true);
+                    refresh();
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
