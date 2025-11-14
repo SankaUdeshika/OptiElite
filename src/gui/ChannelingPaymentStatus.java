@@ -5,6 +5,7 @@
 package gui;
 
 import models.MySQL;
+import models.Reports;
 
 /**
  *
@@ -137,6 +138,8 @@ public class ChannelingPaymentStatus extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Reports.PrintEchanneling(appoinmentID);
+
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

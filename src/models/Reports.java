@@ -346,4 +346,21 @@ public class Reports {
 
     }
 
+    // Print Echanneling Reprot
+    public static void PrintEchanneling(int AppoinmentNo) {
+        try {
+            HashMap<String, Object> reportmap = new HashMap<>();
+            reportmap.put("appoinmentId", AppoinmentNo);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/EChanneling.jasper"), reportmap, MySQL.getConnection());
+
+//            JasperPrint jasperPrint = JasperFillManager.fillReport("reports/EagleEyeOrders.jasper", reportmap, MySQL.getConnection());
+//            JasperPrint jasperPrint = JasperFillManager.fillReport("reports/EagleEyeOrders.jasper", reportmap,new JRTableModelDataSource(model));
+            JasperViewer.viewReport(jasperPrint, false);
+
+        } catch (JRException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(Reports.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
