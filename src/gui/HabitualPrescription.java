@@ -41,37 +41,38 @@ public class HabitualPrescription extends javax.swing.JFrame {
     }
 
     public void lockField() {
-        jComboBox1.setEnabled(false);
-        jComboBox2.setEnabled(false);
-        jComboBox3.setEnabled(false);
-        jComboBox4.setEnabled(false);
-        jComboBox5.setEnabled(false);
-        jComboBox6.setEnabled(false);
-
-        jTextField17.setEnabled(false);
-        jTextField19.setEnabled(false);
-        jTextField21.setEnabled(false);
-        jTextField23.setEnabled(false);
-        jTextField24.setEnabled(false);
-        jTextField25.setEnabled(false);
-        jTextField26.setEnabled(false);
-        jTextField27.setEnabled(false);
-        jTextField28.setEnabled(false);
-        jTextField29.setEnabled(false);
-        jTextField32.setEnabled(false);
-        jTextField35.setEnabled(false);
-        jTextField36.setEnabled(false);
-        jTextField37.setEnabled(false);
-        jTextField38.setEnabled(false);
-        jTextField39.setEnabled(false);
+            jComboBox1.setEditable(false);
+            jComboBox2.setEditable(false);
+            jComboBox3.setEditable(false);
+            jComboBox4.setEditable(false);
+            jComboBox5.setEditable(false);
+            jComboBox6.setEditable(false);
+    
+            jTextField17.setEditable(false);
+            jTextField19.setEditable(false);
+            jTextField21.setEditable(false);
+            jTextField23.setEnabled(false);
+            jTextField24.setEditable(false);
+            jTextField25.setEditable(false);
+            jTextField26.setEditable(false);
+            jTextField27.setEnabled(false);
+            jTextField28.setEditable(false);
+            jTextField29.setEditable(false);
+            jTextField32.setEditable(false);
+            jTextField35.setEditable(false);
+            jTextField36.setEditable(false);
+            jTextField37.setEditable(false);
+            jTextField38.setEditable(false);
+            jTextField39.setEditable(false);
     }
 
     public void loadHabitualPrescription() {
-
+            
         try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `habitual` WHERE `job_no` = '" + prescriptionID + "' ");
+            ResultSet rs = MySQL.execute("SELECT * FROM `habitual` WHERE `prescription_details_job_no` = '" + prescriptionID + "' ");
+            System.out.println("Prescription ID"+ prescriptionID);
             if (rs.next()) {
-
+                System.out.println("working");
                 jComboBox6.addItem(rs.getString("L_Addition"));
                 jComboBox2.addItem(rs.getString("L_DVA"));
                 jComboBox4.addItem(rs.getString("L_NVA"));
