@@ -179,6 +179,7 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         header.setPreferredSize(new java.awt.Dimension(756, 112));
 

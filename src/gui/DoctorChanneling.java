@@ -89,11 +89,11 @@ public class DoctorChanneling extends javax.swing.JFrame {
 
             while (rs.next()) {
                 Vector v = new Vector();
-                v.add("");
+                v.add(rs.getString("ref_no"));
                 v.add(rs.getString("appoinment_id"));
                 v.add(rs.getString("date"));
                 v.add(rs.getString("Name"));
-                if (rs.getInt("payment_status_id") == 1) {
+                if (rs.getInt("payment_status_id") == 2) {
                     v.add("Complete");
                 } else {
                     v.add("Pending");
@@ -116,11 +116,19 @@ public class DoctorChanneling extends javax.swing.JFrame {
     }
 
     public void generete_refNo() {
-        long timestamp = System.currentTimeMillis();
-        int randomNum = new Random().nextInt(100000);
-        String uniqueID = "ID-" + timestamp + "-" + randomNum;
-        jTextField4.setText(uniqueID);
+        try {
+            ResultSet rs;
 
+            do {
+                Random random = new Random();
+                int randomNumber1 = 100000 + random.nextInt(900000);
+                rs = MySQL.execute("SELECT * FROM `channeling_appoinment` WHERE `ref_no` = '" + randomNumber1 + "' ");
+                jTextField4.setText(String.valueOf(randomNumber1));
+            } while (rs.next());
+
+        } catch (Exception e) {
+
+        }
     }
 
     public void CustomerLoadingTable() {
@@ -841,7 +849,9 @@ public class DoctorChanneling extends javax.swing.JFrame {
 //        Add Apppoinment
 
         //validation
-        if (jTable2.getSelectedRow() == -1) {
+        if (jTextField4.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Enter Reference Number", "Empty Refrence Number", JOptionPane.ERROR_MESSAGE);
+        } else if (jTable2.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Please Select a Customer", "Empty Customer", JOptionPane.ERROR_MESSAGE);
         } else if (jTable4.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Please Select a Doctor", "Empty Doctor", JOptionPane.ERROR_MESSAGE);
@@ -885,8 +895,12 @@ public class DoctorChanneling extends javax.swing.JFrame {
             // User Details
             String name = UserDetails.UserId;
 
+            // Reference 
+            String ref_no = jTextField4.getText();
+
             try {
-                ResultSet insert_rs = MySQL.execute("INSERT INTO `channeling_appoinment` (`date`, `time`, `total`, `doctor_fee`, `channeling_fee`, `Doctor_doc_id`, `customer_mobile`,  `users_id`,`payment_status_id`) VALUES ( '" + AppoinmentDate + "', '" + AppoinmentTime + "', '" + total + "', '" + doctorFee + "', '" + ChannelFee + "', '" + doctor_id + "', '" + customer_id + "', '" + name + "','1')");
+                ResultSet insert_rs = MySQL.execute("INSERT INTO `channeling_appoinment` (`ref_no`,`date`, `time`, `total`, `doctor_fee`, `channeling_fee`, `Doctor_doc_id`, `customer_mobile`,  `users_id`,`payment_status_id`)"
+                        + " VALUES ( '" + ref_no + "','" + AppoinmentDate + "', '" + AppoinmentTime + "', '" + total + "', '" + doctorFee + "', '" + ChannelFee + "', '" + doctor_id + "', '" + customer_id + "', '" + name + "','1')");
                 JOptionPane.showMessageDialog(this, "Apppoinment Adding Success", "Success", JOptionPane.OK_OPTION);
 
                 if (insert_rs.next()) {
@@ -1031,7 +1045,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
                     v.add(rs.getString("appoinment_id"));
                     v.add(rs.getString("date"));
                     v.add(rs.getString("Name"));
-                    if (rs.getInt("payment_status_id") == 1) {
+                    if (rs.getInt("payment_status_id") == 2) {
                         v.add("Complete");
                     } else {
                         v.add("Pending");
