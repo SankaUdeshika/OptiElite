@@ -86,3 +86,5 @@ Nov 21, 2025 8:10:50 PM gui.Login signInBtnActionPerformed
 INFO: user has logged succesfully
 Nov 21, 2025 8:12:08 PM gui.Login signInBtnActionPerformed
 INFO: user has logged succesfully
+Nov 21, 2025 8:14:48 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
