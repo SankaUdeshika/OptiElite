@@ -131,6 +131,8 @@ public class AddDoctor extends javax.swing.JFrame {
         jComboBox2 = new javax.swing.JComboBox<>();
         jTextField6 = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -340,6 +342,9 @@ public class AddDoctor extends javax.swing.JFrame {
         jLabel21.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel21.setText("Email");
 
+        jLabel25.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel25.setText("Specialization");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -347,7 +352,6 @@ public class AddDoctor extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField6)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jSeparator6, javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,9 +387,15 @@ public class AddDoctor extends javax.swing.JFrame {
                                     .addComponent(jLabel14)
                                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel13))
-                        .addContainerGap())
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel21)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel21)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel25)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
@@ -400,9 +410,13 @@ public class AddDoctor extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                        .addComponent(jLabel21)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel25))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
@@ -509,6 +523,7 @@ public class AddDoctor extends javax.swing.JFrame {
         String mobile2 = jTextField4.getText().trim();
         String Address = jTextArea1.getText().trim();
         int branch_location = jComboBox1.getSelectedIndex();
+        String specilization = jTextField2.getText();
 
 // Validation flags
         boolean isValid = true;
@@ -520,6 +535,11 @@ public class AddDoctor extends javax.swing.JFrame {
             isValid = false;
         }
 
+        // Specialization validation
+        if (specilization.isEmpty()) {
+            errorMsg.append("Specialization cannot be empty.\n");
+            isValid = false;
+        }
 // Gender validation
         if (gender == 0) {
             errorMsg.append("Please select a gender.\n");
@@ -559,8 +579,8 @@ public class AddDoctor extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, errorMsg.toString(), "Validation Error", JOptionPane.ERROR_MESSAGE);
         } else {
             // Proceed with form submission
-            MySQL.execute("INSERT INTO `doctor` (`doc_name`,`email`,`mobile`,`mobile2`,`address`,`gender_gender_id`,`location_id`)"
-                    + "VALUES ('" + Name + "','" + email + "','" + mobile + "','" + mobile2 + "','" + Address + "','" + gender + "','" + branch_location + "')");
+            MySQL.execute("INSERT INTO `doctor` (`doc_name`,`email`,`mobile`,`mobile2`,`address`,`gender_gender_id`,`location_id`,`specialization`)"
+                    + "VALUES ('" + Name + "','" + email + "','" + mobile + "','" + mobile2 + "','" + Address + "','" + gender + "','" + branch_location + "','"+specilization+"')");
 
             JOptionPane.showMessageDialog(this, "Success");
         }
@@ -607,6 +627,7 @@ public class AddDoctor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -624,6 +645,7 @@ public class AddDoctor extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField6;
