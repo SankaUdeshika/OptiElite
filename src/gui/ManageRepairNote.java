@@ -6,7 +6,7 @@ package gui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import static gui.Login.logger;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -156,7 +156,7 @@ public class ManageRepairNote extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel7.setText("Pages");
 
-        jPanel6.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel6.setBackground(new java.awt.Color(206, 206, 206));
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -644,7 +644,7 @@ public class ManageRepairNote extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        FlatMacDarkLaf.setup();
+       FlatMacLightLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

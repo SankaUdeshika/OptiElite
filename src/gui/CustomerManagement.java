@@ -3,7 +3,7 @@ package gui;
 import gui.medicalCondition;
 import models.Navs;
 import models.UserDetails;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -302,7 +302,7 @@ public class CustomerManagement extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel7.setText("Relative Pages");
 
-        jPanel6.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel6.setBackground(new java.awt.Color(206, 206, 206));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel8.setText("mobile");
@@ -896,7 +896,7 @@ public class CustomerManagement extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        FlatMacDarkLaf.setup();
+       FlatMacLightLaf.setup();
 
 
         /* Create and display the form */

@@ -217,7 +217,7 @@
             <Component class="javax.swing.JButton" name="jButton5">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Resources/upload.png"/>
+                  <Image iconType="3" name="/Resources/incorporation.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Add New User"/>
               </Properties>
@@ -238,7 +238,10 @@
             <Container class="javax.swing.JPanel" name="jPanel6">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="33" green="33" red="33" type="rgb"/>
+                  <Color blue="ce" green="ce" red="ce" type="rgb"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
               </Properties>
 
@@ -629,7 +632,7 @@
             <Component class="javax.swing.JButton" name="jButton11">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Resources/upload.png"/>
+                  <Image iconType="3" name="/Resources/regeneration.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Update User"/>
               </Properties>
@@ -640,7 +643,7 @@
             <Component class="javax.swing.JButton" name="jButton12">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Resources/upload.png"/>
+                  <Image iconType="3" name="/Resources/delete (1).png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Deactive user"/>
               </Properties>

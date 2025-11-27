@@ -4,7 +4,8 @@
  */
 package gui;
 
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import static gui.CustomerRegister.locationmap;
 import java.sql.ResultSet;
 import java.util.Vector;
@@ -194,6 +195,7 @@ public class AddDoctor extends javax.swing.JFrame {
         );
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Add Doctor");
 
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
@@ -234,7 +236,7 @@ public class AddDoctor extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel6.setText("Actions");
 
-        registerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/diskette (1).png"))); // NOI18N
+        registerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/register.png"))); // NOI18N
         registerButton.setText("Add");
         registerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -306,7 +308,7 @@ public class AddDoctor extends javax.swing.JFrame {
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jPanel6.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel6.setBackground(new java.awt.Color(206, 206, 206));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel8.setText("Name");
@@ -600,7 +602,7 @@ public class AddDoctor extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        FlatMacDarkLaf.setup();
+        FlatMacLightLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

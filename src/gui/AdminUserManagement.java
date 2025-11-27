@@ -1,6 +1,6 @@
 package gui;
 
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import static gui.Login.logger;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -233,7 +233,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel6.setText("Actions");
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/upload.png"))); // NOI18N
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/incorporation.png"))); // NOI18N
         jButton5.setText("Add New User");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -244,7 +244,8 @@ public class AdminUserManagement extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel7.setText("Pages");
 
-        jPanel6.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel6.setBackground(new java.awt.Color(206, 206, 206));
+        jPanel6.setForeground(new java.awt.Color(0, 0, 0));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel6.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 110, -1));
         jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 900, 10));
@@ -372,7 +373,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
         jPanel6.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 480, 60, -1));
         jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 500, 150, -1));
 
-        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/upload.png"))); // NOI18N
+        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/regeneration.png"))); // NOI18N
         jButton11.setText("Update User");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -380,7 +381,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
             }
         });
 
-        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/upload.png"))); // NOI18N
+        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/delete (1).png"))); // NOI18N
         jButton12.setText("Deactive user");
         jButton12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -819,8 +820,8 @@ public class AdminUserManagement extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // Back
-        ProductAdding pa = new ProductAdding();
-        pa.setVisible(true);
+        adminDashboard aDashboard = new adminDashboard();
+        aDashboard.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -841,7 +842,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        FlatMacDarkLaf.setup();
+       FlatMacLightLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

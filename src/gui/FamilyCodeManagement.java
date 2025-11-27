@@ -4,7 +4,7 @@
  */
 package gui;
 
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -274,7 +274,7 @@ public class FamilyCodeManagement extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       FlatMacDarkLaf.setup();
+      FlatMacLightLaf.setup();
        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

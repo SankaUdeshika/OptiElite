@@ -4,7 +4,7 @@
  */
 package gui;
 
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import static gui.Login.logger;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -390,7 +390,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel10.setText("Pages");
 
-        jPanel21.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel21.setBackground(new java.awt.Color(206, 206, 206));
         jPanel21.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -1217,7 +1217,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        FlatMacDarkLaf.setup();
+       FlatMacLightLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

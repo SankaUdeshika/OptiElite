@@ -2,7 +2,7 @@ package gui;
 
 import models.Navs;
 import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import models.UserDetails;
 import java.awt.Color;
 import java.util.logging.Logger;
@@ -75,12 +75,15 @@ public class Login extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(28, 28, 28));
 
         username_lable.setFont(new java.awt.Font("Segoe UI Historic", 0, 12)); // NOI18N
+        username_lable.setForeground(new java.awt.Color(255, 255, 255));
         username_lable.setText("Username");
 
         password_lable.setFont(new java.awt.Font("Segoe UI Historic", 0, 12)); // NOI18N
+        password_lable.setForeground(new java.awt.Color(255, 255, 255));
         password_lable.setText("Password");
 
         location_lable.setFont(new java.awt.Font("Segoe UI Historic", 0, 12)); // NOI18N
+        location_lable.setForeground(new java.awt.Color(255, 255, 255));
         location_lable.setText("Location");
 
         locationComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -93,6 +96,7 @@ public class Login extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Sign In");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -135,12 +139,13 @@ public class Login extends javax.swing.JFrame {
                 .addGap(30, 30, 30))
         );
 
+        jPanel2.setBackground(new java.awt.Color(0, 0, 0));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/background.jpg"))); // NOI18N
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 533, 657));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 710));
 
         jButton1.setText("Exit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -255,9 +260,9 @@ public class Login extends javax.swing.JFrame {
     public static void main(String args[]) {
         Color myWhite = new Color(250, 250, 250);
         Color myBlack = new Color(9, 9, 11);
-//        FlatMacDarkLaf.setup();
+//       FlatMacLightLaf.setup();
         FlatDarkLaf.registerCustomDefaultsSource("resources.theme");
-        FlatDarkLaf.setup();
+        FlatMacLightLaf.setup();
 
         UIManager.put("PasswordField.foreground", myWhite);
         UIManager.put("PasswordField.background", myBlack);

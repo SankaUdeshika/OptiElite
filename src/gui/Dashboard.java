@@ -3,7 +3,8 @@ package gui;
 import gui.StockDashboard;
 import models.Navs;
 import models.UserDetails;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import gui.CustomerManagement;
 import gui.CustomerRegister;
 import gui.Login;
@@ -128,14 +129,15 @@ public class Dashboard extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        jPanel11.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel11.setBackground(new java.awt.Color(206, 206, 206));
+        jPanel11.setForeground(new java.awt.Color(0, 0, 0));
         jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel14.setText("Main Categories");
         jPanel11.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
 
-        adminBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Admin.png"))); // NOI18N
+        adminBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/administrator.png"))); // NOI18N
         adminBtn.setText("Admin");
         adminBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,7 +146,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel11.add(adminBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 80, 210, 64));
 
-        customerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/customer.png"))); // NOI18N
+        customerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Patient.png"))); // NOI18N
         customerBtn.setText("Customer");
         customerBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,7 +155,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel11.add(customerBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 210, 64));
 
-        orderBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Orders.png"))); // NOI18N
+        orderBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/cash-payment.png"))); // NOI18N
         orderBtn.setText("Orders");
         orderBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,7 +172,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel11.add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 450, 70, -1));
 
-        prescriptionsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/prescription.png"))); // NOI18N
+        prescriptionsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/medical-prescription.png"))); // NOI18N
         prescriptionsBtn.setText("Prescriptions ");
         prescriptionsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,7 +198,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel11.add(accessoriesBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 210, 64));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Customer Prescription.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/daily-report.png"))); // NOI18N
         jButton2.setText("Daily Reports");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,7 +207,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel11.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, 210, 60));
 
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/stokManagement.png"))); // NOI18N
+        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/product-management.png"))); // NOI18N
         jToggleButton1.setText("View Stock");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -214,6 +216,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel11.add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 240, 210, 60));
 
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/payment-method.png"))); // NOI18N
         jButton3.setText("Extra Purchases");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,7 +225,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel11.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 320, 210, 60));
 
-        adminBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/Customer management.png"))); // NOI18N
+        adminBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/wrench.png"))); // NOI18N
         adminBtn1.setText("Repair Notes");
         adminBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -231,6 +234,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel11.add(adminBtn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 210, 64));
 
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/doctor.png"))); // NOI18N
         jButton4.setText("Doctor Channeling");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -239,13 +243,13 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel11.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 160, 210, 60));
 
-        jPanel3.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel3.setBackground(new java.awt.Color(206, 206, 206));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Notificaiton");
 
-        jTextPane1.setBackground(new java.awt.Color(51, 51, 51));
+        jTextPane1.setBackground(new java.awt.Color(255, 255, 255));
         jTextPane1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jTextPane1.setForeground(new java.awt.Color(255, 51, 0));
         jScrollPane1.setViewportView(jTextPane1);
@@ -272,6 +276,7 @@ public class Dashboard extends javax.swing.JFrame {
         );
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/fast (1).png"))); // NOI18N
         jButton1.setText("GO");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -525,7 +530,7 @@ public class Dashboard extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        FlatMacDarkLaf.setup();
+        FlatMacLightLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

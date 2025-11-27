@@ -82,7 +82,7 @@ public class adminDashboard extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        jPanel11.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel11.setBackground(new java.awt.Color(206, 206, 206));
         jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
