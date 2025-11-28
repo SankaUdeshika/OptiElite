@@ -78,14 +78,19 @@ public class Login extends javax.swing.JFrame {
         username_lable.setForeground(new java.awt.Color(255, 255, 255));
         username_lable.setText("Username");
 
+        usernameField.setBackground(new java.awt.Color(255, 255, 255));
+
         password_lable.setFont(new java.awt.Font("Segoe UI Historic", 0, 12)); // NOI18N
         password_lable.setForeground(new java.awt.Color(255, 255, 255));
         password_lable.setText("Password");
+
+        passwordField.setBackground(new java.awt.Color(255, 255, 255));
 
         location_lable.setFont(new java.awt.Font("Segoe UI Historic", 0, 12)); // NOI18N
         location_lable.setForeground(new java.awt.Color(255, 255, 255));
         location_lable.setText("Location");
 
+        locationComboBox.setBackground(new java.awt.Color(255, 255, 255));
         locationComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         signInBtn.setText("Sign In");

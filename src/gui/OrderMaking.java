@@ -1737,7 +1737,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                 //  INSERT PROCESS
                                                 int payment_status_id = 1;
 
-                                                if (jTextField11.getText().isBlank()) {
+                                                if (jTextField11.getText().isEmpty()) {
                                                     payment_status_id = 2;
                                                 }
 
@@ -1794,7 +1794,7 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                                 } else {
 
-                                                    if (jTextField11.getText().isBlank()) {
+                                                    if (jTextField11.getText().isEmpty()) {
                                                         payment_status_id = 2;
                                                     }
 
