@@ -55,8 +55,12 @@ public class medicalCondition extends javax.swing.JFrame {
     }
     
     public void deleteMedicalRow() {
-        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-        dtm.removeRow(jTable1.getSelectedRow());
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please Select a Medical Raw", "Empty Medical Raw", JOptionPane.ERROR_MESSAGE);
+        } else {
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.removeRow(jTable1.getSelectedRow());
+        }
     }
     
     public void deleteMedicalRow(String medicalId) {
