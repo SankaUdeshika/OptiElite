@@ -85,6 +85,7 @@ public class Login extends javax.swing.JFrame {
         password_lable.setText("Password");
 
         passwordField.setBackground(new java.awt.Color(255, 255, 255));
+        passwordField.setForeground(new java.awt.Color(0, 0, 0));
 
         location_lable.setFont(new java.awt.Font("Segoe UI Historic", 0, 12)); // NOI18N
         location_lable.setForeground(new java.awt.Color(255, 255, 255));
