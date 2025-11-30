@@ -1089,10 +1089,21 @@ public class OrderMaking extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // Adding Discount
+
         if (!jTextField3.getText().isEmpty()) {
-            double TextDiscount = Double.parseDouble(jTextField3.getText());
-            Discount = TextDiscount;
-            ChangeTotal();
+
+            String discountText = jTextField3.getText();
+            if (discountText.contains("%")) {
+                double totalPrice = Double.parseDouble(jLabel38.getText());
+                double discount_percentage = Double.parseDouble(discountText.replace("%", ""));
+                double discountAmount = (totalPrice * discount_percentage) / 100.0;
+                Discount = discountAmount;
+                ChangeTotal();
+            } else {
+                double TextDiscount = Double.parseDouble(jTextField3.getText());
+                Discount = TextDiscount;
+                ChangeTotal();
+            }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -2051,7 +2062,7 @@ public class OrderMaking extends javax.swing.JFrame {
 
     private void jTextField9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyReleased
         // Search Product By its SKU
-        
+
         String brand_details = jTextField9.getText();
 
         try {
@@ -2119,7 +2130,7 @@ public class OrderMaking extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       FlatMacLightLaf.setup();
+        FlatMacLightLaf.setup();
 
 
         /* Create and display the form */

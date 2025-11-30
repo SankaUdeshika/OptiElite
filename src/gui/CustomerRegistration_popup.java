@@ -589,8 +589,8 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
 
     private void previousBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousBtnActionPerformed
         // TODO add your handling code here:
-//        cr.
-//        this.dispose();
+        cm.CustomerLoadingTable();
+        this.dispose();
     }//GEN-LAST:event_previousBtnActionPerformed
 
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
