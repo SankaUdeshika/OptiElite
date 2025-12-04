@@ -165,7 +165,6 @@ public class StockAdd extends javax.swing.JFrame {
         jTextField6.setText("");
         jTextField10.setText("");
         jTextField4.setText("");
-        jTextField13.setText("");
         jTextField15.setText("");
     }
 
@@ -207,8 +206,6 @@ public class StockAdd extends javax.swing.JFrame {
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jTextField13 = new javax.swing.JTextField();
-        jLabel27 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox<>();
         jLabel28 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
@@ -405,9 +402,6 @@ public class StockAdd extends javax.swing.JFrame {
         jLabel26.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel26.setText("Supplier Company");
 
-        jLabel27.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel27.setText("Buying Unit Price");
-
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -507,16 +501,10 @@ public class StockAdd extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel24)
                             .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(38, 38, 38)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel30)
-                            .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -617,20 +605,17 @@ public class StockAdd extends javax.swing.JFrame {
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel24)
+                                .addGap(36, 36, 36)
+                                .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel24)
+                                    .addComponent(jLabel30))
                                 .addGap(10, 10, 10)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel27)
-                                .addGap(10, 10, 10)
-                                .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel30)
-                                .addGap(10, 10, 10)
-                                .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))
         );
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/spect.png"))); // NOI18N
@@ -873,15 +858,9 @@ public class StockAdd extends javax.swing.JFrame {
 
         String Qty = jTextField4.getText();
 
-        double CostPrice;
         double SellingPrice;
 
-        try {
-            CostPrice = Double.parseDouble(jTextField13.getText());
-
-        } catch (NumberFormatException e) {
-            CostPrice = 0.0;
-        }
+       
 
         try {
             SellingPrice = Double.parseDouble(jTextField15.getText());
@@ -908,10 +887,6 @@ public class StockAdd extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Please Enter Quantity", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
             } else if (!Qty.matches("\\d+")) {
                 JOptionPane.showMessageDialog(this, "Please Enter Valid Quanity", "Invalid Data Type", JOptionPane.ERROR_MESSAGE);
-            } else if (CostPrice == 0.0) {
-                JOptionPane.showMessageDialog(this, "Please Enter Buying Cost", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (String.valueOf(CostPrice).matches("\\d+")) {
-                JOptionPane.showMessageDialog(this, "Please Enter Valid  Cost", "Invalid  Parameters", JOptionPane.ERROR_MESSAGE);
             } else if (SellingPrice == 0.0) {
                 JOptionPane.showMessageDialog(this, "Please Enter selling price", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
             } else if (String.valueOf(SellingPrice).matches("\\d+")) {
@@ -919,7 +894,7 @@ public class StockAdd extends javax.swing.JFrame {
             } else {
 
                 MySQL.execute("INSERT INTO `stock` (`product_id`,`supplier_supplier_id`,`location_id`,`cost`,`saling_price`,`stock_date`,`qty`,`product_intid`,`SKU`,`FrameSize`) "
-                        + "VALUES ('" + Product_id + "','" + supplier_ID + "','" + Location_id + "','" + CostPrice + "','" + SellingPrice + "','" + formatDate + "','" + Qty + "','" + productintid + "','" + SKUNO.getText() + "','" + FrameSize + "')");
+                        + "VALUES ('" + Product_id + "','" + supplier_ID + "','" + Location_id + "','0','" + SellingPrice + "','" + formatDate + "','" + Qty + "','" + productintid + "','" + SKUNO.getText() + "','" + FrameSize + "')");
 
                 JOptionPane.showMessageDialog(this, "Stock Adding Success ", "Insert Success", JOptionPane.ERROR_MESSAGE);
                 refresh();
@@ -1155,7 +1130,6 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
@@ -1183,7 +1157,6 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField15;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;

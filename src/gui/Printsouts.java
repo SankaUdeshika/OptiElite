@@ -5,6 +5,7 @@
 package gui;
 
 import gui.Dashboard;
+import models.Navs;
 import models.Reports;
 
 /**
@@ -12,19 +13,19 @@ import models.Reports;
  * @author sanka
  */
 public class Printsouts extends javax.swing.JFrame {
-    
+
     int invoiceId;
-    
+
     public Printsouts(int invoiceID) {
         initComponents();
         this.invoiceId = invoiceID;
     }
-    
+
     public Printsouts(String type, int invoiceID) {
         initComponents();
         this.invoiceId = invoiceID;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -113,7 +114,7 @@ public class Printsouts extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // print inovice
         Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
-        
+
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -123,9 +124,14 @@ public class Printsouts extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Dashboard d = new Dashboard();
-        d.setVisible(true);
-        this.dispose();
+        if (Navs.routee) {
+            Dashboard d = new Dashboard();
+            d.setVisible(true);
+            this.dispose();
+        } else {
+            this.dispose();
+        }
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -158,7 +164,7 @@ public class Printsouts extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
             }
         });
     }
