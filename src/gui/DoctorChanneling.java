@@ -233,7 +233,6 @@ public class DoctorChanneling extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -245,7 +244,6 @@ public class DoctorChanneling extends javax.swing.JFrame {
         jTextField10 = new javax.swing.JTextField();
         jButton13 = new javax.swing.JButton();
         jComboBox4 = new javax.swing.JComboBox<>();
-        jLabel12 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jTextField2 = new javax.swing.JTextField();
@@ -554,7 +552,6 @@ public class DoctorChanneling extends javax.swing.JFrame {
 
         jLabel4.setText("Location");
         jPanel21.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 290, -1, -1));
-        jPanel21.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 200, 140, -1));
         jPanel21.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 150, 220, -1));
 
         jLabel5.setText("Time");
@@ -605,13 +602,10 @@ public class DoctorChanneling extends javax.swing.JFrame {
                 jButton13ActionPerformed(evt);
             }
         });
-        jPanel21.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 230, 140, -1));
+        jPanel21.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 200, 140, -1));
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel21.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 310, 160, 30));
-
-        jLabel12.setText("Appoinment Number");
-        jPanel21.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 180, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -908,29 +902,33 @@ public class DoctorChanneling extends javax.swing.JFrame {
             String doctor_id = String.valueOf(jTable4.getValueAt(jTable4.getSelectedRow(), 0));
 
             // Customer Details
-            String customer_id = String.valueOf(jTable2.getValueAt(jTable4.getSelectedRow(), 0));
+            String customer_id = String.valueOf(jTable2.getValueAt(jTable2  .getSelectedRow(), 0));
+            System.out.println("this is Selected ID" + customer_id);
 
             // User Details
-            String name = UserDetails.UserId;
+            String userID = UserDetails.UserId;
 
             // Reference 
             String ref_no = jTextField4.getText();
+            
+            // location 
+            int locationId = jComboBox4.getSelectedIndex();
 
-            try {
-                ResultSet insert_rs = MySQL.execute("INSERT INTO `channeling_appoinment` (`ref_no`,`date`, `time`, `total`, `doctor_fee`, `channeling_fee`, `Doctor_doc_id`, `customer_mobile`,  `users_id`,`payment_status_id`)"
-                        + " VALUES ( '" + ref_no + "','" + AppoinmentDate + "', '" + AppoinmentTime + "', '" + total + "', '" + doctorFee + "', '" + ChannelFee + "', '" + doctor_id + "', '" + customer_id + "', '" + name + "','1')");
-                JOptionPane.showMessageDialog(this, "Apppoinment Adding Success", "Success", JOptionPane.OK_OPTION);
-
-                if (insert_rs.next()) {
-                    int AppoinmentID = insert_rs.getInt(1);
-                    ChannelingPaymentStatus channelingPaymentStatus = new ChannelingPaymentStatus(AppoinmentID);
-                    channelingPaymentStatus.setVisible(true);
-                    refresh();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                ResultSet insert_rs = MySQL.execute("INSERT INTO `channeling_appoinment` (`ref_no`,`date`, `time`, `total`, `doctor_fee`, `channeling_fee`, `Doctor_doc_id`, `customer_mobile`,  `users_id`,`payment_status_id`,`location_id`)"
+//                        + " VALUES ( '" + ref_no + "','" + AppoinmentDate + "', '" + AppoinmentTime + "', '" + total + "', '" + doctorFee + "', '" + ChannelFee + "', '" + doctor_id + "', '" + customer_id + "', '" + userID + "','1','"+locationId+"')");
+//                JOptionPane.showMessageDialog(this, "Apppoinment Adding Success", "Success", JOptionPane.OK_OPTION);
+//
+//                if (insert_rs.next()) {
+//                    int AppoinmentID = insert_rs.getInt(1);
+//                    ChannelingPaymentStatus channelingPaymentStatus = new ChannelingPaymentStatus(AppoinmentID);
+//                    channelingPaymentStatus.setVisible(true);
+//                    refresh();
+//                }
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         }
 
 
@@ -1250,7 +1248,6 @@ public class DoctorChanneling extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1300,7 +1297,6 @@ public class DoctorChanneling extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel timeField4;
     private javax.swing.JLabel userNameField4;
     // End of variables declaration//GEN-END:variables

@@ -1099,12 +1099,19 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 // habitual Prescription
                 if (prescription_result.next()) {
                     prescription_id = prescription_result.getInt(1);
-                    
-                    System.out.println("habi length "+ habitualArray.length );
 
-                    MySQL.execute("INSERT INTO `habitual` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,"
-                            + "`R_DVA`,`R_NVA`,`R_M_PD`,`R_SPH`,`R_Addition`,`prescripiton_date`,`L_CYL`,`R_CYL`,`L_Axis`,`R_Axis`,`R_HEIGHT`,`prescription_details_job_no`) "
-                            + "VALUES ('" + habitualArray[0] + "','" + habitualArray[1] + "','" + habitualArray[2] + "','" + habitualArray[3] + "','" + habitualArray[4] + "','" + habitualArray[5] + "','" + habitualArray[6] + "','" + habitualArray[7] + "','" + habitualArray[8] + "','" + habitualArray[9] + "','" + habitualArray[10] + "','" + datechooser + "','" + habitualArray[11] + "','" + habitualArray[12] + "','" + habitualArray[13] + "','" + habitualArray[14] + "','" + habitualArray[15] + "','" + prescription_id + "')  ");
+                    try {
+                        if (habitualArray.length > 0) {
+                            System.out.println("habi length " + habitualArray.length);
+
+                            MySQL.execute("INSERT INTO `habitual` (`L_SPH`,`L_Addition`,`L_DVA`,`L_NVA`,`L_M_PD`,`L_HEIGHT`,"
+                                    + "`R_DVA`,`R_NVA`,`R_M_PD`,`R_SPH`,`R_Addition`,`prescripiton_date`,`L_CYL`,`R_CYL`,`L_Axis`,`R_Axis`,`R_HEIGHT`,`prescription_details_job_no`) "
+                                    + "VALUES ('" + habitualArray[0] + "','" + habitualArray[1] + "','" + habitualArray[2] + "','" + habitualArray[3] + "','" + habitualArray[4] + "','" + habitualArray[5] + "','" + habitualArray[6] + "','" + habitualArray[7] + "','" + habitualArray[8] + "','" + habitualArray[9] + "','" + habitualArray[10] + "','" + datechooser + "','" + habitualArray[11] + "','" + habitualArray[12] + "','" + habitualArray[13] + "','" + habitualArray[14] + "','" + habitualArray[15] + "','" + prescription_id + "')  ");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("no Habitual");
+                    }
+
                 } else {
                     JOptionPane.showMessageDialog(this, "Habitual Prescription is not working");
                 }
@@ -1178,7 +1185,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       FlatMacLightLaf.setup();
+        FlatMacLightLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
