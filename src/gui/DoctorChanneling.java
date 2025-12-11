@@ -498,7 +498,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -511,6 +511,10 @@ public class DoctorChanneling extends javax.swing.JFrame {
             }
         });
         jScrollPane4.setViewportView(jTable4);
+        if (jTable4.getColumnModel().getColumnCount() > 0) {
+            jTable4.getColumnModel().getColumn(0).setResizable(false);
+            jTable4.getColumnModel().getColumn(1).setResizable(false);
+        }
 
         jPanel21.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 306, 250, 95));
 
@@ -902,7 +906,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
             String doctor_id = String.valueOf(jTable4.getValueAt(jTable4.getSelectedRow(), 0));
 
             // Customer Details
-            String customer_id = String.valueOf(jTable2.getValueAt(jTable2  .getSelectedRow(), 0));
+            String customer_id = String.valueOf(jTable2.getValueAt(jTable2.getSelectedRow(), 0));
             System.out.println("this is Selected ID" + customer_id);
 
             // User Details
@@ -910,25 +914,24 @@ public class DoctorChanneling extends javax.swing.JFrame {
 
             // Reference 
             String ref_no = jTextField4.getText();
-            
+
             // location 
             int locationId = jComboBox4.getSelectedIndex();
+            try {
+                ResultSet insert_rs = MySQL.execute("INSERT INTO `channeling_appoinment` (`ref_no`,`date`, `time`, `total`, `doctor_fee`, `channeling_fee`, `Doctor_doc_id`, `customer_mobile`,  `users_id`,`payment_status_id`,`location_id`)"
+                        + " VALUES ( '" + ref_no + "','" + AppoinmentDate + "', '" + AppoinmentTime + "', '" + total + "', '" + doctorFee + "', '" + ChannelFee + "', '" + doctor_id + "', '" + customer_id + "', '" + userID + "','1','" + locationId + "')");
+                JOptionPane.showMessageDialog(this, "Apppoinment Adding Success", "Success", JOptionPane.OK_OPTION);
 
-//            try {
-//                ResultSet insert_rs = MySQL.execute("INSERT INTO `channeling_appoinment` (`ref_no`,`date`, `time`, `total`, `doctor_fee`, `channeling_fee`, `Doctor_doc_id`, `customer_mobile`,  `users_id`,`payment_status_id`,`location_id`)"
-//                        + " VALUES ( '" + ref_no + "','" + AppoinmentDate + "', '" + AppoinmentTime + "', '" + total + "', '" + doctorFee + "', '" + ChannelFee + "', '" + doctor_id + "', '" + customer_id + "', '" + userID + "','1','"+locationId+"')");
-//                JOptionPane.showMessageDialog(this, "Apppoinment Adding Success", "Success", JOptionPane.OK_OPTION);
-//
-//                if (insert_rs.next()) {
-//                    int AppoinmentID = insert_rs.getInt(1);
-//                    ChannelingPaymentStatus channelingPaymentStatus = new ChannelingPaymentStatus(AppoinmentID);
-//                    channelingPaymentStatus.setVisible(true);
-//                    refresh();
-//                }
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+                if (insert_rs.next()) {
+                    int AppoinmentID = insert_rs.getInt(1);
+                    ChannelingPaymentStatus channelingPaymentStatus = new ChannelingPaymentStatus(AppoinmentID);
+                    channelingPaymentStatus.setVisible(true);
+                    refresh();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -1082,7 +1085,9 @@ public class DoctorChanneling extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Select a Channling Raw", "Empty Selection", JOptionPane.ERROR_MESSAGE);
         } else {
             int appoinmentID = Integer.parseInt(String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 1)));
-            Reports.PrintEchanneling(appoinmentID);
+            ChannelingPaymentStatus channelingPaymentStatus = new ChannelingPaymentStatus(appoinmentID);
+            channelingPaymentStatus.setVisible(true);
+            
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -1215,7 +1220,7 @@ public class DoctorChanneling extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       FlatMacLightLaf.setup();
+        FlatMacLightLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
