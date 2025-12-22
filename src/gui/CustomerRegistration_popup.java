@@ -624,10 +624,10 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
 
             ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + whatssapp + "' ");
 
-            //            JOptionPane.showMessageDialog(this, "Please Wait");
-            //            jLabel21.setText("Please Wait. . . . . . .");
-            //            Thread.sleep(3000);
-            //            jLabel21.setText("");
+//            JOptionPane.showMessageDialog(this, "Please Wait");
+//            jLabel21.setText("Please Wait. . . . . . .");
+//            Thread.sleep(3000);
+//            jLabel21.setText("");
             if (rs.next()) {
                 JOptionPane.showMessageDialog(this, "Alread Registred this Usaer", "Already Registerd", JOptionPane.ERROR_MESSAGE);
             } else if (CustomerName.isEmpty()) {
@@ -657,7 +657,7 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
                     MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`Name`,`gender_gender_id`,`email`)"
                             + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + CustomerName + "','" + gender_id + "','" + Email + "') ");
 
-                    //                   Insert Medical Conditon
+//                   Insert Medical Conditon
                     int medicalCount = medicalTemporyData.medicalArray.size();
                     for (int i = 0; i < medicalCount; i++) {
                         String medicalText = medicalTemporyData.medicalArray.get(i);

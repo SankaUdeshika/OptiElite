@@ -36,6 +36,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     public Dashboard() {
         initComponents();
+        FlatMacLightLaf.setup();
         loadNotificaiton();
         operater();
         time();
