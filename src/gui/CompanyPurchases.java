@@ -612,9 +612,12 @@ public class CompanyPurchases extends javax.swing.JFrame {
                 if (FromDate != "null") {
                     Queary += " AND `date` <= '" + FromDate + "' ";
                 }
+                Queary += " ORDER BY `date` DESC";
             } else if (FromDate != "null") {
                 Queary += " WHERE `date` <= '" + FromDate + "' ";
             }
+            
+            System.out.println(Queary);
             //
             ResultSet rs = MySQL.execute(Queary);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
