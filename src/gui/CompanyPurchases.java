@@ -459,7 +459,7 @@ public class CompanyPurchases extends javax.swing.JFrame {
         );
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
-        jLabel5.setText(" Company Purchases");
+        jLabel5.setText("Daily Reports");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -553,12 +553,17 @@ public class CompanyPurchases extends javax.swing.JFrame {
         if (item_count < 1) {
             JOptionPane.showConfirmDialog(this, "Please add Expenses items to the table", "Empty expneses Table", JOptionPane.ERROR_MESSAGE);
         } else {
+//            Date 
             final DateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd");
             Date date = new Date();
             String day = dateFormat.format(date);
 
+            //Time
+            final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            String time = timeFormat.format(date);
+
             try {
-                ResultSet insert_rs = MySQL.execute("INSERT INTO `daily_report`  (`date`,`location_id`,`users_id`) VALUES ('" + day + "','" + UserDetails.UserLocation_id + "','" + UserDetails.UserId + "')");
+                ResultSet insert_rs = MySQL.execute("INSERT INTO `daily_report`  (`date`,`location_id`,`users_id`,`time`) VALUES ('" + day + "','" + UserDetails.UserLocation_id + "','" + UserDetails.UserId + "','"+time+"')");
 
                 if (insert_rs.next()) {
                     int reportId = insert_rs.getInt(1);
@@ -579,36 +584,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
             }
 
         }
-
-//        String reason = jTextArea1.getText();
-//        String amount = jTextField2.getText();
-//        String date = null;
-//        try {
-//            Date getDate = jDateChooser3.getDate();
-//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//            date = simpleDateFormat.format(getDate);
-//        } catch (Exception e) {
-//            System.out.println("Exception");
-//            e.printStackTrace();
-//        }
-//
-//        int location = jComboBox2.getSelectedIndex();
-//
-//        if (reason.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "PLease Enter a Reason.", "Error", JOptionPane.ERROR_MESSAGE);
-//        } else if (amount.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "PLease Enter a Amount.", "Error", JOptionPane.ERROR_MESSAGE);
-//        } else if (!amount.matches("\\d+")) {
-//            JOptionPane.showMessageDialog(this, "PLease Enter a Valid Amount.", "Error", JOptionPane.ERROR_MESSAGE);
-//        } else if (date == null) {
-//            JOptionPane.showMessageDialog(this, "PLease Enter a Date.", "Error", JOptionPane.ERROR_MESSAGE);
-//        } else if (jComboBox2.getSelectedIndex() == 0) {
-//            JOptionPane.showMessageDialog(this, "PLease Enter a Location.", "Error", JOptionPane.ERROR_MESSAGE);
-//        } else {
-//            MySQL.execute("INSERT INTO `cashbook`  (`reason`,`date`,`amount`,`location_id`) VALUES ('" + reason + "','" + date + "','" + amount + "','" + location + "') ");
-//            JOptionPane.showMessageDialog(this, "Expensess Added.", "Error", JOptionPane.OK_OPTION);
-//            Refresh();
-//        }
     }//GEN-LAST:event_completeBtnActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
