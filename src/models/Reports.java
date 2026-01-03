@@ -288,7 +288,7 @@ public class Reports {
                         cashCollection += today_payments.getDouble("paid_amount");
                     } else if (today_payments.getString("payment_name").equals("Card")) { // Card
                         cardCollection += today_payments.getDouble("paid_amount");
-                    } else if (today_payments.getString("payment_name").equals("Online Bank Transfer")) { // Online Payment
+                    } else if (today_payments.getString("payment_name").equals("Online Bank Transfer")) { // Online Payment 
                         onlinePaymentCollection += today_payments.getDouble("paid_amount");
                     }
                     totalSellingCollection += today_payments.getDouble("paid_amount");
