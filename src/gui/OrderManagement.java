@@ -7,6 +7,7 @@ import models.Reports;
 import models.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import static gui.Login.logger;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -37,6 +38,7 @@ public class OrderManagement extends javax.swing.JFrame {
     int actualProfit = 0;
     int estimateProfit = 0;
     double ReportTotal = 0;
+    double totalCollection = 0;
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
     public OrderManagement() {
@@ -165,9 +167,12 @@ public class OrderManagement extends javax.swing.JFrame {
                 dtm.addRow(v);
             }
 
-            esProfitCountLable.setText("Rs." + String.valueOf(estimateProfit));
-            acCountLable.setText("Rs." + String.valueOf(actualProfit));
-            jLabel10.setText("Rs." + String.valueOf(ReportTotal));
+            esProfitCountLable.setText(" ");
+            esProfitCountLable.setForeground(Color.red);
+            acCountLable.setText(" ");
+            acCountLable.setForeground(Color.red);
+            jLabel10.setText(" ");
+            jLabel10.setForeground(Color.red);
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -178,6 +183,30 @@ public class OrderManagement extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
             logger.log(Level.WARNING, "load table error", e);
 
+        }
+    }
+
+    public void calculateTodayCashColleciton(String date) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+        try {
+            double cashCollection = 0;
+            ResultSet rs = MySQL.execute("SELECT * FROM `advance_payment_history` WHERE `date` = '" + date + "' ");
+
+            while (rs.next()) {
+                if (rs.getInt("payment_method") == 1) {
+                    System.out.println(String.valueOf(rs.getString("payment_method")));
+                    cashCollection += rs.getDouble("paid_amount");
+                }
+            }
+            String formatedTotalCash = decimalFormat.format(cashCollection);
+
+            totalCashCollection.setText(formatedTotalCash);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -227,6 +256,8 @@ public class OrderManagement extends javax.swing.JFrame {
         esProfitLable = new javax.swing.JLabel();
         acLable = new javax.swing.JLabel();
         acCountLable = new javax.swing.JLabel();
+        acLable1 = new javax.swing.JLabel();
+        totalCashCollection = new javax.swing.JLabel();
         fullReportBtn = new javax.swing.JButton();
         completeBtn = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
@@ -391,6 +422,11 @@ public class OrderManagement extends javax.swing.JFrame {
         acCountLable.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         acCountLable.setText("..................................");
 
+        acLable1.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        acLable1.setText("Total Cash Collection");
+
+        totalCashCollection.setText("........................................................");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -407,7 +443,6 @@ public class OrderManagement extends javax.swing.JFrame {
                                 .addGap(210, 210, 210)
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel24)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addGap(10, 10, 10)
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -416,25 +451,24 @@ public class OrderManagement extends javax.swing.JFrame {
                                                 .addGap(12, 12, 12)
                                                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                                        .addComponent(jLabel23)
-                                                        .addGap(42, 42, 42)
-                                                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                                        .addComponent(jLabel20)
-                                                        .addGap(25, 25, 25)
-                                                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(114, 114, 114)
-                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                                        .addComponent(esProfitLable)
-                                                        .addGap(18, 18, 18)
-                                                        .addComponent(esProfitCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                                        .addComponent(acLable)
-                                                        .addGap(18, 18, 18)
-                                                        .addComponent(acCountLable, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                                                .addComponent(jLabel23)
+                                                .addGap(42, 42, 42)
+                                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                                .addComponent(jLabel20)
+                                                .addGap(25, 25, 25)
+                                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(96, 96, 96)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(esProfitLable)
+                                            .addComponent(acLable)
+                                            .addComponent(acLable1)))
+                                    .addComponent(jLabel24))
+                                .addGap(34, 34, 34)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(acCountLable, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                                    .addComponent(esProfitCountLable, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                                    .addComponent(totalCashCollection, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(jLabel16)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
@@ -509,7 +543,7 @@ public class OrderManagement extends javax.swing.JFrame {
                             .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel24)
-                                .addGap(15, 15, 15)
+                                .addGap(11, 11, 11)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel19)
                                     .addComponent(jLabel10))
@@ -520,14 +554,19 @@ public class OrderManagement extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel20)
                             .addComponent(jLabel21)))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                        .addGap(374, 374, 374)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(esProfitLable)
                             .addComponent(esProfitCountLable))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(acCountLable)
-                            .addComponent(acLable))))
+                            .addComponent(acLable)
+                            .addComponent(acCountLable))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(acLable1)
+                            .addComponent(totalCashCollection))))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -755,14 +794,17 @@ public class OrderManagement extends javax.swing.JFrame {
         estimateProfit = 0;
         actualProfit = 0;
         ReportTotal = 0;
-        SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("yyyy-MM-dd");
 
         String ToDate;
         String FromDate;
 
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); // Decimal Object
+
         try {
             ToDate = simpleDateformat.format(jDateChooser1.getDate());
             jLabel22.setText(ToDate);
+            System.out.println("Today is the Date =" + ToDate);
         } catch (NullPointerException ne) {
             ToDate = "null";
         }
@@ -848,6 +890,7 @@ public class OrderManagement extends javax.swing.JFrame {
             System.out.println(Queary);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
+            calculateTodayCashColleciton(ToDate);
 
             while (rs.next()) {
                 Vector v = new Vector();
@@ -872,14 +915,17 @@ public class OrderManagement extends javax.swing.JFrame {
                 } else {
                     actualProfit += rs.getDouble("subtotal") - rs.getDouble("total_price");
 //                    advanceTotal += rs.getDouble("advance_payment");
-
                     ReportTotal++;
                 }
 
                 dtm.addRow(v);
             }
-            esProfitCountLable.setText(String.valueOf(estimateProfit));
-            acCountLable.setText(String.valueOf(actualProfit));
+
+            String estimateProfits = decimalFormat.format(estimateProfit);
+            String actualProfits = decimalFormat.format(actualProfit);
+
+            esProfitCountLable.setText(String.valueOf(estimateProfits));
+            acCountLable.setText(String.valueOf(actualProfits));
             jLabel10.setText(String.valueOf(ReportTotal));
 
         } catch (SQLException se) {
@@ -1121,7 +1167,7 @@ public class OrderManagement extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       FlatMacLightLaf.setup();
+        FlatMacLightLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1134,6 +1180,7 @@ public class OrderManagement extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel acCountLable;
     private javax.swing.JLabel acLable;
+    private javax.swing.JLabel acLable1;
     private javax.swing.JButton billBtn;
     private javax.swing.JButton completeBtn;
     private javax.swing.JLabel dateField;
@@ -1186,6 +1233,7 @@ public class OrderManagement extends javax.swing.JFrame {
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton searchBtn;
     private javax.swing.JLabel timeField;
+    private javax.swing.JLabel totalCashCollection;
     private javax.swing.JLabel userNameField;
     // End of variables declaration//GEN-END:variables
 
