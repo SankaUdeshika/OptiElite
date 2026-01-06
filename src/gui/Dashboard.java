@@ -85,6 +85,7 @@ public class Dashboard extends javax.swing.JFrame {
             String day = dateFormat.format(date);
             timeField.setText(time);
             dateField.setText(day);
+            System.out.println(day);
         };
         Timer timer = new Timer(1000, timerListener);
         timer.setInitialDelay(0);

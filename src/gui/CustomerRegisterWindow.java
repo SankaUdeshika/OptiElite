@@ -348,16 +348,16 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
         jLabel12.setText("General Informations");
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel13.setText("Address Infomations");
+        jLabel13.setText("Address ");
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel14.setText("Mobile 02");
 
         jLabel15.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel15.setText("Telphone ");
+        jLabel15.setText("Telephone");
 
         jLabel16.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel16.setText("Contact Informations");
+        jLabel16.setText("Contact Details");
 
         jLabel17.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel17.setText("Address 1");

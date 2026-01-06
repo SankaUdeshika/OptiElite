@@ -357,7 +357,7 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
         jLabel9.setText("Nic");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel10.setText("Birth Day");
+        jLabel10.setText("Date of birth");
 
         jLabel11.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel11.setText("Whatsap Number *");
@@ -366,7 +366,7 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
         jLabel12.setText("General Informations");
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel13.setText("Address Infomations");
+        jLabel13.setText("Address ");
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel14.setText("Mobile 02");
@@ -375,7 +375,7 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
         jLabel15.setText("Telphone ");
 
         jLabel16.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel16.setText("Contact Informations");
+        jLabel16.setText("Contact Details");
 
         jLabel17.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel17.setText("Address 1*");

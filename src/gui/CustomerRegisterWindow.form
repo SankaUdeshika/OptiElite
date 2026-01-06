@@ -558,7 +558,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI Historic" size="18" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Address Infomations"/>
+                <Property name="text" type="java.lang.String" value="Address "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField4">
@@ -576,7 +576,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI Historic" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Telphone "/>
+                <Property name="text" type="java.lang.String" value="Telephone"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField5">
@@ -588,7 +588,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI Historic" size="18" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Contact Informations"/>
+                <Property name="text" type="java.lang.String" value="Contact Details"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel17">

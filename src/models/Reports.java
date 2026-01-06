@@ -95,6 +95,7 @@ public class Reports {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
