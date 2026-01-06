@@ -4,6 +4,8 @@
  */
 package Resources;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.intellijthemes.FlatSolarizedLightIJTheme;
 import javax.swing.table.DefaultTableModel;
 import models.MySQL;
 import java.sql.ResultSet;
@@ -23,6 +25,7 @@ public class smallProductAdding extends javax.swing.JFrame {
      * Creates new form smallProductAdding
      */
     public smallProductAdding() {
+        FlatSolarizedLightIJTheme.setup();
         initComponents();
         setLocationRelativeTo(null);
         Refresh();
@@ -254,7 +257,6 @@ public class smallProductAdding extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        jPanel6.setBackground(new java.awt.Color(51, 51, 51));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
