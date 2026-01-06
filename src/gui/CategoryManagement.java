@@ -40,12 +40,21 @@ public class CategoryManagement extends javax.swing.JFrame {
     private void time() {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
+
+
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
             String day = dateFormat.format(date);
+            String dayArray[] = day.split(" ");
+            String year_string = dayArray[0];
+            String month_string = dayArray[1];
+            String day_string = dayArray[2];
+
+            String DateString = day_string+ " of "+ month_string+" "+year_string;
             timeField.setText(time);
-            dateField.setText(day);
+            dateField.setText(DateString);
+            System.out.println(day);
         };
         Timer timer = new Timer(1000, timerListener);
         timer.setInitialDelay(0);
