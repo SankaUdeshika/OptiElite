@@ -783,6 +783,8 @@ public class SellAccessories extends javax.swing.JFrame {
         Date today = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String OrderDate = sdf.format(today);
+        SimpleDateFormat sdt = new SimpleDateFormat("HH:mm:ss");
+        String orderTime = sdt.format(today);
         double Discount = 0.0;
         if (!jTextField3.getText().isEmpty()) {
             try {
@@ -828,8 +830,8 @@ public class SellAccessories extends javax.swing.JFrame {
 //                          Added Discount to the SubTotal
                             InsertSubTotal = InsertSubTotal - Discount;
                             //                                    Invoice INSERT PROCESS
-                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, `payment_status_id`,`invoice_location`,`payment_amount`,`job_warrenty_warrenty_id`,`isAccessories`)"
-                                    + " VALUES ('" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "','1','1') ");
+                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, `payment_status_id`,`invoice_location`,`payment_amount`,`job_warrenty_warrenty_id`,`isAccessories`,`order_time`)"
+                                    + " VALUES ('" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "','1','1','"+orderTime+"') ");
 
                             int invoiceId;
                             if (Inser_rs.next()) {
