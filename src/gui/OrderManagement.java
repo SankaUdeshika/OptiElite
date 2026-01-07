@@ -826,7 +826,7 @@ public class OrderManagement extends javax.swing.JFrame {
         }
 
         try {
-            String Queary = "SELECT * FROM `invoice` "
+            String Queary = "SELECT DISTINCT invoice.*, customer.*, location.*,payment_status.*  FROM `invoice` "
                     + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile`   "
                     + "LEFT JOIN `invoice_item` ON `invoice_item`.`invoice_id` = `invoice`.`invoice_id` "
                     + "LEFT JOIN `stock` ON `stock`.`id` = `invoice_item`.`stock_id` "
