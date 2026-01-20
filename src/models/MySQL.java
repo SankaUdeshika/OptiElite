@@ -23,8 +23,8 @@ public class MySQL {
 //            connection = DriverManager.getConnection("jdbc:mysql://77.37.44.88:3306/eagle_eye_database?autoReconnect=true&useSSL=false", "user", "8891$l£Pu9"); // Sadev VPS
 //            connection = DriverManager.getConnection("jdbc:mysql://sankadb123-do-user-18315839-0.g.db.ondigitalocean.com:25060/eagle_eye_database?autoReconnect=true&useSSL=false", "doadmin", "AVNS_7pHVUsxjCv1YxiLhmst"); // Digital Ocean
 //            connection = DriverManager.getConnection("jdbc:mysql://sankadb123-do-user-18315839-0.g.db.ondigitalocean.com:25060/optielite?autoReconnect=true&useSSL=false", "doadmin", "AVNS_7pHVUsxjCv1YxiLhmst"); // Digital Ocean
-            connection = DriverManager.getConnection("jdbc:mysql://31.97.61.250:3306/optielite?autoReconnect=true&useSSL=false", "sanka", "Sanka123!@"); // Sanka VPS ARES
-//            connection = DriverManager.getConnection("jdbc:mysql://31.97.61.250:3306/dasanahyaka_optielite?autoReconnect=true&useSSL=false", "sanka", "Sanka123!@"); // Sanka VPS  Dasanayaka Opticals
+//            connection = DriverManager.getConnection("jdbc:mysql://31.97.61.250:3306/optielite?autoReconnect=true&useSSL=false", "sanka", "Sanka123!@"); // Sanka VPS ARES
+            connection = DriverManager.getConnection("jdbc:mysql://31.97.61.250:3306/dasanahyaka_optielite?autoReconnect=true&useSSL=false", "sanka", "Sanka123!@"); // Sanka VPS  Dasanayaka Opticals
             
         } catch (Exception e) {
             e.printStackTrace();
