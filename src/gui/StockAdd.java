@@ -7,18 +7,20 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Vector;
+import java.util.*;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import models.MySQL;
+import org.apache.poi.ss.usermodel.*;
 
 public class StockAdd extends javax.swing.JFrame {
 
@@ -43,7 +45,6 @@ public class StockAdd extends javax.swing.JFrame {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
 
-
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
@@ -53,10 +54,10 @@ public class StockAdd extends javax.swing.JFrame {
             String month_string = dayArray[1];
             String day_string = dayArray[2];
 
-            String DateString = day_string+ " of "+ month_string+" "+year_string;
+            String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
-            System.out.println(day);
+
         };
         Timer timer = new Timer(1000, timerListener);
         timer.setInitialDelay(0);
@@ -231,6 +232,9 @@ public class StockAdd extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jSeparator7 = new javax.swing.JSeparator();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -556,9 +560,9 @@ public class StockAdd extends javax.swing.JFrame {
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
                                         .addComponent(SKUNO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addGap(0, 79, Short.MAX_VALUE))
+                .addGap(0, 73, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(52, Short.MAX_VALUE)
+                .addContainerGap(46, Short.MAX_VALUE)
                 .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 1025, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
             .addComponent(jScrollPane3)
@@ -642,32 +646,59 @@ public class StockAdd extends javax.swing.JFrame {
             }
         });
 
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/excel-file (1).png"))); // NOI18N
+        jButton8.setText("Import Excel");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/office.png"))); // NOI18N
+        jButton9.setText("Download Template");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jSeparator3)
-                    .addComponent(jSeparator4)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6)
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel7)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabel7))
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(50, 50, 50))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jSeparator3)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jSeparator7)
+                                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(50, 50, 50))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -683,21 +714,27 @@ public class StockAdd extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(27, 27, 27)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(73, 73, 73))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jLabel10.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
@@ -868,8 +905,6 @@ public class StockAdd extends javax.swing.JFrame {
         String Qty = jTextField4.getText();
 
         double SellingPrice;
-
-       
 
         try {
             SellingPrice = Double.parseDouble(jTextField15.getText());
@@ -1101,11 +1136,269 @@ public class StockAdd extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_SKUNOActionPerformed
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // Import Excel
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.CANCEL_OPTION) {
+            System.out.println("Cancel");
+        } else if (result == JFileChooser.APPROVE_OPTION) {
+            File chooseFile = fileChooser.getSelectedFile();
+            String fileName = chooseFile.getName();
+            String fileExtention = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
+            String allowarrayList[] = {".xlsx", ".xls", ".xlsm", ".xlsb", ".xltx", ".xltm"};
+            boolean isAllowed = false;
+
+            for (String extention_item : allowarrayList) {
+                if (extention_item.equals(fileExtention)) {
+                    isAllowed = true;
+                    break;
+                }
+            }
+
+//        check is valid Excel Sheet 
+            if (isAllowed) {
+                // Get Database Brands --------------------------------------------------------------------------------------------
+                HashMap<String, String> brandMap = new HashMap<>();
+                try {
+                    ResultSet rs = MySQL.execute("SELECT * FROM `brand`");
+                    while (rs.next()) {
+                        brandMap.put(rs.getString("id"), rs.getString("brand_name"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showConfirmDialog(this, "Data Loading Error, please check you Internet or contact Developer", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                // get Database Products -------------------------------------------------------------------------------------------
+                HashMap<String, String[]> productdMap = new HashMap<>();
+                try {
+                    ResultSet rs = MySQL.execute("SELECT * FROM `product`");
+                    while (rs.next()) {
+                        String pObject[] = {rs.getString("intid"), rs.getString("id"), rs.getString("brand_id")};
+                        productdMap.put(rs.getString("id"), pObject);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showConfirmDialog(this, "Data Loading Error, please check you Internet or contact Developer", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                // get Location details ---------------------------------------------------------------------------------------------
+                HashMap<String, String[]> LocationMap = new HashMap<>();
+                try {
+                    ResultSet rs = MySQL.execute("SELECT * FROM `location`");
+                    while (rs.next()) {
+                        String LObject[] = {rs.getString("location_name").trim().toLowerCase(), rs.getString("id")};
+                        LocationMap.put(rs.getString("location_name").trim().toLowerCase(), LObject);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showConfirmDialog(this, "Data Loading Error, please check you Internet or contact Developer", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                ArrayList dbLocaitondList = new ArrayList();
+                for (Map.Entry<String, String[]> entry : LocationMap.entrySet()) {
+                    dbLocaitondList.add(entry.getKey());
+                }
+
+                // get Excel Data ------------------------------------------------------------------------------------------------
+                try {
+                    FileInputStream excelSheet = new FileInputStream(chooseFile);
+                    Workbook workbook = WorkbookFactory.create(excelSheet);
+                    Sheet sheet = workbook.getSheetAt(0);
+                    DataFormatter formatter = new DataFormatter();
+                    // Database Inclution Processes
+                    ArrayList<String[]> newInclutionProductList = new ArrayList<>();
+                    ArrayList<String[]> newInclucitonStockList = new ArrayList<>();
+                    ArrayList<String> newInclucitonBrandList = new ArrayList<>();
+
+                    // init Date 
+                    Date date = new Date(); // current date
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    String today_date = sdf.format(date);
+
+                    for (int i = 0; i < sheet.getLastRowNum() + 1; i++) { // row loop
+                        Row row = sheet.getRow(i);
+
+                        if (row != null) {
+
+                            Cell exproduct_id = row.getCell(0);
+                            Cell exSub_category = row.getCell(1);
+                            Cell exBrand = row.getCell(2);
+                            Cell exquality_id = row.getCell(3);
+                            Cell exproduct_name = row.getCell(4);
+                            Cell exsupplier = row.getCell(5);
+                            Cell exlocation = row.getCell(6);
+                            Cell excost = row.getCell(7);
+                            Cell exSelling_price = row.getCell(8);
+                            Cell exqty = row.getCell(9);
+                            Cell excolor = row.getCell(10);
+                            Cell exSKU = row.getCell(11);
+
+                            if (productdMap.containsKey(formatter.formatCellValue(exproduct_id).trim())) {
+//                                System.out.print("Already Registerd product -");
+                                // check if brand also the same?
+                                String getProdcutArray[] = productdMap.get(formatter.formatCellValue(exproduct_id).trim());
+                                String brandName = brandMap.get(getProdcutArray[2]);
+
+                                if (dbLocaitondList.contains(formatter.formatCellValue(exlocation).trim().toLowerCase())) {
+
+                                    String locationID[] = LocationMap.get(formatter.formatCellValue(exlocation).trim().toLowerCase());
+
+                                    if (exBrand.equals(brandName)) {
+                                        // Same Already Registerd Product and Brand | Update Stock
+                                        System.out.println("only add stock");
+                                        String stockObject[] = {
+                                            "1",
+                                            locationID[1],
+                                            formatter.formatCellValue(excost),
+                                            formatter.formatCellValue(exSelling_price),
+                                            today_date,
+                                            formatter.formatCellValue(exqty),
+                                            formatter.formatCellValue(excolor),
+                                            getProdcutArray[0], // Product Int id
+                                            getProdcutArray[1], //product ID
+                                            formatter.formatCellValue(exSKU)
+                                        };
+                                        newInclucitonStockList.add(stockObject);
+                                    } else {
+                                        // Same Product Id but different Brand Details (New Product)
+                                        System.out.println("add brand,product,stock");
+                                        // Check if Brand is existing or add now
+
+                                        ArrayList dbBrandList = new ArrayList();
+                                        for (Map.Entry<String, String> entry : brandMap.entrySet()) {
+                                            dbBrandList.add(entry.getValue().toLowerCase());
+                                        }
+
+                                        if (!dbBrandList.contains(formatter.formatCellValue(exBrand).toLowerCase())) {
+                                            System.out.println("add new brand");
+                                            newInclucitonBrandList.add(formatter.formatCellValue(exBrand));
+                                        }
+//
+                                        // Add New Product 
+                                        String ProductObject[]
+                                                = {formatter.formatCellValue(exproduct_id),
+                                                    formatter.formatCellValue(exSub_category),
+                                                    formatter.formatCellValue(exBrand),
+                                                    formatter.formatCellValue(exquality_id),
+                                                    formatter.formatCellValue(exproduct_name),
+                                                    formatter.formatCellValue(exsupplier),
+                                                    formatter.formatCellValue(exlocation),
+                                                    formatter.formatCellValue(excost),
+                                                    formatter.formatCellValue(exSelling_price),
+                                                    formatter.formatCellValue(exqty),
+                                                    formatter.formatCellValue(excolor),
+                                                    formatter.formatCellValue(exSKU)};
+                                        newInclutionProductList.add(ProductObject);
+//                                        aDD STOCK TO THE eXISTING PRODUCT
+                                        String stockObject[] = {
+                                            "1",
+                                            locationID[1],
+                                            formatter.formatCellValue(excost),
+                                            formatter.formatCellValue(exSelling_price),
+                                            today_date,
+                                            formatter.formatCellValue(exqty),
+                                            formatter.formatCellValue(excolor),
+                                            getProdcutArray[0], // Product Int id
+                                            getProdcutArray[1], //product ID
+                                            formatter.formatCellValue(exSKU)
+                                        };
+                                        newInclucitonStockList.add(stockObject);
+                                    }
+                                    // check if brand is existing  
+                                } else {
+                                    System.out.println("Worng Location name in Product Id:" + exproduct_id + " Brand:" + exBrand + "\n" + "please fix this");
+                                    break;
+                                }
+                            } else {
+                                // Add New Product
+//                                if (dbLocaitondList.contains(formatter.formatCellValue(exlocation).trim().toLowerCase())) {
+//
+//                                } else {
+//                                    System.out.println("Worng Location name in Product Id:" + exproduct_id + " Brand:" + exBrand + "\n" + "please fix this");
+//                                    break;
+//                                }
+
+//                                System.out.println("New Product");
+//                                String locationID[] = LocationMap.get(formatter.formatCellValue(exlocation));
+//
+//                                String ProductObject[]
+//                                        = {formatter.formatCellValue(exproduct_id),
+//                                            formatter.formatCellValue(exSub_category),
+//                                            formatter.formatCellValue(exBrand),
+//                                            formatter.formatCellValue(exquality_id),
+//                                            formatter.formatCellValue(exproduct_name),
+//                                            formatter.formatCellValue(exsupplier),
+//                                            formatter.formatCellValue(exlocation),
+//                                            formatter.formatCellValue(excost),
+//                                            formatter.formatCellValue(exSelling_price),
+//                                            formatter.formatCellValue(exqty),
+//                                            formatter.formatCellValue(excolor),
+//                                            formatter.formatCellValue(exSKU)};
+//                                newInclutionProductList.add(ProductObject); // add new Product
+                                // Get Products again 
+//                                try {
+//                                    ResultSet rs = MySQL.execute("SELECT * FROM `product`");
+//                                    productdMap.clear();
+//                                    while (rs.next()) {
+//                                        String pObject[] = {rs.getString("intid"), rs.getString("id"), rs.getString("brand_id")};
+//                                        productdMap.put(rs.getString("id"), pObject);
+//                                    }
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                    JOptionPane.showConfirmDialog(this, "Data Loading Error, please check you Internet or contact Developer", "Error", JOptionPane.ERROR_MESSAGE);
+//                                }
+                                //aDD STOCK TO THE eXISTING PRODUCT
+//                                String getProdcutArray[] = productdMap.get(formatter.formatCellValue(exproduct_id));
+//                                String stockObject[] = {
+//                                    "1",
+//                                    locationID[1],
+//                                    formatter.formatCellValue(excost),
+//                                    formatter.formatCellValue(exSelling_price),
+//                                    today_date,
+//                                    formatter.formatCellValue(exqty),
+//                                    formatter.formatCellValue(excolor),
+//                                    getProdcutArray[0], // Product Int id
+//                                    getProdcutArray[1], //product ID
+//                                    formatter.formatCellValue(exSKU)
+//                                };
+//                                newInclucitonStockList.add(stockObject);
+                            }
+
+                        } else {
+                            System.out.println("no Data");
+                        }
+                    }
+                    workbook.close();
+                    excelSheet.close();
+
+                    // Database Insertations
+                    int i = 0;
+                    for (String[] item : newInclucitonStockList) {
+                        i++;
+                        System.out.println("stock_" + i + " " + item[8]);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Something Wrong, Please try again later");
+                }
+            } else {
+                JOptionPane.showConfirmDialog(this, "Please Select Valid Excel File", "Invalid File", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       FlatMacLightLaf.setup();
+        FlatMacLightLaf.setup();
 
 
         /* Create and display the form */
@@ -1126,6 +1419,8 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox3;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
@@ -1160,6 +1455,7 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
