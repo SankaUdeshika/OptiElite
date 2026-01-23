@@ -882,60 +882,60 @@ public class StockAdd extends javax.swing.JFrame {
             }
 
             // 5. Insert stocks
-if (!result.newStocks.isEmpty()) {
-    System.out.println("Inserting " + result.newStocks.size() + " stock entries...");
+            if (!result.newStocks.isEmpty()) {
+                System.out.println("Inserting " + result.newStocks.size() + " stock entries...");
 
-    for (String[] stock : result.newStocks) {
-        try {
-            String productId = cleanStringForImport(stock[8]);
-            String intid = stock[7];
+                for (String[] stock : result.newStocks) {
+                    try {
+                        String productId = cleanStringForImport(stock[8]);
+                        String intid = stock[7];
 
-            // Skip if no intid
-            if (intid == null || intid.isEmpty()) {
-                System.err.println("Skipping stock for product " + productId + ": No intid found");
-                continue;
+                        // Skip if no intid
+                        if (intid == null || intid.isEmpty()) {
+                            System.err.println("Skipping stock for product " + productId + ": No intid found");
+                            continue;
+                        }
+
+                        // Parse and validate numeric values
+                        double costValue;
+                        double sellingPriceValue;
+                        int quantityValue;
+
+                        try {
+                            costValue = Double.parseDouble(stock[2]);
+                            sellingPriceValue = Double.parseDouble(stock[3]);
+                            quantityValue = Integer.parseInt(stock[5]);
+                        } catch (NumberFormatException e) {
+                            System.err.println("Invalid numeric value for product " + productId + ": " + e.getMessage());
+                            continue;
+                        }
+
+                        // Build SQL query with properly formatted numbers
+                        String sql = String.format(
+                                "INSERT INTO `stock` (product_id, supplier_supplier_id, location_id, cost, "
+                                + "saling_price, stock_date, qty, product_intid, SKU) "
+                                + "VALUES ('%s', '%s', '%s', %.2f, %.2f, '%s', %d, '%s', '%s')",
+                                productId,
+                                stock[0], // supplier_id
+                                stock[1], // location_id
+                                costValue,
+                                sellingPriceValue,
+                                stock[4], // date
+                                quantityValue,
+                                intid,
+                                escapeSqlForImport(stock[9]) // sku
+                        );
+
+                        MySQL.execute(sql);
+
+                        System.out.println("Inserted stock for product: " + productId);
+
+                    } catch (Exception e) {
+                        System.err.println("Error inserting stock for product '" + stock[8] + "': " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
             }
-
-            // Parse and validate numeric values
-            double costValue;
-            double sellingPriceValue;
-            int quantityValue;
-            
-            try {
-                costValue = Double.parseDouble(stock[2]);
-                sellingPriceValue = Double.parseDouble(stock[3]);
-                quantityValue = Integer.parseInt(stock[5]);
-            } catch (NumberFormatException e) {
-                System.err.println("Invalid numeric value for product " + productId + ": " + e.getMessage());
-                continue;
-            }
-
-            // Build SQL query with properly formatted numbers
-            String sql = String.format(
-                    "INSERT INTO `stock` (product_id, supplier_supplier_id, location_id, cost, "
-                    + "saling_price, stock_date, qty, product_intid, SKU) "
-                    + "VALUES ('%s', '%s', '%s', %.2f, %.2f, '%s', %d, '%s', '%s')",
-                    productId,
-                    stock[0], // supplier_id
-                    stock[1], // location_id
-                    costValue,
-                    sellingPriceValue,
-                    stock[4], // date
-                    quantityValue,
-                    intid,
-                    escapeSqlForImport(stock[9]) // sku
-            );
-
-            MySQL.execute(sql);
-
-            System.out.println("Inserted stock for product: " + productId);
-
-        } catch (Exception e) {
-            System.err.println("Error inserting stock for product '" + stock[8] + "': " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-}
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this,
