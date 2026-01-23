@@ -178,6 +178,798 @@ public class StockAdd extends javax.swing.JFrame {
         jTextField15.setText("");
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private void importExcelFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.CANCEL_OPTION) {
+            return;
+        }
+
+        if (result != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        File chooseFile = fileChooser.getSelectedFile();
+
+        // Check file extension
+        if (!isValidExcelFile(chooseFile)) {
+            JOptionPane.showMessageDialog(this,
+                    "Please Select Valid Excel File (xlsx, xls, xlsm, xlsb, xltx, xltm)",
+                    "Invalid File",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            // Show progress dialog
+            JOptionPane.showMessageDialog(this, "Loading data from database...", "Import", JOptionPane.INFORMATION_MESSAGE);
+
+            // Load database data
+            Map<String, String> brandMap = loadBrandsForImport();
+            Map<String, String[]> productMap = loadProductsForImport();
+            Map<String, String> locationMap = loadLocationsForImport();
+            Map<String, String> subCategoryMap = loadSubCategoriesForImport();
+            Map<String, String> supplierMap = loadSuppliersForImport();
+
+            if (brandMap == null || productMap == null || locationMap == null
+                    || subCategoryMap == null || supplierMap == null) {
+                return; // Error already shown
+            }
+
+            // Create brand name to ID map
+            Map<String, String> brandNameToIdMap = new HashMap<>();
+            for (Map.Entry<String, String> entry : brandMap.entrySet()) {
+                brandNameToIdMap.put(entry.getValue().toLowerCase(), entry.getKey());
+            }
+
+            // Create location name to ID map
+            Map<String, String> locationNameToIdMap = new HashMap<>();
+            for (Map.Entry<String, String> entry : locationMap.entrySet()) {
+                locationNameToIdMap.put(entry.getKey().toLowerCase(), entry.getValue());
+            }
+
+            // Create subcategory name to ID map
+            Map<String, String> subCategoryNameToIdMap = new HashMap<>();
+            for (Map.Entry<String, String> entry : subCategoryMap.entrySet()) {
+                subCategoryNameToIdMap.put(entry.getValue().toLowerCase(), entry.getKey());
+            }
+
+            // Create supplier name to ID map
+            Map<String, String> supplierNameToIdMap = new HashMap<>();
+            for (Map.Entry<String, String> entry : supplierMap.entrySet()) {
+                supplierNameToIdMap.put(entry.getValue().toLowerCase(), entry.getKey());
+            }
+
+            JOptionPane.showMessageDialog(this, "Processing Excel file...", "Import", JOptionPane.INFORMATION_MESSAGE);
+
+            // Process Excel file
+            ImportResult importResult = processExcelFileForImport(chooseFile, brandMap, brandNameToIdMap,
+                    productMap, locationNameToIdMap, subCategoryNameToIdMap,
+                    supplierNameToIdMap);
+
+            // Show summary before inserting
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    String.format("Import Summary:\n"
+                            + "• New Brands: %d\n"
+                            + "• New Suppliers: %d\n"
+                            + "• New Products: %d\n"
+                            + "• Stock Entries: %d\n\n"
+                            + "Do you want to continue with the import?",
+                            importResult.newBrands.size(),
+                            importResult.newSuppliers.size(),
+                            importResult.newProducts.size(),
+                            importResult.newStocks.size()),
+                    "Confirm Import",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            // Insert new data
+            JOptionPane.showMessageDialog(this, "Inserting data into database...", "Import", JOptionPane.INFORMATION_MESSAGE);
+            insertImportedData(importResult, brandMap, brandNameToIdMap, productMap,
+                    subCategoryMap, subCategoryNameToIdMap, supplierMap, supplierNameToIdMap);
+
+            // Refresh UI
+            refresh();
+
+            JOptionPane.showMessageDialog(this,
+                    String.format("Import completed successfully!\n\n"
+                            + "Summary:\n"
+                            + "• New Brands: %d\n"
+                            + "• New Suppliers: %d\n"
+                            + "• New Products: %d\n"
+                            + "• Stock Entries: %d",
+                            importResult.newBrands.size(),
+                            importResult.newSuppliers.size(),
+                            importResult.newProducts.size(),
+                            importResult.newStocks.size()),
+                    "Import Complete",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Error during import: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private boolean isValidExcelFile(File file) {
+        String fileName = file.getName();
+        String fileExtension = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
+        String[] allowedExtensions = {".xlsx", ".xls", ".xlsm", ".xlsb", ".xltx", ".xltm"};
+
+        for (String ext : allowedExtensions) {
+            if (ext.equals(fileExtension)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Map<String, String> loadBrandsForImport() {
+        Map<String, String> brandMap = new HashMap<>();
+        try {
+            ResultSet rs = MySQL.execute("SELECT `id`, `brand_name` FROM `brand`");
+            while (rs.next()) {
+                brandMap.put(rs.getString("id"), cleanStringForImport(rs.getString("brand_name")));
+            }
+            return brandMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Error loading brands from database. Please check your connection.",
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    private Map<String, String[]> loadProductsForImport() {
+        Map<String, String[]> productMap = new HashMap<>();
+        try {
+            ResultSet rs = MySQL.execute("SELECT `intid`, `id`, `brand_id` FROM `product`");
+            while (rs.next()) {
+                String[] productData = {
+                    rs.getString("intid"),
+                    cleanStringForImport(rs.getString("id")),
+                    rs.getString("brand_id")
+                };
+                productMap.put(productData[1], productData);
+            }
+            return productMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Error loading products from database. Please check your connection.",
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    private Map<String, String> loadLocationsForImport() {
+        Map<String, String> locationMap = new HashMap<>();
+        try {
+            ResultSet rs = MySQL.execute("SELECT `id`, `location_name` FROM `location`");
+            while (rs.next()) {
+                String locationName = cleanStringForImport(rs.getString("location_name"));
+                String id = rs.getString("id");
+                locationMap.put(locationName, id);
+            }
+            return locationMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Error loading locations from database. Please check your connection.",
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    private Map<String, String> loadSubCategoriesForImport() {
+        Map<String, String> subCategoryMap = new HashMap<>();
+        try {
+            ResultSet rs = MySQL.execute("SELECT `id`, `sub_category` FROM `sub_category`");
+            while (rs.next()) {
+                String subCategoryName = cleanStringForImport(rs.getString("sub_category"));
+                String id = rs.getString("id");
+                subCategoryMap.put(id, subCategoryName);
+            }
+            return subCategoryMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Error loading sub-categories from database. Please check your connection.",
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    private Map<String, String> loadSuppliersForImport() {
+        Map<String, String> supplierMap = new HashMap<>();
+        try {
+            ResultSet rs = MySQL.execute("SELECT `supplier_id`, `Supplier_Name` FROM `supplier`");
+            while (rs.next()) {
+                String supplierName = cleanStringForImport(rs.getString("Supplier_Name"));
+                String id = rs.getString("supplier_id");
+                supplierMap.put(id, supplierName);
+            }
+            return supplierMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Error loading suppliers from database. Please check your connection.",
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    private ImportResult processExcelFileForImport(File excelFile, Map<String, String> brandMap,
+            Map<String, String> brandNameToIdMap,
+            Map<String, String[]> productMap,
+            Map<String, String> locationNameToIdMap,
+            Map<String, String> subCategoryNameToIdMap,
+            Map<String, String> supplierNameToIdMap) throws Exception {
+
+        ImportResult result = new ImportResult();
+        List<String> errors = new ArrayList<>();
+        int processedRows = 0;
+        int successRows = 0;
+
+        try (FileInputStream fis = new FileInputStream(excelFile); Workbook workbook = WorkbookFactory.create(fis)) {
+
+            Sheet sheet = workbook.getSheetAt(0);
+            DataFormatter formatter = new DataFormatter();
+
+            // Use current date for all imports
+            String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+            // Process rows starting from row 1 (skip header row 0)
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) {
+                    continue;
+                }
+
+                processedRows++;
+
+                try {
+                    // Extract data from Excel columns according to your file structure
+                    String productId = cleanStringForImport(formatter.formatCellValue(row.getCell(0))); // Column A: Product id
+                    String subCategoryName = cleanStringForImport(formatter.formatCellValue(row.getCell(1))); // Column B: sub_category_id
+                    String brandName = cleanStringForImport(formatter.formatCellValue(row.getCell(2))); // Column C: brand_id
+                    String qualityId = cleanStringForImport(formatter.formatCellValue(row.getCell(3))); // Column D: Quality_id
+                    String productName = cleanStringForImport(formatter.formatCellValue(row.getCell(4))); // Column E: product_name
+                    String supplierName = cleanStringForImport(formatter.formatCellValue(row.getCell(5))); // Column F: supplier_supplier_id
+                    String locationName = cleanStringForImport(formatter.formatCellValue(row.getCell(6))); // Column G: location_id
+                    String cost = cleanStringForImport(formatter.formatCellValue(row.getCell(7))); // Column H: cost
+                    String sellingPrice = cleanStringForImport(formatter.formatCellValue(row.getCell(8))); // Column I: saling_price
+                    String quantity = cleanStringForImport(formatter.formatCellValue(row.getCell(9))); // Column J: qty
+                    String color = cleanStringForImport(formatter.formatCellValue(row.getCell(10))); // Column K: color
+                    String sku = cleanStringForImport(formatter.formatCellValue(row.getCell(11))); // Column L: SKU
+
+                    // Validate required fields
+                    if (productId.isEmpty()) {
+                        errors.add("Row " + (i + 1) + ": Product ID is empty");
+                        continue;
+                    }
+
+                    if (brandName.isEmpty()) {
+                        errors.add("Row " + (i + 1) + ": Brand is empty");
+                        continue;
+                    }
+
+                    if (locationName.isEmpty()) {
+                        errors.add("Row " + (i + 1) + ": Location is empty");
+                        continue;
+                    }
+
+                    if (subCategoryName.isEmpty()) {
+                        errors.add("Row " + (i + 1) + ": Sub-Category is empty");
+                        continue;
+                    }
+
+                    // Get location ID
+                    String normalizedLocation = locationName.toLowerCase();
+                    String locationId = locationNameToIdMap.get(normalizedLocation);
+                    if (locationId == null) {
+                        errors.add("Row " + (i + 1) + ": Location '" + locationName + "' not found in database");
+                        continue;
+                    }
+
+                    // Check if subcategory exists
+                    String normalizedSubCategory = subCategoryName.toLowerCase();
+                    String subCategoryId = subCategoryNameToIdMap.get(normalizedSubCategory);
+                    if (subCategoryId == null) {
+                        errors.add("Row " + (i + 1) + ": Sub-Category '" + subCategoryName + "' not found in database");
+                        continue;
+                    }
+
+                    // Check if brand exists, if not add to new brands
+                    String normalizedBrand = brandName.toLowerCase();
+                    String brandId = brandNameToIdMap.get(normalizedBrand);
+
+                    if (brandId == null) {
+                        // Check if brand already in new brands list (case-insensitive)
+                        boolean brandAlreadyAdded = false;
+                        for (String newBrand : result.newBrands) {
+                            if (newBrand.toLowerCase().equals(normalizedBrand)) {
+                                brandAlreadyAdded = true;
+                                break;
+                            }
+                        }
+
+                        if (!brandAlreadyAdded) {
+                            result.newBrands.add(brandName);
+                        }
+                    }
+
+                    // Check if supplier exists, if not add to new suppliers
+                    String normalizedSupplier = supplierName.toLowerCase();
+                    String supplierId = supplierNameToIdMap.get(normalizedSupplier);
+
+                    if (supplierId == null && !supplierName.isEmpty() && !supplierName.equalsIgnoreCase("NO ID")) {
+                        // Check if supplier already in new suppliers list (case-insensitive)
+                        boolean supplierAlreadyAdded = false;
+                        for (String newSupplier : result.newSuppliers) {
+                            if (newSupplier.toLowerCase().equals(normalizedSupplier)) {
+                                supplierAlreadyAdded = true;
+                                break;
+                            }
+                        }
+
+                        if (!supplierAlreadyAdded) {
+                            result.newSuppliers.add(supplierName);
+                        }
+                        supplierId = "1"; // Use default supplier ID temporarily
+                    } else if (supplierId == null && (supplierName.isEmpty() || supplierName.equalsIgnoreCase("NO ID"))) {
+                        supplierId = "1"; // Default supplier ID for "NO ID"
+                    }
+
+                    // Check if product exists
+                    boolean productExists = productMap.containsKey(productId);
+
+                    if (productExists) {
+                        // Product exists
+                        String[] existingProduct = productMap.get(productId);
+                        String existingBrandId = existingProduct[2];
+                        String existingBrandName = brandMap.get(existingBrandId);
+
+                        // Check if brand matches
+                        if (brandName.equalsIgnoreCase(existingBrandName)) {
+                            // Same brand - add stock
+                            String[] stockData = createStockDataForImport(
+                                    supplierId != null ? supplierId : "1", // Use supplier ID or default
+                                    locationId,
+                                    cost.isEmpty() ? "0" : cost,
+                                    sellingPrice.isEmpty() ? "0" : sellingPrice,
+                                    todayDate,
+                                    quantity.isEmpty() ? "1" : quantity,
+                                    color,
+                                    existingProduct[0], // product intid
+                                    productId,
+                                    sku
+                            );
+                            result.newStocks.add(stockData);
+                        } else {
+                            // Different brand - add as new product
+                            addNewProductForImport(result, productId, subCategoryId, brandName, qualityId,
+                                    productName, supplierId != null ? supplierId : "1", locationName,
+                                    cost, sellingPrice, quantity, color, sku);
+
+                            // Also add stock for the new product (will be linked after insertion)
+                            String[] stockData = createStockDataForImport(
+                                    supplierId != null ? supplierId : "1",
+                                    locationId,
+                                    cost.isEmpty() ? "0" : cost,
+                                    sellingPrice.isEmpty() ? "0" : sellingPrice,
+                                    todayDate,
+                                    quantity.isEmpty() ? "1" : quantity,
+                                    color,
+                                    null, // Will be set after product insertion
+                                    productId,
+                                    sku
+                            );
+                            result.newStocks.add(stockData);
+                        }
+                    } else {
+                        // New product - add it
+                        addNewProductForImport(result, productId, subCategoryId, brandName, qualityId,
+                                productName, supplierId != null ? supplierId : "1", locationName,
+                                cost, sellingPrice, quantity, color, sku);
+
+                        // Add stock entry
+                        String[] stockData = createStockDataForImport(
+                                supplierId != null ? supplierId : "1",
+                                locationId,
+                                cost.isEmpty() ? "0" : cost,
+                                sellingPrice.isEmpty() ? "0" : sellingPrice,
+                                todayDate,
+                                quantity.isEmpty() ? "1" : quantity,
+                                color,
+                                null, // Will be set after product insertion
+                                productId,
+                                sku
+                        );
+                        result.newStocks.add(stockData);
+                    }
+
+                    successRows++;
+
+                } catch (Exception e) {
+                    errors.add("Row " + (i + 1) + ": " + e.getMessage());
+                }
+            }
+
+            // Show errors if any
+            if (!errors.isEmpty()) {
+                StringBuilder errorMessage = new StringBuilder();
+                errorMessage.append("Processed ").append(processedRows).append(" rows, ")
+                        .append(successRows).append(" successful, ").append(errors.size()).append(" error(s):\n\n");
+
+                int maxErrorsToShow = Math.min(10, errors.size());
+                for (int i = 0; i < maxErrorsToShow; i++) {
+                    errorMessage.append(errors.get(i)).append("\n");
+                }
+
+                if (errors.size() > 10) {
+                    errorMessage.append("\n... and ").append(errors.size() - 10).append(" more errors");
+                }
+
+                JOptionPane.showMessageDialog(this, errorMessage.toString(),
+                        "Import Summary", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Processed " + processedRows + " rows successfully!",
+                        "Import Complete", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            System.out.println("Processed " + processedRows + " rows from Excel (" + successRows + " successful)");
+            System.out.println("New brands to add: " + result.newBrands.size());
+            System.out.println("New suppliers to add: " + result.newSuppliers.size());
+            System.out.println("New products to add: " + result.newProducts.size());
+            System.out.println("New stock entries to add: " + result.newStocks.size());
+
+        }
+
+        return result;
+    }
+
+    private void addNewProductForImport(ImportResult result, String productId, String subCategoryId,
+            String brandName, String qualityId, String productName,
+            String supplierId, String location, String cost, String sellingPrice,
+            String quantity, String color, String sku) {
+
+        // Leave productName as is (can be empty)
+        String[] productData = {
+            productId,
+            subCategoryId, // Now passing subcategory ID instead of name
+            brandName,
+            qualityId.isEmpty() ? "2" : qualityId, // Default to GRADE B (id=2) if empty
+            productName, // Can be empty
+            supplierId, // Supplier ID
+            location,
+            cost.isEmpty() ? "0" : cost,
+            sellingPrice.isEmpty() ? "0" : sellingPrice,
+            quantity.isEmpty() ? "1" : quantity,
+            color,
+            sku
+        };
+
+        result.newProducts.add(productData);
+    }
+
+    private String[] createStockDataForImport(String supplierId, String locationId, String cost,
+            String sellingPrice, String date, String quantity,
+            String color, String productIntId, String productId, String sku) {
+
+        // Clean and validate numeric values
+        if (cost == null || cost.isEmpty()) {
+            cost = "0";
+        } else {
+            // Remove any non-numeric characters except decimal point
+            cost = cost.replaceAll("[^\\d.]", "");
+            if (cost.isEmpty()) {
+                cost = "0";
+            }
+        }
+
+        if (sellingPrice == null || sellingPrice.isEmpty()) {
+            sellingPrice = "0";
+        } else {
+            // Remove any non-numeric characters except decimal point
+            sellingPrice = sellingPrice.replaceAll("[^\\d.]", "");
+            if (sellingPrice.isEmpty()) {
+                sellingPrice = "0";
+            }
+        }
+
+        if (quantity == null || quantity.isEmpty()) {
+            quantity = "1";
+        } else {
+            // Remove any non-numeric characters
+            quantity = quantity.replaceAll("[^\\d]", "");
+            if (quantity.isEmpty()) {
+                quantity = "1";
+            }
+        }
+
+        if (supplierId == null || supplierId.isEmpty()) {
+            supplierId = "1"; // Default supplier
+        }
+
+        return new String[]{
+            supplierId,
+            locationId,
+            cost,
+            sellingPrice,
+            date,
+            quantity,
+            color,
+            productIntId,
+            productId,
+            sku
+        };
+    }
+
+    private void insertImportedData(ImportResult result, Map<String, String> brandMap,
+            Map<String, String> brandNameToIdMap,
+            Map<String, String[]> productMap,
+            Map<String, String> subCategoryMap,
+            Map<String, String> subCategoryNameToIdMap,
+            Map<String, String> supplierMap,
+            Map<String, String> supplierNameToIdMap) {
+
+        // Update maps with new entries as we insert them
+        Map<String, String> newBrandIds = new HashMap<>();
+        Map<String, String> newSupplierIds = new HashMap<>();
+
+        try {
+            // 1. Insert new brands
+            if (!result.newBrands.isEmpty()) {
+                System.out.println("Inserting " + result.newBrands.size() + " new brands...");
+
+                for (String brandName : result.newBrands) {
+                    try {
+                        String cleanBrandName = cleanStringForImport(brandName);
+                        MySQL.execute("INSERT INTO `brand` (brand_name) VALUES ('" + cleanBrandName + "')");
+
+                        // Get the inserted ID
+                        ResultSet rs = MySQL.execute("SELECT LAST_INSERT_ID() as id");
+                        if (rs.next()) {
+                            String newId = rs.getString("id");
+                            brandMap.put(newId, cleanBrandName);
+                            brandNameToIdMap.put(cleanBrandName.toLowerCase(), newId);
+                            newBrandIds.put(cleanBrandName.toLowerCase(), newId);
+                        }
+
+                        System.out.println("Inserted brand: " + cleanBrandName);
+
+                    } catch (Exception e) {
+                        System.err.println("Error inserting brand '" + brandName + "': " + e.getMessage());
+                    }
+                }
+            }
+
+            // 2. Insert new suppliers
+            if (!result.newSuppliers.isEmpty()) {
+                System.out.println("Inserting " + result.newSuppliers.size() + " new suppliers...");
+
+                for (String supplierName : result.newSuppliers) {
+                    try {
+                        String cleanSupplierName = cleanStringForImport(supplierName);
+                        // Insert supplier with default company_id = 1 (you may need to adjust this)
+                        MySQL.execute("INSERT INTO `supplier` (company_id, Supplier_Name) VALUES ('1', '" + cleanSupplierName + "')");
+
+                        // Get the inserted ID
+                        ResultSet rs = MySQL.execute("SELECT LAST_INSERT_ID() as supplier_id");
+                        if (rs.next()) {
+                            String newId = rs.getString("supplier_id");
+                            supplierMap.put(newId, cleanSupplierName);
+                            supplierNameToIdMap.put(cleanSupplierName.toLowerCase(), newId);
+                            newSupplierIds.put(cleanSupplierName.toLowerCase(), newId);
+                        }
+
+                        System.out.println("Inserted supplier: " + cleanSupplierName);
+
+                    } catch (Exception e) {
+                        System.err.println("Error inserting supplier '" + supplierName + "': " + e.getMessage());
+                    }
+                }
+            }
+
+            // 3. Insert new products
+            if (!result.newProducts.isEmpty()) {
+                System.out.println("Inserting " + result.newProducts.size() + " new products...");
+                Map<String, String> newProductIntIds = new HashMap<>();
+
+                for (String[] product : result.newProducts) {
+                    try {
+                        String productId = cleanStringForImport(product[0]);
+                        String brandName = cleanStringForImport(product[2]);
+                        String subCategoryId = product[1]; // Already an ID from subCategoryNameToIdMap
+                        String supplierId = product[5]; // Supplier ID
+
+                        // Get brand ID
+                        String normalizedBrand = brandName.toLowerCase();
+                        String brandId = brandNameToIdMap.get(normalizedBrand);
+                        if (brandId == null) {
+                            // Try to get from new brands
+                            brandId = newBrandIds.get(normalizedBrand);
+                        }
+
+                        if (brandId == null) {
+                            System.err.println("Brand ID not found for: " + brandName);
+                            continue;
+                        }
+
+                        // Get supplier ID (might need to update from new suppliers)
+                        if (supplierId.equals("1") && !brandName.isEmpty()) {
+                            // Try to find supplier by brand name
+                            String normalizedBrandForSupplier = brandName.toLowerCase();
+                            String actualSupplierId = supplierNameToIdMap.get(normalizedBrandForSupplier);
+                            if (actualSupplierId != null) {
+                                supplierId = actualSupplierId;
+                            }
+                        }
+
+                        // Build SQL query - handle empty product_name
+                        String productNameValue = product[4].isEmpty() ? "NULL" : "'" + escapeSqlForImport(product[4]) + "'";
+
+                        String sql = String.format(
+                                "INSERT INTO `product` (id, sub_category_id, brand_id, Quality_id, product_name ) "
+                                + "VALUES ('%s', '%s', '%s', '%s', %s)",
+                                productId,
+                                subCategoryId,
+                                brandId,
+                                "2",
+                                //escapeSqlForImport(product[3]), // quality_id
+                                productNameValue // product_name - can be NULL
+
+                        );
+
+                        //                                escapeSqlForImport(supplierId), // supplier ID
+                        //                                escapeSqlForImport(product[6]), // location name
+                        //                                product[7], // cost
+                        //                                product[8], // selling_price
+                        //                                product[9], // qty
+                        //                                escapeSqlForImport(product[10]), // color
+                        //                                escapeSqlForImport(product[11]) // sku
+                        MySQL.execute(sql);
+
+                        // Get the inserted intid
+                        ResultSet rs = MySQL.execute("SELECT LAST_INSERT_ID() as intid");
+                        if (rs.next()) {
+                            String intid = rs.getString("intid");
+                            newProductIntIds.put(productId, intid);
+
+                            // Update product map
+                            String[] productData = {intid, productId, brandId};
+                            productMap.put(productId, productData);
+                        }
+
+                        System.out.println("Inserted product: " + productId);
+
+                    } catch (Exception e) {
+                        System.err.println("Error inserting product '" + product[0] + "': " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                // 4. Update stock entries with product intids
+                for (String[] stock : result.newStocks) {
+                    String productId = cleanStringForImport(stock[8]);
+                    if (stock[7] == null || stock[7].isEmpty()) {
+                        // Try to get intid from new products or existing products
+                        String intid = newProductIntIds.get(productId);
+                        if (intid == null && productMap.containsKey(productId)) {
+                            intid = productMap.get(productId)[0];
+                        }
+                        if (intid != null) {
+                            stock[7] = intid;
+                        }
+                    }
+                }
+            }
+
+            // 5. Insert stocks
+if (!result.newStocks.isEmpty()) {
+    System.out.println("Inserting " + result.newStocks.size() + " stock entries...");
+
+    for (String[] stock : result.newStocks) {
+        try {
+            String productId = cleanStringForImport(stock[8]);
+            String intid = stock[7];
+
+            // Skip if no intid
+            if (intid == null || intid.isEmpty()) {
+                System.err.println("Skipping stock for product " + productId + ": No intid found");
+                continue;
+            }
+
+            // Parse and validate numeric values
+            double costValue;
+            double sellingPriceValue;
+            int quantityValue;
+            
+            try {
+                costValue = Double.parseDouble(stock[2]);
+                sellingPriceValue = Double.parseDouble(stock[3]);
+                quantityValue = Integer.parseInt(stock[5]);
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid numeric value for product " + productId + ": " + e.getMessage());
+                continue;
+            }
+
+            // Build SQL query with properly formatted numbers
+            String sql = String.format(
+                    "INSERT INTO `stock` (product_id, supplier_supplier_id, location_id, cost, "
+                    + "saling_price, stock_date, qty, product_intid, SKU) "
+                    + "VALUES ('%s', '%s', '%s', %.2f, %.2f, '%s', %d, '%s', '%s')",
+                    productId,
+                    stock[0], // supplier_id
+                    stock[1], // location_id
+                    costValue,
+                    sellingPriceValue,
+                    stock[4], // date
+                    quantityValue,
+                    intid,
+                    escapeSqlForImport(stock[9]) // sku
+            );
+
+            MySQL.execute(sql);
+
+            System.out.println("Inserted stock for product: " + productId);
+
+        } catch (Exception e) {
+            System.err.println("Error inserting stock for product '" + stock[8] + "': " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Error inserting data into database: " + e.getMessage(),
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+// Helper classes
+    class ImportResult {
+
+        List<String> newBrands = new ArrayList<>();
+        List<String> newSuppliers = new ArrayList<>();
+        List<String[]> newProducts = new ArrayList<>();
+        List<String[]> newStocks = new ArrayList<>();
+    }
+
+// Helper methods for import
+    private String cleanStringForImport(String input) {
+        if (input == null) {
+            return "";
+        }
+        return input.trim();
+    }
+
+    private String escapeSqlForImport(String input) {
+        if (input == null) {
+            return "";
+        }
+        // Simple SQL escaping - replace single quotes
+        return input.replace("'", "''");
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1138,256 +1930,7 @@ public class StockAdd extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // Import Excel
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(this);
-
-        if (result == JFileChooser.CANCEL_OPTION) {
-            System.out.println("Cancel");
-        } else if (result == JFileChooser.APPROVE_OPTION) {
-            File chooseFile = fileChooser.getSelectedFile();
-            String fileName = chooseFile.getName();
-            String fileExtention = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
-            String allowarrayList[] = {".xlsx", ".xls", ".xlsm", ".xlsb", ".xltx", ".xltm"};
-            boolean isAllowed = false;
-
-            for (String extention_item : allowarrayList) {
-                if (extention_item.equals(fileExtention)) {
-                    isAllowed = true;
-                    break;
-                }
-            }
-
-//        check is valid Excel Sheet 
-            if (isAllowed) {
-                // Get Database Brands --------------------------------------------------------------------------------------------
-                HashMap<String, String> brandMap = new HashMap<>();
-                try {
-                    ResultSet rs = MySQL.execute("SELECT * FROM `brand`");
-                    while (rs.next()) {
-                        brandMap.put(rs.getString("id"), rs.getString("brand_name"));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showConfirmDialog(this, "Data Loading Error, please check you Internet or contact Developer", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-                // get Database Products -------------------------------------------------------------------------------------------
-                HashMap<String, String[]> productdMap = new HashMap<>();
-                try {
-                    ResultSet rs = MySQL.execute("SELECT * FROM `product`");
-                    while (rs.next()) {
-                        String pObject[] = {rs.getString("intid"), rs.getString("id"), rs.getString("brand_id")};
-                        productdMap.put(rs.getString("id"), pObject);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showConfirmDialog(this, "Data Loading Error, please check you Internet or contact Developer", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-                // get Location details ---------------------------------------------------------------------------------------------
-                HashMap<String, String[]> LocationMap = new HashMap<>();
-                try {
-                    ResultSet rs = MySQL.execute("SELECT * FROM `location`");
-                    while (rs.next()) {
-                        String LObject[] = {rs.getString("location_name").trim().toLowerCase(), rs.getString("id")};
-                        LocationMap.put(rs.getString("location_name").trim().toLowerCase(), LObject);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showConfirmDialog(this, "Data Loading Error, please check you Internet or contact Developer", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                ArrayList dbLocaitondList = new ArrayList();
-                for (Map.Entry<String, String[]> entry : LocationMap.entrySet()) {
-                    dbLocaitondList.add(entry.getKey());
-                }
-
-                // get Excel Data ------------------------------------------------------------------------------------------------
-                try {
-                    FileInputStream excelSheet = new FileInputStream(chooseFile);
-                    Workbook workbook = WorkbookFactory.create(excelSheet);
-                    Sheet sheet = workbook.getSheetAt(0);
-                    DataFormatter formatter = new DataFormatter();
-                    // Database Inclution Processes
-                    ArrayList<String[]> newInclutionProductList = new ArrayList<>();
-                    ArrayList<String[]> newInclucitonStockList = new ArrayList<>();
-                    ArrayList<String> newInclucitonBrandList = new ArrayList<>();
-
-                    // init Date 
-                    Date date = new Date(); // current date
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    String today_date = sdf.format(date);
-
-                    for (int i = 0; i < sheet.getLastRowNum() + 1; i++) { // row loop
-                        Row row = sheet.getRow(i);
-
-                        if (row != null) {
-
-                            Cell exproduct_id = row.getCell(0);
-                            Cell exSub_category = row.getCell(1);
-                            Cell exBrand = row.getCell(2);
-                            Cell exquality_id = row.getCell(3);
-                            Cell exproduct_name = row.getCell(4);
-                            Cell exsupplier = row.getCell(5);
-                            Cell exlocation = row.getCell(6);
-                            Cell excost = row.getCell(7);
-                            Cell exSelling_price = row.getCell(8);
-                            Cell exqty = row.getCell(9);
-                            Cell excolor = row.getCell(10);
-                            Cell exSKU = row.getCell(11);
-
-                            if (productdMap.containsKey(formatter.formatCellValue(exproduct_id).trim())) {
-//                                System.out.print("Already Registerd product -");
-                                // check if brand also the same?
-                                String getProdcutArray[] = productdMap.get(formatter.formatCellValue(exproduct_id).trim());
-                                String brandName = brandMap.get(getProdcutArray[2]);
-
-                                if (dbLocaitondList.contains(formatter.formatCellValue(exlocation).trim().toLowerCase())) {
-
-                                    String locationID[] = LocationMap.get(formatter.formatCellValue(exlocation).trim().toLowerCase());
-
-                                    if (exBrand.equals(brandName)) {
-                                        // Same Already Registerd Product and Brand | Update Stock
-                                        System.out.println("only add stock");
-                                        String stockObject[] = {
-                                            "1",
-                                            locationID[1],
-                                            formatter.formatCellValue(excost),
-                                            formatter.formatCellValue(exSelling_price),
-                                            today_date,
-                                            formatter.formatCellValue(exqty),
-                                            formatter.formatCellValue(excolor),
-                                            getProdcutArray[0], // Product Int id
-                                            getProdcutArray[1], //product ID
-                                            formatter.formatCellValue(exSKU)
-                                        };
-                                        newInclucitonStockList.add(stockObject);
-                                    } else {
-                                        // Same Product Id but different Brand Details (New Product)
-                                        System.out.println("add brand,product,stock");
-                                        // Check if Brand is existing or add now
-
-                                        ArrayList dbBrandList = new ArrayList();
-                                        for (Map.Entry<String, String> entry : brandMap.entrySet()) {
-                                            dbBrandList.add(entry.getValue().toLowerCase());
-                                        }
-
-                                        if (!dbBrandList.contains(formatter.formatCellValue(exBrand).toLowerCase())) {
-                                            System.out.println("add new brand");
-                                            newInclucitonBrandList.add(formatter.formatCellValue(exBrand));
-                                        }
-//
-                                        // Add New Product 
-                                        String ProductObject[]
-                                                = {formatter.formatCellValue(exproduct_id),
-                                                    formatter.formatCellValue(exSub_category),
-                                                    formatter.formatCellValue(exBrand),
-                                                    formatter.formatCellValue(exquality_id),
-                                                    formatter.formatCellValue(exproduct_name),
-                                                    formatter.formatCellValue(exsupplier),
-                                                    formatter.formatCellValue(exlocation),
-                                                    formatter.formatCellValue(excost),
-                                                    formatter.formatCellValue(exSelling_price),
-                                                    formatter.formatCellValue(exqty),
-                                                    formatter.formatCellValue(excolor),
-                                                    formatter.formatCellValue(exSKU)};
-                                        newInclutionProductList.add(ProductObject);
-//                                        aDD STOCK TO THE eXISTING PRODUCT
-                                        String stockObject[] = {
-                                            "1",
-                                            locationID[1],
-                                            formatter.formatCellValue(excost),
-                                            formatter.formatCellValue(exSelling_price),
-                                            today_date,
-                                            formatter.formatCellValue(exqty),
-                                            formatter.formatCellValue(excolor),
-                                            getProdcutArray[0], // Product Int id
-                                            getProdcutArray[1], //product ID
-                                            formatter.formatCellValue(exSKU)
-                                        };
-                                        newInclucitonStockList.add(stockObject);
-                                    }
-                                    // check if brand is existing  
-                                } else {
-                                    System.out.println("Worng Location name in Product Id:" + exproduct_id + " Brand:" + exBrand + "\n" + "please fix this");
-                                    break;
-                                }
-                            } else {
-                                // Add New Product
-//                                if (dbLocaitondList.contains(formatter.formatCellValue(exlocation).trim().toLowerCase())) {
-//
-//                                } else {
-//                                    System.out.println("Worng Location name in Product Id:" + exproduct_id + " Brand:" + exBrand + "\n" + "please fix this");
-//                                    break;
-//                                }
-
-//                                System.out.println("New Product");
-//                                String locationID[] = LocationMap.get(formatter.formatCellValue(exlocation));
-//
-//                                String ProductObject[]
-//                                        = {formatter.formatCellValue(exproduct_id),
-//                                            formatter.formatCellValue(exSub_category),
-//                                            formatter.formatCellValue(exBrand),
-//                                            formatter.formatCellValue(exquality_id),
-//                                            formatter.formatCellValue(exproduct_name),
-//                                            formatter.formatCellValue(exsupplier),
-//                                            formatter.formatCellValue(exlocation),
-//                                            formatter.formatCellValue(excost),
-//                                            formatter.formatCellValue(exSelling_price),
-//                                            formatter.formatCellValue(exqty),
-//                                            formatter.formatCellValue(excolor),
-//                                            formatter.formatCellValue(exSKU)};
-//                                newInclutionProductList.add(ProductObject); // add new Product
-                                // Get Products again 
-//                                try {
-//                                    ResultSet rs = MySQL.execute("SELECT * FROM `product`");
-//                                    productdMap.clear();
-//                                    while (rs.next()) {
-//                                        String pObject[] = {rs.getString("intid"), rs.getString("id"), rs.getString("brand_id")};
-//                                        productdMap.put(rs.getString("id"), pObject);
-//                                    }
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                    JOptionPane.showConfirmDialog(this, "Data Loading Error, please check you Internet or contact Developer", "Error", JOptionPane.ERROR_MESSAGE);
-//                                }
-                                //aDD STOCK TO THE eXISTING PRODUCT
-//                                String getProdcutArray[] = productdMap.get(formatter.formatCellValue(exproduct_id));
-//                                String stockObject[] = {
-//                                    "1",
-//                                    locationID[1],
-//                                    formatter.formatCellValue(excost),
-//                                    formatter.formatCellValue(exSelling_price),
-//                                    today_date,
-//                                    formatter.formatCellValue(exqty),
-//                                    formatter.formatCellValue(excolor),
-//                                    getProdcutArray[0], // Product Int id
-//                                    getProdcutArray[1], //product ID
-//                                    formatter.formatCellValue(exSKU)
-//                                };
-//                                newInclucitonStockList.add(stockObject);
-                            }
-
-                        } else {
-                            System.out.println("no Data");
-                        }
-                    }
-                    workbook.close();
-                    excelSheet.close();
-
-                    // Database Insertations
-                    int i = 0;
-                    for (String[] item : newInclucitonStockList) {
-                        i++;
-                        System.out.println("stock_" + i + " " + item[8]);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Something Wrong, Please try again later");
-                }
-            } else {
-                JOptionPane.showConfirmDialog(this, "Please Select Valid Excel File", "Invalid File", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        importExcelFile();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
