@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
-import java.sql.ResultSet;  
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
@@ -230,9 +230,10 @@ public class Login extends javax.swing.JFrame {
                             String ResultFirstname = rs.getString("fname");
                             String ResultLastname = rs.getString("lname");
                             String id = rs.getString("id");
+                            String userRole = rs.getString("user_type_id");
                             String locaiton_id = String.valueOf(locationComboBox.getSelectedIndex());
 
-                            UserDetails ud = new UserDetails(ResultFirstname, ResultLastname, id, locaiton_id);
+                            UserDetails ud = new UserDetails(ResultFirstname, ResultLastname, id, locaiton_id, userRole);
                             System.out.println(locaiton_id);
                             logger.info("user has logged succesfully");
 //                            Rederect Tempory Jframe. (because still No Dashboard in project)
