@@ -42,20 +42,10 @@ public class Dashboard extends javax.swing.JFrame {
         time();
         setSize(screen.width, screen.height);
 
-        try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `users` WHERE `id` = '" + UserDetails.UserId + "' ");
-            if (rs.next()) {
-                int userType_id = rs.getInt("user_type_id");
-                if (userType_id == 1) {
-                    adminBtn.setEnabled(true);
-                } else if (userType_id == 2) {
-                    adminBtn.setEnabled(false);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.log(Level.WARNING, "Data failed to load", e);
-
+        if (UserDetails.UserRole.equals("1") || UserDetails.UserRole.equals("3")) { // access Control
+            adminBtn.setEnabled(true);
+        } else {
+            adminBtn.setEnabled(false);
         }
     }
 
@@ -80,7 +70,6 @@ public class Dashboard extends javax.swing.JFrame {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
 
-
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
@@ -90,10 +79,9 @@ public class Dashboard extends javax.swing.JFrame {
             String month_string = dayArray[1];
             String day_string = dayArray[2];
 
-            String DateString = day_string+ " of "+ month_string+" "+year_string;
+            String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
-            System.out.println(day);
         };
         Timer timer = new Timer(1000, timerListener);
         timer.setInitialDelay(0);
