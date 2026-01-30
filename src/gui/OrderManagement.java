@@ -59,7 +59,6 @@ public class OrderManagement extends javax.swing.JFrame {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
 
-
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
@@ -69,10 +68,9 @@ public class OrderManagement extends javax.swing.JFrame {
             String month_string = dayArray[1];
             String day_string = dayArray[2];
 
-            String DateString = day_string+ " of "+ month_string+" "+year_string;
+            String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
-            System.out.println(day);
         };
         Timer timer = new Timer(1000, timerListener);
         timer.setInitialDelay(0);
@@ -899,7 +897,10 @@ public class OrderManagement extends javax.swing.JFrame {
             System.out.println(Queary);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
-            calculateTodayCashColleciton(ToDate);
+            if (ToDate == "null") {
+                Date today = new Date();
+                ToDate = simpleDateformat.format(today);
+            }
 
             while (rs.next()) {
                 Vector v = new Vector();
@@ -933,9 +934,15 @@ public class OrderManagement extends javax.swing.JFrame {
             String estimateProfits = decimalFormat.format(estimateProfit);
             String actualProfits = decimalFormat.format(actualProfit);
 
-            esProfitCountLable.setText(String.valueOf(estimateProfits));
-            acCountLable.setText(String.valueOf(actualProfits));
-            jLabel10.setText(String.valueOf(ReportTotal));
+            System.out.println("userDetails = " + UserDetails.UserRole);
+            
+            if (UserDetails.UserRole.equals("1")) {
+                System.out.println("Yes Working");
+                calculateTodayCashColleciton(ToDate);
+                esProfitCountLable.setText(String.valueOf(estimateProfits));
+                acCountLable.setText(String.valueOf(actualProfits));
+                jLabel10.setText(String.valueOf(ReportTotal));
+            }
 
         } catch (SQLException se) {
             se.printStackTrace();
