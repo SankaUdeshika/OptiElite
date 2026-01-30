@@ -21,9 +21,20 @@ public class adminDashboard extends javax.swing.JFrame {
     public adminDashboard() {
         initComponents();
         this.setSize(screen.width, screen.height);
-
+        accessControl();
         operater();
         time();
+    }
+
+    private void accessControl() {
+        if (!UserDetails.UserRole.equals("1") || !UserDetails.UserRole.equals("3")) { // access Control
+            jButton25.setEnabled(false);
+            jButton23.setEnabled(false);
+            jButton26.setEnabled(false);
+            jButton24.setEnabled(false);
+            jButton30.setEnabled(false);
+            jButton25.setEnabled(false);
+        }
     }
 
     private void operater() {
@@ -35,7 +46,6 @@ public class adminDashboard extends javax.swing.JFrame {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
 
-
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
@@ -45,10 +55,9 @@ public class adminDashboard extends javax.swing.JFrame {
             String month_string = dayArray[1];
             String day_string = dayArray[2];
 
-            String DateString = day_string+ " of "+ month_string+" "+year_string;
+            String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
-            System.out.println(day);
         };
         Timer timer = new Timer(1000, timerListener);
         timer.setInitialDelay(0);
