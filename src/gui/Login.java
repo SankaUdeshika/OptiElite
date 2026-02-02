@@ -16,6 +16,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import models.MySQL;
+import models.SettingsFile;
 
 public class Login extends javax.swing.JFrame {
 
@@ -236,7 +237,16 @@ public class Login extends javax.swing.JFrame {
                             UserDetails ud = new UserDetails(ResultFirstname, ResultLastname, id, locaiton_id, userRole);
                             System.out.println(locaiton_id);
                             logger.info("user has logged succesfully");
-//                            Rederect Tempory Jframe. (because still No Dashboard in project)
+                            // Load Settings
+                            try {
+                                ResultSet settings_rs = MySQL.execute("SELECT * FROM `settings` WHERE `setting_id` = 1");
+                                if (settings_rs.next()) {
+                                    SettingsFile.lensStockOnly = settings_rs.getBoolean("lens_stock");
+                                    SettingsFile.darkTheme  = settings_rs.getBoolean("dark_theme");
+                                }
+                            } catch (Exception e) {
+                                JOptionPane.showMessageDialog(this, "Unable to load settings data", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
                             Dashboard cr = new Dashboard();
                             cr.setVisible(true);
                             this.dispose();
