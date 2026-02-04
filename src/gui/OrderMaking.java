@@ -537,7 +537,7 @@ public class OrderMaking extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel9.setText("Select Prescription");
-        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 57, -1, -1));
+        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 60, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel12.setText("Accessories");
@@ -573,7 +573,7 @@ public class OrderMaking extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 111, 250, 129));
+        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 110, 250, 129));
         jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 520, 480, 10));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
@@ -614,7 +614,7 @@ public class OrderMaking extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel10.setText("SKU");
-        jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 50, -1, -1));
+        jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 50, -1, -1));
 
         jTextField6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -634,21 +634,21 @@ public class OrderMaking extends javax.swing.JFrame {
                 jTextField6KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 83, 280, -1));
+        jPanel6.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 80, 280, -1));
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Brand", "Frame ID", "Frame Name", "Price", "product ID"
+                "Brand", "Frame ID", "Frame Name", "Price", "product ID", "Color"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -662,10 +662,15 @@ public class OrderMaking extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(jTable3);
         if (jTable3.getColumnModel().getColumnCount() > 0) {
+            jTable3.getColumnModel().getColumn(0).setResizable(false);
+            jTable3.getColumnModel().getColumn(1).setResizable(false);
+            jTable3.getColumnModel().getColumn(2).setResizable(false);
             jTable3.getColumnModel().getColumn(3).setResizable(false);
+            jTable3.getColumnModel().getColumn(4).setResizable(false);
+            jTable3.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 111, 390, 129));
+        jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 110, 450, 129));
 
         jLabel17.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel17.setText("Customer mobile Or Name");
@@ -739,7 +744,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 jTextField4KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 83, 250, -1));
+        jPanel6.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, 250, -1));
 
         jLabel38.setFont(new java.awt.Font("Segoe UI Historic", 1, 24)); // NOI18N
         jLabel38.setText("Rs.0.00");
@@ -909,11 +914,11 @@ public class OrderMaking extends javax.swing.JFrame {
                 jTextField9KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 80, 90, -1));
+        jPanel6.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 80, 90, -1));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel19.setText("Frame Id Or Brand");
-        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 57, -1, -1));
+        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 60, -1, -1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
