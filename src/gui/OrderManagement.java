@@ -934,16 +934,12 @@ public class OrderManagement extends javax.swing.JFrame {
             String estimateProfits = decimalFormat.format(estimateProfit);
             String actualProfits = decimalFormat.format(actualProfit);
 
-            System.out.println("userDetails = " + UserDetails.UserRole);
+            // Print calculators
+            calculateTodayCashColleciton(ToDate);
+            esProfitCountLable.setText(String.valueOf(estimateProfits));
+            acCountLable.setText(String.valueOf(actualProfits));
+            jLabel10.setText(String.valueOf(ReportTotal));
             
-            if (UserDetails.UserRole.equals("1")) {
-                System.out.println("Yes Working");
-                calculateTodayCashColleciton(ToDate);
-                esProfitCountLable.setText(String.valueOf(estimateProfits));
-                acCountLable.setText(String.valueOf(actualProfits));
-                jLabel10.setText(String.valueOf(ReportTotal));
-            }
-
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
