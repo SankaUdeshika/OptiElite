@@ -975,7 +975,7 @@ public class SellAccessories extends javax.swing.JFrame {
                     + "INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` "
                     + "INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` "
                     + "INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
-                    + "WHERE (`category`.`id` = '1' OR `category`.`id` = '3') "
+                    + "WHERE (`category`.`id` = '1' OR `category`.`id` = '3' OR `category`.`id` = '4') "
                     + "AND `qty` > 0 "
                     + "AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' "
                     + "AND ( `brand`.`brand_name` LIKE '%" + brand_details + "%' "

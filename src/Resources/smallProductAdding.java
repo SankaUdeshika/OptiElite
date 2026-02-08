@@ -459,7 +459,7 @@ public class smallProductAdding extends javax.swing.JFrame {
             loadSubCategory("frames");
         } else if (jComboBox5.getSelectedIndex() == 2) { // Lenses
             jTextField3.setText("");
-            jTextField3.setEnabled(false);
+            jTextField3.setEnabled(true);
             loadSubCategory("lenses");
 
         } else if (jComboBox5.getSelectedIndex() == 3) { // Accessories

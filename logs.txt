@@ -857,3 +857,135 @@ Jan 30, 2026 2:22:10 PM gui.Login signInBtnActionPerformed
 INFO: user has logged succesfully
 Jan 30, 2026 2:23:43 PM gui.Login signInBtnActionPerformed
 INFO: user has logged succesfully
+Jan 30, 2026 2:25:29 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jan 30, 2026 2:26:49 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jan 30, 2026 2:52:26 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Jan 31, 2026 10:27:31 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 01, 2026 5:57:25 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 01, 2026 5:58:36 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 01, 2026 6:01:16 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 01, 2026 6:02:56 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 02, 2026 3:43:58 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 02, 2026 6:21:15 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 02, 2026 6:23:22 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 02, 2026 6:26:47 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 02, 2026 6:34:45 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 02, 2026 6:36:59 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 02, 2026 6:48:06 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 02, 2026 6:48:44 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 02, 2026 6:49:30 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 02, 2026 6:50:56 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 02, 2026 6:52:51 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 04, 2026 5:40:47 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 04, 2026 5:49:36 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 04, 2026 5:53:40 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 04, 2026 6:14:21 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 04, 2026 6:19:00 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 04, 2026 6:20:02 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 04, 2026 6:22:22 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 04, 2026 6:34:53 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 04, 2026 6:35:22 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 04, 2026 6:46:44 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 04, 2026 10:20:32 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 2:44:02 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 4:58:53 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 6:24:54 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 8:19:38 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 8:20:48 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 8:22:09 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 8:25:47 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 8:26:54 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 8:31:20 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 8:32:13 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 8:34:04 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 9:37:18 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 10:14:32 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 10:15:56 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 10:17:37 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 10:18:36 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 10:19:22 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 10:19:41 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 10:34:00 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 10:47:24 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 10:57:37 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 10:59:05 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 05, 2026 11:54:03 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 06, 2026 9:47:29 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 06, 2026 9:49:06 AM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 07, 2026 6:04:25 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 07, 2026 6:16:35 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 07, 2026 6:56:44 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 07, 2026 7:17:19 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 07, 2026 7:19:38 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 07, 2026 8:12:08 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 07, 2026 8:14:24 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 07, 2026 8:16:10 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 08, 2026 2:46:05 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 08, 2026 2:49:15 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully
+Feb 08, 2026 8:58:37 PM gui.Login signInBtnActionPerformed
+INFO: user has logged succesfully

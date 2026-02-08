@@ -58,7 +58,6 @@ public class StockManagement extends javax.swing.JFrame {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
 
-
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
@@ -68,7 +67,7 @@ public class StockManagement extends javax.swing.JFrame {
             String month_string = dayArray[1];
             String day_string = dayArray[2];
 
-            String DateString = day_string+ " of "+ month_string+" "+year_string;
+            String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
             System.out.println(day);
@@ -161,7 +160,6 @@ public class StockManagement extends javax.swing.JFrame {
         LoadStockTable();
         loadLocations();
         AddinProductStock("");
-        loadBrands();
         jTextField11.setEnabled(true);
 
         jTextField11.setText("");
@@ -176,8 +174,8 @@ public class StockManagement extends javax.swing.JFrame {
         jTextField7.setText("");
         jTextField8.setText("");
         jTextField9.setText("");
+        jTextField3.setText("");
         jComboBox1.setSelectedIndex(0);
-        jComboBox2.setSelectedIndex(0);
 
     }
 
@@ -205,36 +203,11 @@ public class StockManagement extends javax.swing.JFrame {
                 v.add(rs.getDate("stock_date"));
                 v.add(rs.getString("Supplier_Name"));
                 v.add(rs.getString("location_name"));
-                double total = (rs.getDouble("cost") * rs.getInt("qty"));
-                v.add(total);
-                v.add(String.valueOf(v));
+                v.add(rs.getString("color"));
 
                 dtm.addRow(v);
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.log(Level.WARNING, "Data failed to load", e);
-
-        }
-    }
-
-    public void loadBrands() {
-        try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `brand`");
-            Vector v = new Vector();
-
-            v.add("Select Brand");
-            while (rs.next()) {
-                v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("brand_name")));
-            }
-
-            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
-            jComboBox2.setModel(dfm);
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
             logger.log(Level.WARNING, "Data failed to load", e);
@@ -276,7 +249,6 @@ public class StockManagement extends javax.swing.JFrame {
         jTextField9 = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
         jLabel22 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel23 = new javax.swing.JLabel();
@@ -302,6 +274,7 @@ public class StockManagement extends javax.swing.JFrame {
         jLabel31 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
         jToggleButton1 = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
@@ -400,7 +373,7 @@ public class StockManagement extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "StockID", "Product ID", "Product Brand", "Sub Category", "Qty", "SKU", "Unit Price", "Selling Price", "Date TIme", "Supplier", "Location", "Total Cost"
+                "StockID", "Product ID", "Product Brand", "Sub Category", "Qty", "SKU", "Unit Price", "Selling Price", "Date TIme", "Supplier", "Location", "Color"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -417,6 +390,20 @@ public class StockManagement extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(jTable3);
+        if (jTable3.getColumnModel().getColumnCount() > 0) {
+            jTable3.getColumnModel().getColumn(0).setResizable(false);
+            jTable3.getColumnModel().getColumn(1).setResizable(false);
+            jTable3.getColumnModel().getColumn(2).setResizable(false);
+            jTable3.getColumnModel().getColumn(3).setResizable(false);
+            jTable3.getColumnModel().getColumn(4).setResizable(false);
+            jTable3.getColumnModel().getColumn(5).setResizable(false);
+            jTable3.getColumnModel().getColumn(6).setResizable(false);
+            jTable3.getColumnModel().getColumn(7).setResizable(false);
+            jTable3.getColumnModel().getColumn(8).setResizable(false);
+            jTable3.getColumnModel().getColumn(9).setResizable(false);
+            jTable3.getColumnModel().getColumn(10).setResizable(false);
+            jTable3.getColumnModel().getColumn(11).setResizable(false);
+        }
 
         jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 1040, 190));
 
@@ -462,15 +449,12 @@ public class StockManagement extends javax.swing.JFrame {
         jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 70, -1, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 100, 120, -1));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                jComboBox1ActionPerformed(evt);
             }
         });
-        jPanel6.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 100, 120, -1));
+        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 100, 120, -1));
 
         jLabel22.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel22.setText("Stock Date");
@@ -594,6 +578,7 @@ public class StockManagement extends javax.swing.JFrame {
         jLabel26.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel26.setText("Product ID");
         jPanel6.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, -1, -1));
+        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 100, 130, -1));
 
         jToggleButton1.setText("Report");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -900,10 +885,6 @@ public class StockManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField9ActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
     private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField11ActionPerformed
@@ -1070,8 +1051,8 @@ public class StockManagement extends javax.swing.JFrame {
 
         }
 
-        if (jComboBox2.getSelectedIndex() != 0) {
-            String brandText = (String) jComboBox2.getSelectedItem();
+        if (jTextField3.getText().isEmpty()) {
+            String brandText = (String) jTextField3.getText();
             String brandArray[] = brandText.split(" ");
             String brand = brandArray[1];
 
@@ -1106,9 +1087,7 @@ public class StockManagement extends javax.swing.JFrame {
                 v.add(rs.getDate("stock_date"));
                 v.add(rs.getString("Supplier_Name"));
                 v.add(rs.getString("location_name"));
-                double total = (rs.getDouble("cost") * rs.getInt("qty"));
-                v.add(total);
-                v.add(String.valueOf(v));
+                v.add(rs.getString("color"));
 
                 dtm.addRow(v);
             }
@@ -1132,6 +1111,10 @@ public class StockManagement extends javax.swing.JFrame {
         Reports.PrintStockReport(defaultTableModel);
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1154,7 +1137,6 @@ public class StockManagement extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
@@ -1204,6 +1186,7 @@ public class StockManagement extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField15;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;

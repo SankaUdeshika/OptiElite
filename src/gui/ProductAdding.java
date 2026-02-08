@@ -721,18 +721,18 @@ public class ProductAdding extends javax.swing.JFrame {
             loadSubCategory("frames");
         } else if (jComboBox5.getSelectedIndex() == 2) { // Lenses
             jTextField3.setText("");
-            jTextField3.setEnabled(false);
+            jTextField3.setEnabled(true);
             loadSubCategory("lenses");
 
         } else if (jComboBox5.getSelectedIndex() == 3) { // Accessories
             jTextField3.setText("");
             jTextField3.setEnabled(true);
             loadSubCategory("Accessories");
-        } else if (jComboBox5.getSelectedIndex() == 4) { // Accessories
+        } else if (jComboBox5.getSelectedIndex() == 4) { // sunglass
             jTextField3.setText("");
             jTextField3.setEnabled(false);
             loadSubCategory("SunGlass");
-        } else if (jComboBox5.getSelectedIndex() == 0) { // Accessories
+        } else if (jComboBox5.getSelectedIndex() == 0) { // none
             jTextField3.setText("");
             jTextField3.setEnabled(false);
             loadSubCategory("");
