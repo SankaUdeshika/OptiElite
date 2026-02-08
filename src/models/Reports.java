@@ -364,4 +364,20 @@ public class Reports {
         }
     }
 
+    public static void PrintShortInspectionReport(String location) {
+        try {
+            HashMap<String, Object> reportmap = new HashMap<>();
+            reportmap.put("location_id", location);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/ShortInspectionReport.jasper"), reportmap, MySQL.getConnection());
+
+//            JasperPrint jasperPrint = JasperFillManager.fillReport("reports/EagleEyeOrders.jasper", reportmap, MySQL.getConnection());
+//            JasperPrint jasperPrint = JasperFillManager.fillReport("reports/EagleEyeOrders.jasper", reportmap,new JRTableModelDataSource(model));
+            JasperViewer.viewReport(jasperPrint, false);
+
+        } catch (JRException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(Reports.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
