@@ -18,8 +18,8 @@ public class MySQL {
 
 //            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/eagle_eye_database", "root", "12345678"); // My localhost
 //            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/optielite", "root", "12345678"); // My localhost Ares
-//            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dasanahyaka_optielite", "root", "12345678"); // My localhost Dasanayaka
-//              connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/neweagleeyeoptielite", "root", "12345678"); // My localhost EagleVision
+//              connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dasanahyaka_optielite", "root", "12345678"); // My localhost Dasanayaka
+//            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/neweagleeyeoptielite", "root", "12345678"); // My localhost EagleVision
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //            connection = DriverManager.getConnection("jdbc:mysql://118.139.181.184:3306/EagleEye_DB?autoReconnect=true&useSSL=false", "fitnessfirstadmin", "fitnessfirst_db"); // FitnessFirst DB
 //            connection = DriverManager.getConnection("jdbc:mysql://77.37.44.88:3306/eagle_eye_database?autoReconnect=true&useSSL=false", "user", "8891$l£Pu9"); // Sadev VPS
