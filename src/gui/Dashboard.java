@@ -108,6 +108,7 @@ public class Dashboard extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         adminBtn1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -240,6 +241,14 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
         jPanel11.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 160, 210, 60));
+
+        jButton5.setText("Hearing Aid");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel11.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 210, 60));
 
         jPanel3.setBackground(new java.awt.Color(206, 206, 206));
 
@@ -524,6 +533,14 @@ public class Dashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        SellHearingAid sellHearingAid = new SellHearingAid();
+        sellHearingAid.setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -549,6 +566,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
