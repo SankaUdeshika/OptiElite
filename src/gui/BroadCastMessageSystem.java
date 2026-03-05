@@ -82,7 +82,6 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
 
-
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
@@ -92,11 +91,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             String month_string = dayArray[1];
             String day_string = dayArray[2];
 
-            String DateString = day_string+ " of "+ month_string+" "+year_string;
+            String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
-            System.out.println(day);
         };
+        
         Timer timer = new Timer(1000, timerListener);
         timer.setInitialDelay(0);
         timer.start();
@@ -283,6 +282,13 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             r1.keyRelease(KeyEvent.VK_CONTROL);
             r1.keyRelease(KeyEvent.VK_N);
 
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
 //            Clear currunt text
             r1.keyPress(KeyEvent.VK_CONTROL);
             r1.keyPress(KeyEvent.VK_A);
@@ -296,55 +302,54 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
 
             r1.mouseMove(HalfWidthSize, HalfHeightSize);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
                 Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-//            Past number
+            //            Past number
             r1.keyPress(KeyEvent.VK_CONTROL);
             r1.keyPress(KeyEvent.VK_V);
             r1.keyRelease(KeyEvent.VK_CONTROL);
             r1.keyRelease(KeyEvent.VK_V);
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
                 Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
             }
+
             //            click Mouse Button
             r1.mousePress(InputEvent.BUTTON1_DOWN_MASK);
             r1.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
             }
+
             //            move the cursor into send button
-            Dimension screensize1 = Toolkit.getDefaultToolkit().getScreenSize();
-            int HalfWidthSize1 = screensize1.width / 3;
-            int HalfHeightSize2 = screensize1.height / 3 - 48; // move the Mouse Cursor into Chat list
-            r1.mouseMove(HalfWidthSize1, HalfHeightSize2);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+//            Dimension screensize1 = Toolkit.getDefaultToolkit().getScreenSize();
+//            int HalfWidthSize1 = screensize1.width / 3;
+//            int HalfHeightSize2 = screensize1.height / 3 - 48; // move the Mouse Cursor into Chat list
+//            r1.mouseMove(HalfWidthSize1, HalfHeightSize2);
+//
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+//            }
 //            Cick the Selected Chat Box
-            r1.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
-            r1.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+//            r1.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
+//            r1.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
+//
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
+//            }
             ImageSelection imgSel = new ImageSelection(image);
             Clipboard clipboardMessage = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboardMessage.setContents(imgSel, null);
@@ -1031,7 +1036,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       FlatMacLightLaf.setup();
+        FlatMacLightLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
