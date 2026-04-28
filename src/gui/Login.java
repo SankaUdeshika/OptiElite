@@ -67,6 +67,7 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -163,6 +164,8 @@ public class Login extends javax.swing.JFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/optieliteIcon.png"))); // NOI18N
 
+        jLabel3.setText("version 2.13");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -172,19 +175,24 @@ public class Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addGap(120, 120, 120))))
+                        .addGap(120, 120, 120))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(77, 77, 77)
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addGap(55, 55, 55)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -225,7 +233,9 @@ public class Login extends javax.swing.JFrame {
                         ResultSet rs = MySQL.execute("SELECT * FROM `users` "
                                 + "INNER JOIN `user_type` ON `user_type`.`id` = `users`.`user_type_id` "
                                 + "INNER JOIN `user_status` ON `user_status`.`status_id` = `users`.`user_status_status_id`  "
-                                + "WHERE `username` = '" + UserName + "' AND `password` = '" + Password + "' AND `status_id` = '1' ");
+                                + "INNER JOIN `location` ON `location`.`id` = `users`.`location_id`  "
+                                + "WHERE `username` = '" + UserName + "' AND `password` = '" + Password + "' AND `user_status_status_id` = '1'  AND `location`.`status_status_id` = '1' ");
+
                         if (rs.next()) {
                             MySQL.execute(" UPDATE `users` SET `location_id` = '" + locationComboBox.getSelectedIndex() + "'  WHERE `username` = '" + UserName + "' ");
                             String ResultFirstname = rs.getString("fname");
@@ -242,7 +252,7 @@ public class Login extends javax.swing.JFrame {
                                 ResultSet settings_rs = MySQL.execute("SELECT * FROM `settings` WHERE `setting_id` = 1");
                                 if (settings_rs.next()) {
                                     SettingsFile.lensStockOnly = settings_rs.getBoolean("lens_stock");
-                                    SettingsFile.darkTheme  = settings_rs.getBoolean("dark_theme");
+                                    SettingsFile.darkTheme = settings_rs.getBoolean("dark_theme");
                                 }
                             } catch (Exception e) {
                                 JOptionPane.showMessageDialog(this, "Unable to load settings data", "Error", JOptionPane.ERROR_MESSAGE);
@@ -316,6 +326,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
