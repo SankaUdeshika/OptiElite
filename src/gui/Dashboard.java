@@ -18,11 +18,15 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import models.MySQL;
 
@@ -33,7 +37,7 @@ public class Dashboard extends javax.swing.JFrame {
      */
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
     Navs GoObject;
-
+    
     public Dashboard() {
         initComponents();
         FlatMacLightLaf.setup();
@@ -41,14 +45,27 @@ public class Dashboard extends javax.swing.JFrame {
         operater();
         time();
         setSize(screen.width, screen.height);
-
+        
         if (UserDetails.UserRole.equals("1") || UserDetails.UserRole.equals("3")) { // access Control
             adminBtn.setEnabled(true);
         } else {
             adminBtn.setEnabled(false);
         }
-    }
 
+        // get Daily Summery 
+        double[] summary = getDailySummary(Integer.parseInt(UserDetails.UserLocation_id));
+        
+        double totalSale = summary[0];
+        int totalOrderCount = (int) summary[1];
+        double totalCashCollection = summary[2];
+
+        // Format and display
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        totalSaleText.setText(df.format(totalSale));
+        orderCountLabel.setText(String.valueOf(totalOrderCount));
+        cashCollectionLabel.setText(df.format(totalCashCollection));  
+    }
+    
     public void loadNotificaiton() {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `notificaiton`");
@@ -60,16 +77,16 @@ public class Dashboard extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-
+    
     private void operater() {
         String name = UserDetails.UserName;
         userNameField.setText(name);
     }
-
+    
     private void time() {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
-
+        
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
@@ -78,7 +95,7 @@ public class Dashboard extends javax.swing.JFrame {
             String year_string = dayArray[0];
             String month_string = dayArray[1];
             String day_string = dayArray[2];
-
+            
             String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
@@ -87,7 +104,88 @@ public class Dashboard extends javax.swing.JFrame {
         timer.setInitialDelay(0);
         timer.start();
     }
+    
+    public double[] getDailySummary(int locationId) {
+        // Returns [totalSale, totalOrderCount, totalCashCollection]
+        double totalSale = 0;
+        int totalOrderCount = 0;
+        double totalCashCollection = 0;
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String today = sdf.format(new Date());
+        
+        try {
+            // ── Total Sale & Order Count ──────────────────────────────────────
+            String invoiceQuery
+                    = "SELECT COUNT(invoice_id) AS order_count, "
+                    + "       SUM(CAST(subtotal AS DECIMAL(10,2))) AS total_sale "
+                    + "FROM invoice "
+                    + "WHERE invoice_location = ? "
+                    + "AND date = ? ";
+            
+            PreparedStatement invoiceStmt = MySQL.getConnection().prepareStatement(invoiceQuery);
+            invoiceStmt.setInt(1, locationId);
+            invoiceStmt.setString(2, today);
+            ResultSet invoiceRs = invoiceStmt.executeQuery();
+            
+            if (invoiceRs.next()) {
+                totalOrderCount = invoiceRs.getInt("order_count");
+                totalSale = invoiceRs.getDouble("total_sale");
+            }
 
+            // ── Total Cash Collection ─────────────────────────────────────────
+            // 1. Advance payments made TODAY from advance_payment_history
+            String advHistoryQuery
+                    = "SELECT COALESCE(SUM(paid_amount), 0) AS advance_collected "
+                    + "FROM advance_payment_history "
+                    + "WHERE location_id = ? "
+                    + "AND date = ? ";
+            
+            PreparedStatement advHistStmt = MySQL.getConnection().prepareStatement(advHistoryQuery);
+            advHistStmt.setInt(1, locationId);
+            advHistStmt.setString(2, today);
+            ResultSet advHistRs = advHistStmt.executeQuery();
+            
+            double advanceFromHistory = 0;
+            if (advHistRs.next()) {
+                advanceFromHistory = advHistRs.getDouble("advance_collected");
+            }
+
+            // 2. Advance payments on invoices CREATED today (first payment at order time)
+            String invoiceAdvQuery
+                    = "SELECT COALESCE(SUM(advance_payment), 0) AS invoice_advance "
+                    + "FROM invoice "
+                    + "WHERE invoice_location = ? "
+                    + "AND date = ? "
+                    + "AND advance_payment > 0 ";
+            
+            PreparedStatement invoiceAdvStmt = MySQL.getConnection().prepareStatement(invoiceAdvQuery);
+            invoiceAdvStmt.setInt(1, locationId);
+            invoiceAdvStmt.setString(2, today);
+            ResultSet invoiceAdvRs = invoiceAdvStmt.executeQuery();
+            
+            double advanceFromInvoice = 0;
+            if (invoiceAdvRs.next()) {
+                advanceFromInvoice = invoiceAdvRs.getDouble("invoice_advance");
+            }
+            
+            totalCashCollection = advanceFromHistory + advanceFromInvoice;
+            
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Database Error: " + se.getMessage(),
+                    "SQL Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Something went wrong. Please try again.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        return new double[]{totalSale, totalOrderCount, totalCashCollection};
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -114,11 +212,11 @@ public class Dashboard extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        totalSaleText = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        orderCountLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        cashCollectionLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
@@ -269,21 +367,21 @@ public class Dashboard extends javax.swing.JFrame {
 
         jLabel2.setText("Today Total Sale");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 0, 51));
-        jLabel3.setText("50000");
+        totalSaleText.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        totalSaleText.setForeground(new java.awt.Color(255, 0, 51));
+        totalSaleText.setText("50000");
 
         jLabel4.setText("Total Order Count");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 0, 51));
-        jLabel5.setText("8");
+        orderCountLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        orderCountLabel.setForeground(new java.awt.Color(255, 0, 51));
+        orderCountLabel.setText("8");
 
         jLabel6.setText("Total Cash Collection");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 0, 51));
-        jLabel7.setText("50000");
+        cashCollectionLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cashCollectionLabel.setForeground(new java.awt.Color(255, 0, 51));
+        cashCollectionLabel.setText("50000");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -301,9 +399,9 @@ public class Dashboard extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))))
+                            .addComponent(totalSaleText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(orderCountLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cashCollectionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -314,15 +412,15 @@ public class Dashboard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(totalSaleText))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(orderCountLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel7))
+                    .addComponent(cashCollectionLabel))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -524,7 +622,7 @@ public class Dashboard extends javax.swing.JFrame {
         Login l = new Login();
         l.setVisible(true);
         this.dispose();
-
+        
         UserDetails.UserId = "";
         UserDetails.UserLocation_id = "";
         UserDetails.UserName = "";
@@ -562,7 +660,7 @@ public class Dashboard extends javax.swing.JFrame {
         // Extra Purchases Window Open
         ExtraPurchases ep = new ExtraPurchases();
         ep.setVisible(true);
-
+        
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -584,7 +682,7 @@ public class Dashboard extends javax.swing.JFrame {
         SellHearingAid sellHearingAid = new SellHearingAid();
         sellHearingAid.setVisible(true);
         this.dispose();
-        
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
@@ -605,6 +703,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton accessoriesBtn;
     private javax.swing.JButton adminBtn;
     private javax.swing.JButton adminBtn1;
+    private javax.swing.JLabel cashCollectionLabel;
     private javax.swing.JButton customerBtn;
     private javax.swing.JLabel dateField;
     private javax.swing.JButton exitBtn;
@@ -619,11 +718,8 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -635,10 +731,12 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JButton orderBtn;
+    private javax.swing.JLabel orderCountLabel;
     private javax.swing.JButton prescriptionsBtn;
     private javax.swing.JButton signOutBtn;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel titleLabel;
+    private javax.swing.JLabel totalSaleText;
     private javax.swing.JLabel userNameField;
     // End of variables declaration//GEN-END:variables
 }
