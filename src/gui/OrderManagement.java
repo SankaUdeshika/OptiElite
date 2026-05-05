@@ -193,21 +193,17 @@ public class OrderManagement extends javax.swing.JFrame {
         }
     }
 
-    public void calculateTodayCashColleciton(String date) {
+    public String calculateTodayCashColleciton(String date, int locationID) {
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
         try {
             double cashCollection = 0;
-            ResultSet rs = MySQL.execute("SELECT * FROM `advance_payment_history` WHERE `date` = '" + date + "' ");
+            ResultSet rs = MySQL.execute("SELECT * FROM advance_payment_history WHERE advance_payment_history.date = '" + date + "' AND advance_payment_history.location_id = '" + locationID + "' ");
 
             while (rs.next()) {
-                if (rs.getInt("payment_method") == 1) {
-                    System.out.println(String.valueOf(rs.getString("payment_method")));
-                    cashCollection += rs.getDouble("paid_amount");
-                }
+                cashCollection += rs.getDouble("paid_amount");
             }
             String formatedTotalCash = decimalFormat.format(cashCollection);
-
-            totalCashCollection.setText(formatedTotalCash);
+            return formatedTotalCash;
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -215,6 +211,7 @@ public class OrderManagement extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 
     @SuppressWarnings("unchecked")
@@ -264,7 +261,7 @@ public class OrderManagement extends javax.swing.JFrame {
         acLable = new javax.swing.JLabel();
         acCountLable = new javax.swing.JLabel();
         acLable1 = new javax.swing.JLabel();
-        totalCashCollection = new javax.swing.JLabel();
+        cashCollectionLabel = new javax.swing.JLabel();
         fullReportBtn = new javax.swing.JButton();
         completeBtn = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
@@ -432,7 +429,7 @@ public class OrderManagement extends javax.swing.JFrame {
         acLable1.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         acLable1.setText("Total Cash Collection");
 
-        totalCashCollection.setText("........................................................");
+        cashCollectionLabel.setText("........................................................");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -473,9 +470,9 @@ public class OrderManagement extends javax.swing.JFrame {
                                     .addComponent(jLabel24))
                                 .addGap(34, 34, 34)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(acCountLable, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                                    .addComponent(esProfitCountLable, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                                    .addComponent(totalCashCollection, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(acCountLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(esProfitCountLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cashCollectionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(jLabel16)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel6Layout.createSequentialGroup()
@@ -573,7 +570,7 @@ public class OrderManagement extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(acLable1)
-                            .addComponent(totalCashCollection))))
+                            .addComponent(cashCollectionLabel))))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -801,106 +798,109 @@ public class OrderManagement extends javax.swing.JFrame {
         estimateProfit = 0;
         actualProfit = 0;
         ReportTotal = 0;
+
         SimpleDateFormat simpleDateformat = new SimpleDateFormat("yyyy-MM-dd");
+        String today = simpleDateformat.format(new Date()); // ← Always today's real date
 
         String ToDate;
         String FromDate;
 
-        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); // Decimal Object
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
 
         try {
             ToDate = simpleDateformat.format(jDateChooser1.getDate());
             jLabel22.setText(ToDate);
-            System.out.println("Today is the Date =" + ToDate);
         } catch (NullPointerException ne) {
             ToDate = "null";
         }
 
         try {
             FromDate = simpleDateformat.format(jDateChooser2.getDate());
-            jLabel21.setText(ToDate);
+            jLabel21.setText(FromDate);
         } catch (NullPointerException ne) {
             FromDate = "null";
         }
 
         try {
-            String Queary = "SELECT DISTINCT invoice.*, customer.*, location.*,payment_status.*  FROM `invoice` "
-                    + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile`   "
-                    + "LEFT JOIN `invoice_item` ON `invoice_item`.`invoice_id` = `invoice`.`invoice_id` "
-                    + "LEFT JOIN `stock` ON `stock`.`id` = `invoice_item`.`stock_id` "
-                    + "INNER JOIN `location` ON `location`.`id` = `invoice_location` "
-                    + "INNER JOIN `payment_status` ON `invoice`.`payment_status_id` = `payment_status`.`id` ";
+            String Queary = "SELECT DISTINCT invoice.invoice_id, invoice.date, invoice.advance_payment, "
+                    + "invoice.total_price, invoice.subtotal, invoice.discount, "
+                    + "invoice.payment_status_id, invoice.invoice_location, "
+                    + "customer.name, customer.mobile, "
+                    + "location.location_name, "
+                    + "payment_status.status_name "
+                    + "FROM `invoice` "
+                    + "INNER JOIN `customer`       ON `customer`.`mobile`       = `invoice`.`customer_mobile` "
+                    + "INNER JOIN `location`       ON `location`.`id`           = `invoice`.`invoice_location` "
+                    + "INNER JOIN `payment_status` ON `payment_status`.`id`     = `invoice`.`payment_status_id` ";
+            // ↑ REMOVED invoice_item and stock joins — they caused duplicate/missing rows
 
-//        Enter Parameter
+            // ── Filter parameters ─────────────────────────────────────────────
             if (!jTextField1.getText().isEmpty()) {
                 Queary += " WHERE `invoice`.`invoice_id` = '" + jTextField1.getText() + "' ";
 
                 if (!jTextField3.getText().isEmpty()) {
-                    ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + jTextField3.getText() + "' OR `name` = '" + jTextField3.getText() + "'");
-                    if (rs.next()) {
-                        String customer_id = rs.getString("mobile");
-
-                        Queary += " AND `invoice`.`customer_mobile` = '" + customer_id + "' ";
+                    ResultSet rsC = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '"
+                            + jTextField3.getText() + "' OR `name` = '" + jTextField3.getText() + "'");
+                    if (rsC.next()) {
+                        Queary += " AND `invoice`.`customer_mobile` = '" + rsC.getString("mobile") + "' ";
                     }
                 }
 
                 if (jComboBox1.getSelectedIndex() != 0) {
-                    Queary += " AND `customer`.`location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
+                    Queary += " AND `invoice`.`invoice_location` = '" + jComboBox1.getSelectedIndex() + "' ";
                 }
 
-                if (ToDate != "null" && FromDate != "null") {
-                    Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
-                } else if (ToDate != "null") {
+                if (!ToDate.equals("null") && !FromDate.equals("null")) {
+                    Queary += " AND `invoice`.`date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
+                } else if (!ToDate.equals("null")) {
                     Queary += " AND `invoice`.`date` >= '" + ToDate + "' ";
-                } else if (FromDate != "null") {
+                } else if (!FromDate.equals("null")) {
                     Queary += " AND `invoice`.`date` <= '" + FromDate + "' ";
                 }
 
             } else if (!jTextField3.getText().isEmpty()) {
-                if (!jTextField3.getText().isEmpty()) {
-                    ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` LIKE '%" + jTextField3.getText() + "%' OR `name` LIKE '%" + jTextField3.getText() + "%' ");
-                    if (rs.next()) {
-                        String customer_id = rs.getString("mobile");
-                        Queary += " WHERE `invoice`.`customer_mobile` = '" + customer_id + "' ";
-                    }
-                    if (jComboBox1.getSelectedIndex() != 0) {
-                        Queary += " AND `customer`.`location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
-                    }
-
-                    if (ToDate != "null" && FromDate != "null") {
-                        Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
-                    } else if (ToDate != "null") {
-                        Queary += " AND `invoice`.`date` = '" + ToDate + "' ";
-                    } else if (FromDate != "null") {
-                        Queary += " AND `invoice`.`date` = '" + FromDate + "' ";
-                    }
+                ResultSet rsC = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` LIKE '%"
+                        + jTextField3.getText() + "%' OR `name` LIKE '%" + jTextField3.getText() + "%' ");
+                if (rsC.next()) {
+                    Queary += " WHERE `invoice`.`customer_mobile` = '" + rsC.getString("mobile") + "' ";
                 }
-            } else if (jComboBox1.getSelectedIndex() != 0) {
-                Queary += " WHERE `invoice_location` = '" + jComboBox1.getSelectedIndex() + "' ";
 
-                if (ToDate != "null" && FromDate != "null") {
-                    Queary += " AND `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
-                } else if (ToDate != "null") {
+                if (jComboBox1.getSelectedIndex() != 0) {
+                    Queary += " AND `invoice`.`invoice_location` = '" + jComboBox1.getSelectedIndex() + "' ";
+                }
+
+                if (!ToDate.equals("null") && !FromDate.equals("null")) {
+                    Queary += " AND `invoice`.`date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
+                } else if (!ToDate.equals("null")) {
                     Queary += " AND `invoice`.`date` = '" + ToDate + "' ";
-                } else if (FromDate != "null") {
+                } else if (!FromDate.equals("null")) {
                     Queary += " AND `invoice`.`date` = '" + FromDate + "' ";
                 }
-            } else if (ToDate != "null" && FromDate != "null") {
-                Queary += " WHERE `date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
-            } else if (ToDate != "null") {
+
+            } else if (jComboBox1.getSelectedIndex() != 0) {
+                Queary += " WHERE `invoice`.`invoice_location` = '" + jComboBox1.getSelectedIndex() + "' ";
+
+                if (!ToDate.equals("null") && !FromDate.equals("null")) {
+                    Queary += " AND `invoice`.`date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
+                } else if (!ToDate.equals("null")) {
+                    Queary += " AND `invoice`.`date` = '" + ToDate + "' ";
+                } else if (!FromDate.equals("null")) {
+                    Queary += " AND `invoice`.`date` = '" + FromDate + "' ";
+                }
+
+            } else if (!ToDate.equals("null") && !FromDate.equals("null")) {
+                Queary += " WHERE `invoice`.`date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
+            } else if (!ToDate.equals("null")) {
                 Queary += " WHERE `invoice`.`date` = '" + ToDate + "' ";
-            } else if (FromDate != "null") {
+            } else if (!FromDate.equals("null")) {
                 Queary += " WHERE `invoice`.`date` = '" + FromDate + "' ";
             }
 
+            // ── Main result loop ──────────────────────────────────────────────
             ResultSet rs = MySQL.execute(Queary);
             System.out.println(Queary);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
-            if (ToDate == "null") {
-                Date today = new Date();
-                ToDate = simpleDateformat.format(today);
-            }
 
             while (rs.next()) {
                 Vector v = new Vector();
@@ -920,32 +920,30 @@ public class OrderManagement extends javax.swing.JFrame {
                 estimateProfit += rs.getDouble("subtotal");
 
                 if (rs.getString("payment_status_id").equals("2")) {
-                    actualProfit += rs.getDouble("subtotal");
-                    ReportTotal++;
+                    actualProfit += rs.getDouble("subtotal");   // Fully paid
                 } else {
-                    actualProfit += rs.getDouble("subtotal") - rs.getDouble("total_price");
-//                    advanceTotal += rs.getDouble("advance_payment");
-                    ReportTotal++;
+                    actualProfit += rs.getDouble("subtotal") - rs.getDouble("total_price"); // Partial
                 }
+                ReportTotal++;
 
                 dtm.addRow(v);
             }
 
-            String estimateProfits = decimalFormat.format(estimateProfit);
-            String actualProfits = decimalFormat.format(actualProfit);
+            // ── Cash Collection ───────────────────────────────────────────────
+            String cashCollection = calculateTodayCashColleciton(ToDate, jComboBox1.getSelectedIndex());
 
-            // Print calculators
-            calculateTodayCashColleciton(ToDate);
-            esProfitCountLable.setText(String.valueOf(estimateProfits));
-            acCountLable.setText(String.valueOf(actualProfits));
+            // ── Update UI labels ──────────────────────────────────────────────
+            esProfitCountLable.setText(decimalFormat.format(estimateProfit));
+            acCountLable.setText(decimalFormat.format(actualProfit));
             jLabel10.setText(String.valueOf(ReportTotal));
-            
+            cashCollectionLabel.setText(cashCollection); // ← replace with your label name
+
         } catch (SQLException se) {
             se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Connection", "Connection Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Something went wrong. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_searchBtnActionPerformed
 
@@ -1194,6 +1192,7 @@ public class OrderManagement extends javax.swing.JFrame {
     private javax.swing.JLabel acLable;
     private javax.swing.JLabel acLable1;
     private javax.swing.JButton billBtn;
+    private javax.swing.JLabel cashCollectionLabel;
     private javax.swing.JButton completeBtn;
     private javax.swing.JLabel dateField;
     private javax.swing.JLabel esProfitCountLable;
@@ -1245,7 +1244,6 @@ public class OrderManagement extends javax.swing.JFrame {
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton searchBtn;
     private javax.swing.JLabel timeField;
-    private javax.swing.JLabel totalCashCollection;
     private javax.swing.JLabel userNameField;
     // End of variables declaration//GEN-END:variables
 

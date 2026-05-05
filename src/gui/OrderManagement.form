@@ -267,7 +267,7 @@
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                               <Component id="acCountLable" max="32767" attributes="0"/>
                                               <Component id="esProfitCountLable" max="32767" attributes="0"/>
-                                              <Component id="totalCashCollection" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="cashCollectionLabel" alignment="0" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -393,7 +393,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="acLable1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="totalCashCollection" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cashCollectionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -704,7 +704,7 @@
                     <Property name="text" type="java.lang.String" value="Total Cash Collection"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="totalCashCollection">
+                <Component class="javax.swing.JLabel" name="cashCollectionLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="........................................................"/>
                   </Properties>
