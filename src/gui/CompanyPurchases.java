@@ -46,7 +46,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
         initComponents();
         setSize(screen.width, screen.height);
         Refresh();
-
     }
 
     public void Refresh() {
@@ -549,40 +548,62 @@ public class CompanyPurchases extends javax.swing.JFrame {
     private void completeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeBtnActionPerformed
         // Add Report
         int item_count = jTable2.getRowCount();
-
         if (item_count < 1) {
-            JOptionPane.showConfirmDialog(this, "Please add Expenses items to the table", "Empty expneses Table", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please add Expenses items to the table", "Empty Expenses Table", JOptionPane.ERROR_MESSAGE);
         } else {
-//            Date 
-            final DateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd");
+            // Date
+            final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
             String day = dateFormat.format(date);
-
-            //Time
+            // Time
             final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
             String time = timeFormat.format(date);
 
             try {
-                ResultSet insert_rs = MySQL.execute("INSERT INTO `daily_report`  (`date`,`location_id`,`users_id`,`time`) VALUES ('" + day + "','" + UserDetails.UserLocation_id + "','" + UserDetails.UserId + "','"+time+"')");
+                // ✅ Validation: Check if a daily report already exists for today
+                ResultSet check_rs = MySQL.execute(
+                        "SELECT COUNT(*) FROM `daily_report` "
+                        + "WHERE `date` = '" + day + "' "
+                        + "AND `location_id` = '" + UserDetails.UserLocation_id + "' "
+                        + "AND `users_id` = '" + UserDetails.UserId + "'"
+                );
 
-                if (insert_rs.next()) {
-                    int reportId = insert_rs.getInt(1);
-                    for (int i = 0; i < item_count; i++) {
-                        int no = i;
-                        String description = String.valueOf(jTable2.getValueAt(i, 1));
-                        String price = String.valueOf(jTable2.getValueAt(i, 2));
-                        double amount = Double.parseDouble(price);
-                        MySQL.execute("INSERT INTO `report_item` (`no`,`description`,`amount`,`daily_report_report_id`) VALUES ('" + no + "','" + description + "','" + amount + "','" + reportId + "') ");
+                if (check_rs.next() && check_rs.getInt(1) > 0) {
+                    // ❌ Report already exists for today
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "A Daily Report for today (" + day + ") already exists.\nYou cannot add another report for the same day.",
+                            "Report Already Exists",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                } else {
+                    // ✅ No report exists, proceed with insertion
+                    ResultSet insert_rs = MySQL.execute(
+                            "INSERT INTO `daily_report` (`date`, `location_id`, `users_id`, `time`) "
+                            + "VALUES ('" + day + "', '" + UserDetails.UserLocation_id + "', '" + UserDetails.UserId + "', '" + time + "')"
+                    );
+
+                    if (insert_rs.next()) {
+                        int reportId = insert_rs.getInt(1);
+                        for (int i = 0; i < item_count; i++) {
+                            String description = String.valueOf(jTable2.getValueAt(i, 1));
+                            String price = String.valueOf(jTable2.getValueAt(i, 2));
+                            double amount = Double.parseDouble(price);
+                            MySQL.execute(
+                                    "INSERT INTO `report_item` (`no`, `description`, `amount`, `daily_report_report_id`) "
+                                    + "VALUES ('" + i + "', '" + description + "', '" + amount + "', '" + reportId + "')"
+                            );
+                        }
                     }
+
+                    Refresh();
+                    JOptionPane.showMessageDialog(this, "Report adding is Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
                 }
-                Refresh();
-                JOptionPane.showMessageDialog(this, "Report adding is Successful", "Success", JOptionPane.OK_OPTION);
 
             } catch (Exception e) {
-                JOptionPane.showConfirmDialog(this, "Please Try Again Later", "Something Wrong", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please Try Again Later", "Something Wrong", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
-
         }
     }//GEN-LAST:event_completeBtnActionPerformed
 
@@ -616,7 +637,7 @@ public class CompanyPurchases extends javax.swing.JFrame {
             } else if (FromDate != "null") {
                 Queary += " WHERE `date` <= '" + FromDate + "' ";
             }
-            
+
             System.out.println(Queary);
             //
             ResultSet rs = MySQL.execute(Queary);
