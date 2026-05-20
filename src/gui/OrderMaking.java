@@ -444,6 +444,7 @@ public class OrderMaking extends javax.swing.JFrame {
         jRadioButton9 = new javax.swing.JRadioButton();
         jTextField10 = new javax.swing.JTextField();
         jTextField12 = new javax.swing.JTextField();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -592,8 +593,8 @@ public class OrderMaking extends javax.swing.JFrame {
         jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 60, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel12.setText("Accessories");
-        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 440, -1, -1));
+        jLabel12.setText("Free Items");
+        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 420, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -769,7 +770,7 @@ public class OrderMaking extends javax.swing.JFrame {
         jPanel6.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 490, -1, -1));
 
         jSeparator7.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel6.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 450, 10, 110));
+        jPanel6.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 430, 10, 130));
 
         jLabel30.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel30.setText("QTY");
@@ -861,14 +862,14 @@ public class OrderMaking extends javax.swing.JFrame {
         jPanel6.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(557, 553, 60, -1));
 
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select JobType", "Shop Orders", "EyeCamp Orders", "Mobile Orders" }));
-        jPanel6.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 490, -1, -1));
+        jPanel6.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 450, -1, -1));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel14.setText("Total Amount ");
         jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 420, -1, -1));
 
         jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Warrenty" }));
-        jPanel6.add(jComboBox7, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 540, 122, -1));
+        jPanel6.add(jComboBox7, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 480, 122, -1));
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -951,20 +952,20 @@ public class OrderMaking extends javax.swing.JFrame {
         jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 530, -1, -1));
 
         jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 450, 10, 110));
+        jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 430, 10, 130));
 
         jLabel18.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel18.setText("Order Types");
-        jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 440, -1, -1));
+        jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 420, -1, -1));
 
         jRadioButton5.setText("Bag");
-        jPanel6.add(jRadioButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 480, -1, -1));
+        jPanel6.add(jRadioButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 450, -1, -1));
 
         jRadioButton6.setText("Box");
-        jPanel6.add(jRadioButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 510, -1, -1));
+        jPanel6.add(jRadioButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 480, -1, -1));
 
         jRadioButton7.setText("Clothing");
-        jPanel6.add(jRadioButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 540, -1, -1));
+        jPanel6.add(jRadioButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 510, -1, -1));
 
         jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -986,6 +987,10 @@ public class OrderMaking extends javax.swing.JFrame {
         jPanel6.add(jRadioButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 550, -1, -1));
         jPanel6.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 550, 70, 20));
         jPanel6.add(jTextField12, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 530, 70, 20));
+
+        jCheckBox1.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jCheckBox1.setText("7 days lens warrenty");
+        jPanel6.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 510, -1, -1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -1203,6 +1208,11 @@ public class OrderMaking extends javax.swing.JFrame {
 
         boolean go = false;
 
+        // 7 days warenty boolean
+        int d7warrenty = 0;
+        if (jCheckBox1.isSelected()) {
+            d7warrenty = 1;
+        }
         // box stock id
         String box_stock_id = null;
         // bag stock id
@@ -1380,8 +1390,8 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             // if lens select
                                                             if (lensResultSet.next()) {
                                                                 // INSERT PROCESS
-                                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
-                                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
+                                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`7_days__lens_warrenty`)"
+                                                                        + " VALUES ('" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "','"+d7warrenty+"') ");
 
                                                                 int invoiceId = 0;
                                                                 if (Inser_rs.next()) {
@@ -2272,6 +2282,7 @@ public class OrderMaking extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JComboBox<String> jComboBox7;
     private javax.swing.JLabel jLabel1;
