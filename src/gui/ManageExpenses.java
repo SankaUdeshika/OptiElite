@@ -4,6 +4,8 @@
  */
 package gui;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -26,28 +28,47 @@ public class ManageExpenses extends javax.swing.JFrame {
     /**
      * Creates new form ManageExpenses
      */
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
     public ManageExpenses() {
         initComponents();
+        setSize(screen.width, screen.height);
         refresh();
+
     }
 
     public void refresh() {
         loadExpensestable();
-        loadLocations();
+//        loadLocations();
         viewReportBtn.setVisible(false);
     }
 
     public void loadExpensestable() {
+        ResultSet expenses_rs = null;
         try {
             // get TodayDate
-            Date currrentDay = new Date();
+            Date currentDay = new Date();
             SimpleDateFormat smd = new SimpleDateFormat("yyyy-MM-dd");
-            String formateDate = smd.format(currrentDay);
-            ResultSet expenses_rs = MySQL.execute("SELECT * FROM `report_item` INNER JOIN `daily_report` ON `daily_report`.`report_id` = `report_item`.`daily_report_report_id` WHERE `daily_report`.`date` = '" + formateDate + "'  ");
-            DefaultTableModel tableModel = (DefaultTableModel) jTable3.getModel();
-            while (expenses_rs.next()) {
+            String formattedDate = smd.format(currentDay);
 
-                Vector v = new Vector();
+            // Use PreparedStatement to prevent SQL injection (recommended)
+            String query = "SELECT * FROM `report_item` "
+                    + "INNER JOIN `daily_report` ON `daily_report`.`report_id` = `report_item`.`daily_report_report_id` "
+                    + "WHERE `daily_report`.`date` = ? AND `daily_report`.`location_id` = ?";
+
+            // If your MySQL.execute doesn't support PreparedStatement, at least escape the values
+            expenses_rs = MySQL.execute("SELECT * FROM `report_item` "
+                    + "INNER JOIN `daily_report` ON `daily_report`.`report_id` = `report_item`.`daily_report_report_id` "
+                    + "WHERE `daily_report`.`date` = '" + formattedDate + "' "
+                    + "AND `daily_report`.`location_id` = '" + UserDetails.UserLocation_id + "'");
+
+            DefaultTableModel tableModel = (DefaultTableModel) jTable3.getModel();
+
+            // Clear the table properly instead of using removeAll()
+            tableModel.setRowCount(0);
+
+            while (expenses_rs.next()) {
+                Vector<String> v = new Vector<>();
                 v.add(expenses_rs.getString("report_item_id"));
                 v.add(expenses_rs.getString("description"));
                 v.add(expenses_rs.getString("date"));
@@ -55,33 +76,44 @@ public class ManageExpenses extends javax.swing.JFrame {
                 tableModel.addRow(v);
             }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "something wrong, Please try again later");
-        }
-    }
-
-    public void loadLocations() {
-        try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `location`");
-            Vector v = new Vector();
-
-            v.add("Select Category");
-            while (rs.next()) {
-                v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("location_name")));
+            JOptionPane.showMessageDialog(this, "Something went wrong. Please try again later.", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            // Always close the ResultSet to prevent memory leaks
+            if (expenses_rs != null) {
+                try {
+                    expenses_rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-
-            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
-            jComboBox1.setModel(dfm);
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
+//    public void loadLocations() {
+//        try {
+//            ResultSet rs = MySQL.execute("SELECT * FROM `location`");
+//            Vector v = new Vector();
+//
+//            v.add("Select Category");
+//            while (rs.next()) {
+//                v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("location_name")));
+//            }
+//
+//            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+//            jComboBox1.setModel(dfm);
+//
+//        } catch (SQLException se) {
+//            se.printStackTrace();
+//            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -112,10 +144,6 @@ public class ManageExpenses extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         descriptionText = new javax.swing.JTextArea();
         fullReportBtn = new javax.swing.JButton();
@@ -132,7 +160,6 @@ public class ManageExpenses extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
 
         jButton1.setText("close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -219,12 +246,6 @@ public class ManageExpenses extends javax.swing.JFrame {
             jTable3.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        jLabel2.setText("choose Date");
-
-        jLabel3.setText("Location");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         descriptionText.setColumns(20);
         descriptionText.setRows(5);
         jScrollPane1.setViewportView(descriptionText);
@@ -248,19 +269,10 @@ public class ManageExpenses extends javax.swing.JFrame {
                             .addComponent(priceText, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane4)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(62, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -282,19 +294,8 @@ public class ManageExpenses extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 340, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -371,7 +372,7 @@ public class ManageExpenses extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(184, Short.MAX_VALUE))
+                .addContainerGap(220, Short.MAX_VALUE))
         );
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
@@ -504,7 +505,6 @@ public class ManageExpenses extends javax.swing.JFrame {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -534,58 +534,86 @@ public class ManageExpenses extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void fullReportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullReportBtnActionPerformed
-        // get TodayDate
-        Date currrentDay = new Date();
-        SimpleDateFormat smd = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat smt = new SimpleDateFormat("HH:mm:ss");
+        // Get today's date and time
+        Date currentDay = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat stf = new SimpleDateFormat("HH:mm:ss");
 
-        String formateDate = smd.format(currrentDay);
-        String formateTime = smt.format(currrentDay);
+        String formattedDate = sdf.format(currentDay);
+        String formattedTime = stf.format(currentDay);
 
-        // check if existing daily report today?
-        ResultSet daily_rs = MySQL.execute("SELECT * FROM `daily_report` WHERE `daily_report`.`date` = '" + formateDate + "'  ");
+// Get input details once (reused in both branches)
+        String descriptionText = this.descriptionText.getText();
+        String priceText = this.priceText.getText();
+
+        int returned_report_id = -1;
+
+// Check if a daily report exists for today
+        ResultSet daily_rs = MySQL.execute("SELECT * FROM `daily_report` WHERE `date` = '" + formattedDate + "' AND `location_id` = '" + UserDetails.UserLocation_id + "'");
 
         try {
-            int returned_report_id = -1;
-            if (daily_rs.next()) { // edon't create report
+            if (daily_rs != null && daily_rs.next()) {
+                // ── Report already exists ──────────────────────────────────────
                 String report_id = daily_rs.getString("report_id");
-                // get Details 
-                String DescriptionText = descriptionText.getText();
-                String PriceText = priceText.getText();
-                ResultSet rs = MySQL.execute("INSERT INTO `report_item` (`no`,`description`,`amount`,`daily_report_report_id`) VALUES ('1','" + DescriptionText + "','" + PriceText + "','" + report_id + "')");
-                if (rs != null && rs.next()) {
-                    returned_report_id = rs.getInt(1);
-                }
-            } else { // create reoprt
+                daily_rs.close();
 
-                // Make Daily Report
-                MySQL.execute("INSERT INTO `daily_report` (`date`,`location_id`,`users_id`,`time`) VALUES ('" + formateDate + "','" + Integer.parseInt(UserDetails.UserLocation_id) + "','" + UserDetails.UserId + "','" + formateTime + "')");
+                    MySQL.execute(
+                        "INSERT INTO `report_item` (`no`, `description`, `amount`, `daily_report_report_id`) "
+                        + "VALUES ('1', '" + descriptionText + "', '" + priceText + "', '" + report_id + "')");
 
-                // get Inserted Daily Report
-                ResultSet new_daily_rs = MySQL.execute("SELECT * FROM `daily_report` WHERE `daily_report`.`date` = '" + formateDate + "'  ");
-                String newreport_id = new_daily_rs.getString("report_id");
+                returned_report_id = Integer.parseInt(report_id);
 
-                // get Details 
-                String DescriptionText = descriptionText.getText();
-                String PriceText = priceText.getText();
-                ResultSet rs = MySQL.execute("INSERT INTO `report_item` (`no`,`description`,`amount`,`daily_report_report_id`) VALUES ('1','" + DescriptionText + "','" + PriceText + "','" + newreport_id + "')");
-
-                if (rs != null && rs.next()) {
-                    returned_report_id = rs.getInt(1);
-                }
-
-            }
-            refresh();
-            int chooseResult = JOptionPane.showConfirmDialog(this, "do you want to print expense Sheet?", "SUCCESS", JOptionPane.YES_NO_OPTION);
-            if (chooseResult == JOptionPane.YES_OPTION) {
-                Reports.PrintExpensesSheet(String.valueOf(returned_report_id));
             } else {
-                refresh();
+                // ── No report yet — create one ────────────────────────────────
+                if (daily_rs != null) {
+                    daily_rs.close();
+                }
+
+                MySQL.execute(
+                        "INSERT INTO `daily_report` (`date`, `location_id`, `users_id`, `time`) "
+                        + "VALUES ('" + formattedDate + "', '" + UserDetails.UserLocation_id + "', '" + UserDetails.UserId + "', '" + formattedTime + "')");
+
+                // Fetch the newly created report
+                ResultSet new_daily_rs = MySQL.execute("SELECT * FROM `daily_report` WHERE `date` = '" + formattedDate + "' AND `location_id` = '" + UserDetails.UserLocation_id + "'");
+
+                if (new_daily_rs != null && new_daily_rs.next()) {
+                    String newReportId = new_daily_rs.getString("report_id");
+                    new_daily_rs.close();
+
+                    returned_report_id = Integer.parseInt(newReportId);
+
+                  MySQL.execute(
+                            "INSERT INTO `report_item` (`no`, `description`, `amount`, `daily_report_report_id`) "
+                            + "VALUES ('1', '" + descriptionText + "', '" + priceText + "', '" + newReportId + "')");
+
+                
+
+                } else {
+                    if (new_daily_rs != null) {
+                        new_daily_rs.close();
+                    }
+                    throw new SQLException("Failed to retrieve the newly created daily report.");
+                }
             }
+
+            refresh();
+
         } catch (SQLException sq) {
-            JOptionPane.showMessageDialog(this, "connection Problem", "something wrong in your connection. please try again later", JOptionPane.ERROR_MESSAGE);
+            sq.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    this, "A database error occurred. Please try again later.",
+                    "Connection Problem", JOptionPane.ERROR_MESSAGE
+            );
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (daily_rs != null && !daily_rs.isClosed()) {
+                    daily_rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
     }//GEN-LAST:event_fullReportBtnActionPerformed
@@ -645,18 +673,14 @@ public class ManageExpenses extends javax.swing.JFrame {
     private javax.swing.JButton homeBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;

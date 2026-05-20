@@ -51,8 +51,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
     public void Refresh() {
         loadReports();
         loadLocations();
-        jTextArea1.setText("");
-        jTextField2.setText("");
         jDateChooser1.setDate(null);
     }
 
@@ -136,22 +134,10 @@ public class CompanyPurchases extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel13 = new javax.swing.JLabel();
         searchBtn = new javax.swing.JButton();
-        jSeparator6 = new javax.swing.JSeparator();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel11 = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        completeBtn = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
@@ -246,7 +232,7 @@ public class CompanyPurchases extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 176, 899, 230));
+        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 176, 899, 390));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel13.setText("Daily Reports");
@@ -259,7 +245,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
             }
         });
         jPanel6.add(searchBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 90, 140, -1));
-        jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 910, 10));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(178, 90, 140, -1));
@@ -272,71 +257,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel11.setText("Report ID");
         jPanel6.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
-
-        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel6.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 440, 20, 140));
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
-
-        jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, 230, 92));
-
-        jLabel1.setText("Amount");
-        jPanel6.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 450, 55, -1));
-        jPanel6.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 470, 200, -1));
-
-        jLabel2.setText("Description");
-        jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 90, -1));
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "No", "Descrpition", "Price"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
-            jTable2.getColumnModel().getColumn(2).setResizable(false);
-        }
-
-        jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 440, 320, 140));
-
-        jButton1.setText("Add Expenses");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 510, 200, -1));
-
-        jButton2.setText("Delete Row");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 450, -1, -1));
-
-        completeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/add-task.png"))); // NOI18N
-        completeBtn.setText("Add Report");
-        completeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                completeBtnActionPerformed(evt);
-            }
-        });
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/overview.png"))); // NOI18N
         jButton7.setText("View Reports");
@@ -363,7 +283,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
-                            .addComponent(completeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -391,10 +310,8 @@ public class CompanyPurchases extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
-                        .addComponent(completeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addComponent(jButton7)
-                        .addGap(40, 40, 40)
+                        .addGap(127, 127, 127)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7)
@@ -545,68 +462,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void completeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeBtnActionPerformed
-        // Add Report
-        int item_count = jTable2.getRowCount();
-        if (item_count < 1) {
-            JOptionPane.showMessageDialog(this, "Please add Expenses items to the table", "Empty Expenses Table", JOptionPane.ERROR_MESSAGE);
-        } else {
-            // Date
-            final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new Date();
-            String day = dateFormat.format(date);
-            // Time
-            final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-            String time = timeFormat.format(date);
-
-            try {
-                // ✅ Validation: Check if a daily report already exists for today
-                ResultSet check_rs = MySQL.execute(
-                        "SELECT COUNT(*) FROM `daily_report` "
-                        + "WHERE `date` = '" + day + "' "
-                        + "AND `location_id` = '" + UserDetails.UserLocation_id + "' "
-                        + "AND `users_id` = '" + UserDetails.UserId + "'"
-                );
-
-                if (check_rs.next() && check_rs.getInt(1) > 0) {
-                    // ❌ Report already exists for today
-                    JOptionPane.showMessageDialog(
-                            this,
-                            "A Daily Report for today (" + day + ") already exists.\nYou cannot add another report for the same day.",
-                            "Report Already Exists",
-                            JOptionPane.WARNING_MESSAGE
-                    );
-                } else {
-                    // ✅ No report exists, proceed with insertion
-                    ResultSet insert_rs = MySQL.execute(
-                            "INSERT INTO `daily_report` (`date`, `location_id`, `users_id`, `time`) "
-                            + "VALUES ('" + day + "', '" + UserDetails.UserLocation_id + "', '" + UserDetails.UserId + "', '" + time + "')"
-                    );
-
-                    if (insert_rs.next()) {
-                        int reportId = insert_rs.getInt(1);
-                        for (int i = 0; i < item_count; i++) {
-                            String description = String.valueOf(jTable2.getValueAt(i, 1));
-                            String price = String.valueOf(jTable2.getValueAt(i, 2));
-                            double amount = Double.parseDouble(price);
-                            MySQL.execute(
-                                    "INSERT INTO `report_item` (`no`, `description`, `amount`, `daily_report_report_id`) "
-                                    + "VALUES ('" + i + "', '" + description + "', '" + amount + "', '" + reportId + "')"
-                            );
-                        }
-                    }
-
-                    Refresh();
-                    JOptionPane.showMessageDialog(this, "Report adding is Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
-                }
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Please Try Again Later", "Something Wrong", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
-            }
-        }
-    }//GEN-LAST:event_completeBtnActionPerformed
-
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         // Advance Search
 
@@ -680,43 +535,6 @@ public class CompanyPurchases extends javax.swing.JFrame {
         //        }
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Add Expenses
-        String description = jTextArea1.getText();
-        String amount = jTextField2.getText();
-        int rowCount = 1;
-
-        //input validation
-        if (description.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please Enter a Description", "Empty Description", JOptionPane.ERROR_MESSAGE);
-        } else if (amount.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please Enter a Amount", "Empty Amount", JOptionPane.ERROR_MESSAGE);
-        } else {
-            DefaultTableModel defaultTableModel = (DefaultTableModel) jTable2.getModel();
-            rowCount += defaultTableModel.getRowCount();
-            System.out.println(rowCount);
-            Vector v = new Vector();
-            v.add(rowCount++);
-            v.add(description);
-            v.add(amount);
-            defaultTableModel.addRow(v);
-        }
-
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-
-        if (jTable2.getSelectedRow() == -1) {
-            JOptionPane.showMessageDialog(this, "Please Select a data row", "Empty Table Row", JOptionPane.ERROR_MESSAGE);
-        } else {
-            DefaultTableModel defaultTableModel = (DefaultTableModel) jTable2.getModel();
-            int selectedRow = jTable2.getSelectedRow();
-            defaultTableModel.removeRow(selectedRow);
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         int selectedRow = jTable1.getSelectedRow();
@@ -743,21 +561,16 @@ public class CompanyPurchases extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton completeBtn;
     private javax.swing.JLabel dateField;
     private javax.swing.JButton homeBtn;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel5;
@@ -771,19 +584,12 @@ public class CompanyPurchases extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JButton previousBtn;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton searchBtn;
