@@ -41,6 +41,7 @@ public class CompletePayments extends javax.swing.JFrame {
         dueAmountField.setEnabled(false);
         invoiceIDField.setEnabled(false);
         paidAmount.setEnabled(false);
+        subTotal.setEnabled(false);
 
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM invoice "
@@ -114,6 +115,10 @@ public class CompletePayments extends javax.swing.JFrame {
         jRadioButton4 = new javax.swing.JRadioButton();
         jRadioButton1 = new javax.swing.JRadioButton();
         jLabel15 = new javax.swing.JLabel();
+        jRadioButton5 = new javax.swing.JRadioButton();
+        jRadioButton6 = new javax.swing.JRadioButton();
+        paymentInfoTxt = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -172,7 +177,7 @@ public class CompletePayments extends javax.swing.JFrame {
                 proceedBtnActionPerformed(evt);
             }
         });
-        jPanel1.add(proceedBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 570, 180, 40));
+        jPanel1.add(proceedBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 640, 180, 40));
 
         jLabel10.setText("Payment Method");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 510, 100, -1));
@@ -190,7 +195,7 @@ public class CompletePayments extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 620, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 690, -1, -1));
         jPanel1.add(paidAmount, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 290, 153, -1));
 
         jLabel13.setText("Paid Amount");
@@ -220,6 +225,16 @@ public class CompletePayments extends javax.swing.JFrame {
         jLabel15.setText("Pay amount");
         jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 450, 73, -1));
 
+        buttonGroup1.add(jRadioButton5);
+        jRadioButton5.setText("Koko");
+        jPanel1.add(jRadioButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 570, -1, -1));
+
+        buttonGroup1.add(jRadioButton6);
+        jRadioButton6.setText("Mint Pay");
+        jPanel1.add(jRadioButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 590, -1, -1));
+        jPanel1.add(paymentInfoTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 570, 130, 40));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 560, 210, 10));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -233,7 +248,7 @@ public class CompletePayments extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 721, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -258,6 +273,9 @@ public class CompletePayments extends javax.swing.JFrame {
                     double subTotalAmount = Double.parseDouble(subTotal.getText());
                     int paymentMethodSelecetd = 0;
 
+                    // instalment Reference No
+                    String paymentInfo = "";
+
 //                payment Assign
                     if (jRadioButton2.isSelected()) {
                         paymentMethodSelecetd = 1;
@@ -267,6 +285,12 @@ public class CompletePayments extends javax.swing.JFrame {
                         paymentMethodSelecetd = 3;
                     } else if (jRadioButton1.isSelected()) {
                         paymentMethodSelecetd = 4;
+                    } else if (jRadioButton5.isSelected()) {
+                        paymentMethodSelecetd = 5;
+                        paymentInfo = paymentInfoTxt.getText();
+                    } else if (jRadioButton6.isSelected()) {
+                        paymentMethodSelecetd = 6;
+                        paymentInfo = paymentInfoTxt.getText();
                     }
 
                     double payment = paid_amount + payAmount;
@@ -282,7 +306,7 @@ public class CompletePayments extends javax.swing.JFrame {
                     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                     String curruntTime = now.format(timeFormatter);
 
-                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoice + "','" + payAmount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "') ");
+                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`,`payment_info`) VALUES ('" + invoice + "','" + payAmount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "','"+paymentInfo+"') ");
                     MySQL.execute("UPDATE `invoice` SET `total_price` = '" + newtotalPayment + "'  WHERE `invoice_id` = '" + invoice + "' ");
 
                     if (ballence <= 0.00) {
@@ -355,11 +379,15 @@ public class CompletePayments extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton4;
+    private javax.swing.JRadioButton jRadioButton5;
+    private javax.swing.JRadioButton jRadioButton6;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField locationField;
     private javax.swing.JTextField nameField;
     private javax.swing.JTextField nicField;
     private javax.swing.JTextField paidAmount;
+    private javax.swing.JTextField paymentInfoTxt;
     private javax.swing.JButton proceedBtn;
     private javax.swing.JTextField subTotal;
     private javax.swing.JTextField totalPriceField;
