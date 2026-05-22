@@ -1141,7 +1141,22 @@ public class OrderManagement extends javax.swing.JFrame {
 
             int selectROw = jTable1.getSelectedRow();
             String invoiceId = String.valueOf(jTable1.getValueAt(selectROw, 0));
-            System.out.println(invoiceId);
+
+//            invoice Item ReStock ->
+            ResultSet rs = MySQL.execute("SELECT `invoice_item`.`qty` AS `iqty`, `invoice_item`.`stock_id` AS `istock_id`, `stock`.`qty` AS `sqty`  FROM `invoice_item` INNER JOIN `stock` ON  `stock`.`id` = `invoice_item`.`stock_id`   WHERE `invoice_id` = '" + invoiceId + "'");
+
+            try {
+                while (rs.next()) {
+                    int BilledQty = rs.getInt("iqty");
+                    int stock_id = rs.getInt("istock_id");
+                    int stockQty = rs.getInt("sqty");
+
+                    MySQL.execute("UPDATE `stock` SET `qty` = `qty` + '" + BilledQty + "' WHERE `id` = '" + stock_id + "';");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "something wrong, stock not restoked perfectly. please check again");
+            }
 
 //            Delete From Advance Payemnts
             try {
@@ -1162,7 +1177,6 @@ public class OrderManagement extends javax.swing.JFrame {
             }
 
             Refresh();
-
         } else {
             JOptionPane.showMessageDialog(this, "please Select a Order row", "Empty Row", JOptionPane.ERROR_MESSAGE);
         }
