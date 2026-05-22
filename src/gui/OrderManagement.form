@@ -439,9 +439,9 @@
                           <Table columnCount="10" rowCount="1">
                             <Column editable="false" title="Inovice id" type="java.lang.Object"/>
                             <Column editable="false" title="Customer Name" type="java.lang.Object"/>
+                            <Column editable="false" title="Customer mobile" type="java.lang.Object"/>
                             <Column editable="false" title="Date" type="java.lang.Object"/>
                             <Column editable="false" title="Location" type="java.lang.Object"/>
-                            <Column editable="false" title="Status" type="java.lang.Object"/>
                             <Column editable="false" title="Discount" type="java.lang.Object"/>
                             <Column editable="false" title="Advancement " type="java.lang.Object"/>
                             <Column editable="false" title="Due Payment" type="java.lang.Object"/>

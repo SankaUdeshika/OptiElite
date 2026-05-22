@@ -135,7 +135,7 @@ public class OrderManagement extends javax.swing.JFrame {
         ReportTotal = 0;
         try {
             ResultSet rs = MySQL.execute("SELECT DISTINCT "
-                    + "`subtotal`,`invoice`.`invoice_id`,`name`,`nic`,`date`,`location_name`,`advance_payment`,`discount`,`total_price`,`status_name`, `payment_status`.`status_name`, `payment_status_id` "
+                    + "`customer_mobile`,`subtotal`,`invoice`.`invoice_id`,`name`,`nic`,`date`,`location_name`,`advance_payment`,`discount`,`total_price`,`status_name`, `payment_status`.`status_name`, `payment_status_id` "
                     + "FROM `invoice` "
                     + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile` "
                     + "LEFT JOIN `invoice_item` ON `invoice_item`.`invoice_id` = `invoice`.`invoice_id` "
@@ -151,9 +151,9 @@ public class OrderManagement extends javax.swing.JFrame {
                 Vector v = new Vector();
                 v.add(rs.getString("invoice_id"));
                 v.add(rs.getString("name"));
+                v.add(rs.getString("customer_mobile"));
                 v.add(rs.getString("date"));
                 v.add(rs.getString("location_name"));
-                v.add(rs.getString("status_name"));
                 v.add(rs.getDouble("discount"));
                 v.add(rs.getDouble("advance_payment"));
                 v.add(rs.getDouble("total_price"));
@@ -333,7 +333,7 @@ public class OrderManagement extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Inovice id", "Customer Name", "Date", "Location", "Status", "Discount", "Advancement ", "Due Payment", "Sub Total", "Payed"
+                "Inovice id", "Customer Name", "Customer mobile", "Date", "Location", "Discount", "Advancement ", "Due Payment", "Sub Total", "Payed"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -906,9 +906,9 @@ public class OrderManagement extends javax.swing.JFrame {
                 Vector v = new Vector();
                 v.add(rs.getString("invoice_id"));
                 v.add(rs.getString("name"));
+                v.add(rs.getString("customer.mobile"));
                 v.add(rs.getString("date"));
                 v.add(rs.getString("location_name"));
-                v.add(rs.getString("status_name"));
                 v.add(rs.getDouble("discount"));
                 v.add(rs.getDouble("advance_payment"));
                 v.add(rs.getDouble("total_price"));
