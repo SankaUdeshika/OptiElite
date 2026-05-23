@@ -1211,7 +1211,7 @@ public class OrderMaking extends javax.swing.JFrame {
         // 7 days warenty boolean
         int d7warrenty = 0;
         if (jCheckBox1.isSelected()) {
-            d7warrenty = 1;
+            d7warrenty = 1; 
         }
         // box stock id
         String box_stock_id = null;
