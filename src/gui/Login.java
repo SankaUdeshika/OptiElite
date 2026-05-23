@@ -19,16 +19,16 @@ import models.MySQL;
 import models.SettingsFile;
 
 public class Login extends javax.swing.JFrame {
-
+    
     public static Logger logger = Logger.getLogger("egaleEye");
-
+    
     public Login() {
         initComponents();
         setLocationRelativeTo(null);
         loadLocations();
         Navs.routee = false;
     }
-
+    
     public void loadLocations() {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `location` ORDER BY `id` ASC");
@@ -48,7 +48,7 @@ public class Login extends javax.swing.JFrame {
             logger.log(Level.WARNING, "Please Check Your Internet Connection or Please Try again later", e);
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -225,49 +225,60 @@ public class Login extends javax.swing.JFrame {
         } else {
             if (!usernameField.getText().isEmpty()) {
                 if (passwordField.getPassword().length != 0) {
-
+                    
                     String Password = String.valueOf(passwordField.getPassword());
                     String UserName = usernameField.getText();
-
+                    
                     try {
                         ResultSet rs = MySQL.execute("SELECT * FROM `users` "
                                 + "INNER JOIN `user_type` ON `user_type`.`id` = `users`.`user_type_id` "
                                 + "INNER JOIN `user_status` ON `user_status`.`status_id` = `users`.`user_status_status_id`  "
                                 + "INNER JOIN `location` ON `location`.`id` = `users`.`location_id`  "
-                                + "WHERE `username` = '" + UserName + "' AND `password` = '" + Password + "' AND `user_status_status_id` = '1'  AND `location`.`status_status_id` = '1' ");
-
+                                + "WHERE `username` = '" + UserName + "' AND `password` = '" + Password + "' AND `user_status_status_id` = '1'   ");
+                        
                         if (rs.next()) {
-                            MySQL.execute(" UPDATE `users` SET `location_id` = '" + locationComboBox.getSelectedIndex() + "'  WHERE `username` = '" + UserName + "' ");
-                            String ResultFirstname = rs.getString("fname");
-                            String ResultLastname = rs.getString("lname");
-                            String id = rs.getString("id");
-                            String userRole = rs.getString("user_type_id");
-                            String locaiton_id = String.valueOf(locationComboBox.getSelectedIndex());
 
-                            UserDetails ud = new UserDetails(ResultFirstname, ResultLastname, id, locaiton_id, userRole);
-                            System.out.println(locaiton_id);
-                            logger.info("user has logged succesfully");
-                            // Load Settings
-                            try {
-                                ResultSet settings_rs = MySQL.execute("SELECT * FROM `settings` WHERE `setting_id` = 1");
-                                if (settings_rs.next()) {
-                                    SettingsFile.lensStockOnly = settings_rs.getBoolean("lens_stock");
-                                    SettingsFile.darkTheme = settings_rs.getBoolean("dark_theme");
+                            // Check branch location is active or not
+                            ResultSet branch_rs = MySQL.execute("SELECT * FROM `location` WHERE `id` = '" + locationComboBox.getSelectedIndex() + "' AND `status_status_id` = '1'");
+                            
+                            if (branch_rs.next()) {
+                                MySQL.execute(" UPDATE `users` SET `location_id` = '" + locationComboBox.getSelectedIndex() + "'  WHERE `username` = '" + UserName + "' ");
+                                String ResultFirstname = rs.getString("fname");
+                                String ResultLastname = rs.getString("lname");
+                                String id = rs.getString("id");
+                                String userRole = rs.getString("user_type_id");
+                                String locaiton_id = String.valueOf(locationComboBox.getSelectedIndex());
+                                
+                                UserDetails ud = new UserDetails(ResultFirstname, ResultLastname, id, locaiton_id, userRole);
+                                System.out.println(locaiton_id);
+                                logger.info("user has logged succesfully");
+                                // Load Settings
+                                try {
+                                    ResultSet settings_rs = MySQL.execute("SELECT * FROM `settings` WHERE `setting_id` = 1");
+                                    if (settings_rs.next()) {
+                                        SettingsFile.lensStockOnly = settings_rs.getBoolean("lens_stock");
+                                        SettingsFile.darkTheme = settings_rs.getBoolean("dark_theme");
+                                    }
+                                } catch (Exception e) {
+                                    JOptionPane.showMessageDialog(this, "Unable to load settings data", "Error", JOptionPane.ERROR_MESSAGE);
                                 }
-                            } catch (Exception e) {
-                                JOptionPane.showMessageDialog(this, "Unable to load settings data", "Error", JOptionPane.ERROR_MESSAGE);
+                                Dashboard cr = new Dashboard();
+                                cr.setVisible(true);
+                                this.dispose();
+                            } else {
+                                JOptionPane.showMessageDialog(this, "This Branch Not Active, Please Contact The Developer", "Branch Inactive", JOptionPane.ERROR_MESSAGE);
                             }
-                            Dashboard cr = new Dashboard();
-                            cr.setVisible(true);
-                            this.dispose();
 
+//                            
+//
+//                          
                         } else {
                             JOptionPane.showMessageDialog(this, "Your Login Details are invalid, please check and try again", "Invalid User Details", JOptionPane.ERROR_MESSAGE);
                         }
                     } catch (Exception e) {
                         logger.log(Level.WARNING, "An error occurred while trying to log in", e);
                     }
-
+                    
                 } else {
                     JOptionPane.showMessageDialog(this, "Please Enter Password", "Empty Password", JOptionPane.ERROR_MESSAGE);
                 }
@@ -290,24 +301,24 @@ public class Login extends javax.swing.JFrame {
 //       FlatMacLightLaf.setup();
         FlatDarkLaf.registerCustomDefaultsSource("resources.theme");
         FlatMacLightLaf.setup();
-
+        
         UIManager.put("PasswordField.foreground", myWhite);
         UIManager.put("PasswordField.background", myBlack);
-
+        
         UIManager.put("Button.arc", 8);
         UIManager.put("Button.background", myWhite);
         UIManager.put("Button.foreground", myBlack);
         UIManager.put("background", myBlack);
-
+        
         UIManager.put("Button", "borderColor: #09090B; background: #1c1c1c; foreground: #fff");
-
+        
         try {
             FileHandler fileHandler = new FileHandler("logs.txt", true);
             logger.addHandler(fileHandler);
-
+            
             SimpleFormatter formatter = new SimpleFormatter();
             fileHandler.setFormatter(formatter);
-
+            
             fileHandler.setEncoding("UTF-8");
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error occurred while setting up FileHandler", e);
