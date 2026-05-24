@@ -25,6 +25,7 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import models.MySQL;
 import models.UserDetails;
+import org.apache.logging.log4j.core.jmx.Server;
 
 /**
  *
@@ -58,48 +59,69 @@ public class EditOrder extends javax.swing.JFrame {
     public double SubTotal = 0;
 
     // init datas
+    private String customer_mobile;
     private String BaseInvoice_id;
     private String product_id;
+    private String frameId;
     private String lensStock_id;
     private String lensCode;
 
     public EditOrder(String mobile, String invoice_id) {
         initComponents();
         BaseInvoice_id = invoice_id;
+        customer_mobile = mobile;
         setSize(screen.width, screen.height);
-        jTextField2.setEnabled(false);
         findData(invoice_id);
+        jTextField2.setEnabled(false);
+
+        jTextField8.setEnabled(false);
+
         Refresh(mobile);
         operater();
         time();
+
     }
 
     private void findData(String invoice_id) {
         try {
             ResultSet rs = MySQL.execute("SELECT product.id AS productID,"
+                    + " product.intid AS frameID,"
                     + " invoice.lens_stock_lens_id AS lensID,"
                     + " `lens_stock`.`lens_code` AS lensCode,"
+                    + " `invoice`.`lenstotal` AS lensTotal,"
+                    + " `invoice`.`frame_total` AS frame_total,"
                     + " `invoice`.`lens_Qty` AS OrderdLensQty, "
                     + " `invoice`.`discount` AS OrderdDiscount, "
                     + " `invoice`.`advance_payment` AS Orderdadvance_payment, "
                     + " `invoice`.`payment_amount` AS OrderPayment_amount, "
-                    + " `invoice`.`payment_method_Payment_id` AS OrderPayment_method_id"
+                    + " `invoice`.`subtotal` AS subtotal,"
+                    + " `invoice`.`discount_percentage` AS discount_percentage "
                     + " FROM `invoice` INNER JOIN invoice_item ON invoice_item.invoice_id  = invoice.invoice_id  INNER JOIN stock ON stock.id = invoice_item.stock_id  LEFT JOIN lens_stock ON lens_stock.lens_id = invoice.lens_stock_lens_id INNER JOIN product ON product.id = stock.product_id INNER JOIN `payment_method` ON `payment_method`.`Payment_id` = `invoice`.`payment_method_Payment_id`  WHERE `invoice`.`invoice_id` = '" + invoice_id + "' ");
 
             if (rs.next()) {
                 product_id = rs.getString("productID");
+                frameId = rs.getString("frameID");
                 String lensId = rs.getString("lensID");
+
+                // set variable for the summery
+                frame_price = rs.getDouble("frame_total");
+                Discount = rs.getDouble("OrderdDiscount");
+                final_discountPercentage = rs.getString("discount_percentage");
+                AdvancedPayment = rs.getDouble("Orderdadvance_payment");
+                SubTotal = rs.getDouble("subtotal");
+
                 if (lensId != null) {
                     lensStock_id = lensId;
-                    lensCode = rs.getString("lensCode");
+                    lensCode = rs.getString("lensID");
+                    LensTotal = rs.getDouble("lensTotal");
+
                     // set Variables
                     jTextField5.setText(String.valueOf(rs.getInt("OrderdLensQty")));
                     jTextField5.setText(String.valueOf(rs.getInt("OrderdLensQty")));
                     jTextField3.setText(String.valueOf(rs.getDouble("OrderdDiscount")));
-                    jTextField3.setText(String.valueOf(rs.getDouble("Orderdadvance_payment")));
-                    jTextField3.setText(String.valueOf(rs.getDouble("OrderPayment_amount")));
+                    jTextField11.setText(String.valueOf(rs.getDouble("Orderdadvance_payment")));
+                    jTextField8.setText(String.valueOf(rs.getDouble("OrderPayment_amount")));
 
-                    
                 }
             }
 
@@ -139,15 +161,17 @@ public class EditOrder extends javax.swing.JFrame {
     }
 
     public void Refresh(String mobile) {
+        findData(BaseInvoice_id);
         LoadCustomer(mobile);
-
-        LoadStockProducts();
         jTextField4.setText("");
         jTextField4.setEnabled(false);
         jTable2.setEnabled(false);
         jTextField1.setEnabled(false);
+        LoadStockProducts();
         lensLoading();
         LensStockSettings();
+        CalculateLensTotal();
+        ChangeTotal();
     }
 
     public void CalculateLensTotal() {
@@ -164,8 +188,11 @@ public class EditOrder extends javax.swing.JFrame {
             if (!jTextField7.getText().isEmpty()) {
                 ResultSet lensRs = MySQL.execute("SELECT * FROM `lens_stock`  WHERE `lens_id` = '" + jTextField7.getText() + "' ");
                 if (lensRs.next()) {
-                    LensTotal = lensRs.getDouble("lens_price") * Double.parseDouble(jTextField5.getText());
-                    System.out.println("Lens Price " + LensTotal);
+                    if (!jTextField7.getText().isEmpty()) {
+                        LensTotal = lensRs.getDouble("lens_price") * Double.parseDouble(jTextField5.getText());
+                        System.out.println("Lens Price " + LensTotal);
+                    }
+
                     ChangeTotal();
                 }
             }
@@ -192,10 +219,9 @@ public class EditOrder extends javax.swing.JFrame {
 
     public void LoadStockProducts() {
         try {
-
-//            aniwaren Login wenna wenawa
-            jTextField6.setText(product_id);
-            ResultSet rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `location` ON `location`.`id` = `stock`.`location_id`  WHERE `product`.`id` = '" + product_id + "' ");
+//          aniwaren Login wenna wenawa
+            jTextField6.setText(frameId);
+            ResultSet rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` INNER JOIN `location` ON `location`.`id` = `stock`.`location_id`  WHERE `product`.`intid` = '" + frameId + "' ");
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
 
@@ -277,10 +303,6 @@ public class EditOrder extends javax.swing.JFrame {
             logger.log(Level.WARNING, "Data failed to load", e);
         }
     }
-
-    
-
-    
 
     public void lensLoading() {
         try {
@@ -698,11 +720,11 @@ public class EditOrder extends javax.swing.JFrame {
 
         jLabel33.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel33.setText("Advance Payment");
-        jPanel6.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 530, 130, -1));
+        jPanel6.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 520, 130, -1));
 
         jLabel34.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel34.setText("Total Price");
-        jPanel6.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 530, -1, -1));
+        jLabel34.setText("Due Amount");
+        jPanel6.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 470, -1, -1));
 
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -718,7 +740,7 @@ public class EditOrder extends javax.swing.JFrame {
 
         jLabel38.setFont(new java.awt.Font("Segoe UI Historic", 1, 24)); // NOI18N
         jLabel38.setText("Rs.0.00");
-        jPanel6.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 550, -1, -1));
+        jPanel6.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 490, -1, -1));
 
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -738,7 +760,7 @@ public class EditOrder extends javax.swing.JFrame {
 
         jLabel27.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel27.setText("=");
-        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 550, 20, -1));
+        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 490, 20, -1));
 
         jButton5.setText("Add Discount");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -760,7 +782,7 @@ public class EditOrder extends javax.swing.JFrame {
                 jTextField11KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 550, 90, -1));
+        jPanel6.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 540, 90, -1));
 
         jLabel40.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel40.setText("Sub Total");
@@ -772,7 +794,7 @@ public class EditOrder extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(557, 553, 60, -1));
+        jPanel6.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 540, 60, -1));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel14.setText("Total Amount ");
@@ -787,7 +809,7 @@ public class EditOrder extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -848,11 +870,11 @@ public class EditOrder extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("X");
         jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 300, 48, 44));
-        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 550, 170, 32));
+        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 540, 170, 32));
 
         jLabel35.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel35.setText("Pay Amount");
-        jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 530, -1, -1));
+        jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 520, -1, -1));
 
         jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -899,7 +921,7 @@ public class EditOrder extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -917,8 +939,8 @@ public class EditOrder extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel7)
                         .addGap(31, 31, 31)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(237, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -954,7 +976,7 @@ public class EditOrder extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 10, Short.MAX_VALUE))
         );
 
         pack();
@@ -969,15 +991,247 @@ public class EditOrder extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        OrderManagement om = new OrderManagement();
+        om.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        Refresh(customer_mobile);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        JOptionPane.showMessageDialog(this, "Under Constructions. please try again later");
+        String Customer_mobile = jTextField1.getText();
+        String Prescription_id = jTextField4.getText();
+        String Frame_id = jTextField6.getText();
+        String lens_stock_id = jTextField7.getText();
+        String discount = jTextField3.getText();
+        String advancePayment = jTextField11.getText();
 
+// ── Safe parse for Payamount ──
+        double Payamount;
+        try {
+            Payamount = Double.parseDouble(jTextField8.getText());
+        } catch (Exception e) {
+            Payamount = 0.0;
+        }
+
+// ── Safe parse for Discount ──
+        try {
+            if (!discount.isEmpty()) {
+                Discount = Double.parseDouble(discount);
+            } else {
+                Discount = 0.0;
+            }
+        } catch (Exception e) {
+            Discount = 0.0;
+        }
+
+// ── Safe parse for AdvancedPayment ──
+        try {
+            if (!advancePayment.isEmpty()) {
+                AdvancedPayment = Double.parseDouble(advancePayment);
+            } else {
+                AdvancedPayment = 0.0;
+            }
+        } catch (Exception e) {
+            AdvancedPayment = 0.0;
+        }
+
+// ── Safe parse for lensQty ──
+        int lensQty = 0;
+        try {
+            if (!jTextField5.getText().isEmpty()) {
+                lensQty = Integer.parseInt(jTextField5.getText());
+            }
+        } catch (Exception e) {
+            lensQty = 0;
+        }
+
+        double InsertSubTotal = SubTotal - Discount;
+
+// ── Get lens stock id from jTextField7 ──
+        String lensStock_id = null;
+        if (!jTextField7.getText().isEmpty()) {
+            lensStock_id = jTextField7.getText();
+        }
+
+// ── Build lens_stock_lens_id value safely - use NULL if no lens selected ──
+        String lensStockSqlValue = (lensStock_id != null) ? "'" + lensStock_id + "'" : "NULL";
+
+        if (!Frame_id.isEmpty()) {
+            try {
+                // ── Get the OLD frame that was previously on this invoice ──
+                ResultSet oldInvoice_rs = MySQL.execute("SELECT `stock_id` FROM `invoice_item` WHERE `invoice_id` = '" + BaseInvoice_id + "'");
+
+                if (oldInvoice_rs.next()) {
+                    String oldStock_id = String.valueOf(oldInvoice_rs.getInt("stock_id"));
+
+                    if (oldStock_id.equals(Frame_id)) {
+                        // ── SAME FRAME: skip all stock checks, just update invoice directly ──
+                        System.out.println("Same frame selected, skipping stock check");
+
+                        // ── Update invoice_item (no change needed but keep consistent) ──
+                        MySQL.execute("UPDATE `invoice_item` SET `stock_id` = '" + Frame_id + "' WHERE `invoice_id` = '" + BaseInvoice_id + "'");
+
+                        // ── Update the invoice record ──
+                        MySQL.execute("UPDATE `invoice` SET "
+                                + "`total_price` = '" + Total + "', "
+                                + "`advance_payment` = '" + AdvancedPayment + "', "
+                                + "`discount` = '" + Discount + "', "
+                                + "`subtotal` = '" + InsertSubTotal + "', "
+                                + "`lenstotal` = '" + LensTotal + "', "
+                                + "`lens_stock_lens_id` = " + lensStockSqlValue + ", "
+                                + "`lens_Qty` = '" + lensQty + "', "
+                                + "`payment_amount` = '" + Payamount + "', "
+                                + "`discount_percentage` = '" + final_discountPercentage + "' "
+                                + "WHERE `invoice_id` = '" + BaseInvoice_id + "'");
+
+                        // ── Update payment history ──
+                        LocalDateTime now = LocalDateTime.now();
+                        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        String curruntDay = now.format(dateFormatter);
+                        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                        String curruntTime = now.format(timeFormatter);
+
+                        ResultSet payHist_rs = MySQL.execute("SELECT * FROM `advance_payment_history` WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
+                        if (payHist_rs.next()) {
+                            MySQL.execute("UPDATE `advance_payment_history` SET "
+                                    + "`paid_amount` = '" + Payamount + "', "
+                                    + "`date` = '" + curruntDay + "', "
+                                    + "`time` = '" + curruntTime + "' "
+                                    + "WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
+                        } else {
+                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`location_id`) "
+                                    + "VALUES ('" + BaseInvoice_id + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + UserDetails.UserLocation_id + "')");
+                        }
+
+                        JOptionPane.showMessageDialog(this, "Invoice Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        Refresh(Customer_mobile);
+
+                    } else {
+                        // ── DIFFERENT FRAME: check new frame stock availability first ──
+                        ResultSet Frame_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' AND `qty` > 0 ");
+                        if (Frame_rs.next()) {
+
+                            // ── STEP 1: Restock the OLD frame ──
+                            ResultSet oldStock_rs = MySQL.execute("SELECT `qty` FROM `stock` WHERE `id` = '" + oldStock_id + "'");
+                            if (oldStock_rs.next()) {
+                                int restoredQty = oldStock_rs.getInt("qty") + 1;
+                                MySQL.execute("UPDATE `stock` SET `qty` = '" + restoredQty + "' WHERE `id` = '" + oldStock_id + "'");
+                            }
+
+                            // ── STEP 2: Deduct 1 qty from the NEW frame stock ──
+                            int newStockQty = Frame_rs.getInt("qty") - 1;
+                            MySQL.execute("UPDATE `stock` SET `qty` = '" + newStockQty + "' WHERE `id` = '" + Frame_id + "'");
+
+                            // ── STEP 3: Update invoice_item to point to the new stock ──
+                            MySQL.execute("UPDATE `invoice_item` SET `stock_id` = '" + Frame_id + "' WHERE `invoice_id` = '" + BaseInvoice_id + "'");
+
+                            // ── STEP 4: Update the invoice record ──
+                            MySQL.execute("UPDATE `invoice` SET "
+                                    + "`total_price` = '" + Total + "', "
+                                    + "`advance_payment` = '" + AdvancedPayment + "', "
+                                    + "`discount` = '" + Discount + "', "
+                                    + "`subtotal` = '" + InsertSubTotal + "', "
+                                    + "`lenstotal` = '" + LensTotal + "', "
+                                    + "`lens_stock_lens_id` = " + lensStockSqlValue + ", "
+                                    + "`lens_Qty` = '" + lensQty + "', "
+                                    + "`payment_amount` = '" + Payamount + "', "
+                                    + "`discount_percentage` = '" + final_discountPercentage + "' "
+                                    + "WHERE `invoice_id` = '" + BaseInvoice_id + "'");
+
+                            // ── STEP 5: Update payment history ──
+                            LocalDateTime now = LocalDateTime.now();
+                            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                            String curruntDay = now.format(dateFormatter);
+                            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                            String curruntTime = now.format(timeFormatter);
+
+                            ResultSet payHist_rs = MySQL.execute("SELECT * FROM `advance_payment_history` WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
+                            if (payHist_rs.next()) {
+                                MySQL.execute("UPDATE `advance_payment_history` SET "
+                                        + "`paid_amount` = '" + Payamount + "', "
+                                        + "`date` = '" + curruntDay + "', "
+                                        + "`time` = '" + curruntTime + "' "
+                                        + "WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
+                            } else {
+                                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`location_id`) "
+                                        + "VALUES ('" + BaseInvoice_id + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + UserDetails.UserLocation_id + "')");
+                            }
+
+                            JOptionPane.showMessageDialog(this, "Invoice Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            Refresh(Customer_mobile);
+
+                        } else {
+                            // ── New frame is out of stock ──
+                            JOptionPane.showMessageDialog(this, "Selected Frame is out of stock. Please choose another.", "Out of Stock", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Something went wrong. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } else {
+            // ── No Frame selected - Lens only order update ──
+            try {
+                // ── STEP 1: Restock the OLD frame if there was one ──
+                ResultSet oldInvoice_rs = MySQL.execute("SELECT `stock_id` FROM `invoice_item` WHERE `invoice_id` = '" + BaseInvoice_id + "'");
+                if (oldInvoice_rs.next()) {
+                    String oldStock_id = String.valueOf(oldInvoice_rs.getInt("stock_id"));
+                    ResultSet oldStock_rs = MySQL.execute("SELECT `qty` FROM `stock` WHERE `id` = '" + oldStock_id + "'");
+                    if (oldStock_rs.next()) {
+                        int restoredQty = oldStock_rs.getInt("qty") + 1;
+                        MySQL.execute("UPDATE `stock` SET `qty` = '" + restoredQty + "' WHERE `id` = '" + oldStock_id + "'");
+                    }
+                    // Remove the invoice item since no frame now
+                    MySQL.execute("DELETE FROM `invoice_item` WHERE `invoice_id` = '" + BaseInvoice_id + "'");
+                }
+
+                // ── STEP 2: Update the invoice record ──
+                MySQL.execute("UPDATE `invoice` SET "
+                        + "`total_price` = '" + Total + "', "
+                        + "`advance_payment` = '" + AdvancedPayment + "', "
+                        + "`discount` = '" + Discount + "', "
+                        + "`subtotal` = '" + InsertSubTotal + "', "
+                        + "`lenstotal` = '" + LensTotal + "', "
+                        + "`lens_stock_lens_id` = " + lensStockSqlValue + ", "
+                        + "`lens_Qty` = '" + lensQty + "', "
+                        + "`payment_amount` = '" + Payamount + "', "
+                        + "`discount_percentage` = '" + final_discountPercentage + "' "
+                        + "WHERE `invoice_id` = '" + BaseInvoice_id + "'");
+
+                // ── STEP 3: Update payment history ──
+                LocalDateTime now = LocalDateTime.now();
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String curruntDay = now.format(dateFormatter);
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                String curruntTime = now.format(timeFormatter);
+
+                ResultSet payHist_rs = MySQL.execute("SELECT * FROM `advance_payment_history` WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
+                if (payHist_rs.next()) {
+                    MySQL.execute("UPDATE `advance_payment_history` SET "
+                            + "`paid_amount` = '" + Payamount + "', "
+                            + "`date` = '" + curruntDay + "', "
+                            + "`time` = '" + curruntTime + "' "
+                            + "WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
+                } else {
+                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`location_id`) "
+                            + "VALUES ('" + BaseInvoice_id + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + UserDetails.UserLocation_id + "')");
+                }
+
+                JOptionPane.showMessageDialog(this, "Invoice Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                Refresh(Customer_mobile);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Something went wrong. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -1150,8 +1404,6 @@ public class EditOrder extends javax.swing.JFrame {
 
     private void jTextField11KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyReleased
         // Copy Advance Payment to Payment Amount
-        String advancePayment = jTextField11.getText();
-        jTextField8.setText(advancePayment);
     }//GEN-LAST:event_jTextField11KeyReleased
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -1287,16 +1539,24 @@ public class EditOrder extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditOrder.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditOrder.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditOrder.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditOrder.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
