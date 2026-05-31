@@ -362,7 +362,7 @@ public class OrderMaking extends javax.swing.JFrame {
         String jobTypePrefix = "";
         ResultSet jobType_rs = MySQL.execute("SELECT * FROM `jobtype` WHERE `job_id` = '" + jobTypeId + "'");
         if (jobType_rs.next()) {
-            String jobTypeName = jobType_rs.getString("job_type"); // adjust column name if different
+            String jobTypeName = jobType_rs.getString("jobType"); // adjust column name if different
             jobTypePrefix = jobTypeName.substring(0, Math.min(2, jobTypeName.length())).toUpperCase();
         } else {
             throw new Exception("Job Type not found for ID: " + jobTypeId);
@@ -1481,7 +1481,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`7_days__lens_warrenty`)"
                                                                         + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "','" + d7warrenty + "') ");
 
-                                                                if (Inser_rs.next()) {
+                                                                if (Inser_rs != null) {
 
                                                                     // if Extra charges Available then Insert it
                                                                     if (!jTextField13.getText().isEmpty() && !jTextField14.getText().isEmpty()) {
@@ -1557,7 +1557,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
                                                                         + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
 
-                                                                if (Inser_rs.next()) {
+                                                                if (Inser_rs != null) {
                                                                     // payment history
                                                                     LocalDateTime now = LocalDateTime.now();
                                                                     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -1620,10 +1620,10 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                                     } else {
                                                         String invoiceId = generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
-                                                        Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
-                                                                + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
+                                                        Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
+                                                                + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
 
-                                                        if (Inser_rs.next()) {
+                                                        if (Inser_rs != null) {
 
                                                             // payment history
                                                             LocalDateTime now = LocalDateTime.now();
@@ -1719,7 +1719,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
                                                                     + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
 
-                                                            if (Inser_rs.next()) {
+                                                            if (Inser_rs != null) {
 
                                                                 // payment history
                                                                 LocalDateTime now = LocalDateTime.now();
@@ -1785,7 +1785,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,'discount_percentage',`order_time`)"
                                                                     + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
 
-                                                            if (Inser_rs.next()) {
+                                                            if (Inser_rs != null) {
 
                                                                 // payment history
                                                                 LocalDateTime now = LocalDateTime.now();
@@ -1854,7 +1854,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
                                                                 + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
 
-                                                        if (Inser_rs.next()) {
+                                                        if (Inser_rs != null) {
                                                             // payment history
                                                             LocalDateTime now = LocalDateTime.now();
                                                             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -1962,7 +1962,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`,`clothing`,`box`,`bag`,`invoice_location`,`payment_amount`,`discount_percentage`,`order_time`)"
                                                             + " VALUES ('"+invoiceId+"','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "','" + final_discountPercentage + "','" + orderTime + "') ");
 
-                                                    if (Inser_rs.next()) {
+                                                    if (Inser_rs != null) {
 
                                                         // payment history
                                                         LocalDateTime now = LocalDateTime.now();
@@ -2018,7 +2018,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             + " VALUES ('"+invoiceId+"','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "','" + final_discountPercentage + "','" + orderTime + "') ");
                                                     //
 
-                                                    if (Inser_rs.next()) {
+                                                    if (Inser_rs != null) {
 
                                                         // payment history
                                                         LocalDateTime now = LocalDateTime.now();

@@ -50,7 +50,6 @@ public class SellAccessories extends javax.swing.JFrame {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
 
-
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
@@ -60,7 +59,7 @@ public class SellAccessories extends javax.swing.JFrame {
             String month_string = dayArray[1];
             String day_string = dayArray[2];
 
-            String DateString = day_string+ " of "+ month_string+" "+year_string;
+            String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
             System.out.println(day);
@@ -161,6 +160,57 @@ public class SellAccessories extends javax.swing.JFrame {
             jLabel31.setText("Rs" + String.valueOf(subTotal));
             jLabel38.setText("Rs." + String.valueOf(total));
         }
+    }
+
+    private String generateInvoiceId(int jobTypeId, int locationId) throws Exception {
+
+        // Step 1: Get Job Type name (first 2 letters)
+        String jobTypePrefix = "";
+        ResultSet jobType_rs = MySQL.execute("SELECT * FROM `jobtype` WHERE `job_id` = '" + jobTypeId + "'");
+        if (jobType_rs.next()) {
+            String jobTypeName = jobType_rs.getString("jobType"); // adjust column name if different
+            jobTypePrefix = jobTypeName.substring(0, Math.min(2, jobTypeName.length())).toUpperCase();
+        } else {
+            throw new Exception("Job Type not found for ID: " + jobTypeId);
+        }
+
+        // Step 2: Get Location name (first 2 letters)
+        String locationPrefix = "";
+        ResultSet location_rs = MySQL.execute("SELECT * FROM `location` WHERE `id` = '" + locationId + "'");
+        if (location_rs.next()) {
+            String locationName = location_rs.getString("location_name"); // adjust column name if different
+            locationPrefix = locationName.substring(0, Math.min(2, locationName.length())).toUpperCase();
+        } else {
+            throw new Exception("Location not found for ID: " + locationId);
+        }
+
+        // Step 3: Build the prefix  e.g., "SHDH"
+        String prefix = jobTypePrefix + locationPrefix;
+
+        // Step 4: Find the latest invoice number with this prefix
+        int nextNumber = 1;
+        ResultSet invoice_rs = MySQL.execute(
+                "SELECT `invoice_id` FROM `invoice` WHERE `invoice_id` LIKE '" + prefix + "-%' "
+                + "ORDER BY CAST(SUBSTRING(`invoice_id`, " + (prefix.length() + 2) + ") AS UNSIGNED) DESC LIMIT 1"
+        );
+
+        if (invoice_rs.next()) {
+            String lastInvoiceId = invoice_rs.getString("invoice_id");
+            // Extract the number part after the dash e.g "SHDH-35" -> "35"
+            String numberPart = lastInvoiceId.substring(prefix.length() + 1);
+            nextNumber = Integer.parseInt(numberPart) + 1;
+        }
+
+        // Step 5: Build and return the full invoice ID e.g., "SHDH-1"
+        String invoiceId = prefix + "-" + nextNumber;
+
+        // Step 6: Check if this invoice ID already exists (safety check)
+        ResultSet check_rs = MySQL.execute("SELECT `invoice_id` FROM `invoice` WHERE `invoice_id` = '" + invoiceId + "'");
+        if (check_rs.next()) {
+            throw new Exception("Invoice ID already exists: " + invoiceId);
+        }
+
+        return invoiceId;
     }
 
     /**
@@ -839,13 +889,12 @@ public class SellAccessories extends javax.swing.JFrame {
 //                          Added Discount to the SubTotal
                             InsertSubTotal = InsertSubTotal - Discount;
                             //                                    Invoice INSERT PROCESS
-                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, `payment_status_id`,`invoice_location`,`payment_amount`,`job_warrenty_warrenty_id`,`isAccessories`,`order_time`)"
-                                    + " VALUES ('" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "','1','1','"+orderTime+"') ");
 
-                            int invoiceId;
-                            if (Inser_rs.next()) {
-                                invoiceId = Inser_rs.getInt(1);
+                            String invoiceId = generateInvoiceId(jobType, Integer.parseInt(UserDetails.UserLocation_id));
+                            ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, `payment_status_id`,`invoice_location`,`payment_amount`,`job_warrenty_warrenty_id`,`isAccessories`,`order_time`)"
+                                    + " VALUES ('"+invoiceId+"','" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "','1','1','" + orderTime + "') ");
 
+                            if (Inser_rs != null) {
                                 // payment history
                                 LocalDateTime now = LocalDateTime.now();
                                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -905,9 +954,6 @@ public class SellAccessories extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Please Select a Payment Method", "Database Conneciton Error", JOptionPane.ERROR_MESSAGE);
         }
-
-//
-
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -975,7 +1021,7 @@ public class SellAccessories extends javax.swing.JFrame {
                     + "INNER JOIN `category` ON `category`.`id` = `sub_category`.`category_id` "
                     + "INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` "
                     + "INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
-                    + "WHERE (`category`.`id` = '1' OR `category`.`id` = '3' OR `category`.`id` = '4') "
+                    + "WHERE (`category`.`id` = '1' OR `category`.`id` = '3' OR `category`.`id` = '4' OR `category`.`id` = '5') "
                     + "AND `qty` > 0 "
                     + "AND `stock`.`location_id` = '" + UserDetails.UserLocation_id + "' "
                     + "AND ( `brand`.`brand_name` LIKE '%" + brand_details + "%' "
