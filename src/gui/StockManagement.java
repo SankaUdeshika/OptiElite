@@ -274,6 +274,7 @@ public class StockManagement extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
         jToggleButton1 = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
@@ -573,6 +574,9 @@ public class StockManagement extends javax.swing.JFrame {
         jLabel26.setText("Product ID");
         jPanel6.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, -1, -1));
         jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 100, 130, -1));
+
+        jLabel8.setText("jLabel1");
+        jPanel6.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, 180, -1));
 
         jToggleButton1.setText("Report");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -1160,6 +1164,7 @@ public class StockManagement extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
