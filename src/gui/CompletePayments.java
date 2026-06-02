@@ -21,9 +21,9 @@ public class CompletePayments extends javax.swing.JFrame {
     /**
      * Creates new form CompletePayments
      */
-    private static int invoice;
+    private static String invoice;
 
-    public CompletePayments(java.awt.Frame parent, boolean modal, int invoiceID) {
+    public CompletePayments(java.awt.Frame parent, boolean modal, String invoiceID) {
         invoice = invoiceID;
         initComponents();
         loadData();
@@ -47,7 +47,7 @@ public class CompletePayments extends javax.swing.JFrame {
             ResultSet rs = MySQL.execute("SELECT * FROM invoice "
                     + "INNER JOIN customer ON customer.mobile = invoice.customer_mobile "
                     + "INNER JOIN location ON location.id = customer.location_id "
-                    + "WHERE invoice.invoice_id = " + invoice);
+                    + "WHERE invoice.invoice_id = '" + invoice + "' ");
 
             if (rs.next()) {
                 System.out.println(rs.getString("name"));
@@ -306,15 +306,15 @@ public class CompletePayments extends javax.swing.JFrame {
                     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                     String curruntTime = now.format(timeFormatter);
 
-                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`,`payment_info`) VALUES ('" + invoice + "','" + payAmount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "','"+paymentInfo+"') ");
+                    MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`,`payment_info`) VALUES ('" + invoice + "','" + payAmount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "','" + paymentInfo + "') ");
                     MySQL.execute("UPDATE `invoice` SET `total_price` = '" + newtotalPayment + "'  WHERE `invoice_id` = '" + invoice + "' ");
 
                     if (ballence <= 0.00) {
                         System.out.println("Payment Complete");
-                        MySQL.execute("UPDATE `invoice` SET `payment_status_id` = 2 , `payment_amount` ='" + payment + "'  WHERE invoice_id = " + invoice);
+                        MySQL.execute("UPDATE `invoice` SET `payment_status_id` = 2 , `payment_amount` ='" + payment + "'  WHERE invoice_id = '"+invoice+"' ");
                     } else {
                         System.out.println("Payment not complete");
-                        MySQL.execute("UPDATE `invoice` SET  `payment_amount` = '" + payment + "'  WHERE invoice_id = " + invoice);
+                        MySQL.execute("UPDATE `invoice` SET  `payment_amount` = '" + payment + "'  WHERE invoice_id = '"+invoice+"' ");
                     }
                     this.dispose();
                 } else {
