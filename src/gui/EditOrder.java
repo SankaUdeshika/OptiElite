@@ -1095,17 +1095,7 @@ public class EditOrder extends javax.swing.JFrame {
                         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                         String curruntTime = now.format(timeFormatter);
 
-                        ResultSet payHist_rs = MySQL.execute("SELECT * FROM `advance_payment_history` WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
-                        if (payHist_rs.next()) {
-                            MySQL.execute("UPDATE `advance_payment_history` SET "
-                                    + "`paid_amount` = '" + Payamount + "', "
-                                    + "`date` = '" + curruntDay + "', "
-                                    + "`time` = '" + curruntTime + "' "
-                                    + "WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
-                        } else {
-                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`location_id`) "
-                                    + "VALUES ('" + BaseInvoice_id + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + UserDetails.UserLocation_id + "')");
-                        }
+                       
 
                         JOptionPane.showMessageDialog(this, "Invoice Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                         Refresh(Customer_mobile);
@@ -1149,18 +1139,7 @@ public class EditOrder extends javax.swing.JFrame {
                             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                             String curruntTime = now.format(timeFormatter);
 
-                            ResultSet payHist_rs = MySQL.execute("SELECT * FROM `advance_payment_history` WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
-                            if (payHist_rs.next()) {
-                                MySQL.execute("UPDATE `advance_payment_history` SET "
-                                        + "`paid_amount` = '" + Payamount + "', "
-                                        + "`date` = '" + curruntDay + "', "
-                                        + "`time` = '" + curruntTime + "' "
-                                        + "WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
-                            } else {
-                                MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`location_id`) "
-                                        + "VALUES ('" + BaseInvoice_id + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + UserDetails.UserLocation_id + "')");
-                            }
-
+                            
                             JOptionPane.showMessageDialog(this, "Invoice Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                             Refresh(Customer_mobile);
 
