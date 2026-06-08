@@ -114,7 +114,7 @@ public class Reports {
 
             while (paymentResult.next()) {
                 count++;
-                reportmap.put("payment" + count, paymentResult.getString("date") + " = " + paymentResult.getString("paid_amount")+" ("+ paymentResult.getString("payment_name") +" | "+ paymentResult.getString("payment_info")+")");
+                reportmap.put("payment" + count, paymentResult.getString("date") + " = " + paymentResult.getString("paid_amount") + " (" + paymentResult.getString("payment_name") + " | " + paymentResult.getString("payment_info") + ")");
             }
 
             try {
@@ -359,6 +359,25 @@ public class Reports {
 
     }
 
+    public static void PrintExpensesSheet(String report_item_id) {
+        try {
+            
+            System.out.println("this is report_id - " +report_item_id);
+            HashMap<String, Object> reportmap = new HashMap<>();
+            try {
+                reportmap.put("report_item_id", report_item_id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(Reports.class.getResourceAsStream("/reports/Expenses_report.jasper"), reportmap, MySQL.getConnection());
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(Reports.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
     // Print Echanneling Reprot
     public static void PrintEchanneling(int AppoinmentNo) {
         try {

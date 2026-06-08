@@ -14,14 +14,14 @@ import models.Reports;
  */
 public class Printsouts extends javax.swing.JFrame {
 
-    int invoiceId;
+    String invoiceId;
 
-    public Printsouts(int invoiceID) {
+    public Printsouts(String invoiceID) {
         initComponents();
         this.invoiceId = invoiceID;
     }
 
-    public Printsouts(String type, int invoiceID) {
+    public Printsouts(String type, String invoiceID) {
         initComponents();
         this.invoiceId = invoiceID;
     }

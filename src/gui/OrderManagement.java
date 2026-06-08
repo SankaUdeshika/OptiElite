@@ -99,8 +99,10 @@ public class OrderManagement extends javax.swing.JFrame {
 
                 if (userID.equals("1")) {
                     jToggleButton1.setVisible(true);
+                    jButton1.setVisible(true);
                 } else {
                     jToggleButton1.setVisible(false);
+                    jButton1.setVisible(false);
                 }
             }
         } catch (Exception e) {
@@ -160,6 +162,7 @@ public class OrderManagement extends javax.swing.JFrame {
                 v.add(rs.getDouble("subtotal"));
                 double payedAmount = rs.getDouble("total_price") - rs.getDouble("subtotal");
                 v.add(payedAmount);
+                v.add(rs.getString("status_name"));
                 estimateProfit += rs.getDouble("subtotal");
 
                 if (rs.getString("payment_status_id").equals("2")) {
@@ -331,14 +334,14 @@ public class OrderManagement extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Inovice id", "Customer Name", "Customer mobile", "Date", "Location", "Discount", "Advancement ", "Due Payment", "Sub Total", "Payed"
+                "Inovice id", "Customer Name", "Customer mobile", "Date", "Location", "Discount", "Advancement ", "Due Payment", "Sub Total", "Payed", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -504,10 +507,10 @@ public class OrderManagement extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSeparator5, javax.swing.GroupLayout.DEFAULT_SIZE, 1006, Short.MAX_VALUE)
                             .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 968, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1))))
-                .addContainerGap(163, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1078, Short.MAX_VALUE)
+                            .addComponent(jSeparator5))))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -849,7 +852,7 @@ public class OrderManagement extends javax.swing.JFrame {
 
             // ── Filter parameters ─────────────────────────────────────────────
             if (!jTextField1.getText().isEmpty()) {
-                Queary += " WHERE `invoice`.`invoice_id` = '" + jTextField1.getText() + "' ";
+                Queary += " WHERE `invoice`.`invoice_id` LIKE '%" + jTextField1.getText() + "%' ";
 
                 if (!jTextField3.getText().isEmpty()) {
                     ResultSet rsC = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '"
@@ -1001,7 +1004,7 @@ public class OrderManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
 
-    private int invoiceID;
+    private String invoiceID;
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // View Bill
@@ -1013,7 +1016,7 @@ public class OrderManagement extends javax.swing.JFrame {
             if (!status.equals("complete")) {
                 completeBtn.setEnabled(true);
                 String id = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
-                invoiceID = Integer.parseInt(id);
+                invoiceID = id;
             } else {
                 completeBtn.setEnabled(false);
             }
@@ -1210,7 +1213,7 @@ public class OrderManagement extends javax.swing.JFrame {
             String customerMobile = String.valueOf(jTable1.getValueAt(tableRow, 2));
             String invoice_id = String.valueOf(jTable1.getValueAt(tableRow, 0));
 
-            EditOrder eo = new EditOrder(customerMobile,invoice_id);
+            EditOrder eo = new EditOrder(customerMobile, invoice_id);
             eo.setVisible(true);
             this.dispose();
         }
