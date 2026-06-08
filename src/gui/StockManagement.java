@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
@@ -1011,67 +1013,80 @@ public class StockManagement extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
-        SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("yyyy-MM-dd");
         String ToDate;
-
         try {
             ToDate = simpleDateformat.format(jDateChooser1.getDate());
             jLabel22.setText(ToDate);
         } catch (NullPointerException ne) {
             ToDate = "null";
         }
+
         JasperStockQuerry = "";
 
-        String querry = "SELECT * FROM `stock`"
+        String baseQuery = "SELECT * FROM `stock`"
                 + " INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid`"
-                + " INNER JOIN `supplier` ON `supplier`.`supplier_id` = `stock`.`supplier_supplier_id` "
-                + " INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
-                + " INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` "
+                + " INNER JOIN `supplier` ON `supplier`.`supplier_id` = `stock`.`supplier_supplier_id`"
+                + " INNER JOIN `location` ON `location`.`id` = `stock`.`location_id`"
+                + " INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id`"
                 + " INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id`";
 
+        List<String> conditions = new ArrayList<>();
+        List<String> jasperConditions = new ArrayList<>();
+
+// --- Primary filters (mutually exclusive) ---
         if (!jTextField7.getText().isEmpty()) {
-            querry += " WHERE `stock`.`id` = '" + jTextField7.getText() + "'";
-            JasperStockQuerry += " WHERE `stock`.`id` = '" + jTextField7.getText() + "'";
+            conditions.add("`stock`.`id` = '" + jTextField7.getText().trim() + "'");
+            jasperConditions.add("`stock`.`id` = '" + jTextField7.getText().trim() + "'");
         } else if (!jTextField8.getText().isEmpty()) {
-            querry += " WHERE `product`.`id` = '" + jTextField8.getText() + "'";
-            JasperStockQuerry += " WHERE `product`.`id` = '" + jTextField8.getText() + "'";
+            conditions.add("`product`.`id` = '" + jTextField8.getText().trim() + "'");
+            jasperConditions.add("`product`.`id` = '" + jTextField8.getText().trim() + "'");
         } else if (!jTextField9.getText().isEmpty()) {
-            querry += " WHERE `supplier`.`supplier_id` LIKE '%" + jTextField9.getText() + "%'";
-            JasperStockQuerry += " WHERE `supplier`.`supplier_id` LIKE '%" + jTextField9.getText() + "%'";
+            conditions.add("`supplier`.`supplier_id` LIKE '%" + jTextField9.getText().trim() + "%'");
+            jasperConditions.add("`supplier`.`supplier_id` LIKE '%" + jTextField9.getText().trim() + "%'");
         } else if (!jTextField2.getText().isEmpty()) {
-            querry += " WHERE `stock`.`SKU` = '" + jTextField2.getText() + "'";
-            JasperStockQuerry += " WHERE `stock`.`SKU` = '" + jTextField2.getText() + "'";
+            conditions.add("`stock`.`SKU` = '" + jTextField2.getText().trim() + "'");
+            jasperConditions.add("`stock`.`SKU` = '" + jTextField2.getText().trim() + "'");
         }
 
+// --- Location filter ---
         if (jComboBox1.getSelectedIndex() != 0) {
-            querry += " AND `stock`.`location_id` = '" + jComboBox1.getSelectedIndex() + "'";
-            JasperStockQuerry += " AND `stock`.`location_id` = '" + jComboBox1.getSelectedIndex() + "'";
-
+            conditions.add("`stock`.`location_id` = '" + jComboBox1.getSelectedIndex() + "'");
+            jasperConditions.add("`stock`.`location_id` = '" + jComboBox1.getSelectedIndex() + "'");
         }
 
-        if (jTextField3.getText().isEmpty()) {
-            String brandText = (String) jTextField3.getText();
-            String brandArray[] = brandText.split(" ");
-            String brand = brandArray[1];
-
-            querry += " AND `brand`.`brand_name` = '" + brand + "'";
-            JasperStockQuerry += " AND `brand`.`brand_name` = '" + brand + "'";
-
+// --- Brand filter (FIXED: was isEmpty, inverted logic + safe split) ---
+        if (!jTextField3.getText().isEmpty()) {
+            String brandText = jTextField3.getText().trim();
+            String[] brandArray = brandText.split(" ");
+            String brand = brandArray.length > 1 ? brandArray[1] : brandArray[0];
+            conditions.add("`brand`.`brand_name` = '" + brand + "'");
+            jasperConditions.add("`brand`.`brand_name` = '" + brand + "'");
         }
 
+// --- Date filter ---
         if (jDateChooser1.getDate() != null) {
-            querry += " AND `stock_date` >= '" + ToDate + "' ";
-            JasperStockQuerry += " AND `stock_date` >= '" + ToDate + "' ";
+            conditions.add("`stock_date` >= '" + ToDate + "'");
+            jasperConditions.add("`stock_date` >= '" + ToDate + "'");
         }
 
-//        System.out.println(querry);
+// --- Build final query safely ---
+        String querry = baseQuery;
+        String jasperWhere = "";
+
+        if (!conditions.isEmpty()) {
+            querry += " WHERE " + String.join(" AND ", conditions);
+            jasperWhere = " WHERE " + String.join(" AND ", jasperConditions);
+        }
+
+        JasperStockQuerry += jasperWhere;
+
+// System.out.println(querry);
+// --- Execute and populate table ---
         try {
-
             ResultSet rs = MySQL.execute(querry);
-
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
-
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getInt("stock.id"));
@@ -1086,14 +1101,11 @@ public class StockManagement extends javax.swing.JFrame {
                 v.add(rs.getString("Supplier_Name"));
                 v.add(rs.getString("location_name"));
                 v.add(rs.getString("color"));
-
                 dtm.addRow(v);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             logger.log(Level.WARNING, "Data failed to load", e);
-
         }
 
 
