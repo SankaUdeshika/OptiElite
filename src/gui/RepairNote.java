@@ -619,7 +619,7 @@ public class RepairNote extends javax.swing.JFrame {
                     }
 
                     if (count == 1 || lens) {
-                        Printsouts p = new Printsouts(Integer.parseInt(Ivoice_id));
+                        Printsouts p = new Printsouts(Ivoice_id);
                         p.setVisible(true);
 //                Reports.OrderPurchaceInvoice(Ivoice_id);
                     } else {

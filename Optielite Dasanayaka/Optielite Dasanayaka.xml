@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\Users\sanka\Documents\NetBeansProjects\OptiElite\dist\OptiElite.jar</jar>
+  <outfile>C:\Users\sanka\Documents\NetBeansProjects\OptiElite\Optielite Dasanayaka\Optielite Dasanayaka.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl></downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>C:\Users\sanka\Documents\NetBeansProjects\OptiElite\LOGO\favicon (1).ico</icon>
+  <jre>
+    <path>jdk-11</path>
+    <requiresJdk>false</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion></minVersion>
+    <maxVersion></maxVersion>
+  </jre>
+</launch4jConfig>

@@ -1107,8 +1107,6 @@ public class StockManagement extends javax.swing.JFrame {
             e.printStackTrace();
             logger.log(Level.WARNING, "Data failed to load", e);
         }
-
-
     }//GEN-LAST:event_jButton5ActionPerformed
 
 

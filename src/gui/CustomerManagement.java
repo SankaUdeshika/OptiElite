@@ -179,6 +179,7 @@ public class CustomerManagement extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         jButton7 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -423,6 +424,13 @@ public class CustomerManagement extends javax.swing.JFrame {
         jLabel21.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel21.setText("Email");
 
+        jButton3.setText("Search");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -469,17 +477,20 @@ public class CustomerManagement extends javax.swing.JFrame {
                                 .addComponent(searchResetBtn))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel8))
-                                .addGap(18, 18, 18)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(83, 83, 83)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel9))
-                                .addGap(18, 18, 18)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(78, 78, 78)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel10)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 76, Short.MAX_VALUE))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton3)))))
+                        .addGap(0, 48, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jSeparator5, javax.swing.GroupLayout.Alignment.LEADING)
@@ -502,7 +513,8 @@ public class CustomerManagement extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
                 .addGap(22, 22, 22)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -670,33 +682,33 @@ public class CustomerManagement extends javax.swing.JFrame {
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         // Key Relesed search BY REG_ID
 
-        String mobile = jTextField1.getText();
-        
-        jTextField3.setText("");
-        jTextField2.setText("");
-        
-        try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE `customer`.`mobile` LIKE '%" + mobile + "%' ");
-            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-            dtm.setRowCount(0);
-            
-            while (rs.next()) {
-                Vector v = new Vector();
-                v.add(rs.getString("Name"));
-                v.add(rs.getString("birthday"));
-                v.add(rs.getString("mobile"));
-                v.add(rs.getString("mobile2"));
-                v.add(rs.getString("telephone_land"));
-                v.add(rs.getString("nic"));
-                v.add(rs.getString("location_name"));
-                v.add(rs.getString("register_date"));
-                
-                dtm.addRow(v);
-                
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        String mobile = jTextField1.getText();
+//        
+//        jTextField3.setText("");
+//        jTextField2.setText("");
+//        
+//        try {
+//            ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE `customer`.`mobile` LIKE '%" + mobile + "%' ");
+//            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+//            dtm.setRowCount(0);
+//            
+//            while (rs.next()) {
+//                Vector v = new Vector();
+//                v.add(rs.getString("Name"));
+//                v.add(rs.getString("birthday"));
+//                v.add(rs.getString("mobile"));
+//                v.add(rs.getString("mobile2"));
+//                v.add(rs.getString("telephone_land"));
+//                v.add(rs.getString("nic"));
+//                v.add(rs.getString("location_name"));
+//                v.add(rs.getString("register_date"));
+//                
+//                dtm.addRow(v);
+//                
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         
 
     }//GEN-LAST:event_jTextField1KeyReleased
@@ -906,6 +918,37 @@ public class CustomerManagement extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+         String mobile = jTextField1.getText();
+//        
+        jTextField3.setText("");
+        jTextField2.setText("");
+        
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE `customer`.`mobile` LIKE '%" + mobile + "%' ");
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.setRowCount(0);
+            
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("Name"));
+                v.add(rs.getString("birthday"));
+                v.add(rs.getString("mobile"));
+                v.add(rs.getString("mobile2"));
+                v.add(rs.getString("telephone_land"));
+                v.add(rs.getString("nic"));
+                v.add(rs.getString("location_name"));
+                v.add(rs.getString("register_date"));
+                
+                dtm.addRow(v);
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -926,6 +969,7 @@ public class CustomerManagement extends javax.swing.JFrame {
     private javax.swing.JButton homeBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel10;

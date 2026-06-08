@@ -36,6 +36,7 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
      * Creates new form CustomerRegistration_popup
      */
     CustomerManagement cm;
+    public boolean nullBirhthday = false;
 
     public CustomerRegistration_popup(CustomerManagement customerManagement) {
         FlatSolarizedLightIJTheme.setup();
@@ -45,7 +46,7 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
         operater();
         time();
         cm = customerManagement;
-
+        refresh();
     }
 
     ///    Set Frame Full Size
@@ -60,7 +61,6 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
 
-
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
@@ -70,7 +70,7 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
             String month_string = dayArray[1];
             String day_string = dayArray[2];
 
-            String DateString = day_string+ " of "+ month_string+" "+year_string;
+            String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
             System.out.println(day);
@@ -89,6 +89,28 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
         jTextField4.setText("");
         jTextField5.setText("");
         jComboBox1.setSelectedIndex(0);
+        loadSettings();
+    }
+
+    public void loadSettings() {
+//
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `settings` ");
+            if (rs.next()) {
+                int BDtyintint = rs.getInt("is_birthday_null");
+
+                if (BDtyintint == 0) { // don't leave bday null
+                    nullBirhthday = false;
+                } else {
+                    nullBirhthday = true;
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Faild to load Settings Data", "Errir", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(this, "Something Worng", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
 
     public void loadGender() {
@@ -633,69 +655,127 @@ public class CustomerRegistration_popup extends javax.swing.JFrame {
 
             ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + whatssapp + "' ");
 
-//            JOptionPane.showMessageDialog(this, "Please Wait");
-//            jLabel21.setText("Please Wait. . . . . . .");
-//            Thread.sleep(3000);
-//            jLabel21.setText("");
-            if (rs.next()) {
-                JOptionPane.showMessageDialog(this, "Alread Registred this Usaer", "Already Registerd", JOptionPane.ERROR_MESSAGE);
-            } else if (CustomerName.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please Enter Customer Name");
-            } //            else if (!CustomerName.matches(expression)) {
-            //                JOptionPane.showMessageDialog(this, "Please Enter Valid Customer Namer", "Invalid Customer Name", JOptionPane.ERROR_MESSAGE);
-            //            }
-            else if (whatssapp.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please Enter a Whatsapp Mobile  ", "Empty Mobile 01", JOptionPane.ERROR_MESSAGE);
-            } else if (whatssapp.matches(mobileExpresion)) {
-                JOptionPane.showMessageDialog(this, "Please Enter valid a Whatsapp Mobile  ", "please Enter a Valid Mobile 01", JOptionPane.ERROR_MESSAGE);
-            } else if (Address01.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please Enter valid Address line 1 ", "Address Line 1 is Empty", JOptionPane.ERROR_MESSAGE);
-            } else if (locaiton_ID == 0) {
-                JOptionPane.showMessageDialog(this, "Please Select Valid Location ", "Empty Location", JOptionPane.ERROR_MESSAGE);
-            } else if (gender_id == 0) {
-                JOptionPane.showMessageDialog(this, "Please Select Valid Gender ", "Empty Gender", JOptionPane.ERROR_MESSAGE);
-            } else {
+            // -----------------------------------------------------------------------------------------------------------------
+            if (jDateChooser1.getDate() == null) { //  null Birthday  is okay
+                if (!nullBirhthday) { //true
+                    JOptionPane.showMessageDialog(this, "Please Enter Customer Birthday", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    if (rs.next()) {
+                        JOptionPane.showMessageDialog(this, "Alread Registred this Usaer", "Already Registerd", JOptionPane.ERROR_MESSAGE);
+                    } else if (CustomerName.isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Please Enter Customer Name");
+                    } else if (whatssapp.isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Please Enter a Whatsapp Mobile  ", "Empty Mobile 01", JOptionPane.ERROR_MESSAGE);
+                    } else if (whatssapp.matches(mobileExpresion)) {
+                        JOptionPane.showMessageDialog(this, "Please Enter valid a Whatsapp Mobile  ", "please Enter a Valid Mobile 01", JOptionPane.ERROR_MESSAGE);
+                    } else if (Address01.isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Please Enter valid Address line 1 ", "Address Line 1 is Empty", JOptionPane.ERROR_MESSAGE);
+                    } else if (locaiton_ID == 0) {
+                        JOptionPane.showMessageDialog(this, "Please Select Valid Location ", "Empty Location", JOptionPane.ERROR_MESSAGE);
+                    } else if (gender_id == 0) {
+                        JOptionPane.showMessageDialog(this, "Please Select Valid Gender ", "Empty Gender", JOptionPane.ERROR_MESSAGE);
+                    } else {
 
-                Date BirthDauChooser = jDateChooser1.getDate();
-                System.out.println(BirthDauChooser);
+                        Date BirthDayChooser = jDateChooser1.getDate();
+                        System.out.println(BirthDayChooser);
 
-                if (BirthDauChooser == null) {
+                        if (BirthDayChooser == null) {
 
-                    LocalDate today = LocalDate.now();
-                    String id = String.valueOf(CustomerRegister.locationmap.get(jComboBox1.getSelectedItem()));
-                    MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`Name`,`gender_gender_id`,`email`)"
-                            + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + CustomerName + "','" + gender_id + "','" + Email + "') ");
+                            LocalDate today = LocalDate.now();
+                            String id = String.valueOf(CustomerRegistration_popup.locationmap.get(jComboBox1.getSelectedItem()));
+                            MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`Name`,`gender_gender_id`,`email`)"
+                                    + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + CustomerName + "','" + gender_id + "','" + Email + "') ");
 
 //                   Insert Medical Conditon
-                    int medicalCount = medicalTemporyData.medicalArray.size();
-                    for (int i = 0; i < medicalCount; i++) {
-                        String medicalText = medicalTemporyData.medicalArray.get(i);
-                        MySQL.execute(" INSERT INTO `customer_medicals` (`medical_condition`,`customer_mobile`) VALUES ('" + medicalText + "','" + whatssapp + "') ");
+                            int medicalCount = medicalTemporyData.medicalArray.size();
+                            for (int i = 0; i < medicalCount; i++) {
+                                String medicalText = medicalTemporyData.medicalArray.get(i);
+                                MySQL.execute(" INSERT INTO `customer_medicals` (`medical_condition`,`customer_mobile`) VALUES ('" + medicalText + "','" + whatssapp + "') ");
+                            }
+
+                            JOptionPane.showMessageDialog(this, "Registerd Successfully", "Success", JOptionPane.OK_OPTION);
+                            refresh();
+
+                        } else {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+                            String BdayFormat = String.valueOf(sdf.format(BirthDayChooser));
+
+                            LocalDate today = LocalDate.now();
+                            String id = String.valueOf(CustomerRegistration_popup.locationmap.get(jComboBox1.getSelectedItem()));
+                            MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`birthday`,`Name`,`gender_gender_id`,`email`)"
+                                    + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + BdayFormat + "','" + CustomerName + "','" + gender_id + "','" + Email + "') ");
+
+                            //                   Insert Medical Conditon
+                            int medicalCount = medicalTemporyData.medicalArray.size();
+                            for (int i = 0; i < medicalCount; i++) {
+                                String medicalText = medicalTemporyData.medicalArray.get(i);
+                                MySQL.execute(" INSERT INTO `customer_medicals` (`medical_condition`,`customer_mobile`) VALUES ('" + medicalText + "','" + whatssapp + "') ");
+                            }
+
+                            JOptionPane.showMessageDialog(this, "Registerd Successfully", "Success", JOptionPane.OK_OPTION);
+                            refresh();
+                        }
+
                     }
-
-                    JOptionPane.showMessageDialog(this, "Registerd Successfully", "Success", JOptionPane.OK_OPTION);
-                    refresh();
-
-                } else {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
-                    String BdayFormat = String.valueOf(sdf.format(BirthDauChooser));
-
-                    LocalDate today = LocalDate.now();
-                    String id = String.valueOf(CustomerRegister.locationmap.get(jComboBox1.getSelectedItem()));
-                    MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`birthday`,`Name`,`gender_gender_id`,`email`)"
-                            + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + BdayFormat + "','" + CustomerName + "','" + gender_id + "','" + Email + "') ");
-
-                    //                   Insert Medical Conditon
-                    int medicalCount = medicalTemporyData.medicalArray.size();
-                    for (int i = 0; i < medicalCount; i++) {
-                        String medicalText = medicalTemporyData.medicalArray.get(i);
-                        MySQL.execute(" INSERT INTO `customer_medicals` (`medical_condition`,`customer_mobile`) VALUES ('" + medicalText + "','" + whatssapp + "') ");
-                    }
-
-                    JOptionPane.showMessageDialog(this, "Registerd Successfully", "Success", JOptionPane.OK_OPTION);
-                    refresh();
                 }
+            } else {
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(this, "Alread Registred this Usaer", "Already Registerd", JOptionPane.ERROR_MESSAGE);
+                } else if (CustomerName.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Please Enter Customer Name");
+                } else if (whatssapp.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Please Enter a Whatsapp Mobile  ", "Empty Mobile 01", JOptionPane.ERROR_MESSAGE);
+                } else if (whatssapp.matches(mobileExpresion)) {
+                    JOptionPane.showMessageDialog(this, "Please Enter valid a Whatsapp Mobile  ", "please Enter a Valid Mobile 01", JOptionPane.ERROR_MESSAGE);
+                } else if (Address01.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Please Enter valid Address line 1 ", "Address Line 1 is Empty", JOptionPane.ERROR_MESSAGE);
+                } else if (locaiton_ID == 0) {
+                    JOptionPane.showMessageDialog(this, "Please Select Valid Location ", "Empty Location", JOptionPane.ERROR_MESSAGE);
+                } else if (gender_id == 0) {
+                    JOptionPane.showMessageDialog(this, "Please Select Valid Gender ", "Empty Gender", JOptionPane.ERROR_MESSAGE);
+                } else {
 
+                    Date BirthDauChooser = jDateChooser1.getDate();
+                    System.out.println(BirthDauChooser);
+
+                    if (BirthDauChooser == null) {
+
+                        LocalDate today = LocalDate.now();
+                        String id = String.valueOf(CustomerRegistration_popup.locationmap.get(jComboBox1.getSelectedItem()));
+                        MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`Name`,`gender_gender_id`,`email`)"
+                                + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + CustomerName + "','" + gender_id + "','" + Email + "') ");
+
+//                   Insert Medical Conditon
+                        int medicalCount = medicalTemporyData.medicalArray.size();
+                        for (int i = 0; i < medicalCount; i++) {
+                            String medicalText = medicalTemporyData.medicalArray.get(i);
+                            MySQL.execute(" INSERT INTO `customer_medicals` (`medical_condition`,`customer_mobile`) VALUES ('" + medicalText + "','" + whatssapp + "') ");
+                        }
+
+                        JOptionPane.showMessageDialog(this, "Registerd Successfully", "Success", JOptionPane.OK_OPTION);
+                        refresh();
+
+                    } else {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+                        String BdayFormat = String.valueOf(sdf.format(BirthDauChooser));
+
+                        LocalDate today = LocalDate.now();
+                        String id = String.valueOf(CustomerRegister.locationmap.get(jComboBox1.getSelectedItem()));
+                        MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`birthday`,`Name`,`gender_gender_id`,`email`)"
+                                + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + BdayFormat + "','" + CustomerName + "','" + gender_id + "','" + Email + "') ");
+
+                        //                   Insert Medical Conditon
+                        int medicalCount = medicalTemporyData.medicalArray.size();
+                        for (int i = 0; i < medicalCount; i++) {
+                            String medicalText = medicalTemporyData.medicalArray.get(i);
+                            MySQL.execute(" INSERT INTO `customer_medicals` (`medical_condition`,`customer_mobile`) VALUES ('" + medicalText + "','" + whatssapp + "') ");
+                        }
+
+                        JOptionPane.showMessageDialog(this, "Registerd Successfully", "Success", JOptionPane.OK_OPTION);
+                        refresh();
+                    }
+
+                }
             }
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
