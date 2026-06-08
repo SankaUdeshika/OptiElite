@@ -1,0 +1,568 @@
+<!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
+<jasperReport name="Withoutprescription" language="java" columnCount="1" pageWidth="420" pageHeight="595" orientation="Landscape" columnWidth="380" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Optielite.jrdax"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50.0" bold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18.0" bold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14.0" bold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle mode="Opaque" backcolor="#EEEFF0">
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="Table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#CACED0">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle backcolor="#D8D8D8">
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<dataset name="tableDataset" uuid="f13e6d36-5148-4ecc-bbe3-3035def80980">
+		<query language="sql"><![CDATA[]]></query>
+	</dataset>
+	<parameter name="id" class="java.lang.String"/>
+	<parameter name="payment1" class="java.lang.String"/>
+	<parameter name="payment2" class="java.lang.String"/>
+	<parameter name="payment3" class="java.lang.String"/>
+	<parameter name="payment4" class="java.lang.String"/>
+	<query language="SQL"><![CDATA[SELECT
+	`web`,
+	`reg_no`,
+	`company_email`,
+	`order_time`,
+	`reg_name`,
+	`location_mobile2`,
+	`product_id`,
+	`bag`,
+	`box`,
+	`clothing`,
+	`payment_amount`,
+	 `advance_payment`,
+	`branch_address`,
+	`locaiton_mobile`,
+	`branch_name`,
+	`payment_name`,
+	`saling_price`,
+	`location_name`,
+	invoice_item.qty,
+	`Category`,
+	`sub_category`,
+	`brand_name`,
+	`product_name`,
+	invoice.invoice_id,
+	`date`,
+	`total_price`,
+	`discount`,
+	`subtotal`,
+	`address_line1`,
+	`address_line2`,
+	customer.mobile,
+	`mobile2`,
+	`telephone_land`,
+	`nic`,
+	`name`
+FROM invoice
+	INNER JOIN customer ON 
+	 customer.mobile = invoice.customer_mobile 
+	INNER JOIN invoice_item ON 
+	 invoice_item.invoice_id = invoice.invoice_id 
+	INNER JOIN stock ON 
+	 stock.id = invoice_item.stock_id 
+	INNER JOIN product ON 
+	 product.id = stock.product_id 
+	INNER JOIN brand ON 
+	 brand.id = product.brand_id 
+	INNER JOIN sub_category ON 
+	 sub_category.id = product.sub_category_id 
+	INNER JOIN category ON 
+	 category.id = sub_category.category_id 
+	INNER JOIN location ON 
+	 location.id = invoice_location
+	INNER JOIN payment_method ON 
+	 payment_method.`Payment_id` = invoice.`payment_method_Payment_id` 
+WHERE 
+	 invoice.invoice_id = $P{id}]]></query>
+	<field name="web" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="web"/>
+		<property name="com.jaspersoft.studio.field.label" value="web"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="reg_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reg_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="reg_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="company_email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="company_email"/>
+		<property name="com.jaspersoft.studio.field.label" value="company_email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="order_time" class="java.sql.Time">
+		<property name="com.jaspersoft.studio.field.name" value="order_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="order_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="reg_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reg_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="reg_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="location_mobile2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="location_mobile2"/>
+		<property name="com.jaspersoft.studio.field.label" value="location_mobile2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="product_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="product_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="product_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="stock"/>
+	</field>
+	<field name="bag" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bag"/>
+		<property name="com.jaspersoft.studio.field.label" value="bag"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="box" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="box"/>
+		<property name="com.jaspersoft.studio.field.label" value="box"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="clothing" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="clothing"/>
+		<property name="com.jaspersoft.studio.field.label" value="clothing"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="payment_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="payment_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="advance_payment" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="advance_payment"/>
+		<property name="com.jaspersoft.studio.field.label" value="advance_payment"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="branch_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="locaiton_mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="locaiton_mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="locaiton_mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="branch_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="payment_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="payment_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payment_method"/>
+	</field>
+	<field name="saling_price" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="saling_price"/>
+		<property name="com.jaspersoft.studio.field.label" value="saling_price"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="stock"/>
+	</field>
+	<field name="location_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="location_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="location_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="qty" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="qty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice_item"/>
+	</field>
+	<field name="Category" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Category"/>
+		<property name="com.jaspersoft.studio.field.label" value="Category"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="category"/>
+	</field>
+	<field name="sub_category" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="sub_category"/>
+		<property name="com.jaspersoft.studio.field.label" value="sub_category"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sub_category"/>
+	</field>
+	<field name="brand_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="brand_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="brand_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="brand"/>
+	</field>
+	<field name="product_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="product_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="product_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="product"/>
+	</field>
+	<field name="invoice_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="invoice_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="invoice_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="date"/>
+		<property name="com.jaspersoft.studio.field.label" value="date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="total_price" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_price"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_price"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="discount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="discount"/>
+		<property name="com.jaspersoft.studio.field.label" value="discount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="subtotal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.label" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="address_line1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address_line1"/>
+		<property name="com.jaspersoft.studio.field.label" value="address_line1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="address_line2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address_line2"/>
+		<property name="com.jaspersoft.studio.field.label" value="address_line2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="mobile2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mobile2"/>
+		<property name="com.jaspersoft.studio.field.label" value="mobile2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="telephone_land" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="telephone_land"/>
+		<property name="com.jaspersoft.studio.field.label" value="telephone_land"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="nic" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nic"/>
+		<property name="com.jaspersoft.studio.field.label" value="nic"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<variable name="TotalSelling" calculation="Sum" class="java.lang.Double">
+		<expression><![CDATA[$F{saling_price}]]></expression>
+	</variable>
+	<title height="202" splitType="Stretch">
+		<element kind="line" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246" x="0" y="60" width="380" height="1">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="a2c8f6d5-1988-4d9c-9fb5-bb7c4e69edac" x="0" y="47" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Address :]]></text>
+		</element>
+		<element kind="staticText" uuid="f06188e6-1b5b-4f6b-8e67-bfdc24e08b1a" x="0" y="17" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Reg No   :]]></text>
+		</element>
+		<element kind="staticText" uuid="248db25c-b011-4cad-8053-11f11567f20f" x="0" y="27" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Email      :]]></text>
+		</element>
+		<element kind="staticText" uuid="38fb51a5-2404-4f58-8944-cc950e8134da" x="0" y="37" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Web        :]]></text>
+		</element>
+		<element kind="textField" uuid="2021b9e5-31b3-4edf-8244-2f8dda670d85" x="0" y="156" width="120" height="14" fontSize="8.0">
+			<expression><![CDATA[$F{name}]]></expression>
+		</element>
+		<element kind="staticText" uuid="afb0e7cb-08e7-454e-8d2a-0b26647c1756" x="222" y="140" width="40" height="20" fontSize="8.0" hTextAlign="Left">
+			<text><![CDATA[Date:]]></text>
+			<box rightPadding="4"/>
+		</element>
+		<element kind="textField" uuid="b83c7f40-67b1-4fff-80a9-a9f8c3d2fd6d" x="262" y="140" width="116" height="20" fontSize="9.0" hTextAlign="Left" vTextAlign="Top">
+			<expression><![CDATA[$F{date} +" - " + $F{order_time}]]></expression>
+		</element>
+		<element kind="staticText" uuid="30cfd9e6-2066-4fb8-9d48-3a9323c52008" x="0" y="140" width="80" height="16" fontSize="12.0" bold="true">
+			<text><![CDATA[Bill To:]]></text>
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="textField" uuid="b0ac0178-2979-40ee-a973-e38d5b270c10" x="262" y="160" width="116" height="20" fontSize="9.0" hTextAlign="Left" vTextAlign="Top">
+			<expression><![CDATA[$F{invoice_id}]]></expression>
+		</element>
+		<element kind="staticText" uuid="976fca75-8047-42c5-87d6-7d696e4c2f12" x="222" y="160" width="40" height="20" fontSize="8.0" hTextAlign="Left">
+			<text><![CDATA[Invoice #]]></text>
+			<box rightPadding="4"/>
+		</element>
+		<element kind="textField" uuid="75ac37ed-eac2-493a-a507-ad9305ed16e5" x="60" y="187" width="68" height="15" fontSize="8.0">
+			<expression><![CDATA[$F{mobile2}]]></expression>
+		</element>
+		<element kind="textField" uuid="cbbe7449-5c27-4228-9c8c-c0dd0a9dc465" x="0" y="187" width="51" height="14" fontSize="8.0">
+			<expression><![CDATA[$F{mobile}]]></expression>
+		</element>
+		<element kind="textField" uuid="08c3c6a0-fe82-4bf0-81c6-a6ac9515caf6" x="0" y="171" width="180" height="16" fontSize="8.0">
+			<expression><![CDATA[$F{address_line1}]]></expression>
+		</element>
+		<element kind="staticText" uuid="8641bc83-adf1-4abe-9294-3d286d7410f7" x="51" y="187" width="9" height="14">
+			<text><![CDATA[/]]></text>
+		</element>
+		<element kind="staticText" uuid="323b7000-7d6b-4a5a-8ae5-a77984671f37" x="193" y="117" width="9" height="14" fontSize="8.0">
+			<text><![CDATA[/]]></text>
+		</element>
+		<element kind="textField" uuid="d9c5badd-ee8d-451f-a663-c2364791f7ad" x="2" y="90" width="380" height="13" fontSize="10.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{branch_name}]]></expression>
+		</element>
+		<element kind="staticText" uuid="089de2b8-e30d-4c7c-81fa-8c20a6cc86d1" x="137" y="66" width="110" height="26" fontSize="19.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[INVOICE]]></text>
+		</element>
+		<element kind="textField" uuid="a245766c-5655-4868-b551-ea22774a5a26" x="202" y="117" width="68" height="14" fontSize="8.0" hTextAlign="Left">
+			<expression><![CDATA[$F{location_mobile2}]]></expression>
+		</element>
+		<element kind="textField" uuid="731f9c50-e2d2-44c0-b6fe-682f02bdd029" x="137" y="117" width="56" height="14" fontSize="8.0" hTextAlign="Left">
+			<expression><![CDATA[$F{locaiton_mobile}]]></expression>
+		</element>
+		<element kind="textField" uuid="43382fa8-b4c2-4abb-b622-fa15bc83e572" x="3" y="104" width="379" height="14" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{branch_address}]]></expression>
+		</element>
+		<element kind="staticText" uuid="e2b96c02-77f8-41f6-bdba-84df938fc7c1" x="113" y="117" width="24" height="14" fontSize="8.0" hTextAlign="Center">
+			<text><![CDATA[Tel:]]></text>
+		</element>
+		<element kind="textField" uuid="23e70412-b332-49cb-9606-6cf986331bd3" x="50" y="17" width="173" height="10" fontSize="7.0">
+			<expression><![CDATA[$F{reg_no} == null ? " " : $F{reg_no}]]></expression>
+		</element>
+		<element kind="textField" uuid="8ecb75a4-3893-4d6c-bf29-1544edb57b95" x="50" y="37" width="173" height="10" fontSize="7.0">
+			<expression><![CDATA[$F{web} == null ?"" :$F{web}]]></expression>
+		</element>
+		<element kind="textField" uuid="667aa260-b198-45e6-a23e-ee9f340756cb" x="50" y="47" width="173" height="10" fontSize="7.0">
+			<expression><![CDATA[$F{branch_address} == null ?"" : $F{branch_address}]]></expression>
+		</element>
+		<element kind="textField" uuid="28708830-59c5-4003-8205-d2c9bf286fa2" x="50" y="27" width="173" height="10" fontSize="7.0">
+			<expression><![CDATA[$F{company_email} ==  null? "" : $F{company_email}]]></expression>
+		</element>
+		<element kind="textField" uuid="c7856ea5-0969-49b5-ba57-e7c188d88f67" x="0" y="0" width="223" height="17" markup="html" fontSize="11.0" bold="true">
+			<expression><![CDATA[$F{reg_name}]]></expression>
+		</element>
+		<element kind="image" uuid="03ad572a-9ad0-436d-b65a-da66125cadda" x="232" y="7" width="146" height="50">
+			<expression><![CDATA["https://vayonova.com/optielite_Client_Logo/lensmate.png"]]></expression>
+		</element>
+	</title>
+	<columnHeader height="21">
+		<element kind="staticText" uuid="a6735085-2036-44d0-b5a7-a14276ca186f" positionType="Float" x="316" y="0" width="63" height="20" forecolor="#000000" fontName="Arial" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle" style="Column header">
+			<text><![CDATA[saling_price]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3d52de40-4d7f-4e91-904e-483fa23377f7"/>
+			<box style="Column header">
+				<pen lineColor="#030202"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="61af0b55-e583-425d-9b56-6194c89a9b94" positionType="Float" x="278" y="0" width="38" height="20" forecolor="#000000" fontName="Arial" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle" style="Column header">
+			<text><![CDATA[qty]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="03297e56-cd18-4a40-980e-42cb5219425f"/>
+			<box style="Column header">
+				<pen lineColor="#030202"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="e1ccd457-0e02-4616-9307-bce74980c35c" positionType="Float" x="0" y="0" width="58" height="20" forecolor="#000000" fontName="Arial" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle" style="Column header">
+			<text><![CDATA[Code]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="db117faf-6197-4759-969b-81fbb43e3e77"/>
+			<box style="Column header">
+				<pen lineColor="#030202"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="ca7a9353-3d0e-423f-965e-17c5dce5af49" positionType="Float" x="58" y="0" width="220" height="20" forecolor="#000000" fontName="Arial" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle" style="Column header">
+			<text><![CDATA[Item]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9587b82d-932a-4458-b7d1-c66f6fd05471"/>
+			<box style="Column header">
+				<pen lineColor="#030202"/>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+			</box>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="19">
+			<element kind="textField" uuid="0758562c-0288-4319-9e6a-3710a5ddaa88" x="278" y="-1" width="38" height="20" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{qty}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d888591d-582e-46a4-8bf1-48dcb6a96888"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="3bff66da-e1cf-49a1-b4da-804652800f16" x="0" y="-1" width="58" height="20" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{product_id}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a473e87f-df49-4113-b8a8-8debbda73dd4"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="10e35b0c-0781-4244-b7c2-7bdc08f33747" x="210" y="-1" width="68" height="20" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{product_name}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="47bb1611-8790-43b8-a4a0-17b0ad34023e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="53188b94-dbc5-4425-8e70-dd085a852c35" x="316" y="-1" width="63" height="20" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{saling_price}))]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cb172b96-ab13-48b0-9580-e643ad1bfe5d"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="72dd9dbd-15e2-4ee4-80a3-bdcb06d54643" x="130" y="-1" width="80" height="20" markup="html" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{sub_category}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="20865211-3b10-4470-86f9-80bebae6e3a3"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="56250ccf-439e-4d60-88b9-95a91dde2d33" x="58" y="-1" width="72" height="20" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{brand_name}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="620e0a7f-8a99-4e79-8b2c-f8df90745006"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+		</band>
+	</detail>
+	<lastPageFooter height="148">
+		<element kind="line" uuid="479c47fd-9e03-4ab7-a1c8-09b9bc42ef3d" x="1" y="10" width="378" height="1"/>
+		<element kind="staticText" uuid="7ec5519a-2a9f-409a-911b-864c19c90222" x="2" y="20" width="77" height="18" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Payment History]]></text>
+		</element>
+		<element kind="textField" uuid="497a1af4-5312-4ca5-985d-0d7c81c99ebe" x="2" y="50" width="117" height="10" fontSize="6.0">
+			<expression><![CDATA[$P{payment2} == null ? " " : $P{payment2}]]></expression>
+		</element>
+		<element kind="textField" uuid="db2dc828-b677-4bbb-a8e7-61485859b683" x="2" y="69" width="128" height="11" fontSize="6.0">
+			<expression><![CDATA[$P{payment4} == null ? " " :"$P{payment4} "]]></expression>
+		</element>
+		<element kind="textField" uuid="e1ed23bf-dee3-42cd-aeba-05e3cf39c7fd" x="2" y="60" width="117" height="10" fontSize="6.0">
+			<expression><![CDATA[$P{payment3} == null ? " " : $P{payment3}]]></expression>
+		</element>
+		<element kind="textField" uuid="083faa5e-4495-4d9a-a1c3-4ac25144927d" x="2" y="39" width="117" height="10" fontSize="6.0">
+			<expression><![CDATA[$P{payment1} == null ? " " : $P{payment1}]]></expression>
+		</element>
+		<element kind="textField" uuid="ed2d7c17-e7c1-496a-9dfc-a7b352136cc4" x="304" y="36" width="74" height="13" fontSize="9.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{subtotal}))]]></expression>
+			<box rightPadding="3"/>
+		</element>
+		<element kind="staticText" uuid="353643ab-1dc9-49ca-b20d-7f0ef256b2c4" x="249" y="63" width="54" height="17" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[Pay Amount]]></text>
+		</element>
+		<element kind="textField" uuid="f19fbdd1-c077-43b5-a03c-448ffc333d83" x="304" y="80" width="75" height="22" fontSize="9.0" bold="true" underline="false" hTextAlign="Right" vTextAlign="Top">
+			<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{total_price}))]]></expression>
+			<box rightPadding="3"/>
+		</element>
+		<element kind="textField" uuid="c476bb50-1df4-49b1-b9ca-95c6e4113d7b" x="304" y="49" width="75" height="14" fontSize="9.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{advance_payment}))]]></expression>
+			<box rightPadding="3"/>
+		</element>
+		<element kind="staticText" uuid="068a5d2c-95ff-4b3a-92c9-f4d9c4df6b75" x="249" y="23" width="54" height="13" fontSize="8.0" hTextAlign="Right">
+			<text><![CDATA[Discount]]></text>
+		</element>
+		<element kind="textField" uuid="12a42011-25bf-4a03-a715-0b99cd00aa90" x="304" y="63" width="75" height="17" fontSize="9.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{payment_amount}))]]></expression>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="92bb0faa-0dfd-4bed-aa72-2e0e4f8d6edf"/>
+			<box rightPadding="3"/>
+		</element>
+		<element kind="staticText" uuid="88537935-2d44-4a62-8ee3-0a94cfd12e0c" x="249" y="80" width="54" height="22" fontSize="11.0" bold="true" hTextAlign="Right">
+			<text><![CDATA[Total Due]]></text>
+		</element>
+		<element kind="textField" uuid="b2449077-8cdf-4bf0-939c-00596389b6e4" x="304" y="23" width="75" height="13" fontSize="9.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{discount}))]]></expression>
+			<box rightPadding="3"/>
+		</element>
+		<element kind="staticText" uuid="52b80f49-9439-4c54-a16c-370cd31b0f14" x="249" y="36" width="54" height="13" fontSize="8.0" hTextAlign="Right">
+			<text><![CDATA[Sub Total]]></text>
+		</element>
+		<element kind="staticText" uuid="874d73df-c103-4404-b86e-a6934f82fd5d" x="249" y="49" width="54" height="14" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[Advance]]></text>
+		</element>
+		<element kind="staticText" uuid="06066c80-6ac9-4b82-af2d-405b47959473" x="278" y="110" width="100" height="14">
+			<text><![CDATA[....................................]]></text>
+		</element>
+		<element kind="staticText" uuid="ed1fe2dd-8456-4623-8a45-b83704844106" x="288" y="126" width="90" height="13" fontSize="6.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Receiver's Signature]]></text>
+		</element>
+		<element kind="textField" uuid="dcf7564a-7c59-4d14-a66b-3f80cb9957bb" x="1" y="140" width="378" height="8" forecolor="#8C1915" fontSize="6.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA["Thank you " + $F{name} + " for choosing" +$F{reg_name}]]></expression>
+		</element>
+		<element kind="textField" uuid="b70381fe-a26a-4b52-a609-965b82606365" x="304" y="11" width="74" height="12" fontSize="9.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($V{TotalSelling}))]]></expression>
+			<box rightPadding="3"/>
+		</element>
+		<element kind="staticText" uuid="1d2a2eca-d5c3-44c1-8f7b-6ef3714cb586" x="250" y="11" width="54" height="13" fontSize="8.0" hTextAlign="Right">
+			<text><![CDATA[Total]]></text>
+		</element>
+	</lastPageFooter>
+</jasperReport>

@@ -1,0 +1,369 @@
+<!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
+<jasperReport name="EChanneling" language="java" columnCount="1" pageWidth="595" pageHeight="420" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96beb118-0964-4565-8e68-24351701275a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Optielite.jrdax"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="appoinmentId" class="java.lang.String"/>
+	<query language="sql"><![CDATA[SELECT 
+`appoinment_id`,
+`ref_no`,
+`date`,
+`time`,
+`total`,
+`doctor_fee`,
+`channeling_fee`,
+`Doctor_doc_id`,
+`customer_mobile`,
+`users_id`,
+`payment_status_id`,
+`customer`.`mobile`,
+`filenumber`,
+`register_date`,
+`channeling_appoinment`.`location_id`,
+`address_line1`,
+`address_line2`,
+`telephone_land`,
+`nic`,
+`birthday`,
+`name`,
+`remark`,
+`doc_id`,
+`doc_name`,
+`address`,
+`specialization`
+FROM channeling_appoinment
+	INNER JOIN customer ON 
+	 customer.mobile = channeling_appoinment.customer_mobile 
+	INNER JOIN doctor ON 
+	 doctor.doc_id = channeling_appoinment.`Doctor_doc_id`
+	 WHERE `appoinment_id`  =$P{appoinmentId} ]]></query>
+	<field name="appoinment_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="appoinment_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="appoinment_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="ref_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ref_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="ref_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="date"/>
+		<property name="com.jaspersoft.studio.field.label" value="date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="time" class="java.sql.Time">
+		<property name="com.jaspersoft.studio.field.name" value="time"/>
+		<property name="com.jaspersoft.studio.field.label" value="time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total"/>
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="doctor_fee" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="doctor_fee"/>
+		<property name="com.jaspersoft.studio.field.label" value="doctor_fee"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="channeling_fee" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="channeling_fee"/>
+		<property name="com.jaspersoft.studio.field.label" value="channeling_fee"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="Doctor_doc_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Doctor_doc_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="Doctor_doc_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="customer_mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="customer_mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="customer_mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="users_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="users_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="users_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="payment_status_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="payment_status_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_status_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="filenumber" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="filenumber"/>
+		<property name="com.jaspersoft.studio.field.label" value="filenumber"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="register_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="register_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="register_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="location_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="location_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="location_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="channeling_appoinment"/>
+	</field>
+	<field name="address_line1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address_line1"/>
+		<property name="com.jaspersoft.studio.field.label" value="address_line1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="address_line2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address_line2"/>
+		<property name="com.jaspersoft.studio.field.label" value="address_line2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="telephone_land" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="telephone_land"/>
+		<property name="com.jaspersoft.studio.field.label" value="telephone_land"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="nic" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nic"/>
+		<property name="com.jaspersoft.studio.field.label" value="nic"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="birthday" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="birthday"/>
+		<property name="com.jaspersoft.studio.field.label" value="birthday"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="remark" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="remark"/>
+		<property name="com.jaspersoft.studio.field.label" value="remark"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="doc_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="doc_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="doc_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="doctor"/>
+	</field>
+	<field name="doc_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="doc_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="doc_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="doctor"/>
+	</field>
+	<field name="address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address"/>
+		<property name="com.jaspersoft.studio.field.label" value="address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="doctor"/>
+	</field>
+	<field name="specialization" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="specialization"/>
+		<property name="com.jaspersoft.studio.field.label" value="specialization"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="doctor"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="69" splitType="Stretch">
+		<element kind="staticText" uuid="6ec57c5b-1793-493c-90b7-b0776a3a6c4b" x="310" y="10" width="239" height="59" fontSize="24.0" italic="true" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Doctor Channeling]]></text>
+		</element>
+		<element kind="image" uuid="09a99932-43f0-423b-b300-0079935a416a" x="10" y="10" width="146" height="50">
+			<expression><![CDATA["https://vayonova.com/optielite_Client_Logo/lensmate.png"]]></expression>
+		</element>
+	</title>
+	<pageHeader height="40" splitType="Stretch">
+		<element kind="staticText" uuid="60c22319-24c4-4515-8263-8e6dbf074d04" x="10" y="0" width="220" height="40" fontSize="18.0" italic="false" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Channeling Details ]]></text>
+		</element>
+		<element kind="staticText" uuid="b2e89300-786f-415d-918b-aabbabb5c0ee" x="331" y="0" width="208" height="40" fontSize="18.0" italic="false" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[Doctor Details]]></text>
+		</element>
+	</pageHeader>
+	<columnHeader height="63" splitType="Stretch">
+		<element kind="staticText" uuid="f94095c9-db8a-45cc-8c7b-cc41cfb8d9c7" x="10" y="0" width="110" height="13">
+			<text><![CDATA[Appoinment Number]]></text>
+		</element>
+		<element kind="staticText" uuid="9f453f50-4b46-4db6-80d3-a61c3d86f880" x="10" y="13" width="110" height="14">
+			<text><![CDATA[Date]]></text>
+		</element>
+		<element kind="staticText" uuid="ea3ace04-b4e7-4748-8c03-8ca481fd92c1" x="10" y="27" width="110" height="13">
+			<text><![CDATA[Time]]></text>
+		</element>
+		<element kind="textField" uuid="33c15ac7-15f9-4c60-9358-32e6dd8bee16" x="140" y="0" width="140" height="13">
+			<expression><![CDATA[$F{appoinment_id}]]></expression>
+		</element>
+		<element kind="textField" uuid="630aa5db-1fad-4cc5-9ed4-87ae3012f30d" x="140" y="13" width="140" height="14" linkType="None" linkTarget="Self">
+			<expression><![CDATA[$F{date}]]></expression>
+		</element>
+		<element kind="textField" uuid="6616a522-9ec0-492b-98e9-8f775f2fec34" x="140" y="27" width="140" height="13">
+			<expression><![CDATA[$F{time}]]></expression>
+		</element>
+		<element kind="staticText" uuid="34947545-7f0a-4ce0-b511-32dc0f9a285e" x="120" y="0" width="20" height="13" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[:]]></text>
+		</element>
+		<element kind="staticText" uuid="ec3e853e-cd61-4597-9d57-0e8c131f7893" x="120" y="13" width="20" height="14" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[:]]></text>
+		</element>
+		<element kind="staticText" uuid="adc8cf6c-c0de-4f9f-b119-56ddd28d1d25" x="120" y="27" width="20" height="13" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[:]]></text>
+		</element>
+		<element kind="staticText" uuid="b0e667da-4b81-4204-a984-4833af110f35" x="281" y="13" width="110" height="14">
+			<text><![CDATA[Specialization]]></text>
+		</element>
+		<element kind="staticText" uuid="38c7b277-8f85-4625-a462-841452cd2769" x="281" y="0" width="110" height="13">
+			<text><![CDATA[Name]]></text>
+		</element>
+		<element kind="textField" uuid="cc1e416e-0519-4a97-a1ae-acb0a72f8b4b" x="411" y="0" width="140" height="13">
+			<expression><![CDATA[$F{doc_name}]]></expression>
+		</element>
+		<element kind="textField" uuid="3381ab05-5b1d-440c-893c-9bd664cf992b" x="411" y="13" width="140" height="13">
+			<expression><![CDATA[$F{specialization}]]></expression>
+		</element>
+		<element kind="staticText" uuid="2fb2fd23-f7bb-4e8e-baf1-d53eb2e7baef" x="391" y="13" width="20" height="13" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[:]]></text>
+		</element>
+		<element kind="staticText" uuid="bf0affe4-d97a-4b22-a430-30dbaa89117d" x="391" y="-1" width="20" height="14" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[:]]></text>
+		</element>
+	</columnHeader>
+	<columnFooter height="81" splitType="Stretch">
+		<element kind="staticText" uuid="12f2182f-d870-4c17-83d1-6dbe6886659e" x="10" y="41" width="110" height="13">
+			<text><![CDATA[Name]]></text>
+		</element>
+		<element kind="staticText" uuid="724a57bf-c794-45fd-be2d-9d936b3a2b67" x="10" y="54" width="110" height="14">
+			<text><![CDATA[Mobile]]></text>
+		</element>
+		<element kind="staticText" uuid="329710aa-ed95-4378-b9d7-978cfd812d59" x="10" y="0" width="220" height="40" fontSize="18.0" italic="false" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Patient Details]]></text>
+		</element>
+		<element kind="textField" uuid="0c11c8a6-6627-4377-b1a6-70c432c16e06" x="141" y="55" width="140" height="13">
+			<expression><![CDATA[$F{customer_mobile}]]></expression>
+		</element>
+		<element kind="textField" uuid="544c69c5-30e5-4b2e-b6b9-ac27de5fc2ce" x="140" y="40" width="140" height="14">
+			<expression><![CDATA[$F{name}]]></expression>
+		</element>
+		<element kind="staticText" uuid="40ee7e05-adda-458a-9d31-8c7f21782591" x="120" y="41" width="20" height="13" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[:]]></text>
+		</element>
+		<element kind="staticText" uuid="e21b9aae-e837-452b-a419-84aac49ca7fa" x="120" y="54" width="20" height="14" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[:]]></text>
+		</element>
+		<element kind="textField" uuid="d211dea6-dbdb-49f6-8c3a-eb14be1d4bda" x="429" y="28" width="110" height="14" hTextAlign="Right">
+			<expression><![CDATA[$F{doctor_fee}]]></expression>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="1cd8e3e6-82e1-4b9e-8bda-3de0de583e4d" x="319" y="56" width="110" height="14" bold="true">
+			<text><![CDATA[Total]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="2712c8c6-0ce3-4ff4-83c3-ba0d7e49b92b" x="319" y="28" width="110" height="14">
+			<text><![CDATA[Doctor's Fee]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="0d7199e1-fdaa-41dd-a6a1-7e7ae61cd1e2" x="319" y="70" width="110" height="11" fontSize="8.0" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Payment Status]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="61191a5c-4caf-4976-b554-ae5c44f885b6" x="319" y="42" width="110" height="14">
+			<text><![CDATA[Channeling Fee]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="402590c6-cdc4-486d-b32b-a44c45a297cc" x="319" y="-12" width="220" height="40" fontSize="18.0" italic="false" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Payment Details]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="7032144e-2ea7-4951-8e3c-dac6fedddb2b" x="429" y="56" width="110" height="14" bold="true" hTextAlign="Right">
+			<expression><![CDATA[$F{total}]]></expression>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="ad8f8739-a473-4763-a5bf-78528c8b67e7" x="429" y="42" width="110" height="14" hTextAlign="Right">
+			<expression><![CDATA[$F{channeling_fee}]]></expression>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="bfe2edc6-b007-4fc9-b2b2-144d030820e7" x="429" y="70" width="110" height="11" forecolor="#FF0905" fontSize="6.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA[$F{payment_status_id} == 1? "Payment Pending" :"Payment Complete"]]></expression>
+			<box rightPadding="2">
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+	</columnFooter>
+	<pageFooter height="115" splitType="Stretch">
+		<element kind="staticText" uuid="54c8eb97-4498-41c6-8b28-2fa927f83658" x="8" y="22" width="420" height="87" fontSize="7.0">
+			<text><![CDATA[•  Service provided by: ARES LANKA Opticals
+•  Kindly collect your spectacles within 30 days from the invoice date. Uncollected orders may be cancelled after this period.
+•  Spectacles will be issued once the full payment has been completed.
+•  Frame adjustments and minor repairs are offered as a service; however, they are done at the customer’s discretion and risk.
+•  Orders are custom-made and therefore cannot be cancelled once confirmed.
+•  A fully paid invoice serves as an official payment receipt.
+•  If an advance payment is made, this invoice will be considered a receipt for the advance amount.
+•  As most items are custom-made, returns and cash refunds are not available.
+•  Exchanges or store credit may be offered in accordance with our store policy.]]></text>
+		</element>
+		<element kind="staticText" uuid="8375ff8f-31f2-4524-8754-4101153ae5e4" x="450" y="102" width="50" height="13" fontSize="6.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Signature]]></text>
+		</element>
+		<element kind="staticText" uuid="58e1cafe-1692-4a82-beb3-4dad8b14385d" x="391" y="80" width="158" height="22" hTextAlign="Center" vTextAlign="Bottom">
+			<text><![CDATA[..........................................................]]></text>
+		</element>
+		<element kind="staticText" uuid="4593b986-c47f-4557-871b-153c4c0260e6" x="10" y="0" width="290" height="20" bold="true" underline="true" hTextAlign="Left" vTextAlign="Bottom">
+			<text><![CDATA[Important Information for Our Valued Customers]]></text>
+		</element>
+	</pageFooter>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>

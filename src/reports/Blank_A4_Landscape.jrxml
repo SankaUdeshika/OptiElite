@@ -1,0 +1,365 @@
+<!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
+<jasperReport name="Blank_A4_Landscape" language="java" columnCount="1" pageWidth="595" pageHeight="420" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ca83b758-2010-44dc-81ba-ba16b1151dbd">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="jobno" class="java.lang.String"/>
+	<query language="SQL"><![CDATA[SELECT `R_Axis`,`L_Axis`,`R_CYL`,`L_CYL`,`job_no`,`users_id`,`prescripiton_date`,`L_distance`,`L_Addition`,`L_N_PD`,`L_M_PD`,`L_CYL`,`L_Va`,`L_Axis`,`R_Va`,`R_N_PD`,`R_M_PD`,`R_distance`,`R_Addition`,`R_CYL`,`R_Axis`,`customer_mobile`,`fname`,`lname`,`locaiton_mobile`,`location_name`,`branch_name`,`branch_address`,`mobile`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`name` FROM `prescription_details` INNER JOIN `users` ON `users`.`id` = `prescription_details`.`users_id` INNER JOIN `location` ON `location`.`id` = `users`.`location_id` INNER JOIN `customer` ON `customer`.`mobile` = `prescription_details`.`customer_mobile`   WHERE `job_no` =  $P{jobno}  ]]></query>
+	<field name="R_Axis" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="R_Axis"/>
+		<property name="com.jaspersoft.studio.field.label" value="R_Axis"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="L_Axis" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="L_Axis"/>
+		<property name="com.jaspersoft.studio.field.label" value="L_Axis"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="R_CYL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="R_CYL"/>
+		<property name="com.jaspersoft.studio.field.label" value="R_CYL"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="L_CYL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="L_CYL"/>
+		<property name="com.jaspersoft.studio.field.label" value="L_CYL"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="job_no" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="job_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="job_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="users_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="users_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="users_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="prescripiton_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="prescripiton_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="prescripiton_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="L_distance" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="L_distance"/>
+		<property name="com.jaspersoft.studio.field.label" value="L_distance"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="L_Addition" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="L_Addition"/>
+		<property name="com.jaspersoft.studio.field.label" value="L_Addition"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="L_N_PD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="L_N_PD"/>
+		<property name="com.jaspersoft.studio.field.label" value="L_N_PD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="L_M_PD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="L_M_PD"/>
+		<property name="com.jaspersoft.studio.field.label" value="L_M_PD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="COLUMN_12" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="L_CYL"/>
+		<property name="com.jaspersoft.studio.field.label" value="L_CYL"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="L_Va" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="L_Va"/>
+		<property name="com.jaspersoft.studio.field.label" value="L_Va"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="COLUMN_14" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="L_Axis"/>
+		<property name="com.jaspersoft.studio.field.label" value="L_Axis"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="R_Va" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="R_Va"/>
+		<property name="com.jaspersoft.studio.field.label" value="R_Va"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="R_N_PD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="R_N_PD"/>
+		<property name="com.jaspersoft.studio.field.label" value="R_N_PD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="R_M_PD" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="R_M_PD"/>
+		<property name="com.jaspersoft.studio.field.label" value="R_M_PD"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="R_distance" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="R_distance"/>
+		<property name="com.jaspersoft.studio.field.label" value="R_distance"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="R_Addition" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="R_Addition"/>
+		<property name="com.jaspersoft.studio.field.label" value="R_Addition"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="COLUMN_20" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="R_CYL"/>
+		<property name="com.jaspersoft.studio.field.label" value="R_CYL"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="COLUMN_21" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="R_Axis"/>
+		<property name="com.jaspersoft.studio.field.label" value="R_Axis"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="customer_mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="customer_mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="customer_mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="prescription_details"/>
+	</field>
+	<field name="fname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fname"/>
+		<property name="com.jaspersoft.studio.field.label" value="fname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="users"/>
+	</field>
+	<field name="lname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="lname"/>
+		<property name="com.jaspersoft.studio.field.label" value="lname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="users"/>
+	</field>
+	<field name="locaiton_mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="locaiton_mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="locaiton_mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="location_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="location_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="location_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="branch_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="branch_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="address_line1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address_line1"/>
+		<property name="com.jaspersoft.studio.field.label" value="address_line1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="address_line2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address_line2"/>
+		<property name="com.jaspersoft.studio.field.label" value="address_line2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="mobile2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mobile2"/>
+		<property name="com.jaspersoft.studio.field.label" value="mobile2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="telephone_land" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="telephone_land"/>
+		<property name="com.jaspersoft.studio.field.label" value="telephone_land"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="nic" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nic"/>
+		<property name="com.jaspersoft.studio.field.label" value="nic"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="81" splitType="Stretch">
+		<element kind="line" uuid="41a4bf01-e9c8-45cf-b2e6-f64b4f1e9138" x="0" y="80" width="556" height="1">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="staticText" uuid="8a9e675c-a6b9-4a03-967b-20c7c6b913b8" x="415" y="10" width="50" height="20" hTextAlign="Left">
+			<text><![CDATA[Date:]]></text>
+			<box rightPadding="4"/>
+		</element>
+		<element kind="staticText" uuid="567ee6f7-e0fc-4f12-b616-2acc10a7c8b7" x="415" y="30" width="50" height="20" hTextAlign="Left">
+			<text><![CDATA[Invoice #]]></text>
+			<box rightPadding="4"/>
+		</element>
+		<element kind="textField" uuid="4ff61fce-a58a-4161-ba0f-cd0395e8ccc2" x="95" y="24" width="210" height="14">
+			<expression><![CDATA[$F{location_name}]]></expression>
+		</element>
+		<element kind="textField" uuid="691195b9-d7a0-4f07-a45c-63d1d1c5aa98" x="95" y="38" width="210" height="14">
+			<expression><![CDATA[$F{locaiton_mobile}]]></expression>
+		</element>
+		<element kind="textField" uuid="018932de-6c7a-49e3-a393-a74250e256df" x="95" y="50" width="210" height="30">
+			<expression><![CDATA[$F{branch_address}]]></expression>
+		</element>
+		<element kind="textField" uuid="47ef39c4-f0e0-4005-97a1-26706efa19f4" x="95" y="0" width="190" height="24" fontSize="19.0" bold="true">
+			<expression><![CDATA[$F{branch_name}]]></expression>
+		</element>
+		<element kind="textField" uuid="4f10e943-d2e9-436d-9709-66bce22c71d5" x="465" y="10" width="84" height="20">
+			<expression><![CDATA[$F{prescripiton_date}]]></expression>
+		</element>
+		<element kind="textField" uuid="73c63e14-6ae4-4f07-afdd-52d98c67e596" x="465" y="30" width="84" height="20">
+			<expression><![CDATA[$F{job_no}]]></expression>
+		</element>
+		<element kind="image" uuid="04bc6851-dccd-4609-8b65-8fba57242433" x="0" y="0" width="81" height="81">
+			<expression><![CDATA["https://wtffacilityservices.com/images/EagleVission.jpeg"]]></expression>
+		</element>
+	</title>
+	<pageHeader height="90" splitType="Stretch">
+		<element kind="textField" uuid="0b1f3b98-854c-4646-9813-d2902c2a526d" x="0" y="70" width="122" height="20">
+			<expression><![CDATA[$F{address_line1}]]></expression>
+		</element>
+		<element kind="textField" uuid="7c025a3f-3b6c-4627-b326-6339d1c937d2" x="0" y="54" width="122" height="16">
+			<expression><![CDATA[$F{mobile2}]]></expression>
+		</element>
+		<element kind="staticText" uuid="24ae9e5c-5552-46dd-98f3-e9af1674228b" x="0" y="0" width="150" height="24" fontSize="16.0" bold="true">
+			<text><![CDATA[Customer Details]]></text>
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="textField" uuid="c6655c5a-1dd3-4d18-97e3-f686cdaff20a" x="0" y="25" width="122" height="14">
+			<expression><![CDATA[$F{name}]]></expression>
+		</element>
+		<element kind="textField" uuid="799c3219-c5c4-4a50-8c28-4c4c96fcc39c" x="0" y="40" width="122" height="14">
+			<expression><![CDATA[$F{mobile}]]></expression>
+		</element>
+	</pageHeader>
+	<columnHeader height="110" splitType="Stretch">
+		<element kind="line" uuid="94a21c84-cef4-40aa-a69d-586e8eab1417" x="24" y="107" width="521" height="2"/>
+		<element kind="staticText" uuid="b64a8f1d-819d-4388-8ee9-d5b5fed49eb8" x="24" y="49" width="81" height="59" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Prescription No]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="01c818cc-46c9-4379-9dbe-a125343d9c7a"/>
+			<box leftPadding="3"/>
+		</element>
+		<element kind="staticText" uuid="b1ae71ef-4dc6-41ab-91a6-9b8135326dfc" x="24" y="10" width="150" height="34" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Details]]></text>
+			<box bottomPadding="3"/>
+		</element>
+		<element kind="line" uuid="ef3cd0c4-0291-4c66-a5f7-29a018ebd2c1" x="174" y="9" width="1" height="101"/>
+		<element kind="line" uuid="66497944-45dd-406e-8d13-20aae4ef4591" x="23" y="8" width="1" height="101"/>
+		<element kind="line" uuid="18dbb461-fb77-497d-9af4-223bbe6511a9" x="24" y="45" width="151" height="1"/>
+		<element kind="staticText" uuid="e143589a-eb28-4b9c-9cfd-ea864e491b34" x="174" y="8" width="80" height="36" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Prescription Details]]></text>
+			<box bottomPadding="3"/>
+		</element>
+		<element kind="line" uuid="022bd8d4-f131-4d45-ab6e-fbd5c19db575" x="174" y="46" width="369" height="1"/>
+		<element kind="line" uuid="275c2577-a16b-477e-bc13-59d5c7d62db2" x="175" y="78" width="370" height="1"/>
+		<element kind="line" uuid="d896c537-cc38-4380-a147-52c606ecf582" x="253" y="10" width="1" height="97"/>
+		<element kind="staticText" uuid="600e7d7f-8431-4867-a958-fcd68c66fcd2" x="174" y="45" width="80" height="33" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Left Eye]]></text>
+		</element>
+		<element kind="staticText" uuid="8a379808-bffc-4cff-85d0-d222c2c21562" x="173" y="79" width="80" height="31" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Right Eye]]></text>
+		</element>
+		<element kind="staticText" uuid="c66b7e41-14c9-4a9d-b7e5-0452d4020540" x="253" y="10" width="51" height="36" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Distance]]></text>
+		</element>
+		<element kind="staticText" uuid="07878a86-65a9-4b0a-a6c8-e798119cfb1c" x="304" y="9" width="40" height="36" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[CYL]]></text>
+		</element>
+		<element kind="staticText" uuid="0ba8e273-f2c8-4373-bdad-a087ebcfe44c" x="344" y="10" width="40" height="36" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[AXIS]]></text>
+		</element>
+		<element kind="staticText" uuid="fa883a32-ea6c-4b2c-b5d1-50fadf8c3479" x="385" y="10" width="39" height="36" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[VA]]></text>
+		</element>
+		<element kind="staticText" uuid="3101e6a3-ccdb-4c34-be37-281a39d0b85a" x="424" y="9" width="40" height="36" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[N_PD]]></text>
+		</element>
+		<element kind="staticText" uuid="df08b870-8140-4806-8f6b-0d3d923561af" x="464" y="9" width="40" height="35" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[M_PD]]></text>
+		</element>
+		<element kind="line" uuid="f6f09a90-8c62-477d-8523-47d368a84ba0" x="304" y="9" width="1" height="98"/>
+		<element kind="line" uuid="e2e95306-3071-4556-8699-5b2eb67c6405" x="23" y="8" width="522" height="1"/>
+		<element kind="line" uuid="2a9fde3e-7b97-4db4-82fd-b6fa7c547f70" x="105" y="46" width="1" height="62"/>
+		<element kind="line" uuid="07f30b81-b680-40ad-8346-7014f385407f" x="343" y="9" width="1" height="98"/>
+		<element kind="line" uuid="20c4ba9f-e8b0-46cf-98f3-7c3837a4ba96" x="384" y="10" width="1" height="98"/>
+		<element kind="line" uuid="6a4d8a15-bdaa-4be1-8b95-6c127285f08c" x="424" y="10" width="1" height="98"/>
+		<element kind="line" uuid="000f58ee-1ea8-47c6-aa79-73d2fe5e54f3" x="464" y="10" width="1" height="98"/>
+		<element kind="staticText" uuid="7a1b9e13-8d5b-44a8-a2a1-d19cfaff80cb" x="504" y="9" width="40" height="36" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Addition]]></text>
+		</element>
+		<element kind="line" uuid="304a8050-0d03-4020-bf06-8ee4703fc3a7" x="504" y="9" width="1" height="98"/>
+		<element kind="line" uuid="f728ccda-86b6-4309-87a8-1ff12c9783d0" x="544" y="10" width="1" height="98"/>
+		<element kind="textField" uuid="82bc8b8b-8e85-461b-97e7-4da73c0288e1" x="105" y="46" width="69" height="61" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{job_no}]]></expression>
+		</element>
+		<element kind="textField" uuid="20fe23b2-3cf3-4b4d-9422-f9e4f4d59183" x="254" y="49" width="50" height="29" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{L_distance}]]></expression>
+		</element>
+		<element kind="textField" uuid="f0d2a066-6528-45fb-a248-827dcbbbd2f5" x="505" y="46" width="40" height="32" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{L_Addition}]]></expression>
+		</element>
+		<element kind="textField" uuid="fe9c2e2a-49ee-4ce8-95e5-fcdba8026444" x="384" y="48" width="40" height="30" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{L_Va}]]></expression>
+		</element>
+		<element kind="textField" uuid="5add6029-f84b-4708-a809-334b3e797189" x="425" y="48" width="39" height="30" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{L_N_PD}]]></expression>
+		</element>
+		<element kind="textField" uuid="b2f8da9b-031c-440b-9180-491fcbf808a4" x="465" y="48" width="39" height="30" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{L_M_PD}]]></expression>
+		</element>
+		<element kind="textField" uuid="756f2c33-042e-4944-954a-e54621bcede6" x="384" y="79" width="41" height="28" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{R_Va}]]></expression>
+		</element>
+		<element kind="textField" uuid="afb589a1-eca5-4725-b96b-6dc3411570a7" x="424" y="78" width="41" height="30" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{R_N_PD}]]></expression>
+		</element>
+		<element kind="textField" uuid="c68c57d1-084c-45e8-a94d-f55d1b0d0dec" x="465" y="78" width="40" height="30" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{R_M_PD}]]></expression>
+		</element>
+		<element kind="textField" uuid="909c8ed9-555f-4aaa-b233-0a2ad7fb2e97" x="504" y="79" width="41" height="31" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{R_Addition}]]></expression>
+		</element>
+		<element kind="textField" uuid="b277e6a3-502a-4125-887f-08691ef3fd93" x="254" y="78" width="51" height="29" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{R_distance}]]></expression>
+		</element>
+		<element kind="textField" uuid="0f8b0120-d0fb-42b5-a53d-0d905c293eea" x="345" y="78" width="38" height="28" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{R_Axis}]]></expression>
+		</element>
+		<element kind="textField" uuid="1d358955-d8a3-4b0d-b3aa-31a6584cd52f" x="345" y="48" width="40" height="30" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{L_Axis}]]></expression>
+		</element>
+		<element kind="textField" uuid="8dfdf302-bfa5-4726-9b0d-84e99b0d3143" x="305" y="79" width="38" height="28" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{R_CYL}]]></expression>
+		</element>
+		<element kind="textField" uuid="00924c29-9acc-4b78-9cda-6af8e51fdbe1" x="304" y="46" width="40" height="32" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{L_CYL}]]></expression>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="11" splitType="Stretch"/>
+	</detail>
+	<columnFooter height="35" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch">
+		<element kind="staticText" uuid="f082e716-07d4-4b3e-97ed-b8c35f6c2d7f" positionType="Float" mode="Opaque" x="0" y="24" width="556" height="30" backcolor="#E6E8E9" fontName="Serif" fontSize="9.0" italic="true" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Thank You]]></text>
+		</element>
+		<element kind="staticText" uuid="7202b55f-3bec-4e51-864e-f81bc2bdf633" x="440" y="0" width="100" height="14">
+			<text><![CDATA[....................................]]></text>
+		</element>
+		<element kind="staticText" uuid="7b776f57-f527-4328-a45c-aa290b03585b" x="400" y="-1" width="40" height="16" fontSize="7.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Seller Sign]]></text>
+		</element>
+	</pageFooter>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>

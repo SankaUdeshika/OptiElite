@@ -1,0 +1,105 @@
+<!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
+<jasperReport name="CustomerReport" language="java" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e15d519-eab3-497d-b483-a5c1caac3ee0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
+	<style name="Title" fontName="Arial" fontSize="26.0" bold="true"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18.0"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12.0" bold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12.0"/>
+	<query language="SQL"><![CDATA[]]></query>
+	<field name="Name" class="java.lang.String"/>
+	<field name="Birthday" class="java.lang.String"/>
+	<field name="Mobile 02" class="java.lang.String"/>
+	<field name="TelePhone " class="java.lang.String"/>
+	<field name="NIC" class="java.lang.String"/>
+	<field name="Branch" class="java.lang.String"/>
+	<field name="RegisterDate" class="java.lang.String"/>
+	<field name="mobile 01" class="java.lang.String"/>
+	<background splitType="Stretch"/>
+	<title height="70" splitType="Stretch">
+		<element kind="staticText" uuid="91f5fe7f-a65f-46a3-81ae-30f2d82c45a2" x="0" y="13" width="263" height="33" vTextAlign="Middle" style="Title">
+			<text><![CDATA[Customer Report]]></text>
+		</element>
+		<element kind="staticText" uuid="6931f6fc-c9e8-4cc3-9eec-607a123c87f7" x="100" y="46" width="174" height="22" style="SubTitle">
+			<text><![CDATA[new java.util.Date(]]></text>
+		</element>
+	</title>
+	<pageHeader splitType="Stretch"/>
+	<columnHeader height="36" splitType="Stretch">
+		<element kind="line" uuid="2c4ebb21-8745-45a1-a9ad-477acaac72cb" positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1">
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</element>
+		<element kind="staticText" uuid="2ff63a10-2146-45e4-9b82-97987443758f" x="357" y="0" width="80" height="16">
+			<text><![CDATA[Telephone]]></text>
+		</element>
+		<element kind="staticText" uuid="b35e66ca-6445-4003-8958-630fa5c593e3" x="0" y="0" width="70" height="16">
+			<text><![CDATA[Name]]></text>
+		</element>
+		<element kind="staticText" uuid="6824b943-43e7-4a6a-9366-422ebe9717a2" x="277" y="0" width="80" height="16">
+			<text><![CDATA[Mobile]]></text>
+		</element>
+		<element kind="staticText" uuid="7c301a96-a137-404b-a37d-1ae05324f435" x="70" y="0" width="70" height="16">
+			<text><![CDATA[NIC]]></text>
+		</element>
+		<element kind="staticText" uuid="5c90af1e-d50d-4253-bf45-c40ae69d0be1" x="140" y="0" width="57" height="16">
+			<text><![CDATA[Birthday]]></text>
+		</element>
+		<element kind="staticText" uuid="f4d8eacb-dbfe-49d9-91e1-1c91dfb9c138" x="437" y="-1" width="43" height="16">
+			<text><![CDATA[Branch]]></text>
+		</element>
+		<element kind="staticText" uuid="4e9ea0e8-f214-4ee1-8ff0-959c44b0f212" x="480" y="-1" width="75" height="16">
+			<text><![CDATA[Register Date]]></text>
+		</element>
+		<element kind="staticText" uuid="6ee75d82-3b1a-4b69-b664-c44d0853bd49" x="197" y="0" width="80" height="16">
+			<text><![CDATA[whatsapp]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<element kind="line" uuid="ffde0804-90e8-496b-86fb-ee363619f187" positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1">
+				<pen lineWidth="0.5" lineColor="#999999"/>
+			</element>
+			<element kind="textField" uuid="ef13f4d5-bec5-40d6-9190-460451480362" x="480" y="0" width="75" height="16">
+				<expression><![CDATA[$F{RegisterDate}]]></expression>
+			</element>
+			<element kind="textField" uuid="321c8e1f-bce4-4199-98cc-e86a65b4e00e" x="197" y="0" width="80" height="16">
+				<expression><![CDATA[$F{mobile 01}]]></expression>
+			</element>
+			<element kind="textField" uuid="a5e3f29c-5e99-448a-9059-90deaa565d1e" x="437" y="0" width="43" height="16">
+				<expression><![CDATA[$F{Birthday}]]></expression>
+			</element>
+			<element kind="textField" uuid="c71f7122-9074-46e0-999a-0f1fe9d0b386" x="357" y="0" width="80" height="16">
+				<expression><![CDATA[$F{TelePhone }]]></expression>
+			</element>
+			<element kind="textField" uuid="a1426841-f8b0-4552-842a-b734f7369604" x="277" y="0" width="80" height="15">
+				<expression><![CDATA[$F{Mobile 02}]]></expression>
+			</element>
+			<element kind="textField" uuid="082ea261-e79a-44fe-b957-4cf6bbcaff11" x="0" y="0" width="70" height="16">
+				<expression><![CDATA[$F{Name}]]></expression>
+			</element>
+			<element kind="textField" uuid="ff70d4a6-d860-404b-8adc-526f0895abed" x="140" y="0" width="57" height="16">
+				<expression><![CDATA[$F{Birthday}]]></expression>
+			</element>
+			<element kind="textField" uuid="ce31b323-6d29-4a9b-9795-c21e291243ff" x="70" y="0" width="70" height="16">
+				<expression><![CDATA[$F{NIC}]]></expression>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="54" splitType="Stretch">
+		<element kind="line" uuid="30093aa1-3dd7-4eea-9cc9-e183637af8f4" positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1">
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</element>
+	</columnFooter>
+	<pageFooter height="20" splitType="Stretch">
+		<element kind="textField" uuid="c9e9a989-76ae-4c92-a08c-dba3c3185f04" x="433" y="0" width="80" height="20" fontSize="10.0" bold="false" hTextAlign="Right" style="Column header">
+			<expression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></expression>
+		</element>
+		<element kind="textField" uuid="736cac2d-8f9a-48bb-b4e7-09302ce0e313" x="513" y="0" width="40" height="20" fontSize="10.0" evaluationTime="Report" bold="false" style="Column header">
+			<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="c49bc611-71b3-4860-8112-76288860b48d" x="0" y="0" width="197" height="20" fontSize="10.0" pattern="EEEEE dd MMMMM yyyy" bold="false" style="Column header">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+	</pageFooter>
+	<summary splitType="Stretch"/>
+</jasperReport>

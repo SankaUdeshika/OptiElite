@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jdbcDataAdapter class="net.sf.jasperreports.data.jdbc.JdbcDataAdapterImpl">
+	<name>wijesooriyaAdapter</name>
+	<classpath>C:\Users\sanka\Documents\NetBeansProjects\OptiElite\dist\lib\mysql-connector-java-8.0.24.jar</classpath>
+	<driver>com.mysql.jdbc.Driver</driver>
+	<username>root</username>
+	<password>12345678</password>
+	<url>jdbc:mysql://localhost/eagle_eye_database</url>
+	<database></database>
+	<savePassword>true</savePassword>
+	<serverAddress></serverAddress>
+</jdbcDataAdapter>

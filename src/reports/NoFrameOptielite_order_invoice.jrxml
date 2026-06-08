@@ -1,0 +1,666 @@
+<!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
+<jasperReport name="NoFrameOptielite_order_invoice" language="java" columnCount="1" pageWidth="420" pageHeight="595" orientation="Landscape" columnWidth="380" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="942df19b-8ff0-4ff8-92ff-5d7c23fd23b7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Optielite.jrdax"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<dataset name="Dataset1" uuid="51fb426a-5c1c-422d-af77-de23eb27213e">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Optielite.jrdax"/>
+		<query language="SQL"><![CDATA[]]></query>
+	</dataset>
+	<parameter name="id" class="java.lang.String"/>
+	<parameter name="payment1" class="java.lang.String"/>
+	<parameter name="payment2" class="java.lang.String"/>
+	<parameter name="payment3" class="java.lang.String"/>
+	<parameter name="payment4" class="java.lang.String"/>
+	<query language="SQL"><![CDATA[SELECT 
+	`extra_charges`.`description` AS charge_description,
+	`amount`,
+	`7_days__lens_warrenty`,
+	`order_time`,
+	`discount_percentage`,
+	`branch_address`,
+	`company_email`,
+	`web`,
+	`reg_no`,
+	`reg_name`,
+	`lens_id`, 
+	`bag`,
+	`box`,
+	`clothing`,
+	`payment_amount`,
+	`lens_Qty`,
+	`lens_price`,
+	`lens_code`,
+	`location_mobile2`,
+	`lenstotal`,
+	`advance_payment`,
+	`prescription_details_job_no`,
+	`branch_address`,
+	`locaiton_mobile`,
+	`branch_name`,
+	`payment_name`,
+	`location_name`,
+	invoice.invoice_id,
+	`date`,
+	`total_price`,
+	`discount`,
+	`subtotal`,
+	`address_line1`,
+	`address_line2`,
+	customer.mobile,
+	`mobile2`,
+	`telephone_land`,
+	`nic`,
+	`name`
+FROM invoice
+	INNER JOIN customer ON 
+	 customer.mobile = invoice.customer_mobile 
+	INNER JOIN location ON 
+	 location.id = invoice_location
+	INNER JOIN payment_method ON 
+	 payment_method.`Payment_id` = invoice.`payment_method_Payment_id` 
+	LEFT JOIN lens_stock ON 
+	 invoice.lens_stock_lens_id = lens_stock.lens_id 
+	 LEFT JOIN extra_charges ON
+	 extra_charges.invoice_invoice_id = invoice.invoice_id
+WHERE 
+	 invoice.invoice_id = $P{id}]]></query>
+	<field name="charge_description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="description"/>
+		<property name="com.jaspersoft.studio.field.label" value="charge_description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="extra_charges"/>
+	</field>
+	<field name="amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="extra_charges"/>
+	</field>
+	<field name="7_days__lens_warrenty" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="7_days__lens_warrenty"/>
+		<property name="com.jaspersoft.studio.field.label" value="7_days__lens_warrenty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="order_time" class="java.sql.Time">
+		<property name="com.jaspersoft.studio.field.name" value="order_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="order_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="discount_percentage" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="discount_percentage"/>
+		<property name="com.jaspersoft.studio.field.label" value="discount_percentage"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="branch_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="company_email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="company_email"/>
+		<property name="com.jaspersoft.studio.field.label" value="company_email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="web" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="web"/>
+		<property name="com.jaspersoft.studio.field.label" value="web"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="reg_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reg_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="reg_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="reg_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reg_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="reg_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="lens_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="lens_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="lens_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="lens_stock"/>
+	</field>
+	<field name="bag" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bag"/>
+		<property name="com.jaspersoft.studio.field.label" value="bag"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="box" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="box"/>
+		<property name="com.jaspersoft.studio.field.label" value="box"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="clothing" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="clothing"/>
+		<property name="com.jaspersoft.studio.field.label" value="clothing"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="payment_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="payment_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="lens_Qty" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="lens_Qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="lens_Qty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="lens_price" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="lens_price"/>
+		<property name="com.jaspersoft.studio.field.label" value="lens_price"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="lens_stock"/>
+	</field>
+	<field name="lens_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="lens_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="lens_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="lens_stock"/>
+	</field>
+	<field name="location_mobile2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="location_mobile2"/>
+		<property name="com.jaspersoft.studio.field.label" value="location_mobile2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="lenstotal" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="lenstotal"/>
+		<property name="com.jaspersoft.studio.field.label" value="lenstotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="advance_payment" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="advance_payment"/>
+		<property name="com.jaspersoft.studio.field.label" value="advance_payment"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="prescription_details_job_no" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="prescription_details_job_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="prescription_details_job_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="COLUMN_23" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="locaiton_mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="locaiton_mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="locaiton_mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="branch_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="payment_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="payment_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payment_method"/>
+	</field>
+	<field name="location_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="location_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="location_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="location"/>
+	</field>
+	<field name="invoice_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="invoice_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="invoice_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="date"/>
+		<property name="com.jaspersoft.studio.field.label" value="date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="total_price" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_price"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_price"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="discount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="discount"/>
+		<property name="com.jaspersoft.studio.field.label" value="discount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="subtotal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.label" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="address_line1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address_line1"/>
+		<property name="com.jaspersoft.studio.field.label" value="address_line1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="address_line2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address_line2"/>
+		<property name="com.jaspersoft.studio.field.label" value="address_line2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="mobile2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mobile2"/>
+		<property name="com.jaspersoft.studio.field.label" value="mobile2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="telephone_land" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="telephone_land"/>
+		<property name="com.jaspersoft.studio.field.label" value="telephone_land"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="nic" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nic"/>
+		<property name="com.jaspersoft.studio.field.label" value="nic"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="61" splitType="Stretch">
+		<element kind="line" uuid="ac31fa19-086f-46cf-8d32-95900dcd61a4" x="0" y="60" width="381" height="1">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="textField" uuid="067dd69d-0945-424e-a0ca-d397feee82da" x="0" y="0" width="220" height="17" markup="html" fontSize="11.0" bold="true">
+			<expression><![CDATA[$F{reg_name}]]></expression>
+		</element>
+		<element kind="staticText" uuid="741c4b20-90aa-49e3-a6f5-55a907c644d5" x="0" y="17" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Reg No   :]]></text>
+		</element>
+		<element kind="textField" uuid="ab78e8fe-dbb9-4b29-b8ba-2d6d8c231f6c" x="50" y="17" width="170" height="10" fontSize="7.0">
+			<expression><![CDATA[$F{reg_no} == null ? " " : $F{reg_no}]]></expression>
+		</element>
+		<element kind="staticText" uuid="061db1fa-ab64-48d4-8b89-776dc6dbfa9b" x="0" y="47" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Address :]]></text>
+		</element>
+		<element kind="textField" uuid="136e1bf2-5c39-459c-a4c0-fb7336fbc16c" x="50" y="47" width="170" height="10" fontSize="7.0">
+			<expression><![CDATA[$F{branch_address} == null ?"" : $F{branch_address}]]></expression>
+		</element>
+		<element kind="textField" uuid="553f3b06-2595-47b1-9558-b69740393707" x="50" y="37" width="170" height="10" fontSize="7.0">
+			<expression><![CDATA[$F{web} == null ?"" :$F{web}]]></expression>
+		</element>
+		<element kind="textField" uuid="65c4207d-3214-4968-8206-15fcd1ee85ed" x="50" y="27" width="170" height="10" fontSize="7.0">
+			<expression><![CDATA[$F{company_email} ==  null? "" : $F{company_email}]]></expression>
+		</element>
+		<element kind="staticText" uuid="62480071-70d6-45bc-b931-04c08b207fde" x="0" y="27" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Email      :]]></text>
+		</element>
+		<element kind="staticText" uuid="acc77b04-bf1c-4750-96ff-91454bb856c1" x="0" y="37" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Web        :]]></text>
+		</element>
+		<element kind="image" uuid="e69cb308-f367-49b3-8a71-24d20c57220f" x="226" y="5" width="146" height="50">
+			<expression><![CDATA["https://vayonova.com/optielite_Client_Logo/lensmate.png"]]></expression>
+		</element>
+	</title>
+	<pageHeader height="54" splitType="Stretch">
+		<element kind="staticText" uuid="59c4dc28-e08c-488b-8960-ca5d3b5068b0" x="191" y="40" width="9" height="14" fontSize="8.0">
+			<text><![CDATA[/]]></text>
+		</element>
+		<element kind="textField" uuid="9ad5d247-8d81-4a63-a990-4e6bc486135a" x="0" y="26" width="380" height="13" fontSize="10.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{branch_name}]]></expression>
+		</element>
+		<element kind="staticText" uuid="1a2ce08a-358b-47ed-963f-5907f82a4c1d" x="135" y="2" width="110" height="26" fontSize="19.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[INVOICE]]></text>
+		</element>
+		<element kind="textField" uuid="f3e0346a-7331-4047-8646-bd3a98c81248" x="200" y="40" width="68" height="14" fontSize="8.0" hTextAlign="Left">
+			<expression><![CDATA[$F{location_mobile2}]]></expression>
+		</element>
+		<element kind="textField" uuid="14257987-762e-485f-b448-9bae27d4027d" x="135" y="40" width="56" height="14" fontSize="8.0" hTextAlign="Left">
+			<expression><![CDATA[$F{locaiton_mobile}]]></expression>
+		</element>
+		<element kind="staticText" uuid="d4b54da8-b5aa-4bc6-b028-8efca175958f" x="111" y="40" width="24" height="14" fontSize="8.0" hTextAlign="Center">
+			<text><![CDATA[Tel:]]></text>
+		</element>
+	</pageHeader>
+	<columnHeader height="66" splitType="Stretch">
+		<element kind="textField" uuid="e7f5616a-5130-4fe9-afea-6355ceed7f65" x="275" y="24" width="103" height="20" fontSize="9.0" bold="true" hTextAlign="Left" vTextAlign="Top">
+			<expression><![CDATA[$F{invoice_id}]]></expression>
+		</element>
+		<element kind="staticText" uuid="1a7afb3e-cc4d-4f12-ad52-891e8efceb12" x="233" y="4" width="40" height="20" fontSize="8.0" hTextAlign="Left">
+			<text><![CDATA[Date:]]></text>
+			<box rightPadding="4"/>
+		</element>
+		<element kind="staticText" uuid="1a87cf80-84f1-43f8-905f-290258c8aafc" x="233" y="24" width="40" height="20" fontSize="8.0" hTextAlign="Left">
+			<text><![CDATA[Invoice #]]></text>
+			<box rightPadding="4"/>
+		</element>
+		<element kind="textField" uuid="75d849c7-0319-4408-a94d-fbff5a6f275b" x="1" y="35" width="244" height="16" fontSize="8.0">
+			<expression><![CDATA[$F{address_line1}]]></expression>
+		</element>
+		<element kind="textField" uuid="48c1c81c-5051-49b7-a237-6d6d24e8af4e" x="1" y="20" width="120" height="14" fontSize="8.0">
+			<expression><![CDATA[$F{name}]]></expression>
+		</element>
+		<element kind="textField" uuid="b464570f-3ea4-464a-ad5c-4ab44b699645" x="1" y="51" width="51" height="14" fontSize="8.0">
+			<expression><![CDATA[$F{mobile}]]></expression>
+		</element>
+		<element kind="staticText" uuid="880c904b-b76e-436e-94c9-cf750f75757e" x="1" y="4" width="80" height="16" fontSize="12.0" bold="true">
+			<text><![CDATA[Bill To:]]></text>
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="textField" uuid="a6f883ee-ce2b-4f0f-be9f-d4e2982a3e76" x="61" y="51" width="68" height="15" fontSize="8.0">
+			<expression><![CDATA[$F{mobile2}]]></expression>
+		</element>
+		<element kind="staticText" uuid="88b8911c-c2c7-4a00-9f2d-4bd07503621c" x="52" y="51" width="9" height="14">
+			<text><![CDATA[/]]></text>
+		</element>
+		<element kind="textField" uuid="9ac3d486-995d-4dd9-84a0-695de78df4dd" x="275" y="4" width="103" height="20" fontSize="7.0" hTextAlign="Left" vTextAlign="Top">
+			<expression><![CDATA[$F{date} +" - " + $F{order_time}]]></expression>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="139" splitType="Stretch">
+			<element kind="staticText" uuid="bf61a4e7-38cf-4b5f-b810-5df8db3c4f07" x="50" y="0" width="200" height="20" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[ITEM]]></text>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="ab056405-fc1c-4e50-8ef9-4554b8eabb37" x="250" y="0" width="54" height="20" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[QTY]]></text>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="9a3dbabe-cf2d-4eb1-a43b-20a60b97b92c" x="304" y="0" width="76" height="20" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[PRICE]]></text>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="ece58fb9-6fbd-426f-a177-3c3f37ef1e9a" x="0" y="0" width="50" height="20" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[TYPE]]></text>
+				<box leftPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineStyle="Solid"/>
+					<leftPen lineStyle="Solid"/>
+					<bottomPen lineStyle="Solid"/>
+					<rightPen lineStyle="Solid"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="52350141-c730-4cec-9d0a-2267429bf783" x="0" y="20" width="50" height="18" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[Frame]]></text>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="7199960f-228c-4401-b3ed-4c9e664fb091" x="0" y="38" width="50" height="22" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[Lens]]></text>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="2fbe1780-df16-4a65-a9fa-893d8bdc9ff7" x="250" y="38" width="54" height="22" fontSize="9.0" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[]]></text>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="a1d01f10-326d-4dc5-8a80-016a60c1613c" x="0" y="60" width="250" height="79" fontSize="16.0" bold="true" hTextAlign="Right">
+				<text><![CDATA[]]></text>
+				<box topPadding="9" rightPadding="8">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="7ff00a83-b2c0-4a23-8c5d-4e943eb39390" x="170" y="60" width="210" height="79" fontSize="14.0" hTextAlign="Right">
+				<text><![CDATA[]]></text>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="line" uuid="00de0a8f-988f-414a-b0f3-7f1de48672aa" x="-1" y="60" width="1" height="77"/>
+			<element kind="line" uuid="941d988a-ee8e-4224-9c13-19ac50f32928" x="380" y="60" width="1" height="79"/>
+			<element kind="staticText" uuid="99f0820f-5fc4-430b-89a2-054b55833b17" x="50" y="20" width="200" height="18" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[-]]></text>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="7e469d86-3db2-475b-a455-5d02b1c159f6" x="250" y="20" width="54" height="18" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[-]]></text>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="78543a47-8184-47eb-9877-2637bc35716b" x="304" y="20" width="76" height="18" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[-]]></text>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="8bd15244-575c-4531-a9d4-cae667fdf1bf" x="250" y="38" width="54" height="22" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{lens_Qty}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a3f8486f-0a24-4394-8725-8ba2ed796abc"/>
+			</element>
+			<element kind="textField" uuid="0d6ac323-49dd-4eed-8f84-d11875fdf881" x="304" y="38" width="76" height="22" fontSize="9.0" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{lenstotal}))]]></expression>
+				<box rightPadding="3">
+					<pen lineWidth="1.0"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="2b393cb2-1577-4f6e-b48b-380228716de0" x="4" y="74" width="77" height="18" fontSize="8.0" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[Payment History]]></text>
+			</element>
+			<element kind="textField" uuid="85b17f3f-eb30-4d14-9754-308e20ce41ac" x="4" y="93" width="196" height="10" fontSize="6.0">
+				<expression><![CDATA[$P{payment1} == null ? " " : $P{payment1}]]></expression>
+			</element>
+			<element kind="textField" uuid="3e97c2d7-e827-47ca-badb-179de044817f" x="4" y="104" width="196" height="10" fontSize="6.0">
+				<expression><![CDATA[$P{payment2} == null ? " " : $P{payment2}]]></expression>
+			</element>
+			<element kind="textField" uuid="ee517c13-97ae-4131-a3ea-6a0bcd8286a7" x="4" y="114" width="196" height="10" fontSize="6.0">
+				<expression><![CDATA[$P{payment3} == null ? " " : $P{payment3}]]></expression>
+			</element>
+			<element kind="textField" uuid="dfeee0bf-c265-4717-9690-38c84a1657cf" x="4" y="123" width="196" height="11" fontSize="6.0">
+				<expression><![CDATA[$P{payment4} == null ? " " :"$P{payment4} "]]></expression>
+			</element>
+			<element kind="textField" uuid="b4562cde-b235-4f9c-9ddb-ca083936aeda" x="82" y="38" width="166" height="22" fontSize="7.0" vTextAlign="Middle">
+				<expression><![CDATA[$F{lens_code}]]></expression>
+			</element>
+			<element kind="textField" uuid="78b8d610-0a3c-46ac-be93-048c98d133d2" x="50" y="38" width="32" height="22" fontSize="7.0" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{lens_id}]]></expression>
+				<box leftPadding="3"/>
+			</element>
+			<element kind="textField" uuid="e6abce8b-9e8d-41f1-94d2-26eb526fe397" x="305" y="114" width="75" height="10" fontSize="6.0" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{payment_amount}))]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="92bb0faa-0dfd-4bed-aa72-2e0e4f8d6edf"/>
+				<box rightPadding="0"/>
+			</element>
+			<element kind="textField" uuid="80247e62-e9d8-49f5-86dc-d36884a8ed8f" x="304" y="68" width="76" height="8" fontSize="6.0" hTextAlign="Right" vTextAlign="Top">
+				<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{discount}))]]></expression>
+				<box rightPadding="0"/>
+			</element>
+			<element kind="staticText" uuid="04c9a480-3423-4763-ad0b-7bf76737d681" x="240" y="114" width="64" height="10" fontSize="6.0" hTextAlign="Right" vTextAlign="Middle">
+				<text><![CDATA[Paid Amount]]></text>
+			</element>
+			<element kind="staticText" uuid="69c4a955-59b0-40f9-81f1-a22b244dc364" x="240" y="68" width="64" height="8" fontSize="6.0" hTextAlign="Right">
+				<text><![CDATA[Discount]]></text>
+			</element>
+			<element kind="staticText" uuid="1a9263c8-dfcf-4ccd-a391-de27b42e3ada" x="240" y="100" width="64" height="14" fontSize="6.0" hTextAlign="Right" vTextAlign="Middle">
+				<text><![CDATA[Advance]]></text>
+			</element>
+			<element kind="staticText" uuid="968f2c59-5fad-43ca-803f-f3ce27b34956" x="240" y="92" width="64" height="8" fontSize="6.0" bold="true" hTextAlign="Right" vTextAlign="Middle">
+				<text><![CDATA[Subtotal]]></text>
+			</element>
+			<element kind="textField" uuid="b3c616ef-a92a-4383-9c29-a62a89dc3fdb" x="304" y="92" width="76" height="8" fontSize="6.0" bold="true" hTextAlign="Right" vTextAlign="Top">
+				<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{subtotal}))]]></expression>
+			</element>
+			<element kind="staticText" uuid="6017362e-da97-48d5-aeba-524915850709" x="240" y="60" width="64" height="8" fontSize="6.0" hTextAlign="Right" vTextAlign="Top">
+				<text><![CDATA[Total]]></text>
+			</element>
+			<element kind="textField" uuid="9af04aff-b400-4e67-a763-3c95f4940c6e" x="305" y="124" width="75" height="14" fontSize="9.0" bold="true" underline="false" hTextAlign="Right" vTextAlign="Top">
+				<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{total_price}))]]></expression>
+				<box rightPadding="0">
+					<topPen lineWidth="0.5"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="bee9b330-f59d-4e58-ba55-a7d9519c06c8" x="305" y="100" width="75" height="14" fontSize="6.0" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{advance_payment}))]]></expression>
+				<box rightPadding="0"/>
+			</element>
+			<element kind="staticText" uuid="1c758685-5004-4a8c-ab2c-db4361f15672" x="240" y="124" width="65" height="14" fontSize="11.0" bold="true" hTextAlign="Right">
+				<text><![CDATA[Total Due]]></text>
+				<box>
+					<topPen lineWidth="0.5"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="1188bb65-303b-4659-af37-a9214e3ab930" x="304" y="60" width="76" height="8" fontSize="6.0" hTextAlign="Right" vTextAlign="Top">
+				<expression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{lenstotal}))]]></expression>
+				<box rightPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="ccc7d457-f37e-4712-8695-6f158d1f94d1" x="250" y="68" width="24" height="8" fontSize="6.0" linkType="None" linkTarget="Self" hTextAlign="Right">
+				<expression><![CDATA[$F{discount_percentage} == null ?"": $F{discount_percentage}]]></expression>
+			</element>
+			<element kind="staticText" uuid="b48a4f0a-0255-43eb-85a7-5be5b356a9b8" x="240" y="76" width="64" height="16" fontSize="6.0" hTextAlign="Right" vTextAlign="Middle">
+				<text><![CDATA[Additional Charges]]></text>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="26dcfa5e-2f69-4756-ab61-93b07d25cf78" x="304" y="76" width="76" height="8" fontSize="6.0" hTextAlign="Right">
+				<expression><![CDATA[$F{charge_description} != null ? $F{charge_description}:""]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dd6d96f4-dc9c-4c60-83ea-ba02ea1017fc"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="01c8abc8-db3c-42e1-9279-da681a5157ec" x="304" y="84" width="76" height="8" fontSize="6.0" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[$F{amount} != null ? new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{amount})):"0.00"]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fd576c3b-48a8-4f6f-958a-b13c6eb5141b"/>
+				<box>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="62" splitType="Stretch">
+		<element kind="staticText" uuid="db0a3d16-4ca0-42e1-a53e-bd007e167c87" x="289" y="46" width="90" height="13" fontSize="6.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Receiver's Signature]]></text>
+		</element>
+		<element kind="staticText" uuid="8a8c2630-3d73-4e4b-979c-eb8419ad2c8c" x="279" y="30" width="100" height="14">
+			<text><![CDATA[....................................]]></text>
+		</element>
+		<element kind="textField" uuid="f0611834-b7f6-47ed-bb31-f77bc234fdf1" x="1" y="39" width="178" height="11" fontSize="6.0">
+			<expression><![CDATA[$F{box}.equals("true")? "Free Box -  01 " : ""]]></expression>
+		</element>
+		<element kind="textField" uuid="6f56fc6b-89bf-4667-b175-165d260836c9" x="1" y="27" width="178" height="12" fontSize="6.0">
+			<expression><![CDATA[$F{bag}.equals("true")? "Free Bag -  01 " : ""]]></expression>
+		</element>
+		<element kind="textField" uuid="a08314a8-8938-4837-bb92-2a539bd6ead8" x="1" y="50" width="178" height="12" fontSize="6.0">
+			<expression><![CDATA[$F{clothing}.equals("true")? "Free Cleaning Cloth -  01 " : ""]]></expression>
+		</element>
+		<element kind="textField" uuid="dc455231-d1e8-4667-954e-bc607a92a2d1" x="250" y="20" width="128" height="10" fontSize="5.0" hTextAlign="Right">
+			<expression><![CDATA[$F{7_days__lens_warrenty} != null?"7 Days warrenty for the lens" :""]]></expression>
+		</element>
+		<element kind="staticText" uuid="3713c908-79a0-4612-ab52-8217177c9872" x="280" y="10" width="98" height="10" fontSize="7.0" bold="true" underline="true" hTextAlign="Right" vTextAlign="Top">
+			<text><![CDATA[Warrenty]]></text>
+		</element>
+	</columnFooter>
+	<pageFooter height="140" splitType="Stretch">
+		<element kind="staticText" uuid="1a526cf1-bc8e-471a-9e8a-827b5913bc89" x="4" y="27" width="10" height="15" fontSize="11.0" hTextAlign="Center" vTextAlign="Top">
+			<text><![CDATA[•]]></text>
+		</element>
+		<element kind="staticText" uuid="528a4668-ef6c-4f94-b172-6ebec68d4235" x="1" y="0" width="150" height="20" fontSize="11.0" bold="true">
+			<text><![CDATA[You were served by:]]></text>
+		</element>
+		<element kind="staticText" uuid="779b7c02-93a3-492c-8599-ddce53cd2fc0" x="4" y="81" width="10" height="15" fontSize="11.0" hTextAlign="Center" vTextAlign="Top">
+			<text><![CDATA[•]]></text>
+		</element>
+		<element kind="staticText" uuid="1a9c0efd-e272-4383-916c-1ae9223d7454" x="4" y="18" width="10" height="15" fontSize="11.0" hTextAlign="Center" vTextAlign="Top">
+			<text><![CDATA[•]]></text>
+		</element>
+		<element kind="staticText" uuid="7335d8a8-3689-414f-a268-e212f7912f67" x="4" y="111" width="10" height="15" fontSize="11.0" hTextAlign="Center" vTextAlign="Top">
+			<text><![CDATA[•]]></text>
+		</element>
+		<element kind="staticText" uuid="8257a15f-b58f-4e7b-b387-2832c40596cb" x="4" y="66" width="10" height="15" fontSize="11.0" hTextAlign="Center" vTextAlign="Top">
+			<text><![CDATA[•]]></text>
+		</element>
+		<element kind="staticText" uuid="2151c66d-ac26-4cd9-9608-0fda4f447f2f" x="4" y="37" width="10" height="15" fontSize="11.0" hTextAlign="Center" vTextAlign="Top">
+			<text><![CDATA[•]]></text>
+		</element>
+		<element kind="staticText" uuid="1d8e08c0-2e29-4099-a7da-740515ea581e" x="4" y="46" width="10" height="15" fontSize="11.0" hTextAlign="Center" vTextAlign="Top">
+			<text><![CDATA[•]]></text>
+		</element>
+		<element kind="staticText" uuid="ec8b5878-37f4-4d4c-97e6-f0314277495f" x="4" y="56" width="10" height="15" fontSize="11.0" hTextAlign="Center" vTextAlign="Top">
+			<text><![CDATA[•]]></text>
+		</element>
+		<element kind="staticText" uuid="e4dc5680-300d-4b89-8675-b22a3c11d0da" x="4" y="96" width="10" height="15" fontSize="11.0" hTextAlign="Center" vTextAlign="Top">
+			<text><![CDATA[•]]></text>
+		</element>
+		<element kind="staticText" uuid="3412fe5b-b5d2-4580-970f-b97bfebd72d8" x="15" y="20" width="350" height="10" fontSize="6.0" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Please collect your spectacle within 90 days, otherwise, the order will be cancelled.]]></text>
+		</element>
+		<element kind="staticText" uuid="bf7781b1-e5e5-40ae-b573-370926d5fe96" x="15" y="30" width="350" height="10" fontSize="6.0" bold="true">
+			<text><![CDATA[Spectacles will be released after settling the full amount]]></text>
+		</element>
+		<element kind="staticText" uuid="a262ddf3-a278-4fd9-a01c-495deb9718a0" x="15" y="40" width="350" height="10" fontSize="6.0">
+			<text><![CDATA[Repair & adjustments of frames at customers' risk.]]></text>
+		</element>
+		<element kind="staticText" uuid="e3a69340-eef2-4605-bde9-eb8c62b7fca7" x="15" y="50" width="350" height="10" fontSize="6.0">
+			<text><![CDATA[Once booked, orders cannot be cancelled]]></text>
+		</element>
+		<element kind="staticText" uuid="c2f666b5-d0f9-4175-9ba6-ce47ca1c6eff" x="15" y="60" width="350" height="10" fontSize="6.0">
+			<text><![CDATA[If this invoice is fully paid, it should be treated as a receipt of full payment]]></text>
+		</element>
+		<element kind="staticText" uuid="829d888f-e560-4c3b-a5b5-794e2cf67540" x="15" y="70" width="350" height="10" fontSize="6.0">
+			<text><![CDATA[ If any advance is paid for this invoice this should be treated as a Receipt of advance.]]></text>
+		</element>
+		<element kind="staticText" uuid="f0d9092a-0836-4f28-a15b-2dd28f7e69e3" x="15" y="81" width="350" height="17" fontSize="6.0" bold="true">
+			<text><![CDATA[All sales are final : Once customers make a purchase, they will not be able to return that item for a replacement or refund. These policies typically apply to clearance and sale items.]]></text>
+		</element>
+		<element kind="staticText" uuid="9e6bbba6-04f6-4065-a292-6cc7ee787ed2" x="15" y="98" width="335" height="16" fontSize="6.0" bold="true">
+			<text><![CDATA[No refunds. Exchange only: Customers may exchange items they wish to return, but they cannot get a monetary refund]]></text>
+		</element>
+		<element kind="staticText" uuid="7ebce447-9e0c-4a74-81e1-83fb402bfd57" x="15" y="114" width="350" height="17" fontSize="6.0" bold="true">
+			<text><![CDATA[ No cash refund policy: No monetary refunds will be given for any reason, though alternative  refunds may be offered, such as store credit or exchanges]]></text>
+		</element>
+		<element kind="textField" uuid="f394d8e0-0930-494f-9fce-c31756777307" x="1" y="132" width="378" height="8" forecolor="#8C1915" fontSize="6.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA["Thank you, " + $F{name} + " for choosing " +$F{reg_name}]]></expression>
+		</element>
+	</pageFooter>
+	<summary height="24" splitType="Stretch"/>
+</jasperReport>

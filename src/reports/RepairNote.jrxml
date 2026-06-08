@@ -1,0 +1,266 @@
+<!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
+<jasperReport name="RepairNote" language="java" columnCount="1" pageWidth="420" pageHeight="595" orientation="Landscape" columnWidth="380" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2d64e94f-550c-4a8e-a01d-744247780e39">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Optielite.jrdax"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="repairId" class="java.lang.String"/>
+	<parameter name="stock_id" class="java.lang.String"/>
+	<query language="SQL"><![CDATA[SELECT repair.date,
+	repair.invoice_invoice_id,
+	repair.customer_mobile,
+	repair.`payment_method_Payment_id`,
+	`pre_existing_damage`,
+	`problem_description`,
+	`approx_cost`,
+	`total_cost`,
+	`name`,
+	`lens_stock_lens_id`,
+	`payment_name`
+FROM repair
+	INNER JOIN customer ON 
+	 customer.mobile = repair.customer_mobile 
+	INNER JOIN invoice ON 
+	 invoice.invoice_id = repair.invoice_invoice_id 
+	INNER JOIN payment_method ON 
+	 payment_method.`Payment_id` = repair.`payment_method_Payment_id` 
+WHERE 
+	 repair_id = $P{repairId}]]></query>
+	<field name="date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="date"/>
+		<property name="com.jaspersoft.studio.field.label" value="date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="repair"/>
+	</field>
+	<field name="invoice_invoice_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="invoice_invoice_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="invoice_invoice_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="repair"/>
+	</field>
+	<field name="customer_mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="customer_mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="customer_mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="repair"/>
+	</field>
+	<field name="payment_method_Payment_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="payment_method_Payment_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_method_Payment_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="repair"/>
+	</field>
+	<field name="pre_existing_damage" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pre_existing_damage"/>
+		<property name="com.jaspersoft.studio.field.label" value="pre_existing_damage"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="repair"/>
+	</field>
+	<field name="problem_description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="problem_description"/>
+		<property name="com.jaspersoft.studio.field.label" value="problem_description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="repair"/>
+	</field>
+	<field name="approx_cost" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="approx_cost"/>
+		<property name="com.jaspersoft.studio.field.label" value="approx_cost"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="repair"/>
+	</field>
+	<field name="total_cost" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_cost"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_cost"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="repair"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="lens_stock_lens_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="lens_stock_lens_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="lens_stock_lens_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="invoice"/>
+	</field>
+	<field name="payment_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="payment_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="payment_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payment_method"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="61" splitType="Stretch">
+		<element kind="line" uuid="486412b1-3da2-4521-8474-227569c1bae0" x="1" y="60" width="378" height="1">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</element>
+		<element kind="image" uuid="1d200d76-1c10-4be8-a28c-63b283e87be2" x="320" y="0" width="60" height="50">
+			<expression><![CDATA["https://wtffacilityservices.com/images/visionasialogo.png"]]></expression>
+		</element>
+		<element kind="staticText" uuid="9f1ccbba-f011-43cf-b895-9f81140d7c11" x="50" y="47" width="138" height="9" fontSize="7.0" vTextAlign="Top">
+			<text><![CDATA[4/1,1/1, Nikape Road ,Dehiwala 
+ ]]></text>
+		</element>
+		<element kind="staticText" uuid="71831a6a-8ec9-446d-b639-228ce4282aa2" x="50" y="37" width="138" height="10" fontSize="7.0" vTextAlign="Top">
+			<text><![CDATA[ www.areslanka.com]]></text>
+		</element>
+		<element kind="staticText" uuid="0e1eabb5-38ca-4495-9f25-5c2bbfabf2ff" x="0" y="47" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Address :]]></text>
+		</element>
+		<element kind="staticText" uuid="56798873-5144-4ac3-82bf-cffc96a7bc41" x="0" y="27" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Email      :]]></text>
+		</element>
+		<element kind="staticText" uuid="9eedf2d1-c371-452a-89b3-59e95d4b69df" x="50" y="27" width="138" height="10" fontSize="7.0" vTextAlign="Top">
+			<text><![CDATA[ areslanka@gmail.com]]></text>
+		</element>
+		<element kind="staticText" uuid="3fd0da28-0a78-461f-8eff-eb74bfbaf59d" x="50" y="17" width="138" height="10" fontSize="7.0" vTextAlign="Top">
+			<text><![CDATA[ PV00253092]]></text>
+		</element>
+		<element kind="staticText" uuid="ff52492b-bfc4-47ba-b61e-880cce6ee64b" x="0" y="0" width="140" height="15" fontSize="11.0" bold="true">
+			<text><![CDATA[ARES LANKA (PVT) LTD]]></text>
+		</element>
+		<element kind="staticText" uuid="46497d6a-0799-41c6-a613-4e10cb0e1c3c" x="0" y="17" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Reg No   :]]></text>
+		</element>
+		<element kind="staticText" uuid="164835ec-d116-45ba-b8ba-8aa3a8dc487f" x="0" y="37" width="50" height="10" fontSize="7.0" bold="true" vTextAlign="Top">
+			<text><![CDATA[Web        :]]></text>
+		</element>
+	</title>
+	<pageHeader height="179" splitType="Stretch">
+		<element kind="staticText" uuid="02659979-f316-402f-bdec-fe34aae2d56c" x="1" y="10" width="100" height="20" fontSize="14.0" bold="true">
+			<text><![CDATA[Repair Note]]></text>
+		</element>
+		<element kind="staticText" uuid="3965907c-ca61-4bd4-9abb-b16f243cb583" x="-1" y="42" width="100" height="20" bold="true">
+			<text><![CDATA[Customer Name:]]></text>
+		</element>
+		<element kind="staticText" uuid="157ef658-692c-4a13-aecc-8f1cab8f3d6c" x="-1" y="62" width="80" height="14" fontSize="9.0">
+			<text><![CDATA[Date :]]></text>
+		</element>
+		<element kind="textField" uuid="bd144d9f-89d2-4141-9eee-13edc2fe099f" x="79" y="62" width="200" height="14" fontSize="9.0" bold="true">
+			<expression><![CDATA[$F{date}]]></expression>
+		</element>
+		<element kind="staticText" uuid="7840c566-83ba-4821-ad4d-84e5e20bcb98" x="-1" y="76" width="80" height="14" fontSize="9.0">
+			<text><![CDATA[Customer Name :]]></text>
+		</element>
+		<element kind="textField" uuid="79fee86c-82c0-4416-8acc-09c97f9e998e" x="79" y="76" width="200" height="14" fontSize="9.0" bold="true">
+			<expression><![CDATA[$F{name}]]></expression>
+		</element>
+		<element kind="staticText" uuid="f07214c7-fe5c-47a7-a2a4-6dc780f1e946" x="0" y="90" width="79" height="14" fontSize="9.0">
+			<text><![CDATA[Phone :]]></text>
+		</element>
+		<element kind="textField" uuid="a4fe6e0b-165f-4cd5-bf41-edc25d43702d" x="79" y="90" width="198" height="14" bold="true">
+			<expression><![CDATA[$F{customer_mobile}]]></expression>
+		</element>
+		<element kind="staticText" uuid="6ac720ae-7b53-4a58-9e20-839f43dddd7e" x="1" y="120" width="100" height="20" bold="true">
+			<text><![CDATA[Eyeware Name:]]></text>
+		</element>
+		<element kind="staticText" uuid="980e6c86-b81c-418c-9c58-8a3c7095ede3" x="0" y="140" width="98" height="14" fontSize="9.0">
+			<text><![CDATA[Frame Brand/Model :]]></text>
+		</element>
+		<element kind="staticText" uuid="9b869e7a-bced-44a8-b2b4-1fb41c6c94ab" x="0" y="154" width="98" height="14" fontSize="9.0">
+			<text><![CDATA[Lens Type :]]></text>
+		</element>
+		<element kind="textField" uuid="094a24c7-8044-4c1e-967c-4a4b6a88fd49" x="99" y="154" width="280" height="14" bold="true">
+			<expression><![CDATA[$F{lens_stock_lens_id}]]></expression>
+		</element>
+		<element kind="staticText" uuid="ecb8dffe-65e8-4e54-b904-b2cac05c713b" x="230" y="10" width="50" height="20">
+			<text><![CDATA[Repair id : ]]></text>
+		</element>
+		<element kind="textField" uuid="1b9d38ba-4141-4ab1-a937-f25999657f0e" x="280" y="10" width="100" height="20">
+			<expression><![CDATA[$P{repairId}]]></expression>
+		</element>
+		<element kind="textField" uuid="61b79091-3c70-4992-8efe-9e7abd678e60" x="99" y="140" width="280" height="14" fontSize="9.0" bold="true">
+			<expression><![CDATA[$P{stock_id}]]></expression>
+		</element>
+	</pageHeader>
+	<columnHeader height="181" splitType="Stretch">
+		<element kind="staticText" uuid="cae9f87b-e6ea-4b43-ad41-c4374ea3b795" x="0" y="10" width="258" height="20" bold="true">
+			<text><![CDATA[Pre-existing Damage (if any):]]></text>
+		</element>
+		<element kind="staticText" uuid="f9af6fe5-6ca7-4cc6-9c3c-19232d81785b" x="1" y="30" width="378" height="40">
+			<text><![CDATA[]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="917098d5-9d1d-474d-9126-be7378b61b98" x="0" y="30" width="378" height="40">
+			<expression><![CDATA[$F{pre_existing_damage}]]></expression>
+			<box leftPadding="2"/>
+		</element>
+		<element kind="staticText" uuid="88cd10a1-1e69-4dc3-8bcb-8525ed107fe8" x="0" y="80" width="258" height="20" bold="true">
+			<text><![CDATA[Pre-existing Damage (if any):]]></text>
+		</element>
+		<element kind="staticText" uuid="12932ab4-a4ce-49b7-bac9-7b307b84ee4e" x="1" y="100" width="378" height="44">
+			<text><![CDATA[]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="textField" uuid="02432e9e-6db5-40cc-962c-4f0912c890dc" x="0" y="100" width="380" height="44">
+			<expression><![CDATA[$F{problem_description}]]></expression>
+			<box leftPadding="2"/>
+		</element>
+		<element kind="staticText" uuid="d6bbe482-03c2-47c0-b1bb-a242fa4ff696" x="0" y="161" width="129" height="20" fontSize="9.0" vTextAlign="Bottom">
+			<text><![CDATA[Customer Signature (Estimate) :]]></text>
+		</element>
+		<element kind="line" uuid="c3c4ca90-8f0a-495c-aeff-ac0a2cc6e404" x="60" y="161" width="130" height="1"/>
+		<element kind="line" uuid="394c3376-6cac-4fc7-8562-a9b7f1c9007f" x="129" y="180" width="130" height="1"/>
+		<element kind="staticText" uuid="b3da3413-47ec-4ef9-82fb-f58b116e6dcc" x="0" y="141" width="60" height="20" fontSize="9.0" vTextAlign="Bottom">
+			<text><![CDATA[Approx.Cost :]]></text>
+		</element>
+		<element kind="textField" uuid="56156b6b-b734-4aa7-983b-49b17f59f653" x="60" y="146" width="130" height="16" fontSize="9.0">
+			<expression><![CDATA[$F{approx_cost}]]></expression>
+		</element>
+		<element kind="textField" uuid="192d1e45-3ca6-4a88-978a-1aae97d8679a" x="130" y="165" width="128" height="16" fontSize="9.0">
+			<expression><![CDATA[$F{total_cost}]]></expression>
+		</element>
+	</columnHeader>
+	<columnFooter height="44" splitType="Stretch">
+		<element kind="staticText" uuid="81a81c65-2473-4008-9350-bc285615035c" x="0" y="-5" width="60" height="20" fontSize="9.0" vTextAlign="Bottom">
+			<text><![CDATA[Total Cost :]]></text>
+		</element>
+		<element kind="line" uuid="712fff38-0768-4f7a-98c6-ff42e7e16a1f" x="60" y="15" width="81" height="1"/>
+		<element kind="line" uuid="bd429c3e-aed4-49d0-a3aa-961605d4be95" x="221" y="14" width="81" height="1"/>
+		<element kind="line" uuid="533f1a6d-7dfd-4474-9532-22e65d623514" x="271" y="36" width="90" height="1"/>
+		<element kind="line" uuid="c994cbb6-8b2f-4c5e-bc23-cfe3826cffa4" x="71" y="36" width="71" height="1"/>
+		<element kind="staticText" uuid="fb02dd9d-2c06-406a-8a58-a992f334e45d" x="142" y="16" width="129" height="20" fontSize="9.0" vTextAlign="Bottom">
+			<text><![CDATA[Customer Signature (Estimate) :]]></text>
+		</element>
+		<element kind="staticText" uuid="fe31b0ba-6bfd-4d7f-ae1e-3d5856f90b24" x="1" y="16" width="70" height="20" fontSize="9.0" vTextAlign="Bottom">
+			<text><![CDATA[Date Picked Up:]]></text>
+		</element>
+		<element kind="staticText" uuid="eadb1846-8ab5-4240-a0d5-237f07bc0846" x="141" y="-5" width="80" height="20" fontSize="9.0" vTextAlign="Bottom">
+			<text><![CDATA[Payment Method :]]></text>
+		</element>
+		<element kind="textField" uuid="6d818fe8-82e1-4ebe-a31a-1b1bb1d860ce" x="220" y="1" width="100" height="16" fontSize="9.0">
+			<expression><![CDATA[$F{payment_name}]]></expression>
+		</element>
+		<element kind="textField" uuid="b78a3438-e99b-4710-89d9-5a8146b394cc" x="62" y="2" width="80" height="14" fontSize="9.0">
+			<expression><![CDATA[$F{total_cost}]]></expression>
+		</element>
+	</columnFooter>
+	<pageFooter height="70" splitType="Stretch">
+		<element kind="staticText" uuid="143e12a3-64a2-4c7a-8949-90a245662b83" x="0" y="10" width="100" height="10" fontSize="7.0" bold="true">
+			<text><![CDATA[Terms and Conditions]]></text>
+		</element>
+		<element kind="staticText" uuid="0890bc87-8ead-4118-9d3e-917cb77fd4cc" x="0" y="21" width="380" height="20" fontSize="7.0">
+			<text><![CDATA[we strive to restire your eyewear. Exact replication may not always be possible due to the nature of damage. We are not responsible for pre-existing damage unrelated to the repair.]]></text>
+		</element>
+		<element kind="staticText" uuid="23bf6e44-7ea0-4e7b-bf8e-bb7ceba89c25" x="0" y="40" width="380" height="10" fontSize="7.0">
+			<text><![CDATA[Additional charges apply for new part; we'll notify you first.]]></text>
+		</element>
+		<element kind="staticText" uuid="1ae96c0d-67d4-4e62-b9c9-59adb9fcfa81" x="0" y="50" width="380" height="10" fontSize="7.0">
+			<text><![CDATA[Eyeware not picked up within 30 days will incur storage fees or be discarded.]]></text>
+		</element>
+		<element kind="staticText" uuid="0845f6f9-0693-440c-9e97-3102538e551c" x="0" y="60" width="380" height="10" fontSize="7.0">
+			<text><![CDATA[while handled with care, we are not liable for unforeseen damage during repair, especially with delicate or aged frames.]]></text>
+		</element>
+	</pageFooter>
+	<summary height="24" splitType="Stretch"/>
+</jasperReport>

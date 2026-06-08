@@ -1,0 +1,163 @@
+<!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
+<jasperReport name="GlobmedBilling" language="java" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2227cf51-2c6d-4163-b5ec-100463c7d866">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (3)"/>
+	<query language="SQL"><![CDATA[]]></query>
+	<field name="Bill_ID" class="java.lang.String"/>
+	<field name="Patient_ID" class="java.lang.String"/>
+	<field name="Amount" class="java.lang.String"/>
+	<field name="Date" class="java.lang.String"/>
+	<field name="Status" class="java.lang.String"/>
+	<field name="Insurance" class="java.lang.String"/>
+	<field name="Insurance_status" class="java.lang.String"/>
+	<background splitType="Stretch"/>
+	<title height="80" splitType="Stretch">
+		<element kind="staticText" uuid="87d33788-0473-431e-b56f-321f50396e5a" x="190" y="10" width="206" height="70" fontSize="22.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Insurance Table]]></text>
+		</element>
+	</title>
+	<pageHeader height="35" splitType="Stretch"/>
+	<columnHeader height="43" splitType="Stretch">
+		<element kind="staticText" uuid="97a8b9dd-fc95-4dd8-839b-f7f79e37346e" x="0" y="0" width="60" height="43" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[ID]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="21fd6eb8-a7e3-431f-9c83-0c699b064857" x="60" y="0" width="70" height="43" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Patient]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="48a84483-68c7-4c0b-a231-8000cfef4bc7" x="130" y="0" width="80" height="43" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Amount]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="af41895b-1690-436b-aaeb-3b25296ae10b" x="210" y="0" width="90" height="43" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Date]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="7cbe58d2-789f-4347-9a0b-134c48cb408b" x="300" y="0" width="80" height="43" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Status]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="ef9b37ae-5b9c-47f9-8a15-644e2af51b3d" x="380" y="0" width="90" height="43" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Insurance]]></text>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+		<element kind="staticText" uuid="37c0eada-5d7b-47e5-9c52-c63d0c8ab7fb" x="470" y="0" width="100" height="43" fontSize="11.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Insurance_status]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1ebc732e-c806-4cb9-9473-43c3b849b8de"/>
+			<box>
+				<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			</box>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<element kind="textField" uuid="256fc343-1d63-416c-bceb-24b9d9181d47" x="0" y="0" width="60" height="30" linkType="None" linkTarget="Self" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{Bill_ID}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="09097946-b406-4a81-9c7c-1850c60843b8"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="f2be3126-8de3-43d9-bc79-07c7bc60e7dc" x="60" y="0" width="70" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{Patient_ID}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e5728898-6ea5-41c9-8cd1-6a8545e18b83"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="45f15843-93b9-49b8-a0dd-cf5c2199f5e2" x="130" y="0" width="80" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{Amount}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="68225c3b-85f6-4ea1-b46b-9c5db04becbd"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="6ababa99-7bc7-49a3-a263-b822fdb1c792" x="210" y="0" width="90" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{Date}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0632757f-2f40-4a8f-b9f2-a249a871f13b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="6e7aace8-5b5b-4c92-9d53-05b9cfe94c4f" x="300" y="0" width="80" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{Status}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="21c55cb3-cea4-4914-99cd-90c41e04715b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="2cc6c623-9b8b-4783-8214-bdf5cd8e0319" x="380" y="0" width="90" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{Insurance}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b7b8d0a7-0c6b-40f6-9ce7-46dd6bb40060"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="b17b8a88-9057-4ad1-9ccd-9046a81840d4" x="470" y="0" width="100" height="30" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{Insurance_status}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1ebc732e-c806-4cb9-9473-43c3b849b8de"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>
