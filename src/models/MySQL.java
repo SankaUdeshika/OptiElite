@@ -21,7 +21,7 @@ public class MySQL {
 //              connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/dasanahyaka_optielite", "root", "12345678"); // My localhost Dasanayaka
 //            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/neweagleeyeoptielite", "root", "12345678"); // My localhost EagleVision
 //            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pearlvision", "root", "12345678"); // My localhost Pearl Vision
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/lensmate_db","root","12345678"); // My localhost Lensmate
+//            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/lensmate_db","root","12345678"); // My localhost Lensmate
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //            connection = DriverManager.getConnection("jdbc:mysql://118.139.181.184:3306/EagleEye_DB?autoReconnect=true&useSSL=false", "fitnessfirstadmin", "fitnessfirst_db"); // FitnessFirst DB
 //            connection = DriverManager.getConnection("jdbc:mysql://77.37.44.88:3306/eagle_eye_database?autoReconnect=true&useSSL=false", "user", "8891$l£Pu9"); // Sadev VPS
@@ -31,7 +31,7 @@ public class MySQL {
 //            connection = DriverManager.getConnection("jdbc:mysql://31.97.61.250:3306/dasanahyaka_optielite?autoReconnect=true&useSSL=false", "sanka", "Sanka123!@"); // Sanka VPS  Dasanayaka Opticals
 //            connection = DriverManager.getConnection("jdbc:mysql://31.97.61.250:3306/neweagleeyeoptielite?autoReconnect=true&useSSL=false", "sanka", "Sanka123!@"); // Sanka VPS  EagleEye Opticals
 //            connection = DriverManager.getConnection("jdbc:mysql://31.97.61.250:3306/pearlvision?autoReconnect=true&useSSL=false", "sanka", "Sanka123!@"); // Sanka VPS      Pearl Vision Opticals
-//              connection = DriverManager.getConnection("jdbc:mysql://31.97.61.250:3306/lensmate_db?autoReconnect=true&useSSL=false", "sanka", "Sanka123!@"); // Sanka VPS LENSMATE
+              connection = DriverManager.getConnection("jdbc:mysql://31.97.61.250:3306/lensmate_db?autoReconnect=true&useSSL=false", "sanka", "Sanka123!@"); // Sanka VPS LENSMATE
         } catch (Exception e) {
             e.printStackTrace();
         }
