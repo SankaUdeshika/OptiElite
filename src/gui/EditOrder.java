@@ -96,7 +96,7 @@ public class EditOrder extends javax.swing.JFrame {
                     + " `invoice`.`payment_amount` AS OrderPayment_amount, "
                     + " `invoice`.`subtotal` AS subtotal,"
                     + " `invoice`.`discount_percentage` AS discount_percentage "
-                    + " FROM `invoice` INNER JOIN invoice_item ON invoice_item.invoice_id  = invoice.invoice_id  INNER JOIN stock ON stock.id = invoice_item.stock_id  LEFT JOIN lens_stock ON lens_stock.lens_id = invoice.lens_stock_lens_id INNER JOIN product ON product.id = stock.product_id INNER JOIN `payment_method` ON `payment_method`.`Payment_id` = `invoice`.`payment_method_Payment_id`  WHERE `invoice`.`invoice_id` = '" + invoice_id + "' ");
+                    + " FROM `invoice` LEFT JOIN invoice_item ON invoice_item.invoice_id  = invoice.invoice_id  LEFT JOIN stock ON stock.id = invoice_item.stock_id  LEFT JOIN lens_stock ON lens_stock.lens_id = invoice.lens_stock_lens_id LEFT JOIN product ON product.id = stock.product_id INNER JOIN `payment_method` ON `payment_method`.`Payment_id` = `invoice`.`payment_method_Payment_id`  WHERE `invoice`.`invoice_id` = '" + invoice_id + "' ");
 
             if (rs.next()) {
                 product_id = rs.getString("productID");
@@ -132,7 +132,7 @@ public class EditOrder extends javax.swing.JFrame {
 
     }
 
-    private void operater() {
+    private void operater() {   
         String name = UserDetails.UserName;
         userNameField.setText(name);
     }
@@ -1402,7 +1402,7 @@ public class EditOrder extends javax.swing.JFrame {
         if (evt.getClickCount() == 1) {
             jTextField7.setText(String.valueOf(jTable4.getValueAt(jTable4.getSelectedRow(), 0)));
             //            jTextField7.setEnabled(false);
-            //            System.out.println(String.valueOf(jTable3.getValueAt(jTable3.getSelectedRow(), 1)));
+            //            System.out.println(String .valueOf(jTable3.getValueAt(jTable3.getSelectedRow(), 1)));
             CalculateLensTotal();
         }
     }//GEN-LAST:event_jTable4MouseClicked
