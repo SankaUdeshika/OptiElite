@@ -16,7 +16,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
@@ -138,6 +140,8 @@ public class CompanyPurchases extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel11 = new javax.swing.JLabel();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jLabel14 = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
@@ -197,8 +201,8 @@ public class CompanyPurchases extends javax.swing.JFrame {
         jPanel6.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 110, -1));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel9.setText("From Date");
-        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(356, 60, -1, -1));
+        jLabel9.setText("To Date");
+        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 60, -1, -1));
         jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 126, 900, 10));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -244,7 +248,7 @@ public class CompanyPurchases extends javax.swing.JFrame {
                 searchBtnActionPerformed(evt);
             }
         });
-        jPanel6.add(searchBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 90, 140, -1));
+        jPanel6.add(searchBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 90, 140, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(178, 90, 140, -1));
@@ -257,6 +261,11 @@ public class CompanyPurchases extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel11.setText("Report ID");
         jPanel6.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
+        jPanel6.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 90, 120, -1));
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel14.setText("From Date");
+        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(356, 60, -1, -1));
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/overview.png"))); // NOI18N
         jButton7.setText("View Reports");
@@ -464,38 +473,62 @@ public class CompanyPurchases extends javax.swing.JFrame {
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         // Advance Search
-
-        SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
-
-        String FromDate;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd"); // fix: yyyy not YYYY
+        String fromDate = null;
+        String toDate = null;
 
         try {
-            FromDate = simpleDateformat.format(jDateChooser1.getDate());
+            if (jDateChooser1.getDate() != null) {
+                fromDate = simpleDateFormat.format(jDateChooser1.getDate());
+            }
         } catch (NullPointerException ne) {
-            FromDate = "null";
+            fromDate = null;
         }
 
-        //
         try {
-            String Queary = "SELECT * FROM `daily_report` "
-                    + "INNER JOIN `location` ON `location`.`id` = `daily_report`.`location_id` ";
+            if (jDateChooser2.getDate() != null) {
+                toDate = simpleDateFormat.format(jDateChooser2.getDate()); // fix: was setting FromDate
+            }
+        } catch (NullPointerException ne) {
+            toDate = null; // fix: was setting FromDate instead of toDate
+        }
 
-            //        Enter Parameter
-            if (!jTextField1.getText().isEmpty()) {
-                Queary += " WHERE `report_id` LIKE '%" + jTextField1.getText() + "%' ";
-            } else if (jComboBox1.getSelectedIndex() != 0) {
-                Queary += " WHERE `location_id` = '" + jComboBox1.getSelectedIndex() + "' ";
-                if (FromDate != "null") {
-                    Queary += " AND `date` <= '" + FromDate + "' ";
+        try {
+            String baseQuery = "SELECT * FROM `daily_report` "
+                    + "INNER JOIN `location` ON `location`.`id` = `daily_report`.`location_id`";
+
+            List<String> conditions = new ArrayList<>();
+
+            if (!jTextField1.getText().trim().isEmpty()) {
+                // Report ID search — ignore all other filters
+                conditions.add("`report_id` LIKE '%" + jTextField1.getText().trim() + "%'");
+            } else {
+                // Location filter
+                if (jComboBox1.getSelectedIndex() != 0) {
+                    String locationId = jComboBox1.getSelectedItem().toString(); // use actual value, not index
+                    conditions.add("`location_id` = '" + locationId + "'");
                 }
-                Queary += " ORDER BY `date` DESC";
-            } else if (FromDate != "null") {
-                Queary += " WHERE `date` <= '" + FromDate + "' ";
+
+                // Date range filter
+                if (fromDate != null && toDate != null) {
+                    conditions.add("`date` >= '" + fromDate + "' AND `date` <= '" + toDate + "'"); // fix: correct bounds
+                } else if (fromDate != null) {
+                    conditions.add("`date` >= '" + fromDate + "'");
+                } else if (toDate != null) {
+                    JOptionPane.showMessageDialog(this, "Please Select a Start Date.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
             }
 
-            System.out.println(Queary);
-            //
-            ResultSet rs = MySQL.execute(Queary);
+            String query = baseQuery;
+            if (!conditions.isEmpty()) {
+                query += " WHERE " + String.join(" AND ", conditions);
+            }
+            query += " ORDER BY `date` Asc";
+
+            System.out.println(query);
+
+            ResultSet rs = MySQL.execute(query);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
 
@@ -504,16 +537,16 @@ public class CompanyPurchases extends javax.swing.JFrame {
                 v.add(rs.getString("report_id"));
                 v.add(rs.getString("date"));
                 v.add(rs.getString("branch_name"));
-
+                
                 dtm.addRow(v);
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Connection", "Connection Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Something went wrong. Please try again later.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_searchBtnActionPerformed
 
@@ -567,9 +600,11 @@ public class CompanyPurchases extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
