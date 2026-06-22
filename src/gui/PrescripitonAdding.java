@@ -2,6 +2,7 @@ package gui;
 
 import models.UserDetails;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import static gui.Login.logger;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -72,7 +74,6 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
 
-
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
@@ -82,7 +83,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             String month_string = dayArray[1];
             String day_string = dayArray[2];
 
-            String DateString = day_string+ " of "+ month_string+" "+year_string;
+            String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
             System.out.println(day);
@@ -118,6 +119,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             jButton1.setVisible(false);
             jButton2.setVisible(false);
         }
+        jButton3.setVisible(false);
     }
 
     public void refresh(String CustomerMobile) {
@@ -134,6 +136,8 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jTable1.setEnabled(false);
         jTextField3.setEnabled(false);
         jTextField6.setEnabled(false);
+        loadCustomerPrescription(CustomerMobile);
+        jButton3.setVisible(false);
     }
 
     public void loadCustomerTable(String Command) {
@@ -190,6 +194,32 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Something Went Wrong. Please Try Again Later", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+
+    public void loadCustomerPrescription(String mobile) {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `prescription_details` WHERE `customer_mobile` = '" + mobile + "'  ");
+            DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+            dtm.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getString("job_no"));
+                v.add(rs.getString("prescripiton_date"));
+                dtm.addRow(v);
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", se);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", e);
+
         }
     }
 
@@ -277,9 +307,13 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jComboBox6 = new javax.swing.JComboBox<>();
         jLabel19 = new javax.swing.JLabel();
         jToggleButton1 = new javax.swing.JToggleButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jLabel20 = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -426,7 +460,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel12.setText("Prescription  Details");
-        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, -1, -1));
+        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -454,11 +488,12 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
             jTable1.getColumnModel().getColumn(1).setResizable(false);
             jTable1.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 500, 100));
+        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, 500, 100));
 
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -472,8 +507,8 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 140, -1, -1));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel15.setText("Customer Infomations");
-        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
+        jLabel15.setText("Registerd Prescriptions");
+        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, -1, -1));
 
         jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -687,7 +722,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "+0.75", "+1.00", "+1.25", "+1.50", "+1.75", "+2.00", "+2.25", "+2.50", "+2.75", "+3.00", "+3.25", "+3.50", " " }));
         jPanel5.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, 80, -1));
 
-        jPanel6.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 830, 130));
+        jPanel6.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, 830, 130));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel19.setText("1");
@@ -699,7 +734,40 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                 jToggleButton1ActionPerformed(evt);
             }
         });
-        jPanel6.add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 430, -1, -1));
+        jPanel6.add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 570, -1, -1));
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Prescription ID", "Date"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
+        if (jTable2.getColumnModel().getColumnCount() > 0) {
+            jTable2.getColumnModel().getColumn(0).setResizable(false);
+            jTable2.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 500, 80));
+
+        jLabel20.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        jLabel20.setText("Customer Infomations");
+        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
 
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/glasses.png"))); // NOI18N
         jButton9.setText("Prescription Management");
@@ -725,6 +793,14 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton3.setText("Update Prescription");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -742,6 +818,16 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(139, 139, 139))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addComponent(jButton9)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator4)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -749,19 +835,11 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addGap(139, 139, 139))
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jButton9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(jLabel6)
+                                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 1030, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -770,7 +848,9 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(7, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -787,13 +867,15 @@ public class PrescripitonAdding extends javax.swing.JFrame {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(7, Short.MAX_VALUE))
+                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -980,6 +1062,8 @@ public class PrescripitonAdding extends javax.swing.JFrame {
             String nic = String.valueOf(jTable1.getValueAt(selectedRow, 2));
             jTextField6.setText(nic);
             jTextField6.setEnabled(false);
+
+            loadCustomerPrescription(id);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -1190,6 +1274,130 @@ public class PrescripitonAdding extends javax.swing.JFrame {
         habitualPrescription.setVisible(true);
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        // TODO add your handling code here:
+
+        if (evt.getClickCount() == 2) {
+            jButton3.setVisible(true);
+            try {
+                String prescription_id = String.valueOf(jTable2.getValueAt(jTable2.getSelectedRow(), 0));
+
+                ResultSet pd_rs = MySQL.execute("SELECT * FROM `prescription_details` WHERE `job_no` = '" + prescription_id + "' ");
+                if (pd_rs.next()) {
+                    jTextField37.setText(pd_rs.getString("R_SPH"));
+                    jTextField36.setText(pd_rs.getString("R_CYL"));
+                    jTextField35.setText(pd_rs.getString("R_Axis"));
+                    jComboBox1.setSelectedItem(pd_rs.getString("R_DVA"));
+                    jComboBox5.setSelectedItem(pd_rs.getString("R_Addition"));
+                    jComboBox3.setSelectedItem(pd_rs.getString("R_NVA"));
+                    jTextField32.setText(pd_rs.getString("R_M_PD"));
+                    jTextField38.setText(pd_rs.getString("R_HEIGHT"));
+
+                    jTextField21.setText(pd_rs.getString("L_SPH"));
+                    jTextField17.setText(pd_rs.getString("L_CYL"));
+                    jTextField19.setText(pd_rs.getString("L_Axis"));
+                    jComboBox2.setSelectedItem(pd_rs.getString("L_DVA"));
+                    jComboBox6.setSelectedItem(pd_rs.getString("L_Addition"));
+                    jComboBox4.setSelectedItem(pd_rs.getString("L_NVA"));
+                    jTextField32.setText(pd_rs.getString("L_M_PD"));
+                    jTextField38.setText(pd_rs.getString("L_HEIGHT"));
+//
+//
+//                    String LSPH = jTextField21.setText(pd_rs.getString("L_SPH"));
+//                    String LCYL = jTextField17.setText();
+//                    String LAXIS = jTextField19.setText();
+//                    String LDVA = "";
+//                    String LAddition = "";
+//                    String LNVA = "";
+//                    String LPD = jTextField23.setText();
+//                    String LHEIGHT = jTextField39.setText();
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Somrthing Wrong, Please try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Something Wrong, Please try again later", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // UPDATE PRESCRIPTION
+        String Customer_mobile = customerIdField.getText();
+        String datechooser = jLabel14.getText();
+        String user_id = jLabel17.getText();
+        String prescription_id = String.valueOf(jTable2.getValueAt(jTable2.getSelectedRow(), 0));
+
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + Customer_mobile + "' ");
+
+            if (!rs.next()) {
+                JOptionPane.showMessageDialog(this, "Please Select Valid Customer from Table", "ERROR", JOptionPane.ERROR_MESSAGE);
+            } else if (Customer_mobile.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Select Customer from Customer table", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+
+                // Prescription Details
+                String R_SPH = jTextField37.getText();
+                String R_Cyl = jTextField36.getText();
+                String R_Axis = jTextField35.getText();
+                String PR_DVa = String.valueOf(jComboBox1.getSelectedItem());
+                String R_NVA = String.valueOf(jComboBox3.getSelectedItem());
+                String R_M_PD = jTextField32.getText();
+                String R_Addiiton = String.valueOf(jComboBox5.getSelectedItem());
+                String R_Height = jTextField38.getText();
+
+                String L_SPH = jTextField21.getText();
+                String L_Cyl = jTextField17.getText();
+                String L_Axis = jTextField19.getText();
+                String PL_DVa = String.valueOf(jComboBox2.getSelectedItem());
+                String L_NVA = String.valueOf(jComboBox4.getSelectedItem());
+                String L_M_PD = jTextField23.getText();
+                String L_Addiiton = String.valueOf(jComboBox6.getSelectedItem());
+                String L_Height = jTextField39.getText();
+
+                // ✅ UPDATE instead of INSERT
+                MySQL.execute("UPDATE `prescription_details` SET "
+                        + "`L_SPH` = '" + L_SPH + "', "
+                        + "`L_Addition` = '" + L_Addiiton + "', "
+                        + "`L_DVA` = '" + PL_DVa + "', "
+                        + "`L_NVA` = '" + L_NVA + "', "
+                        + "`L_M_PD` = '" + L_M_PD + "', "
+                        + "`L_HEIGHT` = '" + L_Height + "', "
+                        + "`L_CYL` = '" + L_Cyl + "', "
+                        + "`L_Axis` = '" + L_Axis + "', "
+                        + "`R_SPH` = '" + R_SPH + "', "
+                        + "`R_Addition` = '" + R_Addiiton + "', "
+                        + "`R_DVA` = '" + PR_DVa + "', "
+                        + "`R_NVA` = '" + R_NVA + "', "
+                        + "`R_M_PD` = '" + R_M_PD + "', "
+                        + "`R_CYL` = '" + R_Cyl + "', "
+                        + "`R_Axis` = '" + R_Axis + "', "
+                        + "`R_HEIGHT` = '" + R_Height + "', "
+                        + "`prescripiton_date` = '" + datechooser + "', "
+                        + "`users_id` = '" + user_id + "' "
+                        + "WHERE `job_no` = '" + prescription_id + "' ");
+
+                JOptionPane.showMessageDialog(this, "Prescription Updated Successfully", "Update Success", JOptionPane.INFORMATION_MESSAGE);
+
+                OrderMaking chooseOrderTypes = new OrderMaking(Customer_mobile);
+                chooseOrderTypes.setVisible(true);
+                this.dispose();
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Connection", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Something Wrong. Please Try Again Later.", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1211,6 +1419,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JButton homeBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -1228,6 +1437,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
@@ -1260,6 +1470,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
@@ -1267,6 +1478,7 @@ public class PrescripitonAdding extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField17;
     private javax.swing.JTextField jTextField19;
     private javax.swing.JTextField jTextField21;
