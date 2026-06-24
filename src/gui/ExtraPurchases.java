@@ -15,6 +15,7 @@ import models.MySQL;
 import models.UserDetails;
 import static gui.Login.logger;
 import java.util.logging.Level;
+import models.generateInvoiceId;
 
 /**
  *
@@ -273,8 +274,9 @@ public class ExtraPurchases extends javax.swing.JFrame {
                     String curruntTime = now.format(timeFormatter);
 
                     // add Invoice
-                    ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`,`invoice_location`)"
-                            + " VALUES ('" + curruntDay + "','" + Payamount + "','" + customerMobile + "','" + paymentMethodSelecetd + "','0','0','0','1','0','" + '1' + "','1','" + Payamount + "','" + UserDetails.UserLocation_id + "') ");
+                    String invoice_id = new generateInvoiceId().generateInvoiceId(1, Integer.parseInt(UserDetails.UserLocation_id)); // generate Invocie ID
+                    ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`,`invoice_location`)"
+                            + " VALUES ('"+invoice_id+"','" + curruntDay + "','" + Payamount + "','" + customerMobile + "','" + paymentMethodSelecetd + "','0','0','0','1','0','" + '1' + "','1','" + Payamount + "','" + UserDetails.UserLocation_id + "') ");
 
                     if (Inser_rs.next()) {
                         // add adnvace Payment
