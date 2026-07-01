@@ -257,7 +257,6 @@ public class CompletePayments extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void proceedBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_proceedBtnActionPerformed
-
         try {
 
             System.out.println(buttonGroup1.getSelection());
@@ -282,9 +281,9 @@ public class CompletePayments extends javax.swing.JFrame {
                     } else if (jRadioButton3.isSelected()) {
                         paymentMethodSelecetd = 2;
                     } else if (jRadioButton4.isSelected()) {
-                        paymentMethodSelecetd = 3;
-                    } else if (jRadioButton1.isSelected()) {
                         paymentMethodSelecetd = 4;
+                    } else if (jRadioButton1.isSelected()) {
+                        paymentMethodSelecetd = 3;
                     } else if (jRadioButton5.isSelected()) {
                         paymentMethodSelecetd = 5;
                         paymentInfo = paymentInfoTxt.getText();
