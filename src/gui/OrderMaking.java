@@ -1377,9 +1377,9 @@ public class OrderMaking extends javax.swing.JFrame {
                                             } else if (jRadioButton3.isSelected()) {
                                                 paymentMethodSelecetd = 2;
                                             } else if (jRadioButton4.isSelected()) {
-                                                paymentMethodSelecetd = 3;
-                                            } else if (jRadioButton1.isSelected()) {
                                                 paymentMethodSelecetd = 4;
+                                            } else if (jRadioButton1.isSelected()) {
+                                                paymentMethodSelecetd = 3;
                                             } else if (jRadioButton8.isSelected()) { // Mint Pay
                                                 paymentMethodSelecetd = 5;
                                                 paymentInfo = jTextField12.getText();
