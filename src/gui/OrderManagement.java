@@ -21,6 +21,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
@@ -40,6 +41,9 @@ public class OrderManagement extends javax.swing.JFrame {
     double ReportTotal = 0;
     double totalCollection = 0;
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    boolean saparateBranch = false;
+
+    HashMap<Integer, String> locationMap = new HashMap<>();
 
     public OrderManagement() {
         initComponents();
@@ -78,6 +82,7 @@ public class OrderManagement extends javax.swing.JFrame {
     }
 
     public void Refresh() {
+        LoadSettings();
         LoadOrderTable();
         loadLocations();
         jTextField1.setText("");
@@ -88,6 +93,24 @@ public class OrderManagement extends javax.swing.JFrame {
         completeBtn.setEnabled(false);
         billBtn.setEnabled(false);
         LoadDeleteButton();
+    }
+
+    public void LoadSettings() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `settings` WHERE `setting_id` =  '1'");
+            if (rs.next()) {
+                boolean isSeprateBranch = rs.getBoolean("is_saperate_branches");
+                System.out.println("Is separate" + isSeprateBranch);
+
+                if (isSeprateBranch == true) {
+                    saparateBranch = true;
+                } else {
+                    saparateBranch = false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void LoadDeleteButton() {
@@ -112,12 +135,29 @@ public class OrderManagement extends javax.swing.JFrame {
 
     public void loadLocations() {
         try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `location` ORDER BY `id` ASC");
+            String locationquerry = "SELECT * FROM `location`  ";
+            if (saparateBranch == true) {
+                locationquerry += " WHERE id = '" + UserDetails.UserLocation_id + "'";
+            }
+
+            locationquerry += " ORDER BY `id` ASC";
+
+            ResultSet rs = MySQL.execute(locationquerry);
             Vector v = new Vector();
 
             v.add("Select Locaiton");
             while (rs.next()) {
                 v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("location_name")));
+                locationMap.put(Integer.parseInt(rs.getString("id")), rs.getString("location_name"));
+                System.out.println("the size of location map is" + locationMap.size());
+            }
+
+            for (Map.Entry<Integer, String> entry : locationMap.entrySet()) {
+                Integer key = entry.getKey();
+                String value = entry.getValue();
+                System.out.println("key is-" + key);
+                System.out.println("value is-" + value);
+
             }
 
             DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
@@ -136,16 +176,20 @@ public class OrderManagement extends javax.swing.JFrame {
         actualProfit = 0;
         ReportTotal = 0;
         try {
-            ResultSet rs = MySQL.execute("SELECT DISTINCT "
-                    + "`customer_mobile`,`subtotal`,`invoice`.`invoice_id`,`name`,`nic`,`date`,`location_name`,`advance_payment`,`discount`,`total_price`,`status_name`, `payment_status`.`status_name`, `payment_status_id` "
-                    + "FROM `invoice` "
-                    + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile` "
+
+            String loadOrderTableQuery = "SELECT DISTINCT `customer_mobile`,`subtotal`,`invoice`.`invoice_id`,`name`,`nic`,`date`,`location_name`,`advance_payment`,`discount`,`total_price`,`status_name`, `payment_status`.`status_name`, `payment_status_id` FROM `invoice` "
+                    + "INNER JOIN `customer` ON `customer`.`mobile` = `invoice`.`customer_mobile`"
                     + "LEFT JOIN `invoice_item` ON `invoice_item`.`invoice_id` = `invoice`.`invoice_id` "
                     + "LEFT JOIN `stock` ON `stock`.`id` = `invoice_item`.`stock_id` "
                     + "INNER JOIN `location` ON `location`.`id` = `invoice_location` "
-                    + "INNER JOIN `payment_status` ON `invoice`.`payment_status_id` = `payment_status`.`id` "
-                    + "ORDER BY `date` DESC "
-            );
+                    + "INNER JOIN `payment_status` ON `invoice`.`payment_status_id` = `payment_status`.`id` ";
+
+            if (saparateBranch == true) {
+                loadOrderTableQuery += " WHERE `location`.`id` = '" + UserDetails.UserLocation_id + "'";
+            }
+            loadOrderTableQuery += " ORDER BY `date` DESC";
+
+            ResultSet rs = MySQL.execute(loadOrderTableQuery);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
 
@@ -196,12 +240,33 @@ public class OrderManagement extends javax.swing.JFrame {
         }
     }
 
-    public String calculateTodayCashColleciton(String date, int locationID) {
+    public String calculateTodayCashColleciton(String sdate, String edate, int locationID) {
+
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
         try {
             double cashCollection = 0;
-            ResultSet rs = MySQL.execute("SELECT * FROM advance_payment_history WHERE advance_payment_history.date = '" + date + "' AND advance_payment_history.location_id = '" + locationID + "' ");
-
+            ResultSet rs = null;
+            if (locationID == 0) {
+                if (!sdate.equals("null") && !edate.equals("null")) {
+                    rs = MySQL.execute("SELECT * FROM advance_payment_history WHERE DATE(date) BETWEEN '" + sdate + "' AND '" + edate + "'");
+                } else if (!sdate.equals("null")) {
+                    rs = MySQL.execute("SELECT * FROM advance_payment_history WHERE DATE(date) = '" + sdate + "'");
+                } else if (!edate.equals("null")) {
+                    rs = MySQL.execute("SELECT * FROM advance_payment_history WHERE DATE(date) <= '" + edate + "'");
+                } else {
+                    rs = MySQL.execute("SELECT * FROM advance_payment_history");
+                }
+            } else {
+                if (!sdate.equals("null") && !edate.equals("null")) {
+                    rs = MySQL.execute("SELECT * FROM advance_payment_history WHERE DATE(date) BETWEEN '" + sdate + "' AND '" + edate + "' AND location_id = " + locationID);
+                } else if (!sdate.equals("null")) {
+                    rs = MySQL.execute("SELECT * FROM advance_payment_history WHERE DATE(date) = '" + sdate + "' AND location_id = " + locationID);
+                } else if (!edate.equals("null")) {
+                    rs = MySQL.execute("SELECT * FROM advance_payment_history WHERE DATE(date) <= '" + edate + "' AND location_id = " + locationID);
+                } else {
+                    rs = MySQL.execute("SELECT * FROM advance_payment_history WHERE location_id = " + locationID);
+                }
+            }
             while (rs.next()) {
                 cashCollection += rs.getDouble("paid_amount");
             }
@@ -820,6 +885,7 @@ public class OrderManagement extends javax.swing.JFrame {
 
         String ToDate;
         String FromDate;
+        int locationId = Integer.parseInt(String.valueOf(jComboBox1.getSelectedItem()).substring(0, 1));
 
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
 
@@ -863,7 +929,7 @@ public class OrderManagement extends javax.swing.JFrame {
                 }
 
                 if (jComboBox1.getSelectedIndex() != 0) {
-                    Queary += " AND `invoice`.`invoice_location` = '" + jComboBox1.getSelectedIndex() + "' ";
+                    Queary += " AND `invoice`.`invoice_location` = '" + locationId + "' ";
                 }
 
                 if (!ToDate.equals("null") && !FromDate.equals("null")) {
@@ -882,7 +948,7 @@ public class OrderManagement extends javax.swing.JFrame {
                 }
 
                 if (jComboBox1.getSelectedIndex() != 0) {
-                    Queary += " AND `invoice`.`invoice_location` = '" + jComboBox1.getSelectedIndex() + "' ";
+                    Queary += " AND `invoice`.`invoice_location` = '" + locationId + "' ";
                 }
 
                 if (!ToDate.equals("null") && !FromDate.equals("null")) {
@@ -894,7 +960,7 @@ public class OrderManagement extends javax.swing.JFrame {
                 }
 
             } else if (jComboBox1.getSelectedIndex() != 0) {
-                Queary += " WHERE `invoice`.`invoice_location` = '" + jComboBox1.getSelectedIndex() + "' ";
+                Queary += " AND `invoice`.`invoice_location` = '" + locationId + "' ";
 
                 if (!ToDate.equals("null") && !FromDate.equals("null")) {
                     Queary += " AND `invoice`.`date` BETWEEN '" + ToDate + "' AND '" + FromDate + "' ";
@@ -914,7 +980,7 @@ public class OrderManagement extends javax.swing.JFrame {
 
             // ── Main result loop ──────────────────────────────────────────────
             ResultSet rs = MySQL.execute(Queary);
-            System.out.println(Queary);
+//            System.out.println(Queary);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
 
@@ -946,7 +1012,7 @@ public class OrderManagement extends javax.swing.JFrame {
             }
 
             // ── Cash Collection ───────────────────────────────────────────────
-            String cashCollection = calculateTodayCashColleciton(ToDate, jComboBox1.getSelectedIndex());
+            String cashCollection = calculateTodayCashColleciton(FromDate, ToDate, jComboBox1.getSelectedIndex());
 
             // ── Update UI labels ──────────────────────────────────────────────
             esProfitCountLable.setText(decimalFormat.format(estimateProfit));
@@ -1153,50 +1219,51 @@ public class OrderManagement extends javax.swing.JFrame {
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // Delete Order
 
-        if (jTable1.getSelectedRow() != -1) {
+        int option = JOptionPane.showConfirmDialog(this, "Are you sure to want to delete this Invoice?", "WARNING", JOptionPane.WARNING_MESSAGE);
 
-            int selectROw = jTable1.getSelectedRow();
-            String invoiceId = String.valueOf(jTable1.getValueAt(selectROw, 0));
-
+        if (option == 0) {
+            if (jTable1.getSelectedRow() != -1) {
+                int selectROw = jTable1.getSelectedRow();
+                String invoiceId = String.valueOf(jTable1.getValueAt(selectROw, 0));
 //            invoice Item ReStock ->
-            ResultSet rs = MySQL.execute("SELECT `invoice_item`.`qty` AS `iqty`, `invoice_item`.`stock_id` AS `istock_id`, `stock`.`qty` AS `sqty`  FROM `invoice_item` INNER JOIN `stock` ON  `stock`.`id` = `invoice_item`.`stock_id`   WHERE `invoice_id` = '" + invoiceId + "'");
+                ResultSet rs = MySQL.execute("SELECT `invoice_item`.`qty` AS `iqty`, `invoice_item`.`stock_id` AS `istock_id`, `stock`.`qty` AS `sqty`  FROM `invoice_item` INNER JOIN `stock` ON  `stock`.`id` = `invoice_item`.`stock_id`   WHERE `invoice_id` = '" + invoiceId + "'");
 
-            try {
-                while (rs.next()) {
-                    int BilledQty = rs.getInt("iqty");
-                    int stock_id = rs.getInt("istock_id");
-                    int stockQty = rs.getInt("sqty");
+                try {
+                    while (rs.next()) {
+                        int BilledQty = rs.getInt("iqty");
+                        int stock_id = rs.getInt("istock_id");
+                        int stockQty = rs.getInt("sqty");
 
-                    MySQL.execute("UPDATE `stock` SET `qty` = `qty` + '" + BilledQty + "' WHERE `id` = '" + stock_id + "';");
+                        MySQL.execute("UPDATE `stock` SET `qty` = `qty` + '" + BilledQty + "' WHERE `id` = '" + stock_id + "';");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "something wrong, stock not restoked perfectly. please check again");
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "something wrong, stock not restoked perfectly. please check again");
-            }
 
 //            Delete From Advance Payemnts
-            try {
-                MySQL.execute("DELETE FROM `advance_payment_history` WHERE `invoice_invoice_id`  ='" + invoiceId + "' ");
-            } catch (Exception e) {
-            }
+                try {
+                    MySQL.execute("DELETE FROM `advance_payment_history` WHERE `invoice_invoice_id`  ='" + invoiceId + "' ");
+                } catch (Exception e) {
+                }
 //            Delete From Invoice Item
-            try {
-                MySQL.execute("DELETE FROM `invoice_item` WHERE `invoice_id`  ='" + invoiceId + "' ");
-            } catch (Exception e) {
-                System.out.println("Invoice ItemF Exception");
-            }
+                try {
+                    MySQL.execute("DELETE FROM `invoice_item` WHERE `invoice_id`  ='" + invoiceId + "' ");
+                } catch (Exception e) {
+                    System.out.println("Invoice ItemF Exception");
+                }
 //            Delete From Invoice 
-            try {
-                MySQL.execute("DELETE FROM `invoice` WHERE `invoice_id`  ='" + invoiceId + "' ");
-            } catch (Exception e) {
-                System.out.println("Invoice  Exception");
+                try {
+                    MySQL.execute("DELETE FROM `invoice` WHERE `invoice_id`  ='" + invoiceId + "' ");
+                } catch (Exception e) {
+                    System.out.println("Invoice  Exception");
+                }
+
+                Refresh();
+            } else {
+                JOptionPane.showMessageDialog(this, "please Select a Order row", "Empty Row", JOptionPane.ERROR_MESSAGE);
             }
-
-            Refresh();
-        } else {
-            JOptionPane.showMessageDialog(this, "please Select a Order row", "Empty Row", JOptionPane.ERROR_MESSAGE);
         }
-
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
