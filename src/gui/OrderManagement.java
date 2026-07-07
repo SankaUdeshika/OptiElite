@@ -425,6 +425,11 @@ public class OrderManagement extends javax.swing.JFrame {
                 jTextField3ActionPerformed(evt);
             }
         });
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField3KeyReleased(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel13.setText("Order Table");
@@ -885,7 +890,10 @@ public class OrderManagement extends javax.swing.JFrame {
 
         String ToDate;
         String FromDate;
-        int locationId = Integer.parseInt(String.valueOf(jComboBox1.getSelectedItem()).substring(0, 1));
+        int locationId = 0;
+        if (jComboBox1.getSelectedIndex() != 0) {
+            locationId = Integer.parseInt(String.valueOf(jComboBox1.getSelectedItem()).substring(0, 1));
+        }
 
         DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
 
@@ -1286,6 +1294,10 @@ public class OrderManagement extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3KeyReleased
 
     /**
      * @param args the command line arguments
