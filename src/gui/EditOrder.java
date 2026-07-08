@@ -132,7 +132,7 @@ public class EditOrder extends javax.swing.JFrame {
 
     }
 
-    private void operater() {   
+    private void operater() {
         String name = UserDetails.UserName;
         userNameField.setText(name);
     }
@@ -167,11 +167,39 @@ public class EditOrder extends javax.swing.JFrame {
         jTextField4.setEnabled(false);
         jTable2.setEnabled(false);
         jTextField1.setEnabled(false);
+        loadPaymentTerms();
         LoadStockProducts();
         lensLoading();
         LensStockSettings();
         CalculateLensTotal();
         ChangeTotal();
+        jButton9.setVisible(false);
+
+    }
+
+    public void loadPaymentTerms() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `advance_payment_history` WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'  ");
+            DefaultTableModel dtm = (DefaultTableModel) jTable5.getModel();
+            dtm.setRowCount(0);
+
+            while (rs.next()) {
+                Vector v = new Vector();
+                v.add(rs.getInt("idadvance_payment_history"));
+                v.add(rs.getString("date"));
+                v.add(rs.getString("paid_amount"));
+                dtm.addRow(v);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", se);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", e);
+        }
     }
 
     public void CalculateLensTotal() {
@@ -428,6 +456,10 @@ public class EditOrder extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         jTextField9 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable5 = new javax.swing.JTable();
+        jLabel18 = new javax.swing.JLabel();
+        jButton9 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -601,7 +633,7 @@ public class EditOrder extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 110, 250, 129));
-        jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 520, 480, 10));
+        jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 520, 480, 10));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel15.setText("Data Serching");
@@ -633,7 +665,7 @@ public class EditOrder extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTable2);
 
-        jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 111, 250, 129));
+        jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 250, 129));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel10.setText("SKU");
@@ -693,10 +725,10 @@ public class EditOrder extends javax.swing.JFrame {
 
         jLabel22.setFont(new java.awt.Font("Segoe UI Historic", 0, 36)); // NOI18N
         jLabel22.setText("-");
-        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(666, 495, 20, 20));
+        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 490, 20, 20));
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jPanel6.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 450, 10, 110));
+        jPanel6.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 450, 10, 110));
 
         jTextField2.setText("1");
         jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -704,23 +736,23 @@ public class EditOrder extends javax.swing.JFrame {
                 jTextField2KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 490, -1, -1));
+        jPanel6.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 490, -1, -1));
 
         jLabel30.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel30.setText("QTY");
-        jPanel6.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 460, -1, -1));
+        jPanel6.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 460, -1, -1));
 
         jLabel31.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
         jLabel31.setText("Rs.0.00");
-        jPanel6.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 490, 110, -1));
+        jPanel6.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 490, 110, -1));
 
         jLabel32.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel32.setText("X");
-        jPanel6.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 490, 20, -1));
+        jPanel6.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 490, 20, -1));
 
         jLabel33.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel33.setText("Advance Payment");
-        jPanel6.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 520, 130, -1));
+        jPanel6.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 520, 130, -1));
 
         jLabel34.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel34.setText("Due Amount");
@@ -752,11 +784,11 @@ public class EditOrder extends javax.swing.JFrame {
                 jTextField3KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 490, 110, -1));
+        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 490, 110, -1));
 
         jLabel39.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel39.setText("Discount");
-        jPanel6.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 450, -1, 30));
+        jPanel6.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 450, -1, 30));
 
         jLabel27.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel27.setText("=");
@@ -768,7 +800,7 @@ public class EditOrder extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 490, -1, -1));
+        jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 490, -1, -1));
         jPanel6.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 410, 1030, 14));
 
         jTextField11.setText("  ");
@@ -782,11 +814,11 @@ public class EditOrder extends javax.swing.JFrame {
                 jTextField11KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 540, 90, -1));
+        jPanel6.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 540, 90, -1));
 
         jLabel40.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel40.setText("Sub Total");
-        jPanel6.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 450, 70, 30));
+        jPanel6.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 450, 70, 30));
 
         jButton6.setText("Add");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -794,11 +826,11 @@ public class EditOrder extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 540, 60, -1));
+        jPanel6.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 540, 60, -1));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel14.setText("Total Amount ");
-        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 420, -1, -1));
+        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 420, -1, -1));
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -846,8 +878,8 @@ public class EditOrder extends javax.swing.JFrame {
         jPanel6.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 278, 780, -1));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel13.setText("Lense Id or Type");
-        jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 252, -1, -1));
+        jLabel13.setText("Payment Terms");
+        jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, -1, -1));
 
         jButton8.setText("Refresh Total");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -870,11 +902,11 @@ public class EditOrder extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("X");
         jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 300, 48, 44));
-        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 540, 170, 32));
+        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 540, 170, 32));
 
         jLabel35.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel35.setText("Pay Amount");
-        jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 520, -1, -1));
+        jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 520, -1, -1));
 
         jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -886,6 +918,46 @@ public class EditOrder extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel19.setText("Frame Id Or Brand");
         jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 60, -1, -1));
+
+        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Payment_id", "Date", "Amount"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable5MouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(jTable5);
+
+        jPanel6.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, 310, 129));
+
+        jLabel18.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel18.setText("Lense Id or Type");
+        jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 252, -1, -1));
+
+        jButton9.setText("Delete");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 540, -1, -1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -940,7 +1012,7 @@ public class EditOrder extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addGap(31, 31, 31)
                         .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(237, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -976,7 +1048,7 @@ public class EditOrder extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 10, Short.MAX_VALUE))
+                .addGap(0, 16, Short.MAX_VALUE))
         );
 
         pack();
@@ -1095,8 +1167,6 @@ public class EditOrder extends javax.swing.JFrame {
                         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                         String curruntTime = now.format(timeFormatter);
 
-                       
-
                         JOptionPane.showMessageDialog(this, "Invoice Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                         Refresh(Customer_mobile);
 
@@ -1122,7 +1192,7 @@ public class EditOrder extends javax.swing.JFrame {
                             // ── STEP 4: Update the invoice record ──
                             MySQL.execute("UPDATE `invoice` SET "
                                     + "`total_price` = '" + Total + "', "
-                                    + "`advance_payment` = '" + AdvancedPayment + "', "
+                                    + "`advance_payment` = '" + advancePayment + "', "
                                     + "`discount` = '" + Discount + "', "
                                     + "`subtotal` = '" + InsertSubTotal + "', "
                                     + "`lenstotal` = '" + LensTotal + "', "
@@ -1139,7 +1209,6 @@ public class EditOrder extends javax.swing.JFrame {
                             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                             String curruntTime = now.format(timeFormatter);
 
-                            
                             JOptionPane.showMessageDialog(this, "Invoice Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                             Refresh(Customer_mobile);
 
@@ -1504,6 +1573,40 @@ public class EditOrder extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField9KeyReleased
 
+    private void jTable5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable5MouseClicked
+        // TODO add your handling code here:
+        jButton9.setVisible(true);
+    }//GEN-LAST:event_jTable5MouseClicked
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        int row = jTable5.getSelectedRow();
+        if (row != -1) {
+            int answer = JOptionPane.showConfirmDialog(
+                    this,
+                    "Are you sure you want to delete this payment detail?",
+                    "Delete Payment Detail",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            if (answer == JOptionPane.YES_OPTION) {
+                String payment_id = String.valueOf(jTable5.getValueAt(jTable5.getSelectedRow(), 0));
+                try {
+                    MySQL.execute("DELETE FROM `advance_payment_history` WHERE idadvance_payment_history = '" + payment_id + "' ");
+                    Refresh(frameId);
+                    JOptionPane.showMessageDialog(this, "Delete success", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "something wrong, please try again later", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                System.out.println("no");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "please Select a payment row", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1557,6 +1660,7 @@ public class EditOrder extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1565,6 +1669,7 @@ public class EditOrder extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel22;
@@ -1592,6 +1697,7 @@ public class EditOrder extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -1602,6 +1708,7 @@ public class EditOrder extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
+    private javax.swing.JTable jTable5;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField2;
