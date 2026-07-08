@@ -288,11 +288,12 @@ public class Reports {
                 double cashCollection = 0;
                 double cardCollection = 0;
                 double onlinePaymentCollection = 0;
+                double mintPaymentCollection = 0;
+                double kokoPaymentCollection = 0;
                 double totalSellingCollection = 0;
+                double bankDepositColleciton = 0;
                 double BankDeposit = 0;
                 double TotalSale = 0;
-
-                System.out.println(reportedDate);
 
                 ResultSet today_payments = MySQL.execute("SELECT * FROM `advance_payment_history` INNER JOIN `payment_method` ON `payment_method`.`Payment_id` = `advance_payment_history`.`payment_method` WHERE `date` = '" + reportedDate + "' AND `advance_payment_history`.`location_id` = '" + reportedLocation + "'");
                 while (today_payments.next()) {
@@ -303,20 +304,32 @@ public class Reports {
                         cardCollection += today_payments.getDouble("paid_amount");
                     } else if (today_payments.getString("payment_name").equals("Online Bank Transfer")) { // Online Payment 
                         onlinePaymentCollection += today_payments.getDouble("paid_amount");
+                    } else if (today_payments.getString("payment_name").equals("MintPay")) {
+                        mintPaymentCollection += today_payments.getDouble("paid_amount");
+                    } else if (today_payments.getString("payment_name").equals("KOKO")) {
+                        kokoPaymentCollection += today_payments.getDouble("paid_amount");
+                    } else if (today_payments.getString("payment_name").equals("KOKO")) {
+                        kokoPaymentCollection += today_payments.getDouble("paid_amount");
+                    } else if (today_payments.getString("payment_name").equals("Bank Deposit")) {
+                        bankDepositColleciton += today_payments.getDouble("paid_amount");
                     }
-                    totalSellingCollection += today_payments.getDouble("paid_amount");
                 }
 
                 ResultSet rs = MySQL.execute("SELECT SUM(subtotal) AS total_subtotal FROM invoice WHERE date = '" + reportedDate + "' AND `invoice_location` = '" + reportedLocation + "' ");
                 if (rs.next()) {
                     TotalSale = rs.getDouble("total_subtotal");
                 }
+                
+                System.out.println("bannk deposti :- "+bankDepositColleciton);
 
                 BankDeposit = cashCollection - Double.parseDouble(String.valueOf(reportmap.get("total_expenses")));
                 reportmap.put("cashCollection", String.valueOf(cashCollection));
                 reportmap.put("cardCollection", String.valueOf(cardCollection));
                 reportmap.put("onlinePaymentCollection", String.valueOf(onlinePaymentCollection));
                 reportmap.put("totalSellingCollection", String.valueOf(totalSellingCollection));
+                reportmap.put("kokopaymentCollection", String.valueOf(kokoPaymentCollection));
+                reportmap.put("mintPaymentCollection", String.valueOf(mintPaymentCollection));
+                reportmap.put("bankDepositColleciton", String.valueOf(bankDepositColleciton));
                 reportmap.put("BankDeposit", String.valueOf(BankDeposit));
                 reportmap.put("TotalSale", String.valueOf(TotalSale));
 
@@ -361,8 +374,8 @@ public class Reports {
 
     public static void PrintExpensesSheet(String report_item_id) {
         try {
-            
-            System.out.println("this is report_id - " +report_item_id);
+
+            System.out.println("this is report_id - " + report_item_id);
             HashMap<String, Object> reportmap = new HashMap<>();
             try {
                 reportmap.put("report_item_id", report_item_id);
@@ -378,6 +391,7 @@ public class Reports {
         }
 
     }
+
     // Print Echanneling Reprot
     public static void PrintEchanneling(int AppoinmentNo) {
         try {
