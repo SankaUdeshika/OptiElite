@@ -11,6 +11,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -315,12 +316,24 @@ public class Reports {
                     }
                 }
 
+//              get Total Sale
                 ResultSet rs = MySQL.execute("SELECT SUM(subtotal) AS total_subtotal FROM invoice WHERE date = '" + reportedDate + "' AND `invoice_location` = '" + reportedLocation + "' ");
                 if (rs.next()) {
                     TotalSale = rs.getDouble("total_subtotal");
                 }
-                
-                System.out.println("bannk deposti :- "+bankDepositColleciton);
+
+                // get Total CashCollection 
+                DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+                try {
+                    ResultSet TotalCashColleciton_rs = MySQL.execute("SELECT * FROM advance_payment_history WHERE advance_payment_history.date = '" + reportedDate + "' AND advance_payment_history.location_id = '" + reportedLocation + "' ");
+
+                    while (TotalCashColleciton_rs.next()) {
+                        totalSellingCollection += TotalCashColleciton_rs.getDouble("paid_amount");
+                    }
+                    String formatedTotalCash = decimalFormat.format(cashCollection); // not incluede to the report map
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 BankDeposit = cashCollection - Double.parseDouble(String.valueOf(reportmap.get("total_expenses")));
                 reportmap.put("cashCollection", String.valueOf(cashCollection));
