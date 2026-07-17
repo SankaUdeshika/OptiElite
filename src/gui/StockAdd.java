@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -30,6 +31,9 @@ public class StockAdd extends javax.swing.JFrame {
 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
     HashMap<String, String> intidmap = new HashMap<>();
+
+    boolean saparateBranch = false;
+    HashMap<Integer, String> locationMap = new HashMap<>();
 
     public StockAdd() {
         initComponents();
@@ -70,12 +74,19 @@ public class StockAdd extends javax.swing.JFrame {
 
     public void LoadStockTable() {
         try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `stock`"
+
+            String stockTableQuerry = "SELECT * FROM `stock`"
                     + " INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid`"
                     + " INNER JOIN `supplier` ON `supplier`.`supplier_id` = `stock`.`supplier_supplier_id` "
                     + " INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
                     + " INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` "
-                    + " INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` ");
+                    + " INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` ";
+
+            if (saparateBranch == true) {
+                stockTableQuerry += " WHERE `location`.`id` = '" + UserDetails.UserLocation_id + "'";
+            }
+
+            ResultSet rs = MySQL.execute(stockTableQuerry);
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
 
@@ -130,7 +141,14 @@ public class StockAdd extends javax.swing.JFrame {
 
     public void loadLocations() {
         try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `location`");
+
+            String locationquerry = "SELECT * FROM `location`  ";
+            if (saparateBranch == true) {
+                locationquerry += " WHERE id = '" + UserDetails.UserLocation_id + "'";
+            }
+            locationquerry += " ORDER BY `id` ASC";
+
+            ResultSet rs = MySQL.execute(locationquerry);
             Vector v = new Vector();
 
             v.add("Select Category");
@@ -170,6 +188,7 @@ public class StockAdd extends javax.swing.JFrame {
     }
 
     public void refresh() {
+        LoadSettings();
         AddinProductStock("");
         supplierTable();
         loadLocations();
@@ -180,6 +199,24 @@ public class StockAdd extends javax.swing.JFrame {
         jTextField10.setText("");
         jTextField4.setText("");
         jTextField15.setText("");
+    }
+
+    public void LoadSettings() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `settings` WHERE `setting_id` =  '1'");
+            if (rs.next()) {
+                boolean isSeprateBranch = rs.getBoolean("is_saperate_branches");
+                System.out.println("Is separate" + isSeprateBranch);
+
+                if (isSeprateBranch == true) {
+                    saparateBranch = true;
+                } else {
+                    saparateBranch = false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1988,72 +2025,81 @@ public class StockAdd extends javax.swing.JFrame {
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
 
-        SimpleDateFormat simpleDateformat = new SimpleDateFormat("YYYY-MM-dd");
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("yyyy-MM-dd"); // fixed: YYYY -> yyyy
         String ToDate;
-
         try {
             ToDate = simpleDateformat.format(jDateChooser1.getDate());
             jLabel22.setText(ToDate);
         } catch (NullPointerException ne) {
-            ToDate = "null";
+            ToDate = null;
         }
-        JasperStockQuerry = "";
 
-        String querry = "SELECT * FROM `stock`"
+        String baseQuery = "SELECT * FROM `stock`"
                 + " INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid`"
                 + " INNER JOIN `supplier` ON `supplier`.`supplier_id` = `stock`.`supplier_supplier_id` "
                 + " INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
                 + " INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` "
                 + " INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id`";
 
+        List<String> conditions = new ArrayList<>();
+        List<Object> params = new ArrayList<>();
+
         if (!jTextField7.getText().isEmpty()) {
-            querry += " WHERE `stock`.`id` = '" + jTextField7.getText() + "'";
-            JasperStockQuerry += " WHERE `stock`.`id` = '" + jTextField7.getText() + "'";
+            conditions.add("`stock`.`id` = ?");
+            params.add(jTextField7.getText());
         } else if (!jTextField8.getText().isEmpty()) {
-            querry += " WHERE `product`.`id` = '" + jTextField8.getText() + "'";
-            JasperStockQuerry += " WHERE `product`.`id` = '" + jTextField8.getText() + "'";
+            conditions.add("`product`.`id` = ?");
+            params.add(jTextField8.getText());
         } else if (!jTextField9.getText().isEmpty()) {
-            querry += " WHERE `supplier`.`supplier_id` LIKE '%" + jTextField9.getText() + "%'";
-            JasperStockQuerry += " WHERE `supplier`.`supplier_id` LIKE '%" + jTextField9.getText() + "%'";
+            conditions.add("`supplier`.`supplier_id` LIKE ?");
+            params.add("%" + jTextField9.getText() + "%");
         } else if (!jTextField2.getText().isEmpty()) {
-            querry += " WHERE `stock`.`SKU` = '" + jTextField2.getText() + "'";
-            JasperStockQuerry += " WHERE `stock`.`SKU` = '" + jTextField2.getText() + "'";
+            conditions.add("`stock`.`SKU` = ?");
+            params.add(jTextField2.getText());
         }
 
         if (jComboBox1.getSelectedIndex() != 0) {
-            querry += " AND `stock`.`location_id` = '" + jComboBox1.getSelectedIndex() + "'";
-            JasperStockQuerry += " AND `stock`.`location_id` = '" + jComboBox1.getSelectedIndex() + "'";
+            conditions.add("`stock`.`location_id` = ?");
+            String location_id = String.valueOf(jComboBox1.getSelectedItem()).substring(0, 1);
+            params.add(location_id);
 
+        } else if (saparateBranch) {
+            conditions.add("`stock`.`location_id` = ?");
+            params.add(UserDetails.UserLocation_id);
         }
 
         if (!jTextField3.getText().isEmpty()) {
-            String brandText = jTextField3.getText();
-            String brandArray[] = brandText.split(" ");
-            String brand = brandArray[1];
-
-            querry += " AND `brand`.`brand_name` = '" + brand + "'";
-            JasperStockQuerry += " AND `brand`.`brand_name` = '" + brand + "'";
-
+            String[] brandArray = jTextField3.getText().trim().split(" ");
+            String brand = brandArray.length > 1 ? brandArray[1] : brandArray[0]; // fixed: avoid AIOOBE
+            conditions.add("`brand`.`brand_name` = ?");
+            params.add(brand);
         }
 
-        if (jDateChooser1.getDate() != null) {
-            querry += " AND `stock_date` >= '" + ToDate + "' ";
-            JasperStockQuerry += " AND `stock_date` >= '" + ToDate + "' ";
+        if (ToDate != null) {
+            conditions.add("`stock_date` >= ?");
+            params.add(ToDate);
         }
 
-        //        System.out.println(querry);
-        try {
+        StringBuilder querry = new StringBuilder(baseQuery);
+        if (!conditions.isEmpty()) {
+            querry.append(" WHERE ").append(String.join(" AND ", conditions));
+        }
 
-            ResultSet rs = MySQL.execute(querry);
+        System.out.println(querry);
+        JasperStockQuerry = querry.toString(); // keep params (JasperStockParams) alongside if Jasper needs them too
 
+        try (PreparedStatement ps = MySQL.getConnection().prepareStatement(querry.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            ResultSet rs = ps.executeQuery();
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
-
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getInt("product_intid"));
-                v.add(rs.getInt("stock.id"));
-                v.add(rs.getString("stock.product_id"));
+                v.add(rs.getInt("id"));            // fixed: no table prefix
+                v.add(rs.getString("product_id"));  // fixed: no table prefix
                 v.add(rs.getString("brand_name"));
                 v.add(rs.getString("sub_category"));
                 v.add(rs.getInt("qty"));
@@ -2063,14 +2109,11 @@ public class StockAdd extends javax.swing.JFrame {
                 v.add(rs.getString("location_name"));
                 v.add(rs.getString("color"));
                 v.add(rs.getString("SKU"));
-
                 dtm.addRow(v);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             logger.log(Level.WARNING, "Data failed to load", e);
-
         }
 
     }//GEN-LAST:event_jButton10ActionPerformed
