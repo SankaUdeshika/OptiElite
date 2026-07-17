@@ -26,6 +26,7 @@ import models.UserDetails;
 public class StockManagement extends javax.swing.JFrame {
 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    boolean saparateBranch = false;
 
     public StockManagement() {
         initComponents();
@@ -46,6 +47,7 @@ public class StockManagement extends javax.swing.JFrame {
 
         }
         setSize(screen.width, screen.height);
+        LoadSettings();
         Refresh();
         operater();
         time();
@@ -84,7 +86,13 @@ public class StockManagement extends javax.swing.JFrame {
 
     public void loadLocations() {
         try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `location`");
+
+            String locationquerry = "SELECT * FROM `location`  ";
+            if (saparateBranch == true) {
+                locationquerry += " WHERE id = '" + UserDetails.UserLocation_id + "'";
+            }
+            locationquerry += " ORDER BY `id` ASC";
+            ResultSet rs = MySQL.execute(locationquerry);
             Vector v = new Vector();
 
             v.add("Select Category");
@@ -181,14 +189,39 @@ public class StockManagement extends javax.swing.JFrame {
 
     }
 
+    public void LoadSettings() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `settings` WHERE `setting_id` =  '1'");
+            if (rs.next()) {
+                boolean isSeprateBranch = rs.getBoolean("is_saperate_branches");
+                System.out.println("Is separate" + isSeprateBranch);
+
+                if (isSeprateBranch == true) {
+                    saparateBranch = true;
+                } else {
+                    saparateBranch = false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void LoadStockTable() {
         try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `stock`"
+
+            String stockTableQuerry = "SELECT * FROM `stock`"
                     + " INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid`"
                     + " INNER JOIN `supplier` ON `supplier`.`supplier_id` = `stock`.`supplier_supplier_id` "
                     + " INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
                     + " INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` "
-                    + " INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` ");
+                    + " INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id` ";
+
+            if (saparateBranch == true) {
+                stockTableQuerry += " WHERE `location`.`id` = '" + UserDetails.UserLocation_id + "'";
+            }
+            ResultSet rs = MySQL.execute(stockTableQuerry);
+
             DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
             dtm.setRowCount(0);
 
@@ -472,7 +505,7 @@ public class StockManagement extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 100, 70, -1));
+        jPanel6.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 102, 70, 20));
 
         jLabel24.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel24.setText("Quantity");
@@ -1024,7 +1057,20 @@ public class StockManagement extends javax.swing.JFrame {
 
         JasperStockQuerry = "";
 
-        String baseQuery = "SELECT * FROM `stock`"
+        String baseQuery = "SELECT "
+                + "`stock`.`id` AS stock_id, "
+                + "`stock`.`product_id` AS stock_product_id, "
+                + "`stock`.`qty` AS qty, "
+                + "`stock`.`cost` AS cost, "
+                + "`stock`.`saling_price` AS saling_price, "
+                + "`stock`.`stock_date` AS stock_date, "
+                + "`stock`.`SKU` AS SKU, "
+                + "`stock`.`color` AS color, "
+                + "`brand`.`brand_name` AS brand_name, "
+                + "`sub_category`.`sub_category` AS sub_category, "
+                + "`supplier`.`Supplier_Name` AS Supplier_Name, "
+                + "`location`.`location_name` AS location_name "
+                + "FROM `stock`"
                 + " INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid`"
                 + " INNER JOIN `supplier` ON `supplier`.`supplier_id` = `stock`.`supplier_supplier_id`"
                 + " INNER JOIN `location` ON `location`.`id` = `stock`.`location_id`"
@@ -1049,13 +1095,18 @@ public class StockManagement extends javax.swing.JFrame {
             jasperConditions.add("`stock`.`SKU` = '" + jTextField2.getText().trim() + "'");
         }
 
-// --- Location filter ---
+// --- Location filter (restored saparateBranch fallback) ---
         if (jComboBox1.getSelectedIndex() != 0) {
-            conditions.add("`stock`.`location_id` = '" + jComboBox1.getSelectedIndex() + "'");
-            jasperConditions.add("`stock`.`location_id` = '" + jComboBox1.getSelectedIndex() + "'");
+            
+            String location_id = String.valueOf(jComboBox1.getSelectedItem()).substring(0, 1);
+            conditions.add("`stock`.`location_id` = '" + location_id+ "'");
+            jasperConditions.add("`stock`.`location_id` = '" + location_id + "'");
+        } else if (saparateBranch) {
+            conditions.add("`stock`.`location_id` = '" + UserDetails.UserLocation_id + "'");
+            jasperConditions.add("`stock`.`location_id` = '" + UserDetails.UserLocation_id + "'");
         }
 
-// --- Brand filter (FIXED: was isEmpty, inverted logic + safe split) ---
+// --- Brand filter (safe split) ---
         if (!jTextField3.getText().isEmpty()) {
             String brandText = jTextField3.getText().trim();
             String[] brandArray = brandText.split(" ");
@@ -1089,8 +1140,8 @@ public class StockManagement extends javax.swing.JFrame {
             dtm.setRowCount(0);
             while (rs.next()) {
                 Vector v = new Vector();
-                v.add(rs.getInt("stock.id"));
-                v.add(rs.getString("stock.product_id"));
+                v.add(rs.getInt("stock_id"));
+                v.add(rs.getString("stock_product_id"));
                 v.add(rs.getString("brand_name"));
                 v.add(rs.getString("sub_category"));
                 v.add(rs.getInt("qty"));

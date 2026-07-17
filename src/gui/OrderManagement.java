@@ -988,7 +988,7 @@ public class OrderManagement extends javax.swing.JFrame {
 
             // ── Main result loop ──────────────────────────────────────────────
             ResultSet rs = MySQL.execute(Queary);
-//            System.out.println(Queary);
+            System.out.println(Queary);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
 
