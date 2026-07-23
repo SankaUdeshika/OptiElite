@@ -45,6 +45,7 @@ public class OrderMaking extends javax.swing.JFrame {
     HashMap<String, String> TintMap = new HashMap<>();
     HashMap<Integer, String> locationMap = new HashMap<>();
     boolean LensStockAvailable = false;
+    public String FreeBoxItem_id = null;
 
     public OrderMaking() {
         initComponents();
@@ -438,7 +439,6 @@ public class OrderMaking extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JSeparator();
         jLabel18 = new javax.swing.JLabel();
         jRadioButton5 = new javax.swing.JRadioButton();
-        jRadioButton6 = new javax.swing.JRadioButton();
         jRadioButton7 = new javax.swing.JRadioButton();
         jTextField9 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
@@ -454,6 +454,7 @@ public class OrderMaking extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jTextField14 = new javax.swing.JTextField();
         jSeparator9 = new javax.swing.JSeparator();
+        jButton10 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -974,9 +975,6 @@ public class OrderMaking extends javax.swing.JFrame {
         jRadioButton5.setText("Bag");
         jPanel6.add(jRadioButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 420, -1, -1));
 
-        jRadioButton6.setText("Box");
-        jPanel6.add(jRadioButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 450, -1, -1));
-
         jRadioButton7.setText("Clothing");
         jPanel6.add(jRadioButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 480, -1, -1));
 
@@ -1027,6 +1025,14 @@ public class OrderMaking extends javax.swing.JFrame {
 
         jSeparator9.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jPanel6.add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 480, 20, 70));
+
+        jButton10.setText("Select Box");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 450, 90, -1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -1240,7 +1246,6 @@ public class OrderMaking extends javax.swing.JFrame {
         // check if accessorie items are available
         boolean bag = false;
         boolean clothing = false;
-        boolean box = false;
 
         boolean go = false;
 
@@ -1249,8 +1254,6 @@ public class OrderMaking extends javax.swing.JFrame {
         if (jCheckBox1.isSelected()) {
             d7warrenty = 1;
         }
-        // box stock id
-        String box_stock_id = null;
         // bag stock id
         String bag_stock_id = null;
         // clothing stock id
@@ -1276,20 +1279,20 @@ public class OrderMaking extends javax.swing.JFrame {
             }
         }
 
-        if (jRadioButton6.isSelected()) { // box
-            try {
-                ResultSet box_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '10' AND `qty` > 0 ");
-                if (box_rs.next()) {
-                    box = true;
-                    box_stock_id = String.valueOf(box_rs.getInt("stock.id"));
-                } else {
-                    JOptionPane.showMessageDialog(this, "You dont have enough Box Quantity. Please add Box Stock and Try again later", "Empty Box Quantity", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Please check your connection or Something Wrong please try again later", "Something Worng", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
-            }
-        }
+//        if (jRadioButton6.isSelected()) { // box Old Method
+//            try {
+//                ResultSet box_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '10' AND `qty` > 0 ");
+//                if (box_rs.next()) {
+//                    box = true;
+//                    box_stock_id = String.valueOf(box_rs.getInt("stock.id"));
+//                } else {
+//                    JOptionPane.showMessageDialog(this, "You dont have enough Box Quantity. Please add Box Stock and Try again later", "Empty Box Quantity", JOptionPane.ERROR_MESSAGE);
+//                }
+//            } catch (Exception e) {
+//                JOptionPane.showMessageDialog(this, "Please check your connection or Something Wrong please try again later", "Something Worng", JOptionPane.ERROR_MESSAGE);
+//                e.printStackTrace();
+//            }
+//        }
 //        
         if (jRadioButton7.isSelected()) { // clothing
             try {
@@ -1307,8 +1310,6 @@ public class OrderMaking extends javax.swing.JFrame {
         }
 //
         if (jRadioButton5.isSelected() == true && bag == false) { // bag
-            go = false;
-        } else if (jRadioButton6.isSelected() == true && box == false) { // box
             go = false;
         } else if (jRadioButton7.isSelected() == true && clothing == false) { // clothing
             go = false;
@@ -1428,8 +1429,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 // INSERT PROCESS
                                                                 String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
                                                                 System.out.println("invoice ID is =" + invoiceId);
-                                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`7_days__lens_warrenty`)"
-                                                                        + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "','" + d7warrenty + "') ");
+                                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`7_days__lens_warrenty`,`free_box_stock_id`) VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "','" + d7warrenty + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
 
                                                                 if (Inser_rs != null) {
 
@@ -1467,15 +1467,22 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                     }
 
                                                                     // reduse the other stocks ---
-                                                                    if (jRadioButton5.isSelected()) { // box
-                                                                        ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
+//                                                                    if (jRadioButton5.isSelected()) { // box Ol Method
+//                                                                        ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
+//                                                                        if (reduceBox_rs.next()) {
+//                                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
+//                                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+//                                                                        }
+//                                                                    }
+                                                                    if (FreeBoxItem_id != null) { // box New Method
+                                                                        ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                         if (reduceBox_rs.next()) {
                                                                             int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                         }
                                                                     }
 
-                                                                    if (jRadioButton6.isSelected()) { // bag
+                                                                    if (jRadioButton5.isSelected()) { // bag
                                                                         ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
                                                                         if (reduceBox_rs.next()) {
                                                                             int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
@@ -1504,8 +1511,8 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             } else {
 
                                                                 String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
-                                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
-                                                                        + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
+                                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
+                                                                        + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
 
                                                                 if (Inser_rs != null) {
                                                                     // payment history
@@ -1530,15 +1537,15 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                     }
 
                                                                     // reduse the other stocks ---
-                                                                    if (jRadioButton5.isSelected()) { // box
-                                                                        ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
+                                                                    if (FreeBoxItem_id != null) { // box New Method
+                                                                        ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                         if (reduceBox_rs.next()) {
                                                                             int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                         }
                                                                     }
 
-                                                                    if (jRadioButton6.isSelected()) { // bag
+                                                                    if (jRadioButton5.isSelected()) { // bag
                                                                         ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
                                                                         if (reduceBox_rs.next()) {
                                                                             int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
@@ -1569,9 +1576,9 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         }
 
                                                     } else {
-                                                        String invoiceId =new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
-                                                        Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
-                                                                + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
+                                                        String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
+                                                        Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
+                                                                + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
 
                                                         if (Inser_rs != null) {
 
@@ -1598,15 +1605,14 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             }
 
                                                             // reduse the other stocks ---
-                                                            if (jRadioButton5.isSelected()) { // box
-                                                                ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
+                                                            if (FreeBoxItem_id != null) { // box New Method
+                                                                ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                 if (reduceBox_rs.next()) {
                                                                     int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                 }
                                                             }
-
-                                                            if (jRadioButton6.isSelected()) { // bag
+                                                            if (jRadioButton5.isSelected()) { // bag
                                                                 ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
                                                                 if (reduceBox_rs.next()) {
                                                                     int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
@@ -1665,9 +1671,9 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         // if lens select
                                                         if (lensResultSet.next()) {
 
-                                                            String invoiceId =new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
-                                                            Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
-                                                                    + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
+                                                            String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
+                                                            Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
+                                                                    + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
 
                                                             if (Inser_rs != null) {
 
@@ -1694,15 +1700,15 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 }
 
                                                                 // reduse the other stocks ---
-                                                                if (jRadioButton5.isSelected()) { // box
-                                                                    ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
+                                                                if (FreeBoxItem_id != null) { // box New Method
+                                                                    ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                     if (reduceBox_rs.next()) {
                                                                         int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                     }
                                                                 }
 
-                                                                if (jRadioButton6.isSelected()) { // bag
+                                                                if (jRadioButton5.isSelected()) { // bag
                                                                     ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
                                                                     if (reduceBox_rs.next()) {
                                                                         int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
@@ -1732,8 +1738,8 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         } else {
 
                                                             String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
-                                                            Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,'discount_percentage',`order_time`)"
-                                                                    + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
+                                                            Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
+                                                                    + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
 
                                                             if (Inser_rs != null) {
 
@@ -1760,15 +1766,15 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 }
 
                                                                 // reduse the other stocks ---
-                                                                if (jRadioButton5.isSelected()) { // box
-                                                                    ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
+                                                                if (FreeBoxItem_id != null) { // box New Method
+                                                                    ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                     if (reduceBox_rs.next()) {
                                                                         int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                     }
                                                                 }
 
-                                                                if (jRadioButton6.isSelected()) { // bag
+                                                                if (jRadioButton5.isSelected()) { // bag
                                                                     ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
                                                                     if (reduceBox_rs.next()) {
                                                                         int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
@@ -1801,8 +1807,8 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                                         String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
                                                         System.out.println("invocie id" + invoiceId);
-                                                        Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
-                                                                + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
+                                                        Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
+                                                                + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
 
                                                         if (Inser_rs != null) {
                                                             // payment history
@@ -1828,15 +1834,15 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             }
 
                                                             // reduse the other stocks ---
-                                                            if (jRadioButton5.isSelected()) { // box
-                                                                ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
+                                                            if (FreeBoxItem_id != null) { // box New Method
+                                                                ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                 if (reduceBox_rs.next()) {
                                                                     int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                    MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                 }
                                                             }
 
-                                                            if (jRadioButton6.isSelected()) { // bag
+                                                            if (jRadioButton5.isSelected()) { // bag
                                                                 ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
                                                                 if (reduceBox_rs.next()) {
                                                                     int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
@@ -1909,8 +1915,8 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                                 if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) {
                                                     String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
-                                                    ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`,`clothing`,`box`,`bag`,`invoice_location`,`payment_amount`,`discount_percentage`,`order_time`)"
-                                                            + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "','" + final_discountPercentage + "','" + orderTime + "') ");
+                                                    ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`,`clothing`,`bag`,`invoice_location`,`payment_amount`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
+                                                            + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
 
                                                     if (Inser_rs != null) {
 
@@ -1923,15 +1929,15 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`,`payment_info`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "','" + paymentInfo + "') ");
 
                                                         // reduse the other stocks ---
-                                                        if (jRadioButton5.isSelected()) { // box
-                                                            ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
+                                                        if (FreeBoxItem_id != null) { // box New Method
+                                                            ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                             if (reduceBox_rs.next()) {
                                                                 int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                             }
                                                         }
 
-                                                        if (jRadioButton6.isSelected()) { // bag
+                                                        if (jRadioButton5.isSelected()) { // bag
                                                             ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
                                                             if (reduceBox_rs.next()) {
                                                                 int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
@@ -1964,8 +1970,8 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     }
 
                                                     String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
-                                                    ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`,`clothing`,`box`,`bag`,`invoice_location`,`payment_amount`,`discount_percentage`,`order_time`)"
-                                                            + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "','" + final_discountPercentage + "','" + orderTime + "') ");
+                                                    ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`,`clothing`,`bag`,`invoice_location`,`payment_amount`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
+                                                            + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
                                                     //
 
                                                     if (Inser_rs != null) {
@@ -1979,15 +1985,15 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`,`payment_info`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "','" + paymentInfo + "') ");
 
                                                         // reduse the other stocks ---
-                                                        if (jRadioButton5.isSelected()) { // box
-                                                            ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
+                                                        if (FreeBoxItem_id != null) { // box New Method
+                                                            ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                             if (reduceBox_rs.next()) {
                                                                 int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
+                                                                MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                             }
                                                         }
 
-                                                        if (jRadioButton6.isSelected()) { // bag
+                                                        if (jRadioButton5.isSelected()) { // bag
                                                             ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
                                                             if (reduceBox_rs.next()) {
                                                                 int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
@@ -2053,9 +2059,12 @@ public class OrderMaking extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        OrderManagement om = new OrderManagement();
-        om.setVisible(true);
-        this.dispose();
+//        OrderManagement om = new OrderManagement();
+//        om.setVisible(true);
+//        this.dispose();
+
+        System.out.println("this is the parent Object" + FreeBoxItem_id);
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -2276,6 +2285,12 @@ public class OrderMaking extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        //Go Select Box
+        SelectBox sb = new SelectBox(this);
+        sb.setVisible(true);
+    }//GEN-LAST:event_jButton10ActionPerformed
+
     public void lensLoading() {
         try {
 
@@ -2328,6 +2343,7 @@ public class OrderMaking extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel dateField;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -2381,7 +2397,6 @@ public class OrderMaking extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JRadioButton jRadioButton6;
     private javax.swing.JRadioButton jRadioButton7;
     private javax.swing.JRadioButton jRadioButton8;
     private javax.swing.JRadioButton jRadioButton9;
