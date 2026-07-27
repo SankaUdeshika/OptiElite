@@ -12,8 +12,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -28,6 +30,7 @@ public class SellAccessories extends javax.swing.JFrame {
      * Creates new form SellAccessories
      */
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    HashMap<String, String> TintMap = new HashMap<>();
 
     public SellAccessories() {
         initComponents();
@@ -73,6 +76,7 @@ public class SellAccessories extends javax.swing.JFrame {
     public void Refresh() {
         LoadCustomer();
         LoadStockProducts();
+        LoadWarrenty();
 
     }
 
@@ -162,6 +166,35 @@ public class SellAccessories extends javax.swing.JFrame {
             jLabel38.setText("Rs." + String.valueOf(total));
         }
     }
+
+    public void LoadWarrenty() {
+        try {
+            ResultSet rs = MySQL.execute("SELECT * FROM `job_warrenty`");
+            Vector v = new Vector();
+
+            v.add("Select Warrenty Period ");
+
+            while (rs.next()) {
+                System.out.println("working");
+                v.add(String.valueOf(rs.getString("warrenty_id") + ") " + rs.getString("warrenty")));
+                TintMap.put(rs.getString("warrenty"), rs.getString("warrenty_id"));
+            }
+
+            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+            jComboBox7.setModel(dfm);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "Data failed to load", se);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.log(Level.WARNING, "Data failed to load", e);
+
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -233,6 +266,7 @@ public class SellAccessories extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
+        jComboBox7 = new javax.swing.JComboBox<>();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -609,7 +643,7 @@ public class SellAccessories extends javax.swing.JFrame {
         jPanel6.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 500, 60, -1));
 
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select JobType", "Shop Orders", "EyeCamp Orders" }));
-        jPanel6.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 260, 260, -1));
+        jPanel6.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 240, 260, -1));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel13.setText("Order Types");
@@ -619,6 +653,9 @@ public class SellAccessories extends javax.swing.JFrame {
         jLabel37.setText("Pay Amount");
         jPanel6.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 520, -1, -1));
         jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 540, 170, 32));
+
+        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Warrenty" }));
+        jPanel6.add(jComboBox7, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 270, 260, -1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -839,9 +876,19 @@ public class SellAccessories extends javax.swing.JFrame {
                             InsertSubTotal = InsertSubTotal - Discount;
                             //                                    Invoice INSERT PROCESS
 
+                            //        Warrenty Details 
+                            String WarrentyPeriod = "1";
+                            if (jComboBox7.getSelectedIndex() != 0) {
+                                String warrentyType = (String) jComboBox7.getSelectedItem();
+                                String warrentyArray[] = warrentyType.split("\\)");
+                                WarrentyPeriod = warrentyArray[1].trim();
+                                WarrentyPeriod = TintMap.get(WarrentyPeriod);
+                                System.out.println("Warrenty id is :- " + WarrentyPeriod);
+                            }
+
                             String invoiceId = new generateInvoiceId().generateInvoiceId(jobType, Integer.parseInt(UserDetails.UserLocation_id));
                             ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`, `payment_status_id`,`invoice_location`,`payment_amount`,`job_warrenty_warrenty_id`,`isAccessories`,`order_time`)"
-                                    + " VALUES ('"+invoiceId+"','" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "','1','1','" + orderTime + "') ");
+                                    + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + total + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + advanced + "','" + jobType + "', '" + paymentStatus + "','" + UserDetails.UserLocation_id + "','" + pay_amount + "','" + WarrentyPeriod + "','1','" + orderTime + "') ");
 
                             if (Inser_rs != null) {
                                 // payment history
@@ -1218,6 +1265,7 @@ public class SellAccessories extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox6;
+    private javax.swing.JComboBox<String> jComboBox7;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

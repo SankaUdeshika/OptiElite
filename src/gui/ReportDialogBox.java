@@ -1,6 +1,5 @@
 package gui;
 
-
 import gui.CompanyPurchases;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
@@ -139,9 +138,13 @@ public class ReportDialogBox extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        MonthlyReport mr = new MonthlyReport();
-        mr.setVisible(true);
-        this.dispose();
+        if (UserDetails.UserRole.equals("1")) {
+            MonthlyReport mr = new MonthlyReport();
+            mr.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Only Access For The Admin", "Access Denied", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

@@ -130,21 +130,7 @@ public class Dashboard extends javax.swing.JFrame {
                 totalSale = invoiceRs.getDouble("total_sale");
             }
 
-            // ── Total Cash Collection ─────────────────────────────────────────
-            // Matches your advance search: actualProfit logic
-            // = SUM(subtotal) for fully paid invoices
-            // + SUM(subtotal - total_price) for partially paid invoices
-            ResultSet cashRs = MySQL.execute(
-                    "SELECT "
-                    + "SUM(CASE WHEN payment_status_id = 2 "
-                    + "         THEN CAST(subtotal AS DECIMAL(10,2)) " // Fully paid → full subtotal
-                    + "         ELSE CAST(subtotal AS DECIMAL(10,2)) - total_price " // Partial → amount paid
-                    + "    END) AS cash_collection "
-                    + "FROM `invoice` "
-                    + "WHERE `invoice_location` = '" + locationId + "' "
-                    + "AND `date` = '" + today + "' "
-            );
-
+      
             String cashCollection = calculateTodayCashColleciton(today, Integer.parseInt(UserDetails.UserLocation_id));
             totalCashCollection = Double.parseDouble(cashCollection.replace(",", ""));
 
@@ -377,19 +363,19 @@ public class Dashboard extends javax.swing.JFrame {
 
         totalSaleLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         totalSaleLabel.setForeground(new java.awt.Color(255, 0, 51));
-        totalSaleLabel.setText("50000");
+        totalSaleLabel.setText(".");
 
         jLabel4.setText("Total Order Count");
 
         orderCountLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         orderCountLabel.setForeground(new java.awt.Color(255, 0, 51));
-        orderCountLabel.setText("8");
+        orderCountLabel.setText(".");
 
         jLabel6.setText("Total Cash Collection");
 
         cashCollectionLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         cashCollectionLabel.setForeground(new java.awt.Color(255, 0, 51));
-        cashCollectionLabel.setText("50000");
+        cashCollectionLabel.setText(".");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -651,32 +637,8 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // validate Daily Reports 
-        // get TodayDate
-        Date currrentDay = new Date();
-        SimpleDateFormat smd = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat smt = new SimpleDateFormat("HH:mm:ss");
-
-        String formateDate = smd.format(currrentDay);
-        String formateTime = smt.format(currrentDay);
-
-        // check if existing daily report today?
-        ResultSet daily_rs = MySQL.execute("SELECT * FROM `daily_report` WHERE `daily_report`.`date` = '" + formateDate + "' AND `location_id` = '" + UserDetails.UserLocation_id + "'  ");
-
-        try {
-            if (!daily_rs.next()) {
-                // Make Daily Report
-                MySQL.execute("INSERT INTO `daily_report` (`date`,`location_id`,`users_id`,`time`) VALUES ('" + formateDate + "','" + Integer.parseInt(UserDetails.UserLocation_id) + "','" + UserDetails.UserId + "','" + formateTime + "')");
-                JOptionPane.showMessageDialog(this, UserDetails.UserName + " created the Daily Report, Created Reports", "Report created", JOptionPane.INFORMATION_MESSAGE);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        CompanyPurchases companyPurchases = new CompanyPurchases();
-        companyPurchases.setVisible(true);
-        this.dispose();
+        ReportDialogBox rdb = new ReportDialogBox();
+        rdb.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed

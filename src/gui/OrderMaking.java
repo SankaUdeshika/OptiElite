@@ -166,6 +166,7 @@ public class OrderMaking extends javax.swing.JFrame {
     public void Refresh() {
         LoadCustomer();
         LoadStockProducts();
+        GenerateInvoiceTemporyID();
         LoadWarrenty();
         jTextField4.setText("");
         jTextField4.setEnabled(false);
@@ -177,7 +178,7 @@ public class OrderMaking extends javax.swing.JFrame {
 
     public void Refresh(String mobile) {
         LoadCustomer(mobile);
-
+        GenerateInvoiceTemporyID();
         LoadStockProducts();
         LoadWarrenty();
         jTextField4.setText("");
@@ -187,6 +188,10 @@ public class OrderMaking extends javax.swing.JFrame {
         lensLoading();
         LensStockSettings();
         LoadOrderTypes();
+    }
+
+    public void GenerateInvoiceTemporyID() {
+
     }
 
     public void LoadStockProducts() {
@@ -373,7 +378,6 @@ public class OrderMaking extends javax.swing.JFrame {
         dateField = new javax.swing.JLabel();
         timeField = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField15 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -455,6 +459,8 @@ public class OrderMaking extends javax.swing.JFrame {
         jTextField14 = new javax.swing.JTextField();
         jSeparator9 = new javax.swing.JSeparator();
         jButton10 = new javax.swing.JButton();
+        jTextField15 = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -524,8 +530,6 @@ public class OrderMaking extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(172, 172, 172)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(122, 122, 122)
-                .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -538,9 +542,7 @@ public class OrderMaking extends javax.swing.JFrame {
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel5)))
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
@@ -1033,6 +1035,11 @@ public class OrderMaking extends javax.swing.JFrame {
             }
         });
         jPanel6.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 450, 90, -1));
+        jPanel6.add(jTextField15, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 30, 142, -1));
+
+        jLabel21.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel21.setText("Add manual Invoice ID");
+        jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(955, 6, -1, 20));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -1242,13 +1249,13 @@ public class OrderMaking extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
-        // check if accessorie items are available
+// check if accessorie items are available
         boolean bag = false;
         boolean clothing = false;
 
         boolean go = false;
 
+        String manual_invoice_id = "";
         // 7 days warenty boolean
         int d7warrenty = 0;
         if (jCheckBox1.isSelected()) {
@@ -1279,21 +1286,6 @@ public class OrderMaking extends javax.swing.JFrame {
             }
         }
 
-//        if (jRadioButton6.isSelected()) { // box Old Method
-//            try {
-//                ResultSet box_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '10' AND `qty` > 0 ");
-//                if (box_rs.next()) {
-//                    box = true;
-//                    box_stock_id = String.valueOf(box_rs.getInt("stock.id"));
-//                } else {
-//                    JOptionPane.showMessageDialog(this, "You dont have enough Box Quantity. Please add Box Stock and Try again later", "Empty Box Quantity", JOptionPane.ERROR_MESSAGE);
-//                }
-//            } catch (Exception e) {
-//                JOptionPane.showMessageDialog(this, "Please check your connection or Something Wrong please try again later", "Something Worng", JOptionPane.ERROR_MESSAGE);
-//                e.printStackTrace();
-//            }
-//        }
-//        
         if (jRadioButton7.isSelected()) { // clothing
             try {
                 ResultSet clothing_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '14' AND `qty` > 0 ");
@@ -1308,13 +1300,27 @@ public class OrderMaking extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
-//
+
         if (jRadioButton5.isSelected() == true && bag == false) { // bag
             go = false;
         } else if (jRadioButton7.isSelected() == true && clothing == false) { // clothing
             go = false;
         } else {
             go = true;
+        }
+
+        // Check Manually Invoice Id is 
+        if (!jTextField15.getText().isEmpty()) {
+            try {
+                ResultSet exisstingInvoice_rs = MySQL.execute("SELECT * FROM `invoice` WHERE `invoice_id` = '" + jTextField15.getText() + "' ");
+                if (!exisstingInvoice_rs.next()) {
+                    manual_invoice_id = jTextField15.getText();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Already Registerd This invoice_id", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         //   process Start if Accesssories items are available
@@ -1345,15 +1351,7 @@ public class OrderMaking extends javax.swing.JFrame {
                 String OrderDate = sdf.format(today);
                 SimpleDateFormat sdt = new SimpleDateFormat("HH:mm:ss");
                 String orderTime = sdt.format(today);
-//                double Discount = 0.0;
 
-//                if (!jTextField3.getText().isEmpty()) {
-//                    try {
-//                        Discount = Double.parseDouble(jTextField3.getText());
-//                    } catch (NumberFormatException e) {
-//                        Discount = 0.0; // default value if invalid input
-//                    }
-//                }
                 double InsertSubTotal = SubTotal - Discount;
 
                 try {
@@ -1428,8 +1426,11 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             if (lensResultSet.next()) {
                                                                 // INSERT PROCESS
                                                                 String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
+                                                                if (!manual_invoice_id.isEmpty()) {
+                                                                    invoiceId = manual_invoice_id;
+                                                                }
                                                                 System.out.println("invoice ID is =" + invoiceId);
-                                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`7_days__lens_warrenty`,`free_box_stock_id`) VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "','" + d7warrenty + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
+                                                                Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`7_days__lens_warrenty`,`free_box_stock_id`) VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "','" + d7warrenty + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "NULL") + ")");
 
                                                                 if (Inser_rs != null) {
 
@@ -1466,14 +1467,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                         MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                                     }
 
-                                                                    // reduse the other stocks ---
-//                                                                    if (jRadioButton5.isSelected()) { // box Ol Method
-//                                                                        ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + box_stock_id + "' ");
-//                                                                        if (reduceBox_rs.next()) {
-//                                                                            int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-//                                                                            MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
-//                                                                        }
-//                                                                    }
                                                                     if (FreeBoxItem_id != null) { // box New Method
                                                                         ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                         if (reduceBox_rs.next()) {
@@ -1501,7 +1494,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                     //  Order Successs. -> prints
                                                                     Printsouts printsouts = new Printsouts(invoiceId);
                                                                     printsouts.setVisible(true);
-                                                                    // Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
                                                                     Refresh();
 
                                                                 } else {
@@ -1511,8 +1503,11 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             } else {
 
                                                                 String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
+                                                                if (!manual_invoice_id.isEmpty()) {
+                                                                    invoiceId = manual_invoice_id;
+                                                                }
                                                                 Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
-                                                                        + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
+                                                                        + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "NULL") + ")");
 
                                                                 if (Inser_rs != null) {
                                                                     // payment history
@@ -1536,7 +1531,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                         MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                                     }
 
-                                                                    // reduse the other stocks ---
                                                                     if (FreeBoxItem_id != null) { // box New Method
                                                                         ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                         if (reduceBox_rs.next()) {
@@ -1564,7 +1558,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                     // Order Successs. -> prints
                                                                     Printsouts printsouts = new Printsouts(invoiceId);
                                                                     printsouts.setVisible(true);
-                                                                    //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
                                                                     Refresh();
                                                                     Printsouts p = new Printsouts(invoiceId);
                                                                     p.setVisible(true);
@@ -1577,8 +1570,11 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                                     } else {
                                                         String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
+                                                        if (!manual_invoice_id.isEmpty()) {
+                                                            invoiceId = manual_invoice_id;
+                                                        }
                                                         Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
-                                                                + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
+                                                                + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "NULL") + ")");
 
                                                         if (Inser_rs != null) {
 
@@ -1604,7 +1600,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                             }
 
-                                                            // reduse the other stocks ---
                                                             if (FreeBoxItem_id != null) { // box New Method
                                                                 ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                 if (reduceBox_rs.next()) {
@@ -1630,7 +1625,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             // Order Successs. -> prints
                                                             Printsouts printsouts = new Printsouts(invoiceId);
                                                             printsouts.setVisible(true);
-                                                            //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
                                                             Refresh();
                                                             Printsouts p = new Printsouts(invoiceId);
                                                             p.setVisible(true);
@@ -1661,7 +1655,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         System.out.println("Warrenty id is :- " + WarrentyPeriod);
                                                     }
 
-                                                    //         Add Lens Properties
                                                     ResultSet Inser_rs;
                                                     //   Add Lens Properties
                                                     if (jTable4.getSelectedRow() != -1) {
@@ -1672,8 +1665,11 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         if (lensResultSet.next()) {
 
                                                             String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
+                                                            if (!manual_invoice_id.isEmpty()) {
+                                                                invoiceId = manual_invoice_id;
+                                                            }
                                                             Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_stock_lens_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
-                                                                    + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
+                                                                    + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensStock_id + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "NULL") + ")");
 
                                                             if (Inser_rs != null) {
 
@@ -1699,7 +1695,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                     MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                                 }
 
-                                                                // reduse the other stocks ---
                                                                 if (FreeBoxItem_id != null) { // box New Method
                                                                     ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                     if (reduceBox_rs.next()) {
@@ -1724,10 +1719,8 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                     }
                                                                 }
 
-//
                                                                 Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
                                                                 printsouts.setVisible(true);
-                                                                //  Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
                                                                 Refresh();
                                                                 Printsouts p = new Printsouts(invoiceId);
                                                                 p.setVisible(true);
@@ -1738,8 +1731,11 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         } else {
 
                                                             String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
+                                                            if (!manual_invoice_id.isEmpty()) {
+                                                                invoiceId = manual_invoice_id;
+                                                            }
                                                             Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
-                                                                    + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
+                                                                    + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "NULL") + ")");
 
                                                             if (Inser_rs != null) {
 
@@ -1765,7 +1761,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                     MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                                 }
 
-                                                                // reduse the other stocks ---
                                                                 if (FreeBoxItem_id != null) { // box New Method
                                                                     ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                     if (reduceBox_rs.next()) {
@@ -1790,10 +1785,8 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                     }
                                                                 }
 
-//
                                                                 Printsouts printsouts = new Printsouts("OrderPurchaseInvoice", invoiceId);
                                                                 printsouts.setVisible(true);
-                                                                //  Reports.OrderPurFchaceInvoice(String.valueOf(invoiceId));
                                                                 Refresh();
                                                                 Printsouts p = new Printsouts(invoiceId);
                                                                 p.setVisible(true);
@@ -1806,9 +1799,11 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     } else {
 
                                                         String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
-                                                        System.out.println("invocie id" + invoiceId);
+                                                        if (!manual_invoice_id.isEmpty()) {
+                                                            invoiceId = manual_invoice_id;
+                                                        }
                                                         Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`lens_Qty`,`payment_amount`,`clothing`,`bag`,`invoice_location`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
-                                                                + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
+                                                                + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + lensQty + "','" + Payamount + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "NULL") + ")");
 
                                                         if (Inser_rs != null) {
                                                             // payment history
@@ -1833,7 +1828,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 MySQL.execute("UPDATE `stock` SET `qty` = '" + stockQty + "' WHERE `id` = '" + Frame_id + "' ");
                                                             }
 
-                                                            // reduse the other stocks ---
                                                             if (FreeBoxItem_id != null) { // box New Method
                                                                 ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                                 if (reduceBox_rs.next()) {
@@ -1861,7 +1855,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             // Order Successs. -> prints
                                                             Printsouts printsouts = new Printsouts(invoiceId);
                                                             printsouts.setVisible(true);
-                                                            //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));
                                                             Refresh();
                                                             Printsouts p = new Printsouts(invoiceId);
                                                             p.setVisible(true);
@@ -1915,8 +1908,11 @@ public class OrderMaking extends javax.swing.JFrame {
 
                                                 if (Prescription_id.matches("-?\\d+(\\.\\d+)?")) {
                                                     String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
+                                                    if (!manual_invoice_id.isEmpty()) {
+                                                        invoiceId = manual_invoice_id;
+                                                    }
                                                     ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`prescription_details_job_no`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`,`clothing`,`bag`,`invoice_location`,`payment_amount`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
-                                                            + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
+                                                            + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Prescription_id + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "NULL") + ")");
 
                                                     if (Inser_rs != null) {
 
@@ -1928,7 +1924,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         String curruntTime = now.format(timeFormatter);
                                                         MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`,`payment_info`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "','" + paymentInfo + "') ");
 
-                                                        // reduse the other stocks ---
                                                         if (FreeBoxItem_id != null) { // box New Method
                                                             ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                             if (reduceBox_rs.next()) {
@@ -1970,9 +1965,11 @@ public class OrderMaking extends javax.swing.JFrame {
                                                     }
 
                                                     String invoiceId = new generateInvoiceId().generateInvoiceId(JoBtype, Integer.parseInt(UserDetails.UserLocation_id));
+                                                    if (!manual_invoice_id.isEmpty()) {
+                                                        invoiceId = manual_invoice_id;
+                                                    }
                                                     ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`lens_stock_lens_id`,`lens_Qty`,`clothing`,`bag`,`invoice_location`,`payment_amount`,`discount_percentage`,`order_time`,`free_box_stock_id`)"
-                                                            + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "") + ")");
-                                                    //
+                                                            + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + payment_status_id + "','" + jTextField7.getText() + "','" + jTextField5.getText() + "','" + clothing + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + Payamount + "','" + final_discountPercentage + "','" + orderTime + "'," + (FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "NULL") + ")");
 
                                                     if (Inser_rs != null) {
 
@@ -1984,7 +1981,6 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         String curruntTime = now.format(timeFormatter);
                                                         MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`,`payment_info`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "','" + paymentInfo + "') ");
 
-                                                        // reduse the other stocks ---
                                                         if (FreeBoxItem_id != null) { // box New Method
                                                             ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + FreeBoxItem_id + "' ");
                                                             if (reduceBox_rs.next()) {
@@ -2053,7 +2049,6 @@ public class OrderMaking extends javax.swing.JFrame {
 
             }
         }
-
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -2367,6 +2362,7 @@ public class OrderMaking extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel26;
