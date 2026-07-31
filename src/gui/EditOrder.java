@@ -1217,6 +1217,59 @@ public class EditOrder extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(this, "Selected Frame is out of stock. Please choose another.", "Out of Stock", JOptionPane.ERROR_MESSAGE);
                         }
                     }
+                } else {
+                    // No existing invoice_item row for this invoice — this is a fresh frame addition
+
+                    ResultSet Frame_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + Frame_id + "' AND `qty` > 0 ");
+                    if (Frame_rs.next()) {
+
+                        // ── STEP 1: Deduct 1 qty from the new frame's stock ──
+                        int newStockQty = Frame_rs.getInt("qty") - 1;
+                        MySQL.execute("UPDATE `stock` SET `qty` = '" + newStockQty + "' WHERE `id` = '" + Frame_id + "'");
+
+                        // ── STEP 2: Insert the new invoice_item row linking this frame to the invoice ──
+                        MySQL.execute("INSERT INTO `invoice_item` (`invoice_id`, `stock_id`,`qty`) "
+                                + "VALUES ('" + BaseInvoice_id + "', '" + Frame_id + "','1')");
+
+                        // ── STEP 3: Update the invoice record ──
+                        MySQL.execute("UPDATE `invoice` SET "
+                                + "`total_price` = '" + Total + "', "
+                                + "`advance_payment` = '" + AdvancedPayment + "', "
+                                + "`discount` = '" + Discount + "', "
+                                + "`subtotal` = '" + InsertSubTotal + "', "
+                                + "`lenstotal` = '" + LensTotal + "', "
+                                + "`lens_stock_lens_id` = " + lensStockSqlValue + ", "
+                                + "`lens_Qty` = '" + lensQty + "', "
+                                + "`payment_amount` = '" + Payamount + "', "
+                                + "`discount_percentage` = '" + final_discountPercentage + "' ,"
+                                + "`job_warrenty_warrenty_id` = '1' "
+                                + "WHERE `invoice_id` = '" + BaseInvoice_id + "'");
+
+                        // ── STEP 4: Update payment history ──
+                        LocalDateTime now = LocalDateTime.now();
+                        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        String curruntDay = now.format(dateFormatter);
+                        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                        String curruntTime = now.format(timeFormatter);
+
+                        ResultSet payHist_rs = MySQL.execute("SELECT * FROM `advance_payment_history` WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
+                        if (payHist_rs.next()) {
+                            MySQL.execute("UPDATE `advance_payment_history` SET "
+                                    + "`paid_amount` = '" + Payamount + "', "
+                                    + "`date` = '" + curruntDay + "', "
+                                    + "`time` = '" + curruntTime + "' "
+                                    + "WHERE `invoice_invoice_id` = '" + BaseInvoice_id + "'");
+                        } else {
+                            MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`location_id`) "
+                                    + "VALUES ('" + BaseInvoice_id + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + UserDetails.UserLocation_id + "')");
+                        }
+
+                        JOptionPane.showMessageDialog(this, "Invoice Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        Refresh(Customer_mobile);
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Selected Frame is out of stock. Please choose another.", "Out of Stock", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
 
             } catch (Exception e) {
