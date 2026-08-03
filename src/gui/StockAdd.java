@@ -154,6 +154,8 @@ public class StockAdd extends javax.swing.JFrame {
             v.add("Select Category");
             while (rs.next()) {
                 v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("location_name")));
+                locationMap.put(Integer.parseInt(rs.getString("id")), rs.getString("location_name"));
+                System.out.println("the size of location map is" + locationMap.size());
             }
 
             DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
@@ -1742,79 +1744,128 @@ public class StockAdd extends javax.swing.JFrame {
         // Add Stock Process
         String FrameSize = jTextField1.getText();
         String Product_id = jTextField11.getText();
+
         int row = jTable4.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Please select a product from the table first",
+                    "No Product Selected",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String productintid = String.valueOf(jTable4.getValueAt(row, 1));
         System.out.println(productintid);
 
-        Date chooseDate;
-        String formatDate = "";
-        try {
-            chooseDate = jDateChooser2.getDate();
+        Date chooseDate = jDateChooser2.getDate(); // null if nothing picked - no need for try/catch
+        String formatDate = null;
+        if (chooseDate != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             formatDate = sdf.format(chooseDate);
-        } catch (NullPointerException ne) {
-            chooseDate = null;
         }
 
-        String SupplierTableRow = "";
-        String supplier_ID = "";
-        try {
-            SupplierTableRow = String.valueOf(jTable2.getValueAt(jTable2.getSelectedRow(), 0));
-            String supplier_array[] = SupplierTableRow.split("->");
-            supplier_ID = supplier_array[0];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            SupplierTableRow = "null";
+        // Location for the actual insert - parsed from jComboBox1 ("id) name" format)
+        int locationId = 0;
+        if (jComboBox1.getSelectedIndex() != 0) {
+            String selected = String.valueOf(jComboBox1.getSelectedItem());
+            String idPart = selected.split("\\)")[0].trim(); // e.g. "12) Main Branch" -> "12"
+            try {
+                locationId = Integer.parseInt(idPart);
+            } catch (NumberFormatException nfe) {
+                locationId = 0;
+            }
         }
 
-        int Location_id = jComboBox3.getSelectedIndex();
+        String supplier_ID = null;
+        int supplierRow = jTable2.getSelectedRow();
+        if (supplierRow != -1) {
+            String supplierTableRow = String.valueOf(jTable2.getValueAt(supplierRow, 0));
+            String[] supplier_array = supplierTableRow.split("->");
+            if (supplier_array.length > 0) {
+                supplier_ID = supplier_array[0];
+            }
+        }
 
         String Qty = jTextField4.getText();
 
         double SellingPrice;
-
+        boolean validSellingPrice = true;
         try {
             SellingPrice = Double.parseDouble(jTextField15.getText());
-
+            if (SellingPrice <= 0.0) {
+                validSellingPrice = false;
+            }
         } catch (NumberFormatException e) {
             SellingPrice = 0.0;
+            validSellingPrice = false;
+        }
+
+        // Validation - checked before touching the database
+        if (Product_id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Select or Type Product ID", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (supplier_ID == null) {
+            JOptionPane.showMessageDialog(this, "Please Select Supplier from Table", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (formatDate == null) {
+            JOptionPane.showMessageDialog(this, "Please Select a Date", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (locationId == 0) {
+            JOptionPane.showMessageDialog(this, "Please Select a Location", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (Qty.isEmpty() || !Qty.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "Please Enter a Valid Quantity", "Invalid Data Type", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!validSellingPrice) {
+            JOptionPane.showMessageDialog(this, "Please Enter a Valid Selling Price", "Invalid Parameters", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         try {
-            ResultSet p_rs = MySQL.execute("SELECT * FROM `product` WHERE `product`.`id` = '" + Product_id + "' AND `product`.`intid` =  '" + productintid + "' ");
-
-//        validation
-            if (Product_id.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please Select or Type Product ID", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (!p_rs.next()) {
-                JOptionPane.showMessageDialog(this, "Invalid Product ID,", "Invlaid Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (SupplierTableRow == "null") {
-                JOptionPane.showMessageDialog(this, "Please Select Supplier from Table,", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (chooseDate == null) {
-                JOptionPane.showMessageDialog(this, "Please Select a Date", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (Location_id == 0) {
-                JOptionPane.showMessageDialog(this, "Please Select a Location", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (Qty.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please Enter Quantity", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (!Qty.matches("\\d+")) {
-                JOptionPane.showMessageDialog(this, "Please Enter Valid Quanity", "Invalid Data Type", JOptionPane.ERROR_MESSAGE);
-            } else if (SellingPrice == 0.0) {
-                JOptionPane.showMessageDialog(this, "Please Enter selling price", "Empty Parameters", JOptionPane.ERROR_MESSAGE);
-            } else if (String.valueOf(SellingPrice).matches("\\d+")) {
-                JOptionPane.showMessageDialog(this, "Please Enter Valid  Selling Price", "Invalid  Parameters", JOptionPane.ERROR_MESSAGE);
-            } else {
-
-                MySQL.execute("INSERT INTO `stock` (`product_id`,`supplier_supplier_id`,`location_id`,`cost`,`saling_price`,`stock_date`,`qty`,`product_intid`,`SKU`,`FrameSize`) "
-                        + "VALUES ('" + Product_id + "','" + supplier_ID + "','" + Location_id + "','0','" + SellingPrice + "','" + formatDate + "','" + Qty + "','" + productintid + "','" + SKUNO.getText() + "','" + FrameSize + "')");
-
-                JOptionPane.showMessageDialog(this, "Stock Adding Success ", "Insert Success", JOptionPane.ERROR_MESSAGE);
-                refresh();
+            // Confirm the product actually exists before inserting stock against it
+            String checkSql = "SELECT * FROM `product` WHERE `product`.`id` = ? AND `product`.`intid` = ?";
+            try (PreparedStatement checkPs = MySQL.getConnection().prepareStatement(checkSql)) {
+                checkPs.setString(1, Product_id);
+                checkPs.setString(2, productintid);
+                ResultSet p_rs = checkPs.executeQuery();
+                if (!p_rs.next()) {
+                    JOptionPane.showMessageDialog(this, "Invalid Product ID", "Invalid Parameters", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
             }
+
+            String insertSql = "INSERT INTO `stock` "
+                    + "(`product_id`,`supplier_supplier_id`,`location_id`,`cost`,`saling_price`,`stock_date`,`qty`,`product_intid`,`SKU`,`FrameSize`) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+
+            try (PreparedStatement ps = MySQL.getConnection().prepareStatement(insertSql)) {
+                ps.setString(1, Product_id);
+                ps.setString(2, supplier_ID);
+                ps.setInt(3, locationId);
+                ps.setInt(4, 0); // cost
+                ps.setDouble(5, SellingPrice);
+                ps.setString(6, formatDate);
+                ps.setInt(7, Integer.parseInt(Qty));
+                ps.setString(8, productintid);
+                ps.setString(9, SKUNO.getText());
+                ps.setString(10, FrameSize);
+                ps.executeUpdate();
+            }
+
+            JOptionPane.showMessageDialog(this, "Stock Added Successfully", "Insert Success", JOptionPane.INFORMATION_MESSAGE);
+            refresh();
+
         } catch (SQLException se) {
-            JOptionPane.showMessageDialog(this, "Please Check Your Network or Try again later");
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Please Check Your Network or Try Again Later", "Database Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An Unexpected Error Occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
