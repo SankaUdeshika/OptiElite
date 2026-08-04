@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -27,6 +28,7 @@ public class StockManagement extends javax.swing.JFrame {
 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
     boolean saparateBranch = false;
+    HashMap<Integer, String> locationMap = new HashMap<>();
 
     public StockManagement() {
         initComponents();
@@ -98,6 +100,8 @@ public class StockManagement extends javax.swing.JFrame {
             v.add("Select Category");
             while (rs.next()) {
                 v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("location_name")));
+                locationMap.put(Integer.parseInt(rs.getString("id")), rs.getString("location_name"));
+                System.out.println("the size of location map is" + locationMap.size());
             }
 
             DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
@@ -802,18 +806,13 @@ public class StockManagement extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // Update Stock Process
-
         String StockID;
-
         try {
             StockID = String.valueOf(jTable3.getValueAt(jTable3.getSelectedRow(), 0));
-
         } catch (ArrayIndexOutOfBoundsException e) {
             StockID = "null";
         }
-
         String product_id = jTextField11.getText();
-
         Date chooseDate;
         String formatDate = "";
         try {
@@ -823,14 +822,11 @@ public class StockManagement extends javax.swing.JFrame {
         } catch (NullPointerException ne) {
             chooseDate = null;
             logger.log(Level.WARNING, "null exception", ne);
-
         }
-
         String qty = jTextField4.getText();
         String cost = jTextField13.getText();
         String sellingPrice = jTextField15.getText();
         String Size = jTextField1.getText();
-
         if (StockID.equals("null")) {
             JOptionPane.showMessageDialog(this, "Please Select a Stock From stock Table", "Empty Stock Id", JOptionPane.ERROR_MESSAGE);
         } else if (product_id.isEmpty()) {
@@ -845,19 +841,26 @@ public class StockManagement extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Enter Selling  Amount ", "Empty Selling Price ", JOptionPane.ERROR_MESSAGE);
         } else if (jComboBox3.getSelectedIndex() == 0) {
             try {
-
                 MySQL.execute("UPDATE `stock` SET `product_id` = '" + product_id + "' , `stock_date` = '" + formatDate + "' , `qty` = '" + qty + "' , `cost` = '" + cost + "' , `saling_price` = '" + sellingPrice + "' , `frameSize` = '" + Size + "' WHERE `id` = '" + StockID + "' ");
                 JOptionPane.showMessageDialog(this, "Stock Adding Success ", "Insert Success", JOptionPane.ERROR_MESSAGE);
-
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.log(Level.WARNING, "Failed to update", e);
-
             }
         } else if (jComboBox3.getSelectedIndex() != 0) {
             try {
-
-                MySQL.execute("UPDATE `stock` SET `product_id` = '" + product_id + "' , `stock_date` = '" + formatDate + "' , `qty` = '" + qty + "' , `cost` = '" + cost + "' , `saling_price` = '" + sellingPrice + "' , `location_id` = '" + jComboBox3.getSelectedIndex() + "' , `frameSize` = '" + Size + "' WHERE `id` = '" + StockID + "' ");
+                // Location for the actual insert - parsed from jComboBox1 ("id) name" format)
+                int locationId = 0;
+                if (jComboBox3.getSelectedIndex() != 0) {
+                    String selected = String.valueOf(jComboBox1.getSelectedItem());
+                    String idPart = selected.split("\\)")[0].trim(); // e.g. "12) Main Branch" -> "12"
+                    try {
+                        locationId = Integer.parseInt(idPart);
+                    } catch (NumberFormatException nfe) {
+                        locationId = 0;
+                    }
+                }
+                MySQL.execute("UPDATE `stock` SET `product_id` = '" + product_id + "' , `stock_date` = '" + formatDate + "' , `qty` = '" + qty + "' , `cost` = '" + cost + "' , `saling_price` = '" + sellingPrice + "' , `location_id` = '" + locationId + "' , `frameSize` = '" + Size + "' WHERE `id` = '" + StockID + "' ");
                 JOptionPane.showMessageDialog(this, "Stock Adding Success ", "Insert Success", JOptionPane.ERROR_MESSAGE);
 
             } catch (Exception e) {
@@ -1097,9 +1100,9 @@ public class StockManagement extends javax.swing.JFrame {
 
 // --- Location filter (restored saparateBranch fallback) ---
         if (jComboBox1.getSelectedIndex() != 0) {
-            
+
             String location_id = String.valueOf(jComboBox1.getSelectedItem()).substring(0, 1);
-            conditions.add("`stock`.`location_id` = '" + location_id+ "'");
+            conditions.add("`stock`.`location_id` = '" + location_id + "'");
             jasperConditions.add("`stock`.`location_id` = '" + location_id + "'");
         } else if (saparateBranch) {
             conditions.add("`stock`.`location_id` = '" + UserDetails.UserLocation_id + "'");
