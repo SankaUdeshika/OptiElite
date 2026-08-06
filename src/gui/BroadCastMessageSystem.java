@@ -31,6 +31,10 @@ import models.MySQL;
 import java.awt.datatransfer.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import models.SMS;
+import models.SMSCalculator;
+import models.SMSInfo;
+import models.SmsProfileInfo;
 
 public class BroadCastMessageSystem extends javax.swing.JFrame {
 
@@ -38,33 +42,43 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
      * Creates new form BroadCastMessageSystem
      */
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-
+    
     public BroadCastMessageSystem() {
         initComponents();
         setSize(screen.width, screen.height);
-
-        LoadBoradCastUserTabel("Everyone");
         operater();
         time();
+        refresh();
+    }
+    
+    public void refresh() {
+        getSmsProfile();
+        LoadBoradCastUserTabel("Everyone");
+    }
+    
+    public void getSmsProfile() {
+        SmsProfileInfo profileInfo = SMS.getBalance();
+        RemainingSMSUnits.setText(profileInfo.getRemaining_balance());
+        SmsExpireOn.setText(profileInfo.getExpired_on_date());
     }
 
     // Helper class to make the image transferable
     static class ImageSelection implements Transferable {
-
+        
         private final Image image;
-
+        
         public ImageSelection(Image image) {
             this.image = image;
         }
-
+        
         public DataFlavor[] getTransferDataFlavors() {
             return new DataFlavor[]{DataFlavor.imageFlavor};
         }
-
+        
         public boolean isDataFlavorSupported(DataFlavor flavor) {
             return DataFlavor.imageFlavor.equals(flavor);
         }
-
+        
         public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
             if (!DataFlavor.imageFlavor.equals(flavor)) {
                 throw new UnsupportedFlavorException(flavor);
@@ -72,16 +86,16 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             return image;
         }
     }
-
+    
     private void operater() {
         String name = UserDetails.UserName;
         userNameField.setText(name);
     }
-
+    
     private void time() {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
-
+        
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
             String time = timeFormat.format(date);
@@ -90,7 +104,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             String year_string = dayArray[0];
             String month_string = dayArray[1];
             String day_string = dayArray[2];
-
+            
             String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
@@ -100,17 +114,17 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         timer.setInitialDelay(0);
         timer.start();
     }
-
+    
     public void OpenWhatsapp() throws AWTException {
         // Testing
         String applicationNAme = "Whatsapp";
 
 //        Coppy to text board
         StringSelection stringSelection = new StringSelection(applicationNAme);
-
+        
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
-
+        
         Robot robot = new Robot();
 //            Press Windows
         robot.keyPress(KeyEvent.VK_WINDOWS);
@@ -121,7 +135,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         robot.keyPress(KeyEvent.VK_V);
         robot.keyRelease(KeyEvent.VK_CONTROL);
         robot.keyRelease(KeyEvent.VK_V);
-
+        
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
@@ -131,28 +145,28 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
 //      press Enter
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
-
+        
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
-
+        
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
             Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-
+    
     public void MessageSendingProcess(String PhoneNumber, String Message) {
         try {
             String SubsTringNumber = PhoneNumber.substring(1);
             StringSelection stringSelection = new StringSelection(SubsTringNumber);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(stringSelection, null);
-
+            
             Robot r1 = new Robot();
-
+            
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException ex) {
@@ -163,7 +177,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
 //            Click New Chat
             r1.keyPress(KeyEvent.VK_CONTROL);
             r1.keyPress(KeyEvent.VK_N);
-
+            
             r1.keyRelease(KeyEvent.VK_CONTROL);
             r1.keyRelease(KeyEvent.VK_N);
 
@@ -173,11 +187,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             r1.keyRelease(KeyEvent.VK_CONTROL);
             r1.keyRelease(KeyEvent.VK_A);
             r1.keyPress(KeyEvent.VK_BACK_SPACE);
-
+            
             Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
             int HalfWidthSize = screensize.width / 3;
             int HalfHeightSize = screensize.height / 3;
-
+            
             r1.mouseMove(HalfWidthSize, HalfHeightSize);
             try {
                 Thread.sleep(1000);
@@ -191,7 +205,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             r1.keyPress(KeyEvent.VK_V);
             r1.keyRelease(KeyEvent.VK_CONTROL);
             r1.keyRelease(KeyEvent.VK_V);
-
+            
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
@@ -201,7 +215,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             //            click Mouse Button
             r1.mousePress(InputEvent.BUTTON1_DOWN_MASK);
             r1.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-
+            
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
@@ -212,7 +226,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             int HalfWidthSize1 = screensize1.width / 3;
             int HalfHeightSize2 = screensize1.height / 3 - 48; // move the Mouse Cursor into Chat list
             r1.mouseMove(HalfWidthSize1, HalfHeightSize2);
-
+            
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
@@ -222,13 +236,13 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
 //            Cick the Selected Chat Box
             r1.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
             r1.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
-
+            
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
             StringSelection stringSelectionMessage = new StringSelection(Message);
             Clipboard clipboardMessage = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboardMessage.setContents(stringSelectionMessage, null);
@@ -237,7 +251,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             r1.keyPress(KeyEvent.VK_V);
             r1.keyRelease(KeyEvent.VK_CONTROL);
             r1.keyRelease(KeyEvent.VK_V);
-
+            
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
@@ -247,27 +261,27 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             //            enter
             r1.keyPress(KeyEvent.VK_ENTER);
             r1.keyRelease(KeyEvent.VK_ENTER);
-
+            
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
         } catch (AWTException ex) {
             Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void SendImagesProcess(String PhoneNumber, BufferedImage image) {
         try {
             String SubsTringNumber = PhoneNumber.substring(1);
             StringSelection stringSelection = new StringSelection(SubsTringNumber);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(stringSelection, null);
-
+            
             Robot r1 = new Robot();
-
+            
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException ex) {
@@ -278,10 +292,10 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
 //            Click New Chat
             r1.keyPress(KeyEvent.VK_CONTROL);
             r1.keyPress(KeyEvent.VK_N);
-
+            
             r1.keyRelease(KeyEvent.VK_CONTROL);
             r1.keyRelease(KeyEvent.VK_N);
-
+            
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException ex) {
@@ -295,11 +309,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             r1.keyRelease(KeyEvent.VK_CONTROL);
             r1.keyRelease(KeyEvent.VK_A);
             r1.keyPress(KeyEvent.VK_BACK_SPACE);
-
+            
             Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
             int HalfWidthSize = screensize.width / 3;
             int HalfHeightSize = screensize.height / 3;
-
+            
             r1.mouseMove(HalfWidthSize, HalfHeightSize);
             try {
                 Thread.sleep(2000);
@@ -313,7 +327,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             r1.keyPress(KeyEvent.VK_V);
             r1.keyRelease(KeyEvent.VK_CONTROL);
             r1.keyRelease(KeyEvent.VK_V);
-
+            
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException ex) {
@@ -359,7 +373,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             r1.keyPress(KeyEvent.VK_V);
             r1.keyRelease(KeyEvent.VK_CONTROL);
             r1.keyRelease(KeyEvent.VK_V);
-
+            
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
@@ -369,34 +383,34 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             //            enter
             r1.keyPress(KeyEvent.VK_ENTER);
             r1.keyRelease(KeyEvent.VK_ENTER);
-
+            
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
         } catch (AWTException ex) {
             Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void closeWhatsapp() throws AWTException {
         Robot robot = new Robot();
         robot.keyPress(KeyEvent.VK_ALT);
         robot.keyPress(KeyEvent.VK_F4);
         robot.keyRelease(KeyEvent.VK_ALT);
         robot.keyRelease(KeyEvent.VK_F4);
-
+        
     }
-
+    
     public void LoadBoradCastUserTabel(String Type) {
         if (Type == "Everyone") {
             try {
                 ResultSet rs = MySQL.execute("SELECT * FROM `customer`  ");
                 DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                 dtm.setRowCount(0);
-
+                
                 while (rs.next()) {
                     Vector v = new Vector();
                     v.add(rs.getString("mobile"));
@@ -406,11 +420,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("telephone_land"));
                     v.add(rs.getString("nic"));
                     v.add(rs.getString("register_date"));
-
+                    
                     dtm.addRow(v);
-
+                    
                 }
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -419,7 +433,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `gender` ON `gender`.`gender_id` = `customer`.`gender_gender_id` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE `gender_id` = '2' ");
                 DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                 dtm.setRowCount(0);
-
+                
                 while (rs.next()) {
                     Vector v = new Vector();
                     v.add(rs.getString("mobile"));
@@ -429,11 +443,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("telephone_land"));
                     v.add(rs.getString("nic"));
                     v.add(rs.getString("register_date"));
-
+                    
                     dtm.addRow(v);
-
+                    
                 }
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -442,7 +456,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `gender` ON `gender`.`gender_id` = `customer`.`gender_gender_id` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE `gender_id` = '1' ");
                 DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                 dtm.setRowCount(0);
-
+                
                 while (rs.next()) {
                     Vector v = new Vector();
                     v.add(rs.getString("mobile"));
@@ -452,21 +466,21 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("telephone_land"));
                     v.add(rs.getString("nic"));
                     v.add(rs.getString("register_date"));
-
+                    
                     dtm.addRow(v);
-
+                    
                 }
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            
         } else if (Type == "People under 18 years Old") {
             try {
                 ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `gender` ON `gender`.`gender_id` = `customer`.`gender_gender_id` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE TIMESTAMPDIFF(YEAR, `customer`.`birthday`, CURDATE()) < 18 ");
                 DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                 dtm.setRowCount(0);
-
+                
                 while (rs.next()) {
                     Vector v = new Vector();
                     v.add(rs.getString("mobile"));
@@ -476,11 +490,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("telephone_land"));
                     v.add(rs.getString("nic"));
                     v.add(rs.getString("register_date"));
-
+                    
                     dtm.addRow(v);
-
+                    
                 }
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -489,7 +503,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `gender` ON `gender`.`gender_id` = `customer`.`gender_gender_id` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE TIMESTAMPDIFF(YEAR, `customer`.`birthday`, CURDATE()) > 18 ");
                 DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                 dtm.setRowCount(0);
-
+                
                 while (rs.next()) {
                     Vector v = new Vector();
                     v.add(rs.getString("id"));
@@ -501,11 +515,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("nic"));
                     v.add(rs.getString("location_name"));
                     v.add(rs.getString("register_date"));
-
+                    
                     dtm.addRow(v);
-
+                    
                 }
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -514,7 +528,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `gender` ON `gender`.`gender_id` = `customer`.`gender_gender_id` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE TIMESTAMPDIFF(YEAR, `customer`.`birthday`, CURDATE()) < 50 ");
                 DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                 dtm.setRowCount(0);
-
+                
                 while (rs.next()) {
                     Vector v = new Vector();
                     v.add(rs.getString("id"));
@@ -526,11 +540,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("nic"));
                     v.add(rs.getString("location_name"));
                     v.add(rs.getString("register_date"));
-
+                    
                     dtm.addRow(v);
-
+                    
                 }
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -539,7 +553,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 ResultSet rs = MySQL.execute("SELECT * FROM `customer` INNER JOIN `gender` ON `gender`.`gender_id` = `customer`.`gender_gender_id` INNER JOIN `location` ON `location`.`id` = `customer`.`location_id` WHERE TIMESTAMPDIFF(YEAR, `customer`.`birthday`, CURDATE()) > 50 ");
                 DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                 dtm.setRowCount(0);
-
+                
                 while (rs.next()) {
                     Vector v = new Vector();
                     v.add(rs.getString("id"));
@@ -551,11 +565,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("nic"));
                     v.add(rs.getString("location_name"));
                     v.add(rs.getString("register_date"));
-
+                    
                     dtm.addRow(v);
-
+                    
                 }
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -564,21 +578,21 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 ResultSet rs = MySQL.execute("SELECT * FROM `testing`");
                 DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                 dtm.setRowCount(0);
-
+                
                 while (rs.next()) {
                     Vector v = new Vector();
                     v.add(rs.getString("mobile"));
-
+                    
                     dtm.addRow(v);
-
+                    
                 }
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            
         }
-
+        
     }
 
     /**
@@ -625,6 +639,20 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
         jToggleButton1 = new javax.swing.JToggleButton();
+        jLabel1 = new javax.swing.JLabel();
+        lblUnits = new javax.swing.JLabel();
+        SmsExpireOn = new javax.swing.JLabel();
+        lblCharacters = new javax.swing.JLabel();
+        lblRemaining = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblCharactersPerUnit = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        lblEncoding = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        RemainingSMSUnits = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -749,7 +777,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel9.setText("Select Audience");
-        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, -1, -1));
+        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel12.setText("Update Areas");
@@ -789,7 +817,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         jLabel13.setText("Selected Audience Members");
         jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Everyone", "Only Womens", "Only Mens", "People over 18 years Old", "People under 18 years Old", "People over 50 years Old", "People under 50 years Old", "Custom Numbers" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Everyone", "Only Womens", "Only Mens", "People over 18 years Old", "People under 18 years Old", "People over 50 years Old", "People under 50 years Old", "Today Birthday person", "Custom Numbers" }));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
@@ -800,14 +828,14 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 jComboBox1ActionPerformed(evt);
             }
         });
-        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 70, 240, -1));
+        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 160, -1));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel19.setText("Filter Options");
         jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Whatsapp Message", "Send Email " }));
-        jPanel6.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 260, -1));
+        jPanel6.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 200, -1));
 
         jLabel20.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel20.setText("Reg_No");
@@ -815,18 +843,83 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
 
         jTextArea3.setColumns(20);
         jTextArea3.setRows(5);
+        jTextArea3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextArea3KeyReleased(evt);
+            }
+        });
         jScrollPane4.setViewportView(jTextArea3);
 
-        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 350, 410, 110));
+        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, 410, 110));
 
         jToggleButton1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jToggleButton1.setText("Send Image");
+        jToggleButton1.setText("Send");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jToggleButton1ActionPerformed(evt);
             }
         });
-        jPanel6.add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 350, 330, 110));
+        jPanel6.add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 410, 470, 60));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setText("Remaining");
+        jPanel6.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 360, -1, -1));
+
+        lblUnits.setForeground(new java.awt.Color(255, 0, 0));
+        lblUnits.setText("1");
+        jPanel6.add(lblUnits, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 380, 80, -1));
+
+        SmsExpireOn.setFont(new java.awt.Font("Segoe UI Historic", 2, 14)); // NOI18N
+        SmsExpireOn.setForeground(new java.awt.Color(255, 0, 51));
+        SmsExpireOn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        SmsExpireOn.setText("0");
+        jPanel6.add(SmsExpireOn, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 50, 190, -1));
+
+        lblCharacters.setForeground(new java.awt.Color(255, 0, 0));
+        lblCharacters.setText("0");
+        jPanel6.add(lblCharacters, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 380, -1, -1));
+
+        lblRemaining.setForeground(new java.awt.Color(255, 0, 0));
+        lblRemaining.setText("160/160");
+        jPanel6.add(lblRemaining, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 380, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setText("Characters");
+        jPanel6.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 360, -1, -1));
+
+        lblCharactersPerUnit.setForeground(new java.awt.Color(255, 0, 0));
+        lblCharactersPerUnit.setText("160");
+        jPanel6.add(lblCharactersPerUnit, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 380, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setText("Characters Per Unit");
+        jPanel6.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 360, -1, -1));
+
+        lblEncoding.setForeground(new java.awt.Color(255, 0, 0));
+        lblEncoding.setText("GSM_7BIT");
+        jPanel6.add(lblEncoding, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 380, -1, -1));
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel11.setText("Encoding");
+        jPanel6.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 360, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel10.setText("Unit Count");
+        jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 360, -1, -1));
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
+        jLabel16.setText("Remaining SMS Unit Count");
+        jPanel6.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 20, -1, -1));
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
+        jLabel17.setText("Sms Expire On");
+        jPanel6.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 20, 130, -1));
+
+        RemainingSMSUnits.setFont(new java.awt.Font("Segoe UI Historic", 2, 14)); // NOI18N
+        RemainingSMSUnits.setForeground(new java.awt.Color(255, 0, 51));
+        RemainingSMSUnits.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        RemainingSMSUnits.setText("0");
+        jPanel6.add(RemainingSMSUnits, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 50, 220, -1));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -932,7 +1025,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         // TODO add your handling code here:
         String SelectedIteem = String.valueOf(jComboBox1.getSelectedItem());
         System.out.println(SelectedIteem);
-
+        
         if ("Everyone".equals(SelectedIteem)) {
             LoadBoradCastUserTabel("Everyone");
         } else if ("Only Womens".equals(SelectedIteem)) {
@@ -959,26 +1052,26 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             // Send Whatsapp Messages
 
             String Message = jTextArea3.getText();
-
+            
             if (!Message.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Dont Move the Mouse or Keyboard Activity", "WARNING", JOptionPane.WARNING_MESSAGE);
-
+                
                 OpenWhatsapp();
-
+                
                 int TableRows = jTable1.getRowCount();
                 ArrayList customerList = new ArrayList();
-
+                
                 for (int i = 0; i < TableRows; i++) {
                     customerList.add(jTable1.getValueAt(i, 3));
                     String PhoneNumber = (String) jTable1.getValueAt(i, 0);
                     MessageSendingProcess(PhoneNumber, Message);
                 }
                 closeWhatsapp();
-
+                
             } else {
                 JOptionPane.showMessageDialog(this, "Please Enter a Message First");
             }
-
+            
         } catch (AWTException ex) {
             ex.printStackTrace();
             Logger.getLogger(BroadCastMessageSystem.class.getName()).log(Level.SEVERE, null, ex);
@@ -1003,34 +1096,52 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = filechooser.getSelectedFile();
             String path = selectedFile.getAbsolutePath();
-
+            
             try {
 
                 // Load the image from a file
                 BufferedImage image = ImageIO.read(new File(path));
-
+                
                 JOptionPane.showMessageDialog(this, "Please Dont Move the Mouse or Keyboard Activity", "WARNING", JOptionPane.WARNING_MESSAGE);
-
+                
                 OpenWhatsapp();
-
+                
                 int TableRows = jTable1.getRowCount();
                 ArrayList customerList = new ArrayList();
-
+                
                 for (int i = 0; i < TableRows; i++) {
                     customerList.add(jTable1.getValueAt(i, 3));
                     String PhoneNumber = (String) jTable1.getValueAt(i, 0);
                     SendImagesProcess(PhoneNumber, image);
                 }
                 closeWhatsapp();
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            
         } else {
             System.out.println("no");
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jTextArea3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea3KeyReleased
+        // TODO add your handling code here:
+        String txtMessage = jTextArea3.getText();
+        if (!txtMessage.isEmpty()) {
+            SMSInfo info = SMSCalculator.calculate(txtMessage);
+            lblUnits.setText(String.valueOf(info.getUnits()));
+            lblCharacters.setText(String.valueOf(info.getCharacters()));
+            lblRemaining.setText(info.getRemaining());
+            lblCharactersPerUnit.setText(String.valueOf(info.getCharactersPerUnit()));
+            lblEncoding.setText(info.getEncoding());
+        } else {
+            lblUnits.setText("1");
+            lblCharacters.setText("0");
+            lblRemaining.setText("160");
+            lblEncoding.setText("_");
+        }
+    }//GEN-LAST:event_jTextArea3KeyReleased
 
     /**
      * @param args the command line arguments
@@ -1047,6 +1158,8 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel RemainingSMSUnits;
+    private javax.swing.JLabel SmsExpireOn;
     private javax.swing.JLabel dateField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -1054,13 +1167,20 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1080,6 +1200,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea3;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JLabel lblCharacters;
+    private javax.swing.JLabel lblCharactersPerUnit;
+    private javax.swing.JLabel lblEncoding;
+    private javax.swing.JLabel lblRemaining;
+    private javax.swing.JLabel lblUnits;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel userNameField;
     // End of variables declaration//GEN-END:variables
