@@ -155,7 +155,7 @@ public class adminDashboard extends javax.swing.JFrame {
         jPanel11.add(jButton25, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 230, 64));
 
         jButton26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/comment.png"))); // NOI18N
-        jButton26.setText("Broadcast Messages");
+        jButton26.setText("SMS");
         jButton26.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton26ActionPerformed(evt);

@@ -31,6 +31,7 @@ public class SMS {
     private static final String SENDER_ID = "Vayonova";
     private static final String API_URL = "https://app.text.lk/api/v3/sms/send";
 
+    public static String SaveMessageText = "";
     public static SmsProfileInfo getBalance() {
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -103,7 +104,7 @@ public class SMS {
 
             if (rs.next() && ThankyouMsg_rs.next()) {
                 String mobile = rs.getString("customer_mobile");
-                String message = ThankyouMsg_rs.getString("message"); 
+                String message = ThankyouMsg_rs.getString("message");
 
                 String json = "{"
                         + "\"recipient\":\"" + mobile + "\","
