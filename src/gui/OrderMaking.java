@@ -1492,7 +1492,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                     }
 
                                                                     //  Order Successs. -> prints
-                                                                    Printsouts printsouts = new Printsouts(invoiceId);
+                                                                    Printsouts printsouts = new Printsouts(true,invoiceId);
                                                                     printsouts.setVisible(true);
                                                                     Refresh();
 
@@ -1556,7 +1556,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                     }
 
                                                                     // Order Successs. -> prints
-                                                                    Printsouts printsouts = new Printsouts(invoiceId);
+                                                                    Printsouts printsouts = new Printsouts(true,invoiceId);
                                                                     printsouts.setVisible(true);
                                                                     Refresh();
                                                                     Printsouts p = new Printsouts(invoiceId);
@@ -1623,7 +1623,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                                 }
                                                             }
                                                             // Order Successs. -> prints
-                                                            Printsouts printsouts = new Printsouts(invoiceId);
+                                                            Printsouts printsouts = new Printsouts(true,invoiceId);
                                                             printsouts.setVisible(true);
                                                             Refresh();
                                                             Printsouts p = new Printsouts(invoiceId);
@@ -1853,7 +1853,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             }
 
                                                             // Order Successs. -> prints
-                                                            Printsouts printsouts = new Printsouts(invoiceId);
+                                                            Printsouts printsouts = new Printsouts(true,invoiceId);
                                                             printsouts.setVisible(true);
                                                             Refresh();
                                                             Printsouts p = new Printsouts(invoiceId);
@@ -1948,7 +1948,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                             }
                                                         }
 
-                                                        Printsouts printsouts = new Printsouts(invoiceId);
+                                                        Printsouts printsouts = new Printsouts(true,invoiceId);
                                                         printsouts.setVisible(true);
                                                         Refresh();
                                                         Printsouts p = new Printsouts(invoiceId);
@@ -2006,7 +2006,7 @@ public class OrderMaking extends javax.swing.JFrame {
                                                         }
 
                                                         JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
-                                                        Printsouts printsouts = new Printsouts(invoiceId);
+                                                        Printsouts printsouts = new Printsouts(true,invoiceId);
                                                         printsouts.setVisible(true);
                                                         Refresh();
                                                         Printsouts p = new Printsouts(invoiceId);
