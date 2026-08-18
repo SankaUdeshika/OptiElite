@@ -8,6 +8,7 @@ import gui.Dashboard;
 import models.Navs;
 import models.Reports;
 import models.SMS;
+import models.UserDetails;
 
 /**
  *
@@ -34,8 +35,14 @@ public class Printsouts extends javax.swing.JFrame {
     public Printsouts(boolean SmsSending, String invoiceID) {
         initComponents();
         this.invoiceId = invoiceID;
-        jCheckBox1.setVisible(true);
-        jButton4.setVisible(true);
+        // check SMS APi service available for this ->
+        if (UserDetails.sms_api_token == null) {
+            jCheckBox1.setVisible(false);
+            jButton4.setVisible(false);
+        } else {
+            jCheckBox1.setVisible(true);
+            jButton4.setVisible(true);
+        }
     }
 
     @SuppressWarnings("unchecked")

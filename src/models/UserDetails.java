@@ -6,7 +6,7 @@ public class UserDetails {
     public static String UserId;
     public static String UserLocation_id;
     public static String UserRole;
-    public static String sms_api_token = null;
+    public static String sms_api_token;
     public UserDetails() {
 //        no return
     }

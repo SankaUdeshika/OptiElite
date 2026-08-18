@@ -31,13 +31,18 @@ public class adminDashboard extends javax.swing.JFrame {
         if (UserDetails.UserRole.equals("1")) { // access Control admin
             jButton25.setEnabled(true);
             jButton23.setEnabled(true);
-            jButton26.setEnabled(true);
+            if (UserDetails.sms_api_token == null) {
+                jButton26.setEnabled(false);
+                jButton26.setText("Sms not available");
+            } else {
+                jButton26.setEnabled(true);
+            }
             jButton24.setEnabled(true);
             jButton30.setEnabled(true);
             jButton25.setEnabled(true);
             jButton29.setEnabled(true);
             jButton28.setEnabled(true);
-        } else if (UserDetails.UserRole.equals("3")) { 
+        } else if (UserDetails.UserRole.equals("3")) {
             jButton25.setEnabled(false);
             jButton23.setEnabled(false);
             jButton26.setEnabled(false);
