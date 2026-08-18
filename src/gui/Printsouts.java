@@ -5,9 +5,12 @@
 package gui;
 
 import gui.Dashboard;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import models.Navs;
 import models.Reports;
 import models.SMS;
+import models.SmsProfileInfo;
 import models.UserDetails;
 
 /**
@@ -168,26 +171,29 @@ public class Printsouts extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (Navs.routee) {
-            if (jCheckBox1.isSelected()) {
-                new Thread(() -> {
+        if (jCheckBox1.isSelected()) {
+            new Thread(() -> {
+                SmsProfileInfo sms_info = SMS.getBalance();
+                if (sms_info == null) {
+                    SwingUtilities.invokeLater(()
+                            -> JOptionPane.showMessageDialog(this, "Could not check SMS balance. Message not sent.", "SMS Error", JOptionPane.ERROR_MESSAGE));
+                    return;
+                }
+                if (Integer.parseInt(sms_info.getRemaining_balance()) > 1) {
                     System.out.println("Send Sms ");
                     SMS.invoiceThankYou_sms(invoiceId);
-                }).start();
-            }
+                } else {
+                    SwingUtilities.invokeLater(()
+                            -> JOptionPane.showMessageDialog(this, "Not enough balance to send message", "Sms balance over", JOptionPane.ERROR_MESSAGE));
+                }
+            }).start();
+        }
 
+        if (Navs.routee) {
             Dashboard d = new Dashboard();
             d.setVisible(true);
-            this.dispose();
-        } else {
-            if (jCheckBox1.isSelected()) {
-                new Thread(() -> {
-                    System.out.println("Send Sms ");
-                    SMS.invoiceThankYou_sms(invoiceId);
-                }).start();
-            }
-            this.dispose();
         }
+        this.dispose();
 
 
     }//GEN-LAST:event_jButton3ActionPerformed
