@@ -6,12 +6,12 @@ public class UserDetails {
     public static String UserId;
     public static String UserLocation_id;
     public static String UserRole;
-
+    public static String sms_api_token = null;
     public UserDetails() {
 //        no return
     }
 
-    public UserDetails(String firstName, String lastName, String userId, String locationID,String userRole) {
+    public UserDetails(String firstName, String lastName, String userId, String locationID,String userRole,String api_token) {
         String FirstName = firstName;
         String FLirstName = lastName;
         String UserLocation = locationID;
@@ -23,6 +23,7 @@ public class UserDetails {
         this.UserLocation_id = UserLocation;
         
         this.UserRole = userRole;
+        this.sms_api_token = api_token;
     }
 
 //    public String getUserName() {

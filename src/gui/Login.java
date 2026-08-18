@@ -248,9 +248,8 @@ public class Login extends javax.swing.JFrame {
                                 String id = rs.getString("id");
                                 String userRole = rs.getString("user_type_id");
                                 String locaiton_id = String.valueOf(locationComboBox.getSelectedIndex());
-                                
-                                UserDetails ud = new UserDetails(ResultFirstname, ResultLastname, id, locaiton_id, userRole);
-                                System.out.println(locaiton_id);
+                                String sms_api_token = rs.getString("sms_api_token");
+                                UserDetails ud = new UserDetails(ResultFirstname, ResultLastname, id, locaiton_id, userRole,sms_api_token);
                                 logger.info("user has logged succesfully");
                                 // Load Settings
                                 try {
