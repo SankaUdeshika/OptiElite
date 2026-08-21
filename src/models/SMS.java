@@ -25,10 +25,10 @@ import javax.swing.JOptionPane;
  */
 public class SMS {
 
-    private static final String API_TOKEN = "6409|cBTGmFq0ZDeqdYVS1bFvVitieHtQBwebApEGbtOS574a9734";
+    private static final String API_TOKEN = UserDetails.sms_api_token;
     private static final String BALANCE_URL = "https://app.text.lk/api/v3/balance";
     // Replace with your approved Sender ID
-    private static final String SENDER_ID = "Vayonova";
+    private static final String SENDER_ID = UserDetails.sms_sender_id;
     private static final String API_URL = "https://app.text.lk/api/v3/sms/send";
 
     public static String SaveMessageText = "";
