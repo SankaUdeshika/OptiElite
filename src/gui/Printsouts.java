@@ -10,6 +10,7 @@ import javax.swing.SwingUtilities;
 import models.Navs;
 import models.Reports;
 import models.SMS;
+import models.SendSmsResult;
 import models.SmsProfileInfo;
 import models.UserDetails;
 
@@ -24,15 +25,15 @@ public class Printsouts extends javax.swing.JFrame {
     public Printsouts(String invoiceID) {
         initComponents();
         this.invoiceId = invoiceID;
-//        jCheckBox1.setVisible(false);
-//        jButton4.setVisible(false);
+        jCheckBox1.setVisible(false);
+        jButton4.setVisible(false);
     }
 
     public Printsouts(String type, String invoiceID) {
         initComponents();
         this.invoiceId = invoiceID;
-//        jCheckBox1.setVisible(false);
-//        jButton4.setVisible(false);
+        jCheckBox1.setVisible(false);
+        jButton4.setVisible(false);
     }
 
     public Printsouts(boolean SmsSending, String invoiceID) {
@@ -181,7 +182,10 @@ public class Printsouts extends javax.swing.JFrame {
                 }
                 if (Integer.parseInt(sms_info.getRemaining_balance()) > 1) {
                     System.out.println("Send Sms ");
-                    SMS.invoiceThankYou_sms(invoiceId);
+                    SendSmsResult result =  SMS.invoiceThankYou_sms(invoiceId);
+                    if(!result.getisSuccess()){
+                        JOptionPane.showMessageDialog(this, result.getMessage(), "Something Wrong", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
                     SwingUtilities.invokeLater(()
                             -> JOptionPane.showMessageDialog(this, "Not enough balance to send message", "Sms balance over", JOptionPane.ERROR_MESSAGE));

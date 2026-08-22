@@ -16,6 +16,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import models.MySQL;
+import models.SMS;
 import models.SettingsFile;
 
 public class Login extends javax.swing.JFrame {
@@ -252,7 +253,8 @@ public class Login extends javax.swing.JFrame {
                                 if (!rs.getString("sms_api_token").isEmpty()) {
                                     sms_api_token = rs.getString("sms_api_token");
                                 }
-                                UserDetails ud = new UserDetails(ResultFirstname, ResultLastname, id, locaiton_id, userRole, sms_api_token);
+                                String sender_id = rs.getString("sms_sender_id");
+                                UserDetails ud = new UserDetails(ResultFirstname, ResultLastname, id, locaiton_id, userRole, sms_api_token,sender_id);
                                 logger.info("user has logged succesfully");
                                 // Load Settings
                                 try {
