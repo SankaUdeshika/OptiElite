@@ -223,6 +223,7 @@ public class SellHearingAid extends javax.swing.JFrame {
         LoadStockProducts();
         LoadWarrenty();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -296,8 +297,6 @@ public class SellHearingAid extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JSeparator();
         jLabel18 = new javax.swing.JLabel();
         jRadioButton5 = new javax.swing.JRadioButton();
-        jRadioButton6 = new javax.swing.JRadioButton();
-        jRadioButton7 = new javax.swing.JRadioButton();
         jTextField9 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -675,12 +674,6 @@ public class SellHearingAid extends javax.swing.JFrame {
         jRadioButton5.setText("Bag");
         jPanel6.add(jRadioButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 480, -1, -1));
 
-        jRadioButton6.setText("Box");
-        jPanel6.add(jRadioButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 510, -1, -1));
-
-        jRadioButton7.setText("Clothing");
-        jPanel6.add(jRadioButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 540, -1, -1));
-
         jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField9KeyReleased(evt);
@@ -807,8 +800,6 @@ public class SellHearingAid extends javax.swing.JFrame {
 
         // check if accessorie items are available
         boolean bag = false;
-        boolean clothing = false;
-        boolean box = false;
 
         boolean go = false;
 
@@ -823,7 +814,6 @@ public class SellHearingAid extends javax.swing.JFrame {
             try {
                 ResultSet bag_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '15' AND `qty` > 0 ");
                 if (bag_rs.next()) {
-                    System.out.println("stock have");
                     bag = true;
                     bag_stock_id = String.valueOf(bag_rs.getInt("stock.id"));
                 } else {
@@ -836,41 +826,9 @@ public class SellHearingAid extends javax.swing.JFrame {
             }
         }
         //
-        if (jRadioButton6.isSelected()) { // box
-            try {
-                ResultSet box_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '10' AND `qty` > 0 ");
-                if (box_rs.next()) {
-                    box = true;
-                    box_stock_id = String.valueOf(box_rs.getInt("stock.id"));
-                } else {
-                    JOptionPane.showMessageDialog(this, "You dont have enough Box Quantity. Please add Box Stock and Try again later", "Empty Box Quantity", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Please check your connection or Something Wrong please try again later", "Something Worng", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
-            }
-        }
-        //
-        if (jRadioButton7.isSelected()) { // clothing
-            try {
-                ResultSet clothing_rs = MySQL.execute("SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` WHERE `product`.`sub_category_id` = '14' AND `qty` > 0 ");
-                if (clothing_rs.next()) {
-                    clothing = true;
-                    clothing_stock_id = String.valueOf(clothing_rs.getInt("stock.id"));
-                } else {
-                    JOptionPane.showMessageDialog(this, "You dont have enough Clothing Quantity. Please add Clothing Stock and Try again later", "Empty Clothing Quantity", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Please check your connection or Something Wrong please try again later", "Something Worng", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
-            }
-        }
+
         //
         if (jRadioButton5.isSelected() == true && bag == false) { // bag
-            go = false;
-        } else if (jRadioButton6.isSelected() == true && box == false) { // box
-            go = false;
-        } else if (jRadioButton7.isSelected() == true && clothing == false) { // clothing
             go = false;
         } else {
             go = true;
@@ -951,8 +909,8 @@ public class SellHearingAid extends javax.swing.JFrame {
 
                                             ResultSet Inser_rs;
                                             String invoiceId = new generateInvoiceId().generateInvoiceId(1, Integer.parseInt(UserDetails.UserLocation_id));
-                                            Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`,`clothing`,`box`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
-                                                    + " VALUES ('"+invoiceId+"','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + Payamount + "','" + clothing + "','" + box + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
+                                            Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`,`bag`,`invoice_location`,`discount_percentage`,`order_time`)"
+                                                    + " VALUES ('" + invoiceId + "','" + OrderDate + "','" + Double.valueOf(jLabel38.getText()) + "','" + Customer_mobile + "','" + paymentMethodSelecetd + "','" + Discount + "','" + InsertSubTotal + "','" + AdvancedPayment + "','" + JoBtype + "','" + LensTotal + "','" + paymentStatus + "','" + WarrentyPeriod + "','" + Payamount + "','" + bag + "','" + UserDetails.UserLocation_id + "','" + final_discountPercentage + "','" + orderTime + "') ");
 
                                             if (Inser_rs != null) {
 
@@ -984,22 +942,6 @@ public class SellHearingAid extends javax.swing.JFrame {
                                                     if (reduceBox_rs.next()) {
                                                         int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
                                                         MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + box_stock_id + "' ");
-                                                    }
-                                                }
-
-                                                if (jRadioButton6.isSelected()) { // bag
-                                                    ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + bag_stock_id + "' ");
-                                                    if (reduceBox_rs.next()) {
-                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + bag_stock_id + "' ");
-                                                    }
-                                                }
-
-                                                if (jRadioButton7.isSelected()) { // clothing
-                                                    ResultSet reduceBox_rs = MySQL.execute("SELECT * FROM `stock` WHERE `id` = '" + clothing_stock_id + "' ");
-                                                    if (reduceBox_rs.next()) {
-                                                        int CurruntStockQty = reduceBox_rs.getInt("qty") - 1;
-                                                        MySQL.execute("UPDATE `stock` SET `qty` = '" + CurruntStockQty + "' WHERE `id` = '" + clothing_stock_id + "' ");
                                                     }
                                                 }
 
@@ -1334,8 +1276,6 @@ public class SellHearingAid extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JRadioButton jRadioButton6;
-    private javax.swing.JRadioButton jRadioButton7;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
