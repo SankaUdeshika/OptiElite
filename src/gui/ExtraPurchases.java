@@ -278,10 +278,10 @@ public class ExtraPurchases extends javax.swing.JFrame {
                     ResultSet Inser_rs = MySQL.execute("INSERT INTO `invoice` (`invoice_id`,`date`,`total_price`,`customer_mobile`,`payment_method_Payment_id`,`discount`,`subtotal`,`advance_payment`,`JobType_job_id`,`lenstotal`,`payment_status_id`,`job_warrenty_warrenty_id`,`payment_amount`,`invoice_location`)"
                             + " VALUES ('"+invoice_id+"','" + curruntDay + "','" + Payamount + "','" + customerMobile + "','" + paymentMethodSelecetd + "','0','0','0','1','0','" + '1' + "','1','" + Payamount + "','" + UserDetails.UserLocation_id + "') ");
 
-                    if (Inser_rs.next()) {
+                    if (Inser_rs != null) {
                         // add adnvace Payment
-                        int invoiceId = Inser_rs.getInt(1);
-                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoiceId + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "') ");
+                        
+                        MySQL.execute("INSERT INTO `advance_payment_history` (`invoice_invoice_id`,`paid_amount`,`date`,`time`,`payment_method`,`location_id`) VALUES ('" + invoice_id + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + paymentMethodSelecetd + "','" + UserDetails.UserLocation_id + "') ");
                         JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
                     }
 
