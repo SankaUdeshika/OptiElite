@@ -17,6 +17,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import models.ActivityLog;
 import models.MySQL;
 import models.Reports;
 import models.UserDetails;
@@ -27,7 +28,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
      * Creates new form AdminUserManagement
      */
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    
+
     public AdminUserManagement() {
         initComponents();
         setSize(screen.width, screen.height);
@@ -35,16 +36,15 @@ public class AdminUserManagement extends javax.swing.JFrame {
         operater();
         time();
     }
-    
+
     private void operater() {
         String name = UserDetails.UserName;
         userNameField.setText(name);
     }
-    
+
     private void time() {
         final DateFormat timeFormat = new SimpleDateFormat("HH:mm aa");
         final DateFormat dateFormat = new SimpleDateFormat("yyy MMMM dd");
-
 
         ActionListener timerListener = (ActionEvent e) -> {
             Date date = new Date();
@@ -55,7 +55,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
             String month_string = dayArray[1];
             String day_string = dayArray[2];
 
-            String DateString = day_string+ " of "+ month_string+" "+year_string;
+            String DateString = day_string + " of " + month_string + " " + year_string;
             timeField.setText(time);
             dateField.setText(DateString);
             System.out.println(day);
@@ -64,7 +64,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
         timer.setInitialDelay(0);
         timer.start();
     }
-    
+
     public void Refresh() {
         loadLocations();
         loadUserType();
@@ -72,32 +72,32 @@ public class AdminUserManagement extends javax.swing.JFrame {
         jButton11.setVisible(false);
         jButton12.setVisible(false);
         jTextField8.setVisible(true);
-        
+
         jTextField4.setText("");
         jTextField2.setText("");
         jTextField7.setText("");
         jTextField8.setText("");
-        
+
         String firstName = jTextField2.getText();
         String lastName = jTextField7.getText();
         jComboBox5.setSelectedIndex(0);
-        
+
     }
-    
+
     public void loadLocations() {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `location` ORDER BY `id` ASC");
             Vector v = new Vector();
-            
+
             v.add("Select Locaiton");
             while (rs.next()) {
                 v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("location_name")));
             }
-            
+
             DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
             jComboBox1.setModel(dfm);
             jComboBox3.setModel(dfm);
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
@@ -105,20 +105,20 @@ public class AdminUserManagement extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void loadUserType() {
         try {
             ResultSet rs = MySQL.execute("SELECT * FROM `user_type` ORDER BY `id` ASC");
             Vector v = new Vector();
-            
+
             v.add("Select status");
             while (rs.next()) {
                 v.add(String.valueOf(rs.getString("id") + ") " + rs.getString("Type")));
             }
-            
+
             DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
             jComboBox5.setModel(dfm);
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
@@ -126,13 +126,19 @@ public class AdminUserManagement extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     public void LoadUsers() {
         try {
-            ResultSet rs = MySQL.execute("SELECT * FROM `users` INNER JOIN `user_type` ON `users`.`user_type_id` = `user_type`.`id` INNER JOIN `user_status` ON `user_status`.`status_id` = `users`.`user_status_status_id` INNER JOIN `location` ON `location`.`id` = `users`.`location_id` ");
+            String querry = "";
+            if (UserDetails.UserRole.equals("4")) {
+                querry = "SELECT * FROM `users` INNER JOIN `user_type` ON `users`.`user_type_id` = `user_type`.`id` INNER JOIN `user_status` ON `user_status`.`status_id` = `users`.`user_status_status_id` INNER JOIN `location` ON `location`.`id` = `users`.`location_id` ";
+            } else {
+                querry = "SELECT * FROM `users` INNER JOIN `user_type` ON `users`.`user_type_id` = `user_type`.`id` INNER JOIN `user_status` ON `user_status`.`status_id` = `users`.`user_status_status_id` INNER JOIN `location` ON `location`.`id` = `users`.`location_id` WHERE `users`.`id` = '" + UserDetails.UserId + "'";
+            }
+            ResultSet rs = MySQL.execute(querry);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
-            
+
             while (rs.next()) {
                 Vector v = new Vector();
                 v.add(rs.getString("id"));
@@ -143,10 +149,10 @@ public class AdminUserManagement extends javax.swing.JFrame {
                 v.add(rs.getString("username"));
                 v.add(rs.getString("status"));
                 v.add(rs.getString("password"));
-                
+
                 dtm.addRow(v);
             }
-            
+
         } catch (SQLException se) {
             se.printStackTrace();
             JOptionPane.showMessageDialog(this, "Please Check Your Internet Conneciton", "Connection Error", JOptionPane.ERROR_MESSAGE);
@@ -155,7 +161,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Something Wrong Please Try again Later", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -298,7 +304,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
         jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 990, 250));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel13.setText("Stock Table");
+        jLabel13.setText("User Table");
         jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 160, -1));
 
         jButton9.setText("Search");
@@ -610,7 +616,8 @@ public class AdminUserManagement extends javax.swing.JFrame {
         int selectrow = jTable1.getSelectedRow();
         if (selectrow != -1) {
             String user_id = String.valueOf(jTable1.getValueAt(selectrow, 0));
-            
+            String user_name = String.valueOf(jTable1.getValueAt(selectrow, 1));
+
             try {
                 ResultSet rs = MySQL.execute("SELECT * FROM `users` WHERE `id` = '" + user_id + "' ");
                 if (rs.next()) {
@@ -618,13 +625,16 @@ public class AdminUserManagement extends javax.swing.JFrame {
                         MySQL.execute("UPDATE `users` SET `user_status_status_id` = '2' WHERE `id` = '" + user_id + "' ");
                         JOptionPane.showMessageDialog(this, "User Deactivated", "Success", JOptionPane.OK_OPTION);
                         logger.log(Level.INFO, user_id + " Deactivated");
-                        
+                        ActivityLog.addLog(user_name + " User Deactivated by " + UserDetails.UserName, 1);
                         Refresh();
                     } else if (rs.getInt("user_status_status_id") == 2) {
                         MySQL.execute("UPDATE `users` SET `user_status_status_id` = '1' WHERE `id` = '" + user_id + "' ");
                         JOptionPane.showMessageDialog(this, "User Activated", "Success", JOptionPane.OK_OPTION);
                         logger.log(Level.INFO, user_id + " Activated");
-                        
+
+//                        new Thread(() -> ActivityLog.addLog(user_name + " User Deactivated by " + UserDetails.UserName, 1)).start();
+                        ActivityLog.addLog(user_name + " User Activated by " + UserDetails.UserName, 1);
+
                         Refresh();
                     }
                 } else {
@@ -633,7 +643,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
         }
     }//GEN-LAST:event_jButton12ActionPerformed
 
@@ -647,7 +657,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
             String lastName = jTextField7.getText();
             String password = jTextField8.getText();
             int userType = jComboBox5.getSelectedIndex();
-            
+
             if (username.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter Username");
             } else if (firstName.isEmpty()) {
@@ -662,6 +672,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
                 MySQL.execute("UPDATE `users` SET `username` = '" + username + "' , `fname` = '" + firstName + "', `lname` = '" + lastName + "' , `user_type_id` = '" + userType + "' , `password` = '" + password + "' WHERE `id` = '" + user_id + "' ");
                 JOptionPane.showMessageDialog(this, "Update Success", "Success", JOptionPane.OK_OPTION);
                 logger.log(Level.INFO, username + " update info");
+                new Thread(() -> ActivityLog.addLog(UserDetails.UserName + " was Changed his password", 1)).start();
                 Refresh();
             }
         }
@@ -732,23 +743,23 @@ public class AdminUserManagement extends javax.swing.JFrame {
             String fname = String.valueOf(jTable1.getValueAt(selectRow, 1));
             String lname = String.valueOf(jTable1.getValueAt(selectRow, 2));
             String password = String.valueOf(jTable1.getValueAt(selectRow, 7));
-            
+
             jTextField4.setText(username);
             jTextField2.setText(fname);
             jTextField7.setText(lname);
             jTextField8.setText(password);
-            
+
             try {
                 ResultSet rs = MySQL.execute("SELECT * FROM `user_type` WHERE `Type` = '" + String.valueOf(jTable1.getValueAt(selectRow, 3)) + "'  ");
                 if (rs.next()) {
                     int curruntUserType = rs.getInt("id");
                     jComboBox5.setSelectedIndex(curruntUserType);
                 }
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
         }
 
         //        int selectedRow = jTable1.getSelectedRow();
@@ -794,7 +805,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
         String Password = jTextField8.getText();
         int userType_id = jComboBox5.getSelectedIndex();
         int user_location = jComboBox3.getSelectedIndex();
-        
+
         if (username.isEmpty()) {
             System.out.println("empty");
             JOptionPane.showMessageDialog(this, "Please Enter Username First", "Error", JOptionPane.ERROR_MESSAGE);
@@ -813,7 +824,8 @@ public class AdminUserManagement extends javax.swing.JFrame {
                 MySQL.execute("INSERT INTO `users` (`user_type_id`,`fname`,`lname`,`location_id`,`username`,`password`,`user_status_status_id`) VALUES ('" + userType_id + "','" + fname + "','" + lname + "','" + user_location + "','" + username + "','" + Password + "','1')");
                 JOptionPane.showMessageDialog(this, "New User Added", "Succcess", JOptionPane.OK_OPTION);
                 logger.log(Level.INFO, "New user has added");
-                
+
+                new Thread(() -> ActivityLog.addLog("Added new User by " + UserDetails.UserName, 1)).start();
                 Refresh();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -851,7 +863,7 @@ public class AdminUserManagement extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       FlatMacLightLaf.setup();
+        FlatMacLightLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
