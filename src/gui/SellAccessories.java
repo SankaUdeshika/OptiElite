@@ -19,6 +19,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import models.ActivityLog;
 import models.MySQL;
 import models.Reports;
 import models.UserDetails;
@@ -926,6 +927,8 @@ public class SellAccessories extends javax.swing.JFrame {
 
                                 Refresh();
 //                            Print Bill
+                                new Thread(() -> ActivityLog.addLog("No:- Order was Updated by " + UserDetails.UserName, 3)).start();
+
                                 Reports.WithoutPrescriptionOrderPurchaceInvoice(String.valueOf(invoiceId));
                                 removeItemTable();
                                 Refresh();

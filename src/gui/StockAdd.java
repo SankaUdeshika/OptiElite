@@ -22,12 +22,16 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import models.ActivityLog;
 import models.MySQL;
 import org.apache.poi.ss.usermodel.*;
 
 public class StockAdd extends javax.swing.JFrame {
 
     public static Logger logger = Logger.getLogger("egaleEye");
+
+    String JasperStockQuerry; // already exists presumably
+    List<Object> JasperStockParams; // add this
 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
     HashMap<String, String> intidmap = new HashMap<>();
@@ -136,9 +140,6 @@ public class StockAdd extends javax.swing.JFrame {
         }
     }
 
-    //    Stock Query
-    String JasperStockQuerry = "";
-
     public void loadLocations() {
         try {
 
@@ -195,12 +196,36 @@ public class StockAdd extends javax.swing.JFrame {
         supplierTable();
         loadLocations();
         LoadStockTable();
+        loadSuppiers();
         jTextField11.setText("");
         jTextField5.setText("");
         jTextField6.setText("");
         jTextField10.setText("");
         jTextField4.setText("");
         jTextField15.setText("");
+    }
+
+    public void loadSuppiers() {
+        try {
+            String locationquerry = "SELECT * FROM `supplier`  ";
+
+            ResultSet rs = MySQL.execute(locationquerry);
+            Vector v = new Vector();
+
+            v.add("Select Suppliers");
+            while (rs.next()) {
+                v.add(String.valueOf(rs.getString("Supplier_Name")));
+            }
+
+            DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
+            jComboBox4.setModel(dfm);
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error", "Please Check Your Internet Connection or Please Try again later", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void LoadSettings() {
@@ -1068,6 +1093,87 @@ public class StockAdd extends javax.swing.JFrame {
         return input.replace("'", "''");
     }
 
+    private void downloadTemplateExcel() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Import Template");
+        fileChooser.setSelectedFile(new File("Import_Stock_Template.xlsx"));
+
+        int result = fileChooser.showSaveDialog(this);
+        if (result != JFileChooser.APPROVE_OPTION) {
+            return; // user cancelled
+        }
+
+        File saveFile = fileChooser.getSelectedFile();
+
+        // Make sure it ends with .xlsx
+        if (!saveFile.getName().toLowerCase().endsWith(".xlsx")) {
+            saveFile = new File(saveFile.getAbsolutePath() + ".xlsx");
+        }
+
+        // Warn before overwrite
+        if (saveFile.exists()) {
+            int overwrite = JOptionPane.showConfirmDialog(this,
+                    "File already exists. Overwrite it?",
+                    "Confirm Overwrite",
+                    JOptionPane.YES_NO_OPTION);
+            if (overwrite != JOptionPane.YES_OPTION) {
+                return;
+            }
+        }
+
+        try (Workbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Sheet1");
+
+            String[] headers = {
+                "Product id", "sub_category", "Brand Name", "Quality ",
+                "product_name", "supplie", "location Name", "cost",
+                "saling_price", "qty", "color", "SKU"
+            };
+
+            // Header row
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < headers.length; i++) {
+                headerRow.createCell(i).setCellValue(headers[i]);
+            }
+
+            // Sample row (matches the format your import expects)
+            Row sampleRow = sheet.createRow(1);
+            sampleRow.createCell(0).setCellValue(2001);          // Product id
+            sampleRow.createCell(1).setCellValue("FULL FRAME");  // sub_category
+            sampleRow.createCell(2).setCellValue("Boss");        // Brand Name
+            sampleRow.createCell(3).setCellValue("GRADE B");     // Quality
+            sampleRow.createCell(4).setCellValue("");            // product_name
+            sampleRow.createCell(5).setCellValue("NO ID");       // supplier
+            sampleRow.createCell(6).setCellValue("MATHUGAMA");   // location Name
+            sampleRow.createCell(7).setCellValue(0);             // cost
+            sampleRow.createCell(8).setCellValue(15000);         // saling_price
+            sampleRow.createCell(9).setCellValue(1);             // qty
+            sampleRow.createCell(10).setCellValue("");           // color
+            sampleRow.createCell(11).setCellValue("");           // SKU
+
+            // Auto-size columns for readability
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            try (java.io.FileOutputStream fos = new java.io.FileOutputStream(saveFile)) {
+                workbook.write(fos);
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    "Template saved successfully:\n" + saveFile.getAbsolutePath(),
+                    "Download Complete",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Error creating template file: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1088,6 +1194,15 @@ public class StockAdd extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JSeparator();
         jButton6 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jSeparator7 = new javax.swing.JSeparator();
+        jSeparator8 = new javax.swing.JSeparator();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jButton11 = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel6 = new javax.swing.JPanel();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel13 = new javax.swing.JLabel();
@@ -1136,14 +1251,39 @@ public class StockAdd extends javax.swing.JFrame {
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jButton10 = new javax.swing.JButton();
         jTextField3 = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jSeparator7 = new javax.swing.JSeparator();
-        jSeparator8 = new javax.swing.JSeparator();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jButton11 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable5 = new javax.swing.JTable();
+        jSeparator10 = new javax.swing.JSeparator();
+        jLabel45 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
+        jTextField20 = new javax.swing.JTextField();
+        jLabel47 = new javax.swing.JLabel();
+        jLabel49 = new javax.swing.JLabel();
+        jTextField23 = new javax.swing.JTextField();
+        jLabel50 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jLabel52 = new javax.swing.JLabel();
+        jDateChooser4 = new com.toedter.calendar.JDateChooser();
+        jButton14 = new javax.swing.JButton();
+        jTextField21 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jDateChooser3 = new com.toedter.calendar.JDateChooser();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField12 = new javax.swing.JTextField();
+        jComboBox4 = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        jButton13 = new javax.swing.JButton();
+        jButton15 = new javax.swing.JButton();
+        jToggleButton2 = new javax.swing.JToggleButton();
+        jButton16 = new javax.swing.JButton();
+        jLabel48 = new javax.swing.JLabel();
+        jLabel51 = new javax.swing.JLabel();
+        jToggleButton3 = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -1200,285 +1340,6 @@ public class StockAdd extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel7.setText("Pages");
 
-        jPanel6.setBackground(new java.awt.Color(206, 206, 206));
-        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 540, 402, 10));
-
-        jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel13.setText("Stock Infomations");
-        jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
-        jPanel6.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 500, 80, 30));
-
-        jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 448, -1, -1));
-
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
-            }
-        });
-        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField5KeyReleased(evt);
-            }
-        });
-        jPanel6.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(298, 460, 120, -1));
-
-        jLabel15.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel15.setText("Stock Date");
-        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(674, 430, -1, -1));
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Company", "Supplier"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable2MouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
-        }
-
-        jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(424, 486, 230, 160));
-
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Row No", "Stock ID", "Product ID", "Product Brand", "Sub Category", "Qty", "Selling Price", "Date TIme", "Supplier", "Location", "Color", "SKU"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(jTable3);
-
-        jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 129, 1104, 257));
-
-        jLabel16.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel16.setText("Sub Category");
-        jPanel6.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(298, 430, -1, -1));
-
-        jTextField10.setText("Search By");
-        jTextField10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField10ActionPerformed(evt);
-            }
-        });
-        jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField10KeyReleased(evt);
-            }
-        });
-        jPanel6.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(426, 460, 230, -1));
-
-        jLabel24.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel24.setText("Quantity");
-        jPanel6.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 480, -1, -1));
-
-        jTextField11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField11ActionPerformed(evt);
-            }
-        });
-        jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField11KeyReleased(evt);
-            }
-        });
-        jPanel6.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 460, 120, -1));
-
-        jLabel25.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel25.setText("Product ID");
-        jPanel6.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 430, -1, -1));
-
-        jLabel26.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel26.setText("Supplier Company");
-        jPanel6.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(426, 430, 120, -1));
-        jPanel6.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(674, 460, 119, -1));
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(799, 460, 111, -1));
-
-        jLabel28.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel28.setText("Location");
-        jPanel6.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(799, 430, -1, -1));
-
-        jLabel30.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel30.setText("Selling Price");
-        jPanel6.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 480, 121, -1));
-        jPanel6.add(jTextField15, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 500, 176, 30));
-        jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 389, 1025, 4));
-
-        jLabel29.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel29.setText("Add Stock");
-        jPanel6.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 399, -1, -1));
-
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
-            }
-        });
-        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField6KeyReleased(evt);
-            }
-        });
-        jPanel6.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 460, 110, -1));
-
-        jLabel32.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel32.setText("Product Brand");
-        jPanel6.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 430, -1, -1));
-
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Product ID", "Row No", "Brand", "SubCategory"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable4MouseClicked(evt);
-            }
-        });
-        jScrollPane4.setViewportView(jTable4);
-        if (jTable4.getColumnModel().getColumnCount() > 0) {
-            jTable4.getColumnModel().getColumn(0).setResizable(false);
-            jTable4.getColumnModel().getColumn(1).setResizable(false);
-            jTable4.getColumnModel().getColumn(2).setResizable(false);
-            jTable4.getColumnModel().getColumn(3).setResizable(false);
-        }
-
-        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 486, 380, 160));
-
-        jLabel31.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel31.setText("SKU No");
-        jPanel6.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(931, 430, -1, -1));
-
-        SKUNO.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SKUNOActionPerformed(evt);
-            }
-        });
-        jPanel6.add(SKUNO, new org.netbeans.lib.awtextra.AbsoluteConstraints(928, 460, -1, -1));
-        jPanel6.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(674, 508, 124, -1));
-
-        jLabel1.setText("Frame Size (optional)");
-        jPanel6.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(674, 486, 166, -1));
-
-        jLabel17.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
-        jLabel17.setText("Search Option is currentylu unavailable");
-        jPanel6.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 51, -1, -1));
-
-        jLabel18.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel18.setText("Stock ID");
-        jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 71, -1, -1));
-
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 101, 120, -1));
-        jPanel6.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(146, 101, 140, -1));
-
-        jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel19.setText("SKU ");
-        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(146, 71, -1, -1));
-
-        jLabel27.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel27.setText("Product ID");
-        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(296, 71, -1, -1));
-
-        jTextField8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField8ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(296, 101, 120, -1));
-
-        jLabel20.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel20.setText("Supplier");
-        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(426, 71, -1, -1));
-
-        jTextField9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField9ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(426, 101, 120, -1));
-
-        jLabel21.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel21.setText("Location");
-        jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(556, 71, -1, -1));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(556, 101, 120, -1));
-
-        jLabel23.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel23.setText("Brand");
-        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 71, -1, -1));
-
-        jLabel22.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel22.setText("Stock Date");
-        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(836, 71, -1, -1));
-        jPanel6.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(836, 101, 140, -1));
-
-        jButton10.setText("Search");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(986, 101, 70, -1));
-        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(688, 101, 130, -1));
-
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/spect.png"))); // NOI18N
         jButton5.setText("Add New Product");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -1524,43 +1385,495 @@ public class StockAdd extends javax.swing.JFrame {
             }
         });
 
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseClicked(evt);
+            }
+        });
+
+        jPanel6.setBackground(new java.awt.Color(206, 206, 206));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 520, 402, 10));
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        jLabel13.setText("Stock Infomations");
+        jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        jPanel6.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 480, 80, 30));
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 448, -1, -1));
+
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField5KeyReleased(evt);
+            }
+        });
+        jPanel6.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 430, 120, -1));
+
+        jLabel15.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel15.setText("Stock Date");
+        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 410, -1, -1));
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Company", "Supplier"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
+        if (jTable2.getColumnModel().getColumnCount() > 0) {
+            jTable2.getColumnModel().getColumn(0).setResizable(false);
+            jTable2.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 460, 230, 160));
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Row No", "Stock ID", "Product ID", "Product Brand", "Sub Category", "Qty", "Selling Price", "Date TIme", "Supplier", "Location", "Color", "SKU"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTable3);
+
+        jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 1104, 257));
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel16.setText("Sub Category");
+        jPanel6.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, -1, -1));
+
+        jTextField10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField10ActionPerformed(evt);
+            }
+        });
+        jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField10KeyReleased(evt);
+            }
+        });
+        jPanel6.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 430, 230, -1));
+
+        jLabel24.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel24.setText("Quantity");
+        jPanel6.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 460, -1, -1));
+
+        jTextField11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField11ActionPerformed(evt);
+            }
+        });
+        jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField11KeyReleased(evt);
+            }
+        });
+        jPanel6.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, 120, -1));
+
+        jLabel25.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel25.setText("Product ID");
+        jPanel6.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, -1, -1));
+
+        jLabel26.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel26.setText("Supplier Company");
+        jPanel6.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 410, 120, -1));
+        jPanel6.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 430, 119, -1));
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 430, 111, -1));
+
+        jLabel28.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel28.setText("Location");
+        jPanel6.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 410, -1, -1));
+
+        jLabel30.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel30.setText("Selling Price");
+        jPanel6.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 460, 121, -1));
+        jPanel6.add(jTextField15, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 480, 176, 30));
+        jPanel6.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, 1025, 10));
+
+        jLabel29.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        jLabel29.setText("Add Stock");
+        jPanel6.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, -1, -1));
+
+        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField6ActionPerformed(evt);
+            }
+        });
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField6KeyReleased(evt);
+            }
+        });
+        jPanel6.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 430, 110, -1));
+
+        jLabel32.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel32.setText("Product Brand");
+        jPanel6.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 410, -1, -1));
+
+        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Product ID", "Row No", "Brand", "SubCategory"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable4MouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(jTable4);
+        if (jTable4.getColumnModel().getColumnCount() > 0) {
+            jTable4.getColumnModel().getColumn(0).setResizable(false);
+            jTable4.getColumnModel().getColumn(1).setResizable(false);
+            jTable4.getColumnModel().getColumn(2).setResizable(false);
+            jTable4.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 460, 380, 160));
+
+        jLabel31.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel31.setText("SKU No");
+        jPanel6.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 410, -1, -1));
+
+        SKUNO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SKUNOActionPerformed(evt);
+            }
+        });
+        jPanel6.add(SKUNO, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 430, -1, -1));
+        jPanel6.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 480, 124, 30));
+
+        jLabel1.setText("Frame Size (optional)");
+        jPanel6.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 460, 120, -1));
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        jLabel17.setText("Search Option ");
+        jPanel6.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
+
+        jLabel18.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel18.setText("Stock ID");
+        jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
+
+        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField7ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 120, -1));
+        jPanel6.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, 140, -1));
+
+        jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel19.setText("SKU ");
+        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, -1, -1));
+
+        jLabel27.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel27.setText("Product ID");
+        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 50, -1, -1));
+
+        jTextField8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField8ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, 120, -1));
+
+        jLabel20.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel20.setText("Supplier");
+        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, -1, -1));
+
+        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField9ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 70, 120, -1));
+
+        jLabel21.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel21.setText("Location");
+        jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 50, -1, -1));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 70, 120, -1));
+
+        jLabel23.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel23.setText("Brand");
+        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 50, -1, -1));
+
+        jLabel22.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel22.setText("Stock Date");
+        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 50, -1, -1));
+        jPanel6.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 70, 140, -1));
+
+        jButton10.setText("Search");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 70, 70, -1));
+        jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 70, 130, -1));
+
+        jTabbedPane1.addTab("Add Only Stock", jPanel6);
+
+        jPanel7.setBackground(new java.awt.Color(206, 206, 206));
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel33.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        jLabel33.setText("GRN (Purchasing) Infomation");
+        jPanel7.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
+
+        jLabel34.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jPanel7.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 448, -1, -1));
+
+        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Company", "Supplier"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable5MouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(jTable5);
+        if (jTable5.getColumnModel().getColumnCount() > 0) {
+            jTable5.getColumnModel().getColumn(0).setResizable(false);
+            jTable5.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        jPanel7.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, 320, 200));
+        jPanel7.add(jSeparator10, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 389, 1025, 4));
+
+        jLabel45.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        jLabel45.setText("Actions");
+        jPanel7.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 170, -1, -1));
+
+        jLabel46.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel46.setText("Grn Invoice No");
+        jPanel7.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, -1, -1));
+
+        jTextField20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField20ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jTextField20, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 140, 100, -1));
+
+        jLabel47.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jPanel7.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(146, 71, -1, -1));
+
+        jLabel49.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel49.setText("Supplier");
+        jPanel7.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 110, -1, -1));
+
+        jTextField23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField23ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jTextField23, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 140, 120, -1));
+
+        jLabel50.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel50.setText("Location");
+        jPanel7.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 110, -1, -1));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel7.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 140, 120, -1));
+
+        jLabel52.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel52.setText("Stock Date");
+        jPanel7.add(jLabel52, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 110, -1, -1));
+        jPanel7.add(jDateChooser4, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 140, 140, -1));
+
+        jButton14.setText("Search");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 140, 70, -1));
+
+        jTextField21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField21ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jTextField21, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 160, -1));
+
+        jLabel2.setText("GRN Date");
+        jPanel7.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, -1));
+        jPanel7.add(jDateChooser3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 160, -1));
+
+        jLabel3.setText("Supplier");
+        jPanel7.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, -1, -1));
+
+        jLabel4.setText("GRN invoice ID");
+        jPanel7.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
+        jPanel7.add(jTextField12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 160, -1));
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel7.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 130, -1));
+
+        jLabel8.setText("GRN Amount");
+        jPanel7.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, -1));
+
+        jButton13.setText("Add GRN invoice");
+        jPanel7.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 160, -1));
+
+        jButton15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/excel-file (1).png"))); // NOI18N
+        jButton15.setText("Import Stock Excel for the GRN");
+        jButton15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 190, 270, 60));
+
+        jToggleButton2.setText("Delete GRN");
+        jPanel7.add(jToggleButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 260, 270, 50));
+
+        jButton16.setText("Update GRN");
+        jPanel7.add(jButton16, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 320, 270, 50));
+
+        jLabel48.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        jLabel48.setText("Search Purchasing invoices in here");
+        jPanel7.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, -1, -1));
+
+        jLabel51.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
+        jLabel51.setText("Add Or Update GRN");
+        jPanel7.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
+
+        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/SmallSettings.png"))); // NOI18N
+        jPanel7.add(jToggleButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(162, 320, 30, 20));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1131, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 1131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 692, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        jTabbedPane1.addTab("Add Stock With GRN", jPanel3);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator8)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSeparator3)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(118, 118, 118)
-                                .addComponent(jSeparator7))
-                            .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel7))
-                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSeparator4)
-                            .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 3, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(50, 50, 50))
+                        .addContainerGap()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jSeparator3)
+                                .addGroup(jPanel4Layout.createSequentialGroup()
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel6)
+                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jSeparator4)
+                                .addComponent(jLabel7)
+                                .addComponent(jSeparator7, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jSeparator8))
+                            .addComponent(jToggleButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1579,30 +1892,28 @@ public class StockAdd extends javax.swing.JFrame {
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton11)
-                .addGap(28, 28, 28)
-                .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jLabel10.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
@@ -1690,22 +2001,21 @@ public class StockAdd extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator1)))
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator1)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1857,6 +2167,7 @@ public class StockAdd extends javax.swing.JFrame {
             }
 
             JOptionPane.showMessageDialog(this, "Stock Added Successfully", "Insert Success", JOptionPane.INFORMATION_MESSAGE);
+            new Thread(() -> ActivityLog.addLog("New stock entered by " + UserDetails.UserName,3)).start();
             refresh();
 
         } catch (SQLException se) {
@@ -2059,7 +2370,8 @@ public class StockAdd extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
+        // Download sotck import excel sheet ->
+        downloadTemplateExcel();
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
@@ -2075,22 +2387,35 @@ public class StockAdd extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-
-        SimpleDateFormat simpleDateformat = new SimpleDateFormat("yyyy-MM-dd"); // fixed: YYYY -> yyyy
-        String ToDate;
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("yyyy-MM-dd");
+        String toDate;
         try {
-            ToDate = simpleDateformat.format(jDateChooser1.getDate());
-            jLabel22.setText(ToDate);
+            toDate = simpleDateformat.format(jDateChooser1.getDate());
+            jLabel22.setText(toDate);
         } catch (NullPointerException ne) {
-            ToDate = null;
+            toDate = null;
         }
 
-        String baseQuery = "SELECT * FROM `stock`"
-                + " INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid`"
-                + " INNER JOIN `supplier` ON `supplier`.`supplier_id` = `stock`.`supplier_supplier_id` "
-                + " INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
-                + " INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` "
-                + " INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id`";
+// Explicit column aliases avoid ambiguous "id" collisions across stock/location/brand/sub_category
+        String baseQuery = "SELECT "
+                + "`stock`.`id` AS stock_id, "
+                + "`stock`.`product_intid` AS product_intid, "
+                + "`stock`.`product_id` AS product_id, " // fixed: comes from stock, not product
+                + "`stock`.`qty` AS qty, "
+                + "`stock`.`saling_price` AS saling_price, "
+                + "`stock`.`stock_date` AS stock_date, "
+                + "`stock`.`SKU` AS SKU, "
+                + "`stock`.`color` AS color, "
+                + "`brand`.`brand_name` AS brand_name, "
+                + "`sub_category`.`sub_category` AS sub_category, "
+                + "`supplier`.`Supplier_Name` AS Supplier_Name, "
+                + "`location`.`location_name` AS location_name "
+                + "FROM `stock` "
+                + "INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` "
+                + "INNER JOIN `supplier` ON `supplier`.`supplier_id` = `stock`.`supplier_supplier_id` "
+                + "INNER JOIN `location` ON `location`.`id` = `stock`.`location_id` "
+                + "INNER JOIN `brand` ON `brand`.`id` = `product`.`brand_id` "
+                + "INNER JOIN `sub_category` ON `sub_category`.`id` = `product`.`sub_category_id`";
 
         List<String> conditions = new ArrayList<>();
         List<Object> params = new ArrayList<>();
@@ -2110,25 +2435,28 @@ public class StockAdd extends javax.swing.JFrame {
         }
 
         if (jComboBox1.getSelectedIndex() != 0) {
+            // Combo box items are expected in "id - Name" format; take the id token,
+            // not just the first character (fixes breakage once IDs reach double digits)
+            String selected = String.valueOf(jComboBox1.getSelectedItem());
+            String location_id = selected.split(" - ")[0].trim();
             conditions.add("`stock`.`location_id` = ?");
-            String location_id = String.valueOf(jComboBox1.getSelectedItem()).substring(0, 1);
             params.add(location_id);
-
         } else if (saparateBranch) {
             conditions.add("`stock`.`location_id` = ?");
             params.add(UserDetails.UserLocation_id);
         }
 
         if (!jTextField3.getText().isEmpty()) {
-            String[] brandArray = jTextField3.getText().trim().split(" ");
-            String brand = brandArray.length > 1 ? brandArray[1] : brandArray[0]; // fixed: avoid AIOOBE
+            // Match the full brand name as typed, instead of only the second word
+            String brand = jTextField3.getText().trim();
             conditions.add("`brand`.`brand_name` = ?");
             params.add(brand);
         }
 
-        if (ToDate != null) {
-            conditions.add("`stock_date` >= ?");
-            params.add(ToDate);
+        if (toDate != null) {
+            // "as of / up to" this date — flip to >= if this should be a lower bound instead
+            conditions.add("`stock`.`stock_date` <= ?");
+            params.add(toDate);
         }
 
         StringBuilder querry = new StringBuilder(baseQuery);
@@ -2137,30 +2465,32 @@ public class StockAdd extends javax.swing.JFrame {
         }
 
         System.out.println(querry);
-        JasperStockQuerry = querry.toString(); // keep params (JasperStockParams) alongside if Jasper needs them too
+        JasperStockQuerry = querry.toString();
+        JasperStockParams = new ArrayList<>(params); // keep params alongside for Jasper if needed
 
         try (PreparedStatement ps = MySQL.getConnection().prepareStatement(querry.toString())) {
             for (int i = 0; i < params.size(); i++) {
                 ps.setObject(i + 1, params.get(i));
             }
-            ResultSet rs = ps.executeQuery();
-            DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
-            dtm.setRowCount(0);
-            while (rs.next()) {
-                Vector v = new Vector();
-                v.add(rs.getInt("product_intid"));
-                v.add(rs.getInt("id"));            // fixed: no table prefix
-                v.add(rs.getString("product_id"));  // fixed: no table prefix
-                v.add(rs.getString("brand_name"));
-                v.add(rs.getString("sub_category"));
-                v.add(rs.getInt("qty"));
-                v.add(rs.getDouble("saling_price"));
-                v.add(rs.getDate("stock_date"));
-                v.add(rs.getString("Supplier_Name"));
-                v.add(rs.getString("location_name"));
-                v.add(rs.getString("color"));
-                v.add(rs.getString("SKU"));
-                dtm.addRow(v);
+            try (ResultSet rs = ps.executeQuery()) {
+                DefaultTableModel dtm = (DefaultTableModel) jTable3.getModel();
+                dtm.setRowCount(0);
+                while (rs.next()) {
+                    Vector v = new Vector();
+                    v.add(rs.getInt("product_intid"));
+                    v.add(rs.getInt("stock_id"));
+                    v.add(rs.getString("product_id"));
+                    v.add(rs.getString("brand_name"));
+                    v.add(rs.getString("sub_category"));
+                    v.add(rs.getInt("qty"));
+                    v.add(rs.getDouble("saling_price"));
+                    v.add(rs.getDate("stock_date"));
+                    v.add(rs.getString("Supplier_Name"));
+                    v.add(rs.getString("location_name"));
+                    v.add(rs.getString("color"));
+                    v.add(rs.getString("SKU"));
+                    dtm.addRow(v);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2179,6 +2509,34 @@ public class StockAdd extends javax.swing.JFrame {
         ShortInspection si = new ShortInspection("2");
         si.setVisible(true);
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jTable5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable5MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable5MouseClicked
+
+    private void jTextField20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField20ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField20ActionPerformed
+
+    private void jTextField23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField23ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField23ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jTextField21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField21ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField21ActionPerformed
+
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTabbedPane1MouseClicked
+
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton15ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2201,6 +2559,10 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
+    private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -2210,9 +2572,13 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBox4;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.toedter.calendar.JDateChooser jDateChooser3;
+    private com.toedter.calendar.JDateChooser jDateChooser4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2224,6 +2590,7 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -2234,35 +2601,58 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
+    private javax.swing.JTable jTable5;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
+    private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField15;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField20;
+    private javax.swing.JTextField jTextField21;
+    private javax.swing.JTextField jTextField23;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
@@ -2271,6 +2661,8 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JToggleButton jToggleButton3;
     private javax.swing.JLabel timeField;
     private javax.swing.JLabel userNameField;
     // End of variables declaration//GEN-END:variables

@@ -23,6 +23,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import models.ActivityLog;
 import models.MySQL;
 import models.UserDetails;
 import models.generateInvoiceId;
@@ -946,6 +947,7 @@ public class SellHearingAid extends javax.swing.JFrame {
                                                 }
 
                                                 // Order Successs. -> prints
+                                                new Thread(() -> ActivityLog.addLog("New Order entered by " + UserDetails.UserName, 3)).start();
                                                 Printsouts printsouts = new Printsouts(invoiceId);
                                                 printsouts.setVisible(true);
                                                 //  Reports.OrderPurchaceInvoice(String.valueOf(invoiceId));

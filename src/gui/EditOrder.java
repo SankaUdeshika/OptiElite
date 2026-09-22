@@ -23,6 +23,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import models.ActivityLog;
 import models.MySQL;
 import models.UserDetails;
 import org.apache.logging.log4j.core.jmx.Server;
@@ -1211,6 +1212,7 @@ public class EditOrder extends javax.swing.JFrame {
 
                             JOptionPane.showMessageDialog(this, "Invoice Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                             Refresh(Customer_mobile);
+                            new Thread(() -> ActivityLog.addLog("No:- " + BaseInvoice_id + " Order was Updated by " + UserDetails.UserName, 1)).start();
 
                         } else {
                             // ── New frame is out of stock ──
@@ -1264,6 +1266,7 @@ public class EditOrder extends javax.swing.JFrame {
                                     + "VALUES ('" + BaseInvoice_id + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + UserDetails.UserLocation_id + "')");
                         }
 
+                        new Thread(() -> ActivityLog.addLog("No:- " + BaseInvoice_id + " Order was Updated by " + UserDetails.UserName, 1)).start();
                         JOptionPane.showMessageDialog(this, "Invoice Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                         Refresh(Customer_mobile);
 
@@ -1325,6 +1328,7 @@ public class EditOrder extends javax.swing.JFrame {
                             + "VALUES ('" + BaseInvoice_id + "','" + Payamount + "','" + curruntDay + "','" + curruntTime + "','" + UserDetails.UserLocation_id + "')");
                 }
 
+                new Thread(() -> ActivityLog.addLog("No:- " + BaseInvoice_id + " Order was Updated by " + UserDetails.UserName, 1)).start();
                 JOptionPane.showMessageDialog(this, "Invoice Updated Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 Refresh(Customer_mobile);
 

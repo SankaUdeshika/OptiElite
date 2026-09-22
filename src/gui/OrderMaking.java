@@ -30,6 +30,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import models.ActivityLog;
 import models.MySQL;
 import models.generateInvoiceId;
 
@@ -1294,18 +1295,24 @@ public class OrderMaking extends javax.swing.JFrame {
         if (jRadioButton5.isSelected()) { // bag
             bagStockId = getAvailableStockId(15, "Bag");
             bag = bagStockId != null;
-            if (!bag) return; // error already shown inside getAvailableStockId
+            if (!bag) {
+                return; // error already shown inside getAvailableStockId
+            }
         }
         if (jRadioButton7.isSelected()) { // clothing
             clothingStockId = getAvailableStockId(14, "Clothing");
             clothing = clothingStockId != null;
-            if (!clothing) return;
+            if (!clothing) {
+                return;
+            }
         }
 
         // ---- manual invoice id override --------------------------------------
         if (!jTextField15.getText().isEmpty()) {
             manualInvoiceId = validateManualInvoiceId(jTextField15.getText());
-            if (manualInvoiceId == null) return; // "already registered" error already shown
+            if (manualInvoiceId == null) {
+                return; // "already registered" error already shown
+            }
         }
 
         // ---- lens selected but no prescription guard --------------------------
@@ -1362,9 +1369,12 @@ public class OrderMaking extends javax.swing.JFrame {
             return;
         }
         int paymentMethod = resolvePaymentMethod();
-        if (paymentMethod == 5) paymentInfo = jTextField12.getText(); // MintPay
-        if (paymentMethod == 6) paymentInfo = jTextField10.getText(); // KOKO
-
+        if (paymentMethod == 5) {
+            paymentInfo = jTextField12.getText(); // MintPay
+        }
+        if (paymentMethod == 6) {
+            paymentInfo = jTextField10.getText(); // KOKO
+        }
         // ---- prescription / frame -----------------------------------------
         String prescriptionId = jTextField4.getText();
         boolean hasPrescription = prescriptionId.matches("-?\\d+(\\.\\d+)?");
@@ -1386,7 +1396,9 @@ public class OrderMaking extends javax.swing.JFrame {
             int optionResult = JOptionPane.showConfirmDialog(this,
                     "Are You Sure Make Only Lens Purchase?", "Warning",
                     JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (optionResult != 0) return;
+            if (optionResult != 0) {
+                return;
+            }
         }
 
         // ---- lens -------------------------------------------------------------
@@ -1459,10 +1471,17 @@ public class OrderMaking extends javax.swing.JFrame {
                 insertInvoiceItem(invoiceId, frameId, jTextField2.getText());
                 decrementStock(frameId);
             }
-            if (FreeBoxItem_id != null) decrementStock(FreeBoxItem_id);
-            if (bag) decrementStock(bagStockId);
-            if (clothing) decrementStock(clothingStockId);
+            if (FreeBoxItem_id != null) {
+                decrementStock(FreeBoxItem_id);
+            }
+            if (bag) {
+                decrementStock(bagStockId);
+            }
+            if (clothing) {
+                decrementStock(clothingStockId);
+            }
 
+             new Thread(() -> ActivityLog.addLog("New Order entered by " + UserDetails.UserName, 3)).start();
             JOptionPane.showMessageDialog(this, "Order Adding Success", "Success", JOptionPane.OK_OPTION);
             finalizeOrder(invoiceId);
 
@@ -1480,7 +1499,7 @@ public class OrderMaking extends javax.swing.JFrame {
         try {
             ResultSet rs = MySQL.execute(
                     "SELECT * FROM `stock` INNER JOIN `product` ON `product`.`intid` = `stock`.`product_intid` "
-                            + "WHERE `product`.`sub_category_id` = '" + subCategoryId + "' AND `qty` > 0 ");
+                    + "WHERE `product`.`sub_category_id` = '" + subCategoryId + "' AND `qty` > 0 ");
             if (rs.next()) {
                 return String.valueOf(rs.getInt("stock.id"));
             }
@@ -1508,14 +1527,29 @@ public class OrderMaking extends javax.swing.JFrame {
         return null;
     }
 
-    /** payment_method table: 1=Cash 2=Card 3=Bank Deposit 4=Online Bank Transfer 5=MintPay 6=KOKO */
+    /**
+     * payment_method table: 1=Cash 2=Card 3=Bank Deposit 4=Online Bank Transfer
+     * 5=MintPay 6=KOKO
+     */
     private int resolvePaymentMethod() {
-        if (jRadioButton2.isSelected()) return 1;      // Cash
-        if (jRadioButton3.isSelected()) return 2;      // Card
-        if (jRadioButton1.isSelected()) return 3;      // Bank Deposit
-        if (jRadioButton4.isSelected()) return 4;      // Online Payment
-        if (jRadioButton8.isSelected()) return 5;      // MintPay
-        if (jRadioButton9.isSelected()) return 6;      // KOKO
+        if (jRadioButton2.isSelected()) {
+            return 1;      // Cash
+        }
+        if (jRadioButton3.isSelected()) {
+            return 2;      // Card
+        }
+        if (jRadioButton1.isSelected()) {
+            return 3;      // Bank Deposit
+        }
+        if (jRadioButton4.isSelected()) {
+            return 4;      // Online Payment
+        }
+        if (jRadioButton8.isSelected()) {
+            return 5;      // MintPay
+        }
+        if (jRadioButton9.isSelected()) {
+            return 6;      // KOKO
+        }
         return 0;
     }
 
@@ -1546,14 +1580,14 @@ public class OrderMaking extends javax.swing.JFrame {
 
         StringBuilder vals = new StringBuilder();
         vals.append("'").append(invoiceId).append("','").append(orderDate).append("','").append(total).append("','")
-            .append(customerMobile).append("','").append(paymentMethod).append("','").append(Discount).append("','")
-            .append(subTotal).append("','").append(AdvancedPayment).append("','").append(jobType).append("','")
-            .append(LensTotal).append("','").append(paymentStatus).append("','").append(warrantyId).append("','")
-            .append(lensQty).append("','").append(payAmount).append("','").append(clothing).append("','").append(bag)
-            .append("','").append(UserDetails.UserLocation_id).append("','").append(final_discountPercentage)
-            .append("','").append(orderTime).append("',")
-            .append(FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "NULL")
-            .append(",'").append(d7warrenty).append("'");
+                .append(customerMobile).append("','").append(paymentMethod).append("','").append(Discount).append("','")
+                .append(subTotal).append("','").append(AdvancedPayment).append("','").append(jobType).append("','")
+                .append(LensTotal).append("','").append(paymentStatus).append("','").append(warrantyId).append("','")
+                .append(lensQty).append("','").append(payAmount).append("','").append(clothing).append("','").append(bag)
+                .append("','").append(UserDetails.UserLocation_id).append("','").append(final_discountPercentage)
+                .append("','").append(orderTime).append("',")
+                .append(FreeBoxItem_id != null ? "'" + FreeBoxItem_id + "'" : "NULL")
+                .append(",'").append(d7warrenty).append("'");
 
         if (prescriptionId != null) {
             cols.append(",`prescription_details_job_no`");

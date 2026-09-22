@@ -28,6 +28,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import models.ActivityLog;
 import models.MySQL;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -1284,6 +1285,7 @@ public class OrderManagement extends javax.swing.JFrame {
                     System.out.println("Invoice  Exception");
                 }
 
+                    new Thread(() -> ActivityLog.addLog("No:- "+invoiceId+" Order was deleted by " + UserDetails.UserName,1)).start();
                 Refresh();
             } else {
                 JOptionPane.showMessageDialog(this, "please Select a Order row", "Empty Row", JOptionPane.ERROR_MESSAGE);

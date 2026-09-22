@@ -33,9 +33,11 @@ import java.awt.datatransfer.*;
 import java.awt.image.BufferedImage;
 import java.net.URI;
 import javax.imageio.ImageIO;
+import models.ActivityLog;
 import models.SMS;
 import models.SMSCalculator;
 import models.SMSInfo;
+import models.SendSmsResult;
 import models.SmsProfileInfo;
 
 public class BroadCastMessageSystem extends javax.swing.JFrame {
@@ -454,8 +456,13 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 dtm.setRowCount(0);
 
                 while (rs.next()) {
+                    String mobile = rs.getString("mobile");
+                    if (!isValidMobile(mobile)) {
+                        continue;
+                    }
+
                     Vector v = new Vector();
-                    v.add(rs.getString("mobile"));
+                    v.add(mobile);
                     v.add(rs.getString("name"));
                     v.add(rs.getString("birthday"));
                     v.add(rs.getString("mobile2"));
@@ -464,7 +471,6 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("register_date"));
 
                     dtm.addRow(v);
-
                 }
 
             } catch (Exception e) {
@@ -477,8 +483,13 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 dtm.setRowCount(0);
 
                 while (rs.next()) {
+                    String mobile = rs.getString("mobile");
+                    if (!isValidMobile(mobile)) {
+                        continue;
+                    }
+
                     Vector v = new Vector();
-                    v.add(rs.getString("mobile"));
+                    v.add(mobile);
                     v.add(rs.getString("name"));
                     v.add(rs.getString("birthday"));
                     v.add(rs.getString("mobile2"));
@@ -487,7 +498,6 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("register_date"));
 
                     dtm.addRow(v);
-
                 }
 
             } catch (Exception e) {
@@ -500,8 +510,13 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 dtm.setRowCount(0);
 
                 while (rs.next()) {
+                    String mobile = rs.getString("mobile");
+                    if (!isValidMobile(mobile)) {
+                        continue;
+                    }
+
                     Vector v = new Vector();
-                    v.add(rs.getString("mobile"));
+                    v.add(mobile);
                     v.add(rs.getString("name"));
                     v.add(rs.getString("birthday"));
                     v.add(rs.getString("mobile2"));
@@ -510,7 +525,6 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("register_date"));
 
                     dtm.addRow(v);
-
                 }
 
             } catch (Exception e) {
@@ -524,8 +538,13 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 dtm.setRowCount(0);
 
                 while (rs.next()) {
+                    String mobile = rs.getString("mobile");
+                    if (!isValidMobile(mobile)) {
+                        continue;
+                    }
+
                     Vector v = new Vector();
-                    v.add(rs.getString("mobile"));
+                    v.add(mobile);
                     v.add(rs.getString("name"));
                     v.add(rs.getString("birthday"));
                     v.add(rs.getString("mobile2"));
@@ -534,7 +553,6 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("register_date"));
 
                     dtm.addRow(v);
-
                 }
 
             } catch (Exception e) {
@@ -547,11 +565,16 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 dtm.setRowCount(0);
 
                 while (rs.next()) {
+                    String mobile = rs.getString("telepohone_mobile1");
+                    if (!isValidMobile(mobile)) {
+                        continue;
+                    }
+
                     Vector v = new Vector();
                     v.add(rs.getString("id"));
                     v.add(rs.getString("Name"));
                     v.add(rs.getString("birthday"));
-                    v.add(rs.getString("telepohone_mobile1"));
+                    v.add(mobile);
                     v.add(rs.getString("telephone_mobile2"));
                     v.add(rs.getString("telephone_land"));
                     v.add(rs.getString("nic"));
@@ -559,7 +582,6 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("register_date"));
 
                     dtm.addRow(v);
-
                 }
 
             } catch (Exception e) {
@@ -572,11 +594,16 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 dtm.setRowCount(0);
 
                 while (rs.next()) {
+                    String mobile = rs.getString("telepohone_mobile1");
+                    if (!isValidMobile(mobile)) {
+                        continue;
+                    }
+
                     Vector v = new Vector();
                     v.add(rs.getString("id"));
                     v.add(rs.getString("Name"));
                     v.add(rs.getString("birthday"));
-                    v.add(rs.getString("telepohone_mobile1"));
+                    v.add(mobile);
                     v.add(rs.getString("telephone_mobile2"));
                     v.add(rs.getString("telephone_land"));
                     v.add(rs.getString("nic"));
@@ -584,7 +611,6 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("register_date"));
 
                     dtm.addRow(v);
-
                 }
 
             } catch (Exception e) {
@@ -597,11 +623,16 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 dtm.setRowCount(0);
 
                 while (rs.next()) {
+                    String mobile = rs.getString("telepohone_mobile1");
+                    if (!isValidMobile(mobile)) {
+                        continue;
+                    }
+
                     Vector v = new Vector();
                     v.add(rs.getString("id"));
                     v.add(rs.getString("Name"));
                     v.add(rs.getString("birthday"));
-                    v.add(rs.getString("telepohone_mobile1"));
+                    v.add(mobile);
                     v.add(rs.getString("telephone_mobile2"));
                     v.add(rs.getString("telephone_land"));
                     v.add(rs.getString("nic"));
@@ -609,7 +640,6 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("register_date"));
 
                     dtm.addRow(v);
-
                 }
 
             } catch (Exception e) {
@@ -622,11 +652,15 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 dtm.setRowCount(0);
 
                 while (rs.next()) {
+                    String mobile = rs.getString("mobile");
+                    if (!isValidMobile(mobile)) {
+                        continue;
+                    }
+
                     Vector v = new Vector();
-                    v.add(rs.getString("mobile"));
+                    v.add(mobile);
 
                     dtm.addRow(v);
-
                 }
 
             } catch (Exception e) {
@@ -644,8 +678,13 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 dtm.setRowCount(0);
 
                 while (rs.next()) {
+                    String mobile = rs.getString("mobile");
+                    if (!isValidMobile(mobile)) {
+                        continue;
+                    }
+
                     Vector v = new Vector();
-                    v.add(rs.getString("mobile"));
+                    v.add(mobile);
                     v.add(rs.getString("name"));
                     v.add(rs.getString("birthday"));
                     v.add(rs.getString("mobile2"));
@@ -654,7 +693,6 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("register_date"));
 
                     dtm.addRow(v);
-
                 }
 
             } catch (Exception e) {
@@ -669,8 +707,13 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 dtm.setRowCount(0);
 
                 while (rs.next()) {
+                    String m = rs.getString("mobile");
+                    if (!isValidMobile(m)) {
+                        continue;
+                    }
+
                     Vector v = new Vector();
-                    v.add(rs.getString("mobile"));
+                    v.add(m);
                     v.add(rs.getString("name"));
                     v.add(rs.getString("birthday"));
                     v.add(rs.getString("mobile2"));
@@ -679,7 +722,6 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     v.add(rs.getString("register_date"));
 
                     dtm.addRow(v);
-
                 }
 
             } catch (Exception e) {
@@ -687,6 +729,19 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             }
         }
 
+    }
+
+    /**
+     * Validates a Sri Lankan mobile number. Accepts formats like: 0771234567,
+     * +94771234567, 94771234567 Adjust the regex if you need a different
+     * country's format.
+     */
+    private boolean isValidMobile(String mobile) {
+        if (mobile == null) {
+            return false;
+        }
+        String cleaned = mobile.trim().replaceAll("[\\s\\-]", "");
+        return cleaned.matches("^(?:\\+94|0)?7\\d{8}$");
     }
 
     public void openUrl(String url) {
@@ -767,6 +822,12 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         jToggleButton4 = new javax.swing.JToggleButton();
         jToggleButton7 = new javax.swing.JToggleButton();
         jLabel15 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel18 = new javax.swing.JLabel();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
         jToggleButton3 = new javax.swing.JToggleButton();
         jButton5 = new javax.swing.JButton();
@@ -893,13 +954,13 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         jPanel6.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
-        jLabel9.setText("Select Audience");
-        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, -1, -1));
+        jLabel9.setText("Invoice End Date");
+        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel12.setText("Update Areas");
-        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, -1));
-        jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 840, 10));
+        jLabel12.setText("Message Area");
+        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, -1, -1));
+        jPanel6.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 940, 10));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -930,11 +991,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 540, 140));
+        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 540, 140));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
-        jLabel13.setText("Selected Audience Members");
-        jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, -1, -1));
+        jLabel13.setText("Selected Audience ");
+        jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, -1, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Everyone", "Only Womens", "Only Mens", "People over 18 years Old", "People under 18 years Old", "People over 50 years Old", "People under 50 years Old", "Today Birthdays", "Custom Numbers", "Pending invoice Payments" }));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
@@ -947,14 +1008,19 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 jComboBox1ActionPerformed(evt);
             }
         });
-        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 160, -1));
+        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, 310, -1));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel19.setText("Filter Options");
         jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Whatsapp Message", "Send Email " }));
-        jPanel6.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 200, -1));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Send SMS", "Whatsapp Message", "Send Email " }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 150, -1));
 
         jLabel20.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel20.setText("Reg_No");
@@ -1051,7 +1117,7 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                 jTextField1KeyReleased(evt);
             }
         });
-        jPanel6.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 540, -1));
+        jPanel6.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 540, -1));
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1075,12 +1141,12 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
             jTable2.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 150, 310, 140));
+        jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 150, 310, 160));
 
         jLabel2.setForeground(new java.awt.Color(255, 51, 51));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("0");
-        jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 120, 90, -1));
+        jPanel6.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 130, 90, -1));
 
         jToggleButton4.setText(">>");
         jToggleButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -1099,7 +1165,38 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         jPanel6.add(jToggleButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 220, 50, -1));
 
         jLabel15.setText("Message Sending Row Count =");
-        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 120, -1, -1));
+        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 130, -1, -1));
+        jPanel6.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, 110, -1));
+
+        jLabel18.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel18.setText("Select Audience");
+        jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
+
+        jDateChooser2.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+                jDateChooser2CaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                jDateChooser2InputMethodTextChanged(evt);
+            }
+        });
+        jPanel6.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 110, 110, -1));
+
+        jLabel21.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel21.setText("Invoice Date Start");
+        jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 90, -1, -1));
+
+        jLabel22.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel22.setText("OR");
+        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 70, -1, 30));
+
+        jButton6.setText("Search");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 110, -1, -1));
 
         jToggleButton1.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
         jToggleButton1.setText("Send Whatsapp (UnPublished)");
@@ -1440,7 +1537,14 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
                     }
 
                     System.out.println(numbers.toString());
-                    SMS.sendSMS(String.valueOf(numbers), jTextArea3.getText());
+                    SendSmsResult result = SMS.sendSMS(String.valueOf(numbers), jTextArea3.getText());
+                    boolean isSuccess = result.getisSuccess();
+                    if (isSuccess) {
+                        new Thread(() -> ActivityLog.addLog(UserDetails.UserName+" sent SMS messages ", 2)).start();
+                        JOptionPane.showMessageDialog(this, "Sms was successfully sent", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Something Wrong, check you Message Units or internent connection please", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             } else {
                 JOptionPane.showMessageDialog(
@@ -1501,6 +1605,80 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
         openUrl("https://app.text.lk/dashboard");
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jDateChooser2InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jDateChooser2InputMethodTextChanged
+
+    }//GEN-LAST:event_jDateChooser2InputMethodTextChanged
+
+    private void jDateChooser2CaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jDateChooser2CaretPositionChanged
+
+
+    }//GEN-LAST:event_jDateChooser2CaretPositionChanged
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        Date startDateObj = jDateChooser2.getDate(); // Start date
+        Date endDateObj = jDateChooser1.getDate();   // End date
+
+        if (startDateObj == null) {
+            JOptionPane.showMessageDialog(this, "Please select at least a start date.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = sqlDateFormat.format(startDateObj);
+
+        String query;
+        if (endDateObj == null) {
+            // Only start date selected -> invoices on that exact date
+            query = "SELECT DISTINCT c.* FROM `customer` c "
+                    + "INNER JOIN `invoice` i ON i.`customer_mobile` = c.`mobile` "
+                    + "WHERE i.`date` = '" + startDate + "'";
+        } else {
+            String endDate = sqlDateFormat.format(endDateObj);
+            // In case the two choosers get set in reverse order
+            String rangeStart = startDate.compareTo(endDate) <= 0 ? startDate : endDate;
+            String rangeEnd = startDate.compareTo(endDate) <= 0 ? endDate : startDate;
+
+            query = "SELECT DISTINCT c.* FROM `customer` c "
+                    + "INNER JOIN `invoice` i ON i.`customer_mobile` = c.`mobile` "
+                    + "WHERE i.`date` BETWEEN '" + rangeStart + "' AND '" + rangeEnd + "'";
+        }
+
+        try {
+            ResultSet rs = MySQL.execute(query);
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.setRowCount(0);
+
+            while (rs.next()) {
+                String mobile = rs.getString("mobile");
+                if (!isValidMobile(mobile)) {
+                    continue;
+                }
+
+                Vector<String> v = new Vector<>();
+                v.add(mobile);
+                v.add(rs.getString("name"));
+                v.add(rs.getString("birthday"));
+                v.add(rs.getString("mobile2"));
+                v.add(rs.getString("telephone_land"));
+                v.add(rs.getString("nic"));
+                v.add(rs.getString("register_date"));
+
+                dtm.addRow(v);
+            }
+
+            showTableRowCount();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error fetching invoice data: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1524,8 +1702,11 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1535,9 +1716,12 @@ public class BroadCastMessageSystem extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
