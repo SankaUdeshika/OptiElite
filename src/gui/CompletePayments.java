@@ -226,11 +226,11 @@ public class CompletePayments extends javax.swing.JFrame {
         jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 450, 73, -1));
 
         buttonGroup1.add(jRadioButton5);
-        jRadioButton5.setText("Koko");
+        jRadioButton5.setText("MINT");
         jPanel1.add(jRadioButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 570, -1, -1));
 
         buttonGroup1.add(jRadioButton6);
-        jRadioButton6.setText("Mint Pay");
+        jRadioButton6.setText("KOKO");
         jPanel1.add(jRadioButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 590, -1, -1));
         jPanel1.add(paymentInfoTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 570, 130, 40));
         jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 560, 210, 10));
