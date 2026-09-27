@@ -249,12 +249,12 @@ public class Login extends javax.swing.JFrame {
                                 String id = rs.getString("id");
                                 String userRole = rs.getString("user_type_id");
                                 String locaiton_id = String.valueOf(locationComboBox.getSelectedIndex());
-                                String sms_api_token = null;
-                                if (!rs.getString("sms_api_token").isEmpty()) {
-                                    sms_api_token = rs.getString("sms_api_token");
+                                String sms_api_token = rs.getString("sms_api_token");
+                                if (sms_api_token != null && sms_api_token.trim().isEmpty()) {
+                                    sms_api_token = null;
                                 }
                                 String sender_id = rs.getString("sms_sender_id");
-                                UserDetails ud = new UserDetails(ResultFirstname, ResultLastname, id, locaiton_id, userRole, sms_api_token,sender_id);
+                                UserDetails ud = new UserDetails(ResultFirstname, ResultLastname, id, locaiton_id, userRole, sms_api_token, sender_id);
                                 logger.info("user has logged succesfully");
                                 // Load Settings
                                 try {
@@ -273,9 +273,6 @@ public class Login extends javax.swing.JFrame {
                                 JOptionPane.showMessageDialog(this, "This Branch Not Active, Please Contact The Developer", "Branch Inactive", JOptionPane.ERROR_MESSAGE);
                             }
 
-//                            
-//
-//                          
                         } else {
                             JOptionPane.showMessageDialog(this, "Your Login Details are invalid, please check and try again", "Invalid User Details", JOptionPane.ERROR_MESSAGE);
                         }
