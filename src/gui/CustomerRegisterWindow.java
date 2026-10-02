@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
@@ -207,6 +208,8 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTextField6 = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
+        jTextField7 = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -371,6 +374,12 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel10.setText("Birth Day");
 
+        jDateChooser1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDateChooser1PropertyChange(evt);
+            }
+        });
+
         jLabel11.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel11.setText("Whatsap Number");
 
@@ -421,6 +430,15 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
         jLabel21.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel21.setText("Email");
 
+        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField7KeyReleased(evt);
+            }
+        });
+
+        jLabel25.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        jLabel25.setText("Age");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -469,7 +487,6 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
                                     .addComponent(jLabel8)
                                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel20)
-                                    .addComponent(jLabel12)
                                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(42, 42, 42)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -478,14 +495,22 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
                                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(38, 38, 38)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jTextField6)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel10)
                                             .addComponent(jLabel21))
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
-                        .addGap(44, 44, 44))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                                .addComponent(jLabel25)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                            .addComponent(jTextField7))))))
+                        .addGap(44, 44, 44))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -503,9 +528,12 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20)
@@ -621,19 +649,54 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
         // Customer Register
         try {
-            String CustomerName = jTextField1.getText();
-            String CustomerNIC = jTextField2.getText();
+            String CustomerName = jTextField1.getText().trim();
+            String CustomerNIC = jTextField2.getText().trim();
 
-            String whatssapp = jTextField3.getText();
-            String mobile2 = jTextField4.getText();
-            String tel = jTextField5.getText();
+            String whatssapp = jTextField3.getText().trim();
+            String mobile2 = jTextField4.getText().trim();
+            String tel = jTextField5.getText().trim();
 
-            String Address01 = jTextArea1.getText();
-            String Address02 = jTextArea2.getText();
+            String Address01 = jTextArea1.getText().trim();
+            String Address02 = jTextArea2.getText().trim();
 
-            String Email = jTextField6.getText();
+            String Email = jTextField6.getText().trim();
             int gender_id = jComboBox2.getSelectedIndex();
 
+            // ---------- FIX: Safe parsing of Age ----------
+            String ageText = jTextField7.getText().trim();
+            int age = 0; // default
+
+            if (ageText.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Please Enter Customer Age",
+                        "Empty Age",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                age = Integer.parseInt(ageText);
+
+                age = Integer.parseInt(jTextField7.getText());
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - age);
+                calendar.set(Calendar.MONTH, Calendar.JANUARY);
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
+                Date birthday = calendar.getTime();
+                jDateChooser1.setDate(birthday);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+                age = Integer.parseInt(sdf.format(birthday));
+                System.out.println("birth Year is :- " + age);
+
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(this,
+                        "Age must be a valid number",
+                        "Invalid Age",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // ---------- END FIX ----------
             String expression = "^[a-zA-Z\\s]+";
             String mobileExpresion = "/\n" + "^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$\n" + "/\n" + "gm";
             String LanLineExpression = "^(\\+94|0)?[1-9]{2}[0-9]{7}$ ";
@@ -645,8 +708,8 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
             ResultSet rs = MySQL.execute("SELECT * FROM `customer` WHERE `mobile` = '" + whatssapp + "' ");
 
             // -----------------------------------------------------------------------------------------------------------------
-            if (jDateChooser1.getDate() == null) { //  null Birthday  is okay
-                if (!nullBirhthday) { //true
+            if (jDateChooser1.getDate() == null) { // null Birthday is okay
+                if (!nullBirhthday) { // true
                     JOptionPane.showMessageDialog(this, "Please Enter Customer Birthday", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     if (rs.next()) {
@@ -671,9 +734,9 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
                         if (BirthDayChooser == null) {
 
                             LocalDate today = LocalDate.now();
-                            String id = String.valueOf(CustomerRegisterWindow.locationmap.get(jComboBox1.getSelectedItem()));
-                            MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`Name`,`gender_gender_id`,`email`)"
-                                    + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + CustomerName + "','" + gender_id + "','" + Email + "') ");
+                            String id = String.valueOf(CustomerRegistration_popup.locationmap.get(jComboBox1.getSelectedItem()));
+                            MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`Name`,`gender_gender_id`,`email`,`birth_year`)"
+                                    + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + CustomerName + "','" + gender_id + "','" + Email + "','" + age + "') ");
 
 //                   Insert Medical Conditon
                             int medicalCount = medicalTemporyData.medicalArray.size();
@@ -690,9 +753,9 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
                             String BdayFormat = String.valueOf(sdf.format(BirthDayChooser));
 
                             LocalDate today = LocalDate.now();
-                            String id = String.valueOf(CustomerRegisterWindow.locationmap.get(jComboBox1.getSelectedItem()));
-                            MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`birthday`,`Name`,`gender_gender_id`,`email`)"
-                                    + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + BdayFormat + "','" + CustomerName + "','" + gender_id + "','" + Email + "') ");
+                            String id = String.valueOf(CustomerRegistration_popup.locationmap.get(jComboBox1.getSelectedItem()));
+                            MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`birthday`,`Name`,`gender_gender_id`,`email`,`birth_year`)"
+                                    + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + BdayFormat + "','" + CustomerName + "','" + gender_id + "','" + Email + "','" + age + "') ");
 
                             //                   Insert Medical Conditon
                             int medicalCount = medicalTemporyData.medicalArray.size();
@@ -730,9 +793,9 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
                     if (BirthDauChooser == null) {
 
                         LocalDate today = LocalDate.now();
-                        String id = String.valueOf(CustomerRegister.locationmap.get(jComboBox1.getSelectedItem()));
-                        MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`Name`,`gender_gender_id`,`email`)"
-                                + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + CustomerName + "','" + gender_id + "','" + Email + "') ");
+                        String id = String.valueOf(CustomerRegistration_popup.locationmap.get(jComboBox1.getSelectedItem()));
+                        MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`Name`,`gender_gender_id`,`email`,`birth_year`)"
+                                + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + CustomerName + "','" + gender_id + "','" + Email + "','" + age + "') ");
 
 //                   Insert Medical Conditon
                         int medicalCount = medicalTemporyData.medicalArray.size();
@@ -749,9 +812,9 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
                         String BdayFormat = String.valueOf(sdf.format(BirthDauChooser));
 
                         LocalDate today = LocalDate.now();
-                        String id = String.valueOf(CustomerRegister.locationmap.get(jComboBox1.getSelectedItem()));
-                        MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`birthday`,`Name`,`gender_gender_id`,`email`)"
-                                + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + BdayFormat + "','" + CustomerName + "','" + gender_id + "','" + Email + "') ");
+                        String id = String.valueOf(locationmap.get(jComboBox1.getSelectedItem()));
+                        MySQL.execute("INSERT INTO `customer` (`mobile`,`register_date`,`location_id`,`address_line1`,`address_line2`,`mobile2`,`telephone_land`,`nic`,`birthday`,`Name`,`gender_gender_id`,`email`,`birth_year`)"
+                                + "VALUES ('" + whatssapp + "','" + today + "','" + id + "','" + Address01 + "','" + Address02 + "','" + mobile2 + "','" + tel + "','" + CustomerNIC + "','" + BdayFormat + "','" + CustomerName + "','" + gender_id + "','" + Email + "','" + age + "') ");
 
                         //                   Insert Medical Conditon
                         int medicalCount = medicalTemporyData.medicalArray.size();
@@ -781,6 +844,37 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
         medicalCondition mc = new medicalCondition();
         mc.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField7KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyReleased
+        // calculate the birthday
+        int age = Integer.parseInt(jTextField7.getText());
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - age);
+        calendar.set(Calendar.MONTH, Calendar.JANUARY);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        Date birthday = calendar.getTime();
+        jDateChooser1.setDate(birthday);
+    }//GEN-LAST:event_jTextField7KeyReleased
+
+    private void jDateChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser1PropertyChange
+        try {
+            if (jDateChooser1 != null) {
+                Date birthDay = jDateChooser1.getDate();
+                Calendar birthdayCalender = Calendar.getInstance();
+                birthdayCalender.setTime(birthDay);
+
+                int age = birthdayCalender.get(Calendar.YEAR);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - age);
+                calendar.set(Calendar.MONTH, Calendar.JANUARY);
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
+                jTextField7.setText(String.valueOf(calendar.get(Calendar.YEAR)));
+            }
+        } catch (Exception e) {
+            jDateChooser1.setDate(null);
+        }
+    }//GEN-LAST:event_jDateChooser1PropertyChange
 
     /**
      * @param args the command line arguments
@@ -838,6 +932,7 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
@@ -862,6 +957,7 @@ public class CustomerRegisterWindow extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     private javax.swing.JButton previousBtn;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton registerButton;
