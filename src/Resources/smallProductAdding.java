@@ -499,12 +499,23 @@ public class smallProductAdding extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // Adding Product Brand
         String brand = jTextField1.getText();
+
         if (brand.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Plese Enter a brand text");
+
         } else {
-            MySQL.execute("INSERT INTO `brand` (`brand_name`) VALUES ('" + brand + "')");
-            JOptionPane.showMessageDialog(this, "Brand Insert Success");
-            Refresh();
+            ResultSet brand_rs = MySQL.execute("SELECT `brand_name` FROM `brand` WHERE `brand_name`  = '" + brand + "' ");
+            try {
+                if (brand_rs.next()) {
+                    JOptionPane.showMessageDialog(this, "Already Regsiterd this Brand", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    MySQL.execute("INSERT INTO `brand` (`brand_name`) VALUES ('" + brand + "')");
+                    JOptionPane.showMessageDialog(this, "Brand Insert Success");
+                    Refresh();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
