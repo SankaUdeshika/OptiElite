@@ -162,6 +162,7 @@ public class StockAdd extends javax.swing.JFrame {
             DefaultComboBoxModel dfm = new DefaultComboBoxModel<>(v);
             jComboBox3.setModel(dfm);
             jComboBox1.setModel(dfm);
+            jComboBox2.setModel(dfm);
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -197,12 +198,124 @@ public class StockAdd extends javax.swing.JFrame {
         loadLocations();
         LoadStockTable();
         loadSuppiers();
+        loadGRNTable();
         jTextField11.setText("");
         jTextField5.setText("");
         jTextField6.setText("");
         jTextField10.setText("");
         jTextField4.setText("");
         jTextField15.setText("");
+        jToggleButton2.setVisible(false);
+        jButton16.setVisible(false);
+    }
+
+    public void loadGRNTable() {
+        // ============================================================
+        // Load GRN (Goods Received Note) rows into jTable5
+        // Filter fields:
+        //   jTextField20   -> grn_no            (invoice number)
+        //   jTextField23   -> supplier name     (via JOIN with supplier)
+        //   jComboBox2     -> location          (UNUSED in GRN schema — see notes)
+        //   jDateChooser4  -> grn_date          (exact match on the picked day)
+        // ============================================================
+
+        // ---------- 1. Read and normalize filter inputs ----------
+        String invoiceNo = jTextField20.getText() == null ? "" : jTextField20.getText().trim();
+        String supplierName = jTextField23.getText() == null ? "" : jTextField23.getText().trim();
+
+        // GRN date from JDateChooser -> yyyy-MM-dd string (null if nothing picked)
+        java.util.Date pickedDate = jDateChooser4.getDate();
+        String toDate = null;
+        if (pickedDate != null) {
+            toDate = new SimpleDateFormat("yyyy-MM-dd").format(pickedDate);
+        }
+
+        // ---------- 2. Build the base query ----------
+        // JOIN with supplier so we can filter/search by supplier NAME,
+        // since GRN only stores supplier_supplier_id (INT FK).
+        String baseQuery
+                = "SELECT "
+                + "`GRN`.`GRN_ID`              AS GRN_ID, "
+                + "`GRN`.`grn_no`              AS grn_no, "
+                + "`GRN`.`grn_date`            AS grn_date, "
+                + "`GRN`.`grn_amount`          AS grn_amount, "
+                + "`GRN`.`grn_status`          AS grn_status, "
+                + "`supplier`.`Supplier_Name`  AS Supplier_Name "
+                + "FROM `GRN` "
+                + "INNER JOIN `supplier` ON `supplier`.`supplier_id` = `GRN`.`supplier_supplier_id`";
+
+        List<String> conditions = new ArrayList<>();
+        List<Object> params = new ArrayList<>();
+
+        // ---------- 3. Apply filters ----------
+        // 3a. Invoice number — exact match (the GRN invoice id is unique)
+        //     If you prefer partial search, change "=" to "LIKE" and wrap with %.
+        if (!invoiceNo.isEmpty()) {
+            conditions.add("`GRN`.`grn_no` = ?");
+            params.add(invoiceNo);
+        }
+
+        // 3b. Supplier name — partial match (LIKE) so typing "Boss" finds "Boss Ltd"
+        if (!supplierName.isEmpty()) {
+            conditions.add("`supplier`.`Supplier_Name` LIKE ?");
+            params.add("%" + supplierName + "%");
+        }
+
+        // 3c. GRN date — exact day match
+        //     Using "=" because JDateChooser gives a single calendar day.
+        //     Change to ">=" / "<=" if you want a range later.
+        if (toDate != null) {
+            conditions.add("`GRN`.`grn_date` = ?");
+            params.add(toDate);
+        }
+
+        // 3d. Location filter — intentionally omitted.
+        //     The `GRN` table has no location_id column, so a location filter
+        //     cannot be applied to GRN rows. If you later add `location_id`
+        //     to the GRN table, uncomment the block below and also uncomment
+        //     the "selectedLocationId" parsing above.
+        //
+        // if (selectedLocationId != 0) {
+        //     conditions.add("`GRN`.`location_id` = ?");
+        //     params.add(selectedLocationId);
+        // }
+        // ---------- 4. Assemble and log the final SQL ----------
+        StringBuilder querry = new StringBuilder(baseQuery);
+        if (!conditions.isEmpty()) {
+            querry.append(" WHERE ").append(String.join(" AND ", conditions));
+        }
+        querry.append(" ORDER BY `GRN`.`grn_date` DESC, `GRN`.`GRN_ID` DESC");
+
+        System.out.println(querry);
+        JasperStockQuerry = querry.toString();
+        JasperStockParams = new ArrayList<>(params);
+
+        // ---------- 5. Execute and populate jTable5 ----------
+        try (PreparedStatement ps = MySQL.getConnection().prepareStatement(querry.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                DefaultTableModel dtm = (DefaultTableModel) jTable5.getModel();
+                dtm.setRowCount(0);
+                while (rs.next()) {
+                    Vector v = new Vector();
+//                    v.add(rs.getInt("GRN_ID"));            // 0: GRN ID (internal)
+                    v.add(rs.getString("grn_no"));         // 1: Invoice No
+                    v.add(rs.getDate("grn_date"));         // 2: GRN Date
+                    v.add(rs.getDouble("grn_amount"));     // 3: Amount
+                    v.add(rs.getString("Supplier_Name"));  // 4: Supplier
+                    dtm.addRow(v);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.log(Level.WARNING, "GRN data failed to load", e);
+            JOptionPane.showMessageDialog(this,
+                    "Could not load GRN list.\nPlease check your connection and try again.",
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void loadSuppiers() {
@@ -305,6 +418,16 @@ public class StockAdd extends javax.swing.JFrame {
             Map<String, String> supplierMap = loadSuppliersForImport();
             System.out.println("[4e] Suppliers loaded: " + (supplierMap != null ? supplierMap.size() : "NULL"));
 
+            System.out.println("[4f] Loading GRN IDs...");
+            Set<String> validGRNIds = loadGRNIdsForImport();
+            System.out.println("[4f] GRN IDs loaded: " + (validGRNIds != null ? validGRNIds.size() : "NULL"));
+
+            if (validGRNIds == null) {
+                System.out.println("[ERROR] validGRNIds returned NULL!");
+                return;
+            }
+            System.out.println("[4g] All database maps loaded successfully.");
+
             // Null checks
             if (brandMap == null || productMap == null || locationMap == null
                     || subCategoryMap == null || supplierMap == null) {
@@ -350,7 +473,7 @@ public class StockAdd extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Processing Excel file...", "Import", JOptionPane.INFORMATION_MESSAGE);
 
             ImportResult importResult = processExcelFileForImport(chooseFile, brandMap, brandNameToIdMap,
-                    productMap, locationNameToIdMap, subCategoryNameToIdMap, supplierNameToIdMap);
+                    productMap, locationNameToIdMap, subCategoryNameToIdMap, supplierNameToIdMap, validGRNIds);
 
             System.out.println("[6] Excel processing complete.");
             System.out.println("  New Brands   : " + importResult.newBrands.size());
@@ -365,12 +488,16 @@ public class StockAdd extends javax.swing.JFrame {
                             + "• New Brands: %d\n"
                             + "• New Suppliers: %d\n"
                             + "• New Products: %d\n"
-                            + "• Stock Entries: %d\n\n"
+                            + "• Stock Entries: %d\n"
+                            + "   – With GRN ID: %d\n"
+                            + "   – With Expiry Date: %d\n\n"
                             + "Do you want to continue with the import?",
                             importResult.newBrands.size(),
                             importResult.newSuppliers.size(),
                             importResult.newProducts.size(),
-                            importResult.newStocks.size()),
+                            importResult.newStocks.size(),
+                            importResult.stocksWithGRN,
+                            importResult.stocksWithExpiry),
                     "Confirm Import",
                     JOptionPane.YES_NO_OPTION);
 
@@ -400,11 +527,15 @@ public class StockAdd extends javax.swing.JFrame {
                             + "• New Brands: %d\n"
                             + "• New Suppliers: %d\n"
                             + "• New Products: %d\n"
-                            + "• Stock Entries: %d",
+                            + "• Stock Entries: %d\n"
+                            + "   – With GRN ID: %d\n"
+                            + "   – With Expiry Date: %d",
                             importResult.newBrands.size(),
                             importResult.newSuppliers.size(),
                             importResult.newProducts.size(),
-                            importResult.newStocks.size()),
+                            importResult.newStocks.size(),
+                            importResult.stocksWithGRN,
+                            importResult.stocksWithExpiry),
                     "Import Complete",
                     JOptionPane.INFORMATION_MESSAGE);
 
@@ -536,12 +667,15 @@ public class StockAdd extends javax.swing.JFrame {
         }
     }
 
-    private ImportResult processExcelFileForImport(File excelFile, Map<String, String> brandMap,
+    private ImportResult processExcelFileForImport(
+            File excelFile,
+            Map<String, String> brandMap,
             Map<String, String> brandNameToIdMap,
             Map<String, String[]> productMap,
             Map<String, String> locationNameToIdMap,
             Map<String, String> subCategoryNameToIdMap,
-            Map<String, String> supplierNameToIdMap) throws Exception {
+            Map<String, String> supplierNameToIdMap,
+            Set<String> validGRNIds) throws Exception {
 
         ImportResult result = new ImportResult();
         List<String> errors = new ArrayList<>();
@@ -579,6 +713,8 @@ public class StockAdd extends javax.swing.JFrame {
                     String quantity = cleanStringForImport(formatter.formatCellValue(row.getCell(9))); // Column J: qty
                     String color = cleanStringForImport(formatter.formatCellValue(row.getCell(10))); // Column K: color
                     String sku = cleanStringForImport(formatter.formatCellValue(row.getCell(11))); // Column L: SKU
+                    String grnIdRaw = cleanStringForImport(formatter.formatCellValue(row.getCell(12)));// Column M: GRN ID
+                    String expireDateRaw = cleanStringForImport(formatter.formatCellValue(row.getCell(13))); // Column N: Expire Date
 
                     // Validate required fields
                     if (productId.isEmpty()) {
@@ -615,6 +751,46 @@ public class StockAdd extends javax.swing.JFrame {
                     if (subCategoryId == null) {
                         errors.add("Row " + (i + 1) + ": Sub-Category '" + subCategoryName + "' not found in database");
                         continue;
+                    }
+
+                    // --- Validate GRN ID (if provided) ---
+                    String grnId = null;
+                    if (!grnIdRaw.isEmpty()) {
+                        // Handle cases where Excel may return "123.0" for a numeric cell
+                        String grnIdCleaned = grnIdRaw;
+                        if (grnIdCleaned.matches("\\d+\\.0+")) {
+                            grnIdCleaned = grnIdCleaned.substring(0, grnIdCleaned.indexOf('.'));
+                        }
+
+                        if (!validGRNIds.contains(grnIdCleaned)) {
+                            errors.add("Row " + (i + 1) + ": GRN ID '" + grnIdRaw
+                                    + "' not found in GRN table (leave blank if no GRN)");
+                            continue;
+                        }
+                        grnId = grnIdCleaned;
+                    }
+
+                    // --- Validate Expire Date (if provided) ---
+                    String expireDate = null;
+                    if (!expireDateRaw.isEmpty()) {
+                        // Try yyyy-MM-dd first
+                        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                        sdf.setLenient(false);
+                        try {
+                            java.util.Date parsed = sdf.parse(expireDateRaw);
+                            expireDate = sdf.format(parsed);
+                        } catch (java.text.ParseException pe) {
+                            // Try Excel numeric date (serial number)
+                            try {
+                                double serial = Double.parseDouble(expireDateRaw);
+                                java.util.Date d = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(serial);
+                                expireDate = sdf.format(d);
+                            } catch (Exception ex) {
+                                errors.add("Row " + (i + 1) + ": Invalid Expire Date '" + expireDateRaw
+                                        + "' (expected yyyy-MM-dd)");
+                                continue;
+                            }
+                        }
                     }
 
                     // Check if brand exists, if not add to new brands
@@ -680,9 +856,17 @@ public class StockAdd extends javax.swing.JFrame {
                                     color,
                                     existingProduct[0], // product intid
                                     productId,
-                                    sku
+                                    sku,
+                                    grnId, // NEW
+                                    expireDate // NEW
                             );
                             result.newStocks.add(stockData);
+                            if (grnId != null && !grnId.isEmpty()) {
+                                result.stocksWithGRN++;
+                            }
+                            if (expireDate != null && !expireDate.isEmpty()) {
+                                result.stocksWithExpiry++;
+                            }
                         } else {
                             // Different brand - add as new product
                             addNewProductForImport(result, productId, subCategoryId, brandName, qualityId,
@@ -700,9 +884,18 @@ public class StockAdd extends javax.swing.JFrame {
                                     color,
                                     null, // Will be set after product insertion
                                     productId,
-                                    sku
+                                    sku,
+                                    grnId, // NEW
+                                    expireDate // NEW
+
                             );
                             result.newStocks.add(stockData);
+                            if (grnId != null && !grnId.isEmpty()) {
+                                result.stocksWithGRN++;
+                            }
+                            if (expireDate != null && !expireDate.isEmpty()) {
+                                result.stocksWithExpiry++;
+                            }
                         }
                     } else {
                         // New product - add it
@@ -721,9 +914,17 @@ public class StockAdd extends javax.swing.JFrame {
                                 color,
                                 null, // Will be set after product insertion
                                 productId,
-                                sku
+                                sku,
+                                grnId, // NEW
+                                expireDate // NEW
                         );
                         result.newStocks.add(stockData);
+                        if (grnId != null && !grnId.isEmpty()) {
+                            result.stocksWithGRN++;
+                        }
+                        if (expireDate != null && !expireDate.isEmpty()) {
+                            result.stocksWithExpiry++;
+                        }
                     }
 
                     successRows++;
@@ -793,7 +994,8 @@ public class StockAdd extends javax.swing.JFrame {
 
     private String[] createStockDataForImport(String supplierId, String locationId, String cost,
             String sellingPrice, String date, String quantity,
-            String color, String productIntId, String productId, String sku) {
+            String color, String productIntId, String productId, String sku,
+            String grnId, String expireDate) {
 
         // Clean and validate numeric values
         if (cost == null || cost.isEmpty()) {
@@ -831,16 +1033,18 @@ public class StockAdd extends javax.swing.JFrame {
         }
 
         return new String[]{
-            supplierId,
-            locationId,
-            cost,
-            sellingPrice,
-            date,
-            quantity,
-            color,
-            productIntId,
-            productId,
-            sku
+            supplierId, // [0]
+            locationId, // [1]
+            cost, // [2]
+            sellingPrice, // [3]
+            date, // [4]
+            quantity, // [5]
+            color, // [6]
+            productIntId, // [7]
+            productId, // [8]
+            sku, // [9]
+            grnId, // [10] NEW — null if none
+            expireDate // [11] NEW — null if none
         };
     }
 
@@ -1033,21 +1237,80 @@ public class StockAdd extends javax.swing.JFrame {
                             continue;
                         }
 
+                        String grnId = stock[10];
+                        String expireDate = stock[11];
+
                         // Build SQL query with properly formatted numbers
-                        String sql = String.format(
-                                "INSERT INTO `stock` (product_id, supplier_supplier_id, location_id, cost, "
-                                + "saling_price, stock_date, qty, product_intid, SKU) "
-                                + "VALUES ('%s', '%s', '%s', %.2f, %.2f, '%s', %d, '%s', '%s')",
-                                productId,
-                                stock[0], // supplier_id
-                                stock[1], // location_id
-                                costValue,
-                                sellingPriceValue,
-                                stock[4], // date
-                                quantityValue,
-                                intid,
-                                escapeSqlForImport(stock[9]) // sku
-                        );
+                        String sql;
+                        if ((grnId == null || grnId.isEmpty()) && (expireDate == null || expireDate.isEmpty())) {
+                            // Neither new column provided — keep it simple
+                            sql = String.format(
+                                    "INSERT INTO `stock` (product_id, supplier_supplier_id, location_id, cost, "
+                                    + "saling_price, stock_date, qty, product_intid, SKU, GRN_GRN_ID, expire_date) "
+                                    + "VALUES ('%s', '%s', '%s', %.2f, %.2f, '%s', %d, '%s', '%s', NULL, NULL)",
+                                    productId,
+                                    stock[0],
+                                    stock[1],
+                                    costValue,
+                                    sellingPriceValue,
+                                    stock[4],
+                                    quantityValue,
+                                    intid,
+                                    escapeSqlForImport(stock[9])
+                            );
+                        } else if (grnId != null && !grnId.isEmpty() && (expireDate == null || expireDate.isEmpty())) {
+                            // Only GRN ID provided
+                            sql = String.format(
+                                    "INSERT INTO `stock` (product_id, supplier_supplier_id, location_id, cost, "
+                                    + "saling_price, stock_date, qty, product_intid, SKU, GRN_GRN_ID, expire_date) "
+                                    + "VALUES ('%s', '%s', '%s', %.2f, %.2f, '%s', %d, '%s', '%s', %s, NULL)",
+                                    productId,
+                                    stock[0],
+                                    stock[1],
+                                    costValue,
+                                    sellingPriceValue,
+                                    stock[4],
+                                    quantityValue,
+                                    intid,
+                                    escapeSqlForImport(stock[9]),
+                                    grnId // numeric, no quotes
+                            );
+                        } else if ((grnId == null || grnId.isEmpty()) && expireDate != null && !expireDate.isEmpty()) {
+                            // Only expire date provided
+                            sql = String.format(
+                                    "INSERT INTO `stock` (product_id, supplier_supplier_id, location_id, cost, "
+                                    + "saling_price, stock_date, qty, product_intid, SKU, GRN_GRN_ID, expire_date) "
+                                    + "VALUES ('%s', '%s', '%s', %.2f, %.2f, '%s', %d, '%s', '%s', NULL, '%s')",
+                                    productId,
+                                    stock[0],
+                                    stock[1],
+                                    costValue,
+                                    sellingPriceValue,
+                                    stock[4],
+                                    quantityValue,
+                                    intid,
+                                    escapeSqlForImport(stock[9]),
+                                    expireDate
+                            );
+                        } else {
+                            // Both provided
+                            sql = String.format(
+                                    "INSERT INTO `stock` (product_id, supplier_supplier_id, location_id, cost, "
+                                    + "saling_price, stock_date, qty, product_intid, SKU, GRN_GRN_ID, expire_date) "
+                                    + "VALUES ('%s', '%s', '%s', %.2f, %.2f, '%s', %d, '%s', '%s', %s, '%s')",
+                                    productId,
+                                    stock[0],
+                                    stock[1],
+                                    costValue,
+                                    sellingPriceValue,
+                                    stock[4],
+                                    quantityValue,
+                                    intid,
+                                    escapeSqlForImport(stock[9]),
+                                    grnId,
+                                    expireDate
+                            );
+                        }
 
                         MySQL.execute(sql);
 
@@ -1075,6 +1338,8 @@ public class StockAdd extends javax.swing.JFrame {
         List<String> newSuppliers = new ArrayList<>();
         List<String[]> newProducts = new ArrayList<>();
         List<String[]> newStocks = new ArrayList<>();
+        int stocksWithGRN = 0;      // NEW
+        int stocksWithExpiry = 0;   // NEW
     }
 
 // Helper methods for import
@@ -1091,6 +1356,25 @@ public class StockAdd extends javax.swing.JFrame {
         }
         // Simple SQL escaping - replace single quotes
         return input.replace("'", "''");
+    }
+
+    private Set<String> loadGRNIdsForImport() {
+        Set<String> grnIds = new HashSet<>();
+        try {
+            ResultSet rs = MySQL.execute("SELECT `GRN_ID` FROM `GRN`");
+            while (rs.next()) {
+                grnIds.add(rs.getString("GRN_ID"));
+            }
+            System.out.println("Loaded " + grnIds.size() + " GRN IDs.");
+            return grnIds;
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Error loading GRN IDs from database. Please check your connection.",
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
     }
 
     private void downloadTemplateExcel() {
@@ -1124,16 +1408,25 @@ public class StockAdd extends javax.swing.JFrame {
         try (Workbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Sheet1");
 
+            // Added "GRN ID" and "Expire Date" at the end (columns M, N)
             String[] headers = {
                 "Product id", "sub_category", "Brand Name", "Quality ",
                 "product_name", "supplie", "location Name", "cost",
-                "saling_price", "qty", "color", "SKU"
+                "saling_price", "qty", "color", "SKU",
+                "GRN ID", "Expire Date"
             };
 
-            // Header row
+            // Header row with bold font
             Row headerRow = sheet.createRow(0);
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+
             for (int i = 0; i < headers.length; i++) {
-                headerRow.createCell(i).setCellValue(headers[i]);
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerStyle);
             }
 
             // Sample row (matches the format your import expects)
@@ -1144,24 +1437,43 @@ public class StockAdd extends javax.swing.JFrame {
             sampleRow.createCell(3).setCellValue("GRADE B");     // Quality
             sampleRow.createCell(4).setCellValue("");            // product_name
             sampleRow.createCell(5).setCellValue("NO ID");       // supplier
-            sampleRow.createCell(6).setCellValue("MATHUGAMA");   // location Name
+            sampleRow.createCell(6).setCellValue(UserDetails.locationName);   // location Name
             sampleRow.createCell(7).setCellValue(0);             // cost
             sampleRow.createCell(8).setCellValue(15000);         // saling_price
             sampleRow.createCell(9).setCellValue(1);             // qty
             sampleRow.createCell(10).setCellValue("");           // color
             sampleRow.createCell(11).setCellValue("");           // SKU
+            sampleRow.createCell(12).setCellValue("");           // GRN ID (leave blank = no GRN)
+            sampleRow.createCell(13).setCellValue(""); // Expire Date (yyyy-MM-dd)
+
+            // Add a note row (row 2) explaining the new columns - optional
+            Row noteRow = sheet.createRow(2);
+            CellStyle noteStyle = workbook.createCellStyle();
+            Font noteFont = workbook.createFont();
+            noteFont.setItalic(true);
+            noteFont.setColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            noteStyle.setFont(noteFont);
+            Cell noteCell = noteRow.createCell(0);
+//            noteCell.setCellValue("Note: 'GRN ID' must be an existing GRN_GRN_ID from the GRN table (leave blank if not applicable). "
+//                    + "'Expire Date' format: yyyy-MM-dd (leave blank if no expiry).");
+            noteCell.setCellStyle(noteStyle);
 
             // Auto-size columns for readability
             for (int i = 0; i < headers.length; i++) {
                 sheet.autoSizeColumn(i);
             }
+            // Widen GRN ID and Expire Date columns slightly
+            sheet.setColumnWidth(12, 12 * 256);
+            sheet.setColumnWidth(13, 16 * 256);
 
             try (java.io.FileOutputStream fos = new java.io.FileOutputStream(saveFile)) {
                 workbook.write(fos);
             }
 
             JOptionPane.showMessageDialog(this,
-                    "Template saved successfully:\n" + saveFile.getAbsolutePath(),
+                    "Template saved successfully:\n" + saveFile.getAbsolutePath()
+                    + "\n\nIMPORTANT:\n"
+                    + "• Fill the Excell sheet and Upload into the system using IMPORT EXCEL button.\n",
                     "Download Complete",
                     JOptionPane.INFORMATION_MESSAGE);
 
@@ -1251,6 +1563,7 @@ public class StockAdd extends javax.swing.JFrame {
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jButton10 = new javax.swing.JButton();
         jTextField3 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel33 = new javax.swing.JLabel();
@@ -1278,7 +1591,6 @@ public class StockAdd extends javax.swing.JFrame {
         jComboBox4 = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jButton13 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
         jToggleButton2 = new javax.swing.JToggleButton();
         jButton16 = new javax.swing.JButton();
         jLabel48 = new javax.swing.JLabel();
@@ -1397,7 +1709,7 @@ public class StockAdd extends javax.swing.JFrame {
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
         jLabel13.setText("Stock Infomations");
-        jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        jPanel6.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
         jPanel6.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 480, 80, 30));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
@@ -1604,7 +1916,7 @@ public class StockAdd extends javax.swing.JFrame {
 
         jLabel17.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
         jLabel17.setText("Search Option ");
-        jPanel6.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
+        jPanel6.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
 
         jLabel18.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel18.setText("Stock ID");
@@ -1669,6 +1981,10 @@ public class StockAdd extends javax.swing.JFrame {
         jPanel6.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 70, 70, -1));
         jPanel6.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 70, 130, -1));
 
+        jLabel9.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel9.setText(" ");
+        jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 110, -1));
+
         jTabbedPane1.addTab("Add Only Stock", jPanel6);
 
         jPanel7.setBackground(new java.awt.Color(206, 206, 206));
@@ -1683,17 +1999,17 @@ public class StockAdd extends javax.swing.JFrame {
 
         jTable5.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Company", "Supplier"
+                "Grn Invoice ID", "GRN Date", "Full Amount", "Supplier"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1709,14 +2025,16 @@ public class StockAdd extends javax.swing.JFrame {
         if (jTable5.getColumnModel().getColumnCount() > 0) {
             jTable5.getColumnModel().getColumn(0).setResizable(false);
             jTable5.getColumnModel().getColumn(1).setResizable(false);
+            jTable5.getColumnModel().getColumn(2).setResizable(false);
+            jTable5.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        jPanel7.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, 320, 200));
+        jPanel7.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, 490, 200));
         jPanel7.add(jSeparator10, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 389, 1025, 4));
 
         jLabel45.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
         jLabel45.setText("Actions");
-        jPanel7.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 170, -1, -1));
+        jPanel7.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 180, -1, -1));
 
         jLabel46.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         jLabel46.setText("Grn Invoice No");
@@ -1788,22 +2106,28 @@ public class StockAdd extends javax.swing.JFrame {
         jPanel7.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, -1));
 
         jButton13.setText("Add GRN invoice");
-        jPanel7.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 160, -1));
-
-        jButton15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/excel-file (1).png"))); // NOI18N
-        jButton15.setText("Import Stock Excel for the GRN");
-        jButton15.addActionListener(new java.awt.event.ActionListener() {
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton15ActionPerformed(evt);
+                jButton13ActionPerformed(evt);
             }
         });
-        jPanel7.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 190, 270, 60));
+        jPanel7.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 160, -1));
 
         jToggleButton2.setText("Delete GRN");
-        jPanel7.add(jToggleButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 260, 270, 50));
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jToggleButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 210, 100, 50));
 
         jButton16.setText("Update GRN");
-        jPanel7.add(jButton16, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 320, 270, 50));
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton16, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 270, 100, 50));
 
         jLabel48.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
         jLabel48.setText("Search Purchasing invoices in here");
@@ -2167,7 +2491,7 @@ public class StockAdd extends javax.swing.JFrame {
             }
 
             JOptionPane.showMessageDialog(this, "Stock Added Successfully", "Insert Success", JOptionPane.INFORMATION_MESSAGE);
-            new Thread(() -> ActivityLog.addLog("New stock entered by " + UserDetails.UserName,3)).start();
+            new Thread(() -> ActivityLog.addLog("New stock entered by " + UserDetails.UserName, 3)).start();
             refresh();
 
         } catch (SQLException se) {
@@ -2512,6 +2836,11 @@ public class StockAdd extends javax.swing.JFrame {
 
     private void jTable5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable5MouseClicked
         // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            jToggleButton2.setVisible(true);
+            jButton16.setVisible(true);
+
+        }
     }//GEN-LAST:event_jTable5MouseClicked
 
     private void jTextField20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField20ActionPerformed
@@ -2523,7 +2852,7 @@ public class StockAdd extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField23ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
-        // TODO add your handling code here:
+        loadGRNTable();
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jTextField21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField21ActionPerformed
@@ -2534,9 +2863,198 @@ public class StockAdd extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
-    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        // Add New GRN
+        // ============================================================
+        // ADD NEW GRN (Goods Received Note / Purchasing Invoice)
+        // Inserts one row into the `GRN` table.
+        // ============================================================
+
+        // ---------- 1. Read values from the form ----------
+        String GRN_inovice_id = jTextField21.getText() == null
+                ? "" : jTextField21.getText().trim();          // grn_no
+        String GRN_amount = jTextField12.getText() == null
+                ? "" : jTextField12.getText().trim();          // grn_amount
+        String supplier = String.valueOf(jComboBox4.getSelectedItem()); // supplier name
+
+        // GRN date comes from a JDateChooser -> convert to yyyy-MM-dd string
+        // jDateChooser3.getDateFormatString() returns a format pattern,
+        // NOT the actual date, so we use getDate() + SimpleDateFormat instead.
+        java.util.Date pickedDate = jDateChooser3.getDate();
+        String GRN_dte = null;
+        if (pickedDate != null) {
+            GRN_dte = new SimpleDateFormat("yyyy-MM-dd").format(pickedDate);
+        }
+
+        // ---------- 2. Validate inputs BEFORE touching the database ----------
+        // 2a. GRN invoice number must not be blank
+        if (GRN_inovice_id.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter the GRN Invoice Number.",
+                    "Missing GRN Number",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 2b. GRN date must be picked
+        if (GRN_dte == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Please select the GRN Date.",
+                    "Missing GRN Date",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 2c. GRN amount must be a valid number (may be zero, but not negative)
+        double grnAmountValue;
+        try {
+            grnAmountValue = Double.parseDouble(GRN_amount);
+            if (grnAmountValue < 0) {
+                JOptionPane.showMessageDialog(this,
+                        "GRN Amount cannot be negative.",
+                        "Invalid Amount",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a valid GRN Amount (numbers only).",
+                    "Invalid Amount",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 2d. A supplier must be selected from the combo box
+        if (supplier == null || supplier.trim().isEmpty()
+                || supplier.equalsIgnoreCase("Select Suppliers")
+                || supplier.equals("Item 1")) {
+            JOptionPane.showMessageDialog(this,
+                    "Please select a Supplier.",
+                    "Missing Supplier",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // ---------- 3. Resolve supplier name -> supplier_id ----------
+        // jComboBox4 is populated with supplier NAMES (see loadSuppiers()),
+        // but the GRN table stores supplier_supplier_id (INT FK).
+        // So we must look the id up from the supplier table first.
+        String supplierId = null;
+        try {
+            String supplierLookupSql = "SELECT `supplier_id` FROM `supplier` WHERE `Supplier_Name` = ? LIMIT 1";
+            try (PreparedStatement ps = MySQL.getConnection().prepareStatement(supplierLookupSql)) {
+                ps.setString(1, supplier.trim());
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        supplierId = rs.getString("supplier_id");
+                    }
+                }
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Could not look up the selected supplier.\nPlease check your connection and try again.",
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (supplierId == null) {
+            JOptionPane.showMessageDialog(this,
+                    "The selected Supplier ('" + supplier + "') was not found in the database.",
+                    "Supplier Not Found",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // ---------- 4. Insert the new GRN row ----------
+        try {
+            // Optional guard: prevent duplicate GRN numbers.
+            // Remove this block if your business allows the same grn_no to be reused.
+            String duplicateCheckSql = "SELECT `GRN_ID` FROM `GRN` WHERE `grn_no` = ? LIMIT 1";
+            try (PreparedStatement checkPs = MySQL.getConnection().prepareStatement(duplicateCheckSql)) {
+                checkPs.setString(1, GRN_inovice_id);
+                try (ResultSet rs = checkPs.executeQuery()) {
+                    if (rs.next()) {
+                        JOptionPane.showMessageDialog(this,
+                                "A GRN with the invoice number '" + GRN_inovice_id + "' already exists.\n"
+                                + "Please use a different invoice number.",
+                                "Duplicate GRN",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            }
+
+            // Actual insert — GRN_ID auto-increments, grn_status defaults to 'ACTIVE'
+            String insertSql = "INSERT INTO `GRN` "
+                    + "(`grn_no`, `grn_date`, `grn_amount`, `grn_status`, `supplier_supplier_id`) "
+                    + "VALUES (?, ?, ?, ?, ?)";
+
+            try (PreparedStatement ps = MySQL.getConnection().prepareStatement(insertSql)) {
+                ps.setString(1, GRN_inovice_id);        // grn_no
+                ps.setString(2, GRN_dte);               // grn_date   (yyyy-MM-dd)
+                ps.setDouble(3, grnAmountValue);        // grn_amount
+                ps.setString(4, "ACTIVE");              // grn_status (default)
+                ps.setString(5, supplierId);            // supplier_supplier_id
+                ps.executeUpdate();
+            }
+
+            // ---------- 5. Success feedback ----------
+            JOptionPane.showMessageDialog(this,
+                    "GRN Added Successfully!\n\n"
+                    + "Invoice No : " + GRN_inovice_id + "\n"
+                    + "Date       : " + GRN_dte + "\n"
+                    + "Amount     : " + grnAmountValue + "\n"
+                    + "Supplier   : " + supplier,
+                    "GRN Insert Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            // Log the action asynchronously (same priority 3 used elsewhere)
+            new Thread(()
+                    -> ActivityLog.addLog("New GRN (" + GRN_inovice_id + ") added by " + UserDetails.UserName, 3)
+            ).start();
+
+            // Clear the form fields so the user can enter another GRN right away
+            jTextField21.setText("");       // GRN invoice id
+            jTextField12.setText("");       // GRN amount
+            jDateChooser3.setDate(null);    // GRN date
+
+            // Reload any tables that may show GRN data
+            refresh();
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Please check your network or try again later.\n\n"
+                    + "Error: " + se.getMessage(),
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "An unexpected error occurred: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        // Delete GRN ->
+        String grn_no = String.valueOf(jTable5.getValueAt(jTable5.getSelectedRow(), 0));
+        try {
+            MySQL.execute("DELETE FROM `GRN` WHERE `grn_no` = '" + grn_no + "'");
+            refresh();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Deletion is not completed, Please try again later", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton15ActionPerformed
+        JOptionPane.showMessageDialog(this, "please Contact The Developer to Update GRN", "Need to access Supper Admin auth", JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_jButton16ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2561,7 +3079,6 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -2620,6 +3137,7 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
