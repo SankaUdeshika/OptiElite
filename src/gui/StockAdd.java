@@ -24,6 +24,7 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import models.ActivityLog;
 import models.MySQL;
+import models.Reports;
 import org.apache.poi.ss.usermodel.*;
 
 public class StockAdd extends javax.swing.JFrame {
@@ -207,6 +208,7 @@ public class StockAdd extends javax.swing.JFrame {
         jTextField15.setText("");
         jToggleButton2.setVisible(false);
         jButton16.setVisible(false);
+        jButton17.setVisible(false);
     }
 
     public void loadGRNTable() {
@@ -300,7 +302,7 @@ public class StockAdd extends javax.swing.JFrame {
                 dtm.setRowCount(0);
                 while (rs.next()) {
                     Vector v = new Vector();
-//                    v.add(rs.getInt("GRN_ID"));            // 0: GRN ID (internal)
+                    v.add(rs.getInt("GRN_ID"));            // 0: GRN ID (internal)
                     v.add(rs.getString("grn_no"));         // 1: Invoice No
                     v.add(rs.getDate("grn_date"));         // 2: GRN Date
                     v.add(rs.getDouble("grn_amount"));     // 3: Amount
@@ -419,7 +421,7 @@ public class StockAdd extends javax.swing.JFrame {
             System.out.println("[4e] Suppliers loaded: " + (supplierMap != null ? supplierMap.size() : "NULL"));
 
             System.out.println("[4f] Loading GRN IDs...");
-            Set<String> validGRNIds = loadGRNIdsForImport();
+            Map<String, String> validGRNIds = loadGRNIdsForImport();
             System.out.println("[4f] GRN IDs loaded: " + (validGRNIds != null ? validGRNIds.size() : "NULL"));
 
             if (validGRNIds == null) {
@@ -675,7 +677,7 @@ public class StockAdd extends javax.swing.JFrame {
             Map<String, String> locationNameToIdMap,
             Map<String, String> subCategoryNameToIdMap,
             Map<String, String> supplierNameToIdMap,
-            Set<String> validGRNIds) throws Exception {
+            Map<String, String> validGRNIds) throws Exception {
 
         ImportResult result = new ImportResult();
         List<String> errors = new ArrayList<>();
@@ -757,17 +759,19 @@ public class StockAdd extends javax.swing.JFrame {
                     String grnId = null;
                     if (!grnIdRaw.isEmpty()) {
                         // Handle cases where Excel may return "123.0" for a numeric cell
-                        String grnIdCleaned = grnIdRaw;
-                        if (grnIdCleaned.matches("\\d+\\.0+")) {
-                            grnIdCleaned = grnIdCleaned.substring(0, grnIdCleaned.indexOf('.'));
+                        String grnNoCleaned = grnIdRaw;
+                        if (grnNoCleaned.matches("\\d+\\.0+")) {
+                            grnNoCleaned = grnNoCleaned.substring(0, grnNoCleaned.indexOf('.'));
                         }
 
-                        if (!validGRNIds.contains(grnIdCleaned)) {
-                            errors.add("Row " + (i + 1) + ": GRN ID '" + grnIdRaw
+                        // Look up the real GRN_ID (primary key) from the invoice number (grn_no)
+                        String realGrnId = validGRNIds.get(grnNoCleaned);
+                        if (realGrnId == null) {
+                            errors.add("Row " + (i + 1) + ": GRN invoice no '" + grnIdRaw
                                     + "' not found in GRN table (leave blank if no GRN)");
                             continue;
                         }
-                        grnId = grnIdCleaned;
+                        grnId = realGrnId; // this is what goes into stock.GRN_GRN_ID
                     }
 
                     // --- Validate Expire Date (if provided) ---
@@ -1358,15 +1362,15 @@ public class StockAdd extends javax.swing.JFrame {
         return input.replace("'", "''");
     }
 
-    private Set<String> loadGRNIdsForImport() {
-        Set<String> grnIds = new HashSet<>();
+    private Map<String, String> loadGRNIdsForImport() {
+        Map<String, String> grnMap = new HashMap<>(); // grn_no -> GRN_ID
         try {
-            ResultSet rs = MySQL.execute("SELECT `GRN_ID` FROM `GRN`");
+            ResultSet rs = MySQL.execute("SELECT `GRN_ID`, `grn_no` FROM `GRN`");
             while (rs.next()) {
-                grnIds.add(rs.getString("GRN_ID"));
+                grnMap.put(cleanStringForImport(rs.getString("grn_no")), rs.getString("GRN_ID"));
             }
-            System.out.println("Loaded " + grnIds.size() + " GRN IDs.");
-            return grnIds;
+            System.out.println("Loaded " + grnMap.size() + " GRN IDs.");
+            return grnMap;
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this,
@@ -1596,6 +1600,7 @@ public class StockAdd extends javax.swing.JFrame {
         jLabel48 = new javax.swing.JLabel();
         jLabel51 = new javax.swing.JLabel();
         jToggleButton3 = new javax.swing.JToggleButton();
+        jButton17 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -1999,17 +2004,17 @@ public class StockAdd extends javax.swing.JFrame {
 
         jTable5.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Grn Invoice ID", "GRN Date", "Full Amount", "Supplier"
+                "#", "Grn Invoice No", "GRN Date", "Full Amount", "Supplier"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -2027,6 +2032,7 @@ public class StockAdd extends javax.swing.JFrame {
             jTable5.getColumnModel().getColumn(1).setResizable(false);
             jTable5.getColumnModel().getColumn(2).setResizable(false);
             jTable5.getColumnModel().getColumn(3).setResizable(false);
+            jTable5.getColumnModel().getColumn(4).setResizable(false);
         }
 
         jPanel7.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, 490, 200));
@@ -2119,7 +2125,7 @@ public class StockAdd extends javax.swing.JFrame {
                 jToggleButton2ActionPerformed(evt);
             }
         });
-        jPanel7.add(jToggleButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 210, 100, 50));
+        jPanel7.add(jToggleButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 260, 100, 50));
 
         jButton16.setText("Update GRN");
         jButton16.addActionListener(new java.awt.event.ActionListener() {
@@ -2127,7 +2133,7 @@ public class StockAdd extends javax.swing.JFrame {
                 jButton16ActionPerformed(evt);
             }
         });
-        jPanel7.add(jButton16, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 270, 100, 50));
+        jPanel7.add(jButton16, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 310, 100, 50));
 
         jLabel48.setFont(new java.awt.Font("Segoe UI Historic", 1, 14)); // NOI18N
         jLabel48.setText("Search Purchasing invoices in here");
@@ -2139,6 +2145,14 @@ public class StockAdd extends javax.swing.JFrame {
 
         jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/SmallSettings.png"))); // NOI18N
         jPanel7.add(jToggleButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(162, 320, 30, 20));
+
+        jButton17.setText("Export GRN");
+        jButton17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton17ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton17, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 210, 100, 50));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -2839,6 +2853,7 @@ public class StockAdd extends javax.swing.JFrame {
         if (evt.getClickCount() == 2) {
             jToggleButton2.setVisible(true);
             jButton16.setVisible(true);
+            jButton17.setVisible(true);
 
         }
     }//GEN-LAST:event_jTable5MouseClicked
@@ -3045,7 +3060,7 @@ public class StockAdd extends javax.swing.JFrame {
         try {
             MySQL.execute("DELETE FROM `GRN` WHERE `grn_no` = '" + grn_no + "'");
             refresh();
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Deletion is not completed, Please try again later", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -3055,6 +3070,27 @@ public class StockAdd extends javax.swing.JFrame {
         // TODO add your handling code here:
         JOptionPane.showMessageDialog(this, "please Contact The Developer to Update GRN", "Need to access Supper Admin auth", JOptionPane.WARNING_MESSAGE);
     }//GEN-LAST:event_jButton16ActionPerformed
+
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        // TODO add your handling code here:
+
+        if (jTable5.getSelectedRow() != -1) {
+            String grn_id = String.valueOf(jTable5.getValueAt(jTable5.getSelectedRow(), 0));
+//            Reports.PrintGRNReport(grn_id);
+            ResultSet stock_rs = MySQL.execute("SELECT * FROM `stock` WHERE `stock`.`GRN_GRN_ID` = '" + grn_id + "'");
+            try {
+                if (stock_rs.next()) {
+                    Reports.PrintGRNReport(grn_id);
+                } else {
+                    JOptionPane.showMessageDialog(this, "There is no stocks on this grn, Please Add the stock before getting GRN report", "Empty Stocks", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "To Select a GRN, please double click a grn row in the table.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton17ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -3080,6 +3116,7 @@ public class StockAdd extends javax.swing.JFrame {
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton16;
+    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
